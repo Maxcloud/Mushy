@@ -1,0 +1,129 @@
+package handling;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import client.MapleClient;
+import handling.handlers.ChangeMapHandler;
+import handling.handlers.CloseRangeAttackHandler;
+import handling.handlers.EnterCashShopHandler;
+import handling.handlers.GeneralChatHandler;
+import handling.handlers.MagicAttackHandler;
+import handling.handlers.MesoDropHandler;
+import handling.handlers.MoveLifeHandler;
+import handling.handlers.MovePlayerHandler;
+import handling.handlers.NpcTalkHandler;
+import handling.handlers.NpcTalkMoreHandler;
+import handling.handlers.QuestActionHandler;
+import handling.handlers.RangedAttackHandler;
+import handling.handlers.login.AuthServerHandler;
+import handling.handlers.login.CharacterListRequest;
+import handling.handlers.login.CharacterWithSecondPassword;
+import handling.handlers.login.CheckCharacterName;
+import handling.handlers.login.ClientErrorHandler;
+import handling.handlers.login.ClientStartHandler;
+import handling.handlers.login.CreateNewCharacter;
+import handling.handlers.login.CreateWithoutSecondPassword;
+import handling.handlers.login.DeleteCharHandler;
+import handling.handlers.login.HeartbeatRequest;
+import handling.handlers.login.LoginPasswordHandler;
+import handling.handlers.login.PlayerLoggedInHandler;
+import handling.handlers.login.PongHandler;
+import handling.handlers.login.ServerListRequest;
+import handling.handlers.login.ServerStatusRequest;
+import tools.HexTool;
+import tools.data.LittleEndianAccessor;
+
+
+class OpcodeManager {
+	
+	private static Map<Short, Method> handlers = new HashMap<Short, Method>();
+	
+	private static Class<?>[] packethandlers = new Class<?>[] {
+		
+		PongHandler.class,
+		
+		// Login
+		ServerStatusRequest.class,
+		ServerListRequest.class,
+		AuthServerHandler.class,
+		PlayerLoggedInHandler.class,
+		CheckCharacterName.class,
+		DeleteCharHandler.class,
+		HeartbeatRequest.class,
+		ClientStartHandler.class,
+		LoginPasswordHandler.class,
+		CharacterListRequest.class,
+		CreateNewCharacter.class,
+		ClientErrorHandler.class,
+		CharacterWithSecondPassword.class,
+		CreateWithoutSecondPassword.class,
+		
+		// Channel
+		ChangeMapHandler.class,
+		EnterCashShopHandler.class,
+		MovePlayerHandler.class,
+		CloseRangeAttackHandler.class,
+		RangedAttackHandler.class,
+		MagicAttackHandler.class,
+		GeneralChatHandler.class,
+		
+		MesoDropHandler.class,
+		QuestActionHandler.class,
+		
+		MoveLifeHandler.class,
+		NpcTalkHandler.class,
+		NpcTalkMoreHandler.class
+
+    };
+    
+	static {
+		try {
+			for (Class<?> c : packethandlers) {
+		        for (Method method : c.getMethods()) {
+		            PacketHandler annotation = method.getAnnotation(PacketHandler.class);
+		            if (annotation != null) {
+		                if (isValidMethod(method)) {
+		                    if (handlers.containsKey(annotation.opcode())) {
+		                        System.out.println("Duplicate handler for opcode: " + annotation.opcode());
+		                    } else {
+		                        handlers.put(annotation.opcode().getValue(), method);
+		                    }
+		                } else {
+		                    System.out.println("Failed to add handler with method name of: " + method.getName() + " in " + c.getName());
+		                }
+		            }
+		        }
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.printf("A total of %s handlers have been loaded.\r\n", handlers.size());
+	}
+    
+    private static boolean isValidMethod(Method method) {
+		Class[] types = method.getParameterTypes();
+        
+        return types.length == 2 && types[0].equals(MapleClient.class) && types[1].equals(LittleEndianAccessor.class);
+    }
+
+    public static void handle(MapleClient client, short opcode, LittleEndianAccessor lea) {
+        Method method = handlers.get(opcode);
+        try {
+            if (method != null) { 
+                method.invoke(null, client, lea);
+            } else {
+            	System.out.println("[Unhandled] [Recv] (" + HexTool.getOpcodeToString(opcode) + ") " + lea);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+        	e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
