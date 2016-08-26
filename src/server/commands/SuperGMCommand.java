@@ -1325,44 +1325,7 @@ public class SuperGMCommand {
             }
         }
     }
-
-    public static class Rev extends CommandExecute {
-
-        private static int revision = -1;
-
-        public static int getRevision() {
-            if (revision != -1) {
-                return revision;
-            } else {
-                InputStream svninfo = AdminCommand.class.getResourceAsStream("/all-wcprops");
-                if (svninfo == null) {
-                    return revision;
-                }
-                try (Scanner sc = new Scanner(svninfo)) {
-                    while (sc.hasNext()) {
-                        String[] s = sc.next().split("/");
-                        if (s.length > 1 && s[1].equals("svn")) {
-                            revision = Integer.parseInt(s[5]);
-                            break;
-                        }
-                    }
-                }
-            }
-            return revision;
-        }
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            MapleCharacter player = c.getPlayer();
-            if (getRevision() != -1) {
-                c.getPlayer().dropMessage(5, "Revision: " + ServerConstants.SOURCE_REVISION);
-            } else {
-                c.getPlayer().dropMessage(5, "Could not find revision.");
-            }
-            return 1;
-        }
-    }
-
+    
     public static class FillBook extends CommandExecute {
 
         @Override

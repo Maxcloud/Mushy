@@ -179,16 +179,7 @@ public class AdminCommand {
             return 1;
         }
     }
-
-    public static class ToggleMultiLevel extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            ServerConstants.MultiLevel = !ServerConstants.MultiLevel;
-            return 1;
-        }
-    }
-
+    
     public static class DoubleTime extends CommandExecute {
 
         @Override

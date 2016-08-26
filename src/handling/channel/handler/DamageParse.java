@@ -127,43 +127,9 @@ public class DamageParse {
 		}
 
 		double maxDamagePerHit = 0.0D;
-
-		int antiKS = 0;
+		
 		for (AttackPair oned : attack.allDamage) {
 			MapleMonster monster = map.getMonsterByOid(oned.objectid);
-
-			if (ServerConstants.AntiKS) {
-				MapleQuestStatus statt = player.getQuestNoAdd(MapleQuest.getInstance(732648172));
-				boolean antiks;
-				if (statt == null || statt.getCustomData() == null) {
-					antiks = false;
-					statt.setCustomData(antiks + ";" + 0);
-				} else {
-					String[] statss = statt.getCustomData().split(";");
-					try {
-						antiks = Boolean.parseBoolean(statss[0]);
-					} catch (Exception ex) {
-						antiks = false;
-					}
-					if (monster.getBelongsToSomeone() && monster.getBelongsTo() != player.getId()
-							&& (player.getParty() == null
-									|| player.getParty().getMemberById(monster.getBelongsTo()) == null)
-							&& !player.isGM()) {
-						monster.setBelongsTo(player);
-						antiKS++;
-						statt.setCustomData(antiks + ";" + (Integer.parseInt(statss[1]) + 1));
-					}
-				}
-				if (monster.getBelongsToSomeone()) {
-					if (monster.getBelongsTo() != player.getId() && !player.isGM()) {
-						player.dropMessage(5, "You cannot hit this monster because it belongs to someone else.");
-						continue;
-					}
-					if (player.isGM()) {
-						player.dropMessage(5, "You are attacking a monster who was marked by another player.");
-					}
-				}
-			}
 
 			if ((monster != null) && (monster.getLinkCID() <= 0)) {
 				totDamageToOneMonster = 0;
@@ -647,47 +613,9 @@ public class DamageParse {
 		int totDamage = 0;
 
 		int CriticalDamage = stats.passive_sharpeye_percent();
-		Skill eaterSkill = SkillFactory.getSkill(GameConstants.getMPEaterForJob(player.getJob()));
-		int eaterLevel = player.getTotalSkillLevel(eaterSkill);
-
 		MapleMap map = player.getMap();
-
-		int antiKS = 0;
 		for (AttackPair oned : attack.allDamage) {
 			MapleMonster monster = map.getMonsterByOid(oned.objectid);
-
-			if (ServerConstants.AntiKS) {
-				MapleQuestStatus statt = player.getQuestNoAdd(MapleQuest.getInstance(732648172));
-				boolean antiks;
-				if (statt == null || statt.getCustomData() == null) {
-					antiks = false;
-					statt.setCustomData(antiks + ";" + 0);
-				} else {
-					String[] statss = statt.getCustomData().split(";");
-					try {
-						antiks = Boolean.parseBoolean(statss[0]);
-					} catch (Exception ex) {
-						antiks = false;
-					}
-					if (monster.getBelongsToSomeone() && monster.getBelongsTo() != player.getId()
-							&& (player.getParty() == null
-									|| player.getParty().getMemberById(monster.getBelongsTo()) == null)
-							&& !player.isGM()) {
-						monster.setBelongsTo(player);
-						antiKS++;
-						statt.setCustomData(antiks + ";" + (Integer.parseInt(statss[1]) + 1));
-					}
-				}
-				if (monster.getBelongsToSomeone()) {
-					if (monster.getBelongsTo() != player.getId() && !player.isGM()) {
-						player.dropMessage(5, "You cannot hit this monster because it belongs to someone else.");
-						continue;
-					}
-					if (player.isGM()) {
-						player.dropMessage(5, "You are attacking a monster who was marked by another player.");
-					}
-				}
-			}
 
 			if ((monster != null) && (monster.getLinkCID() <= 0)) {
 				boolean Tempest = (monster.getStatusSourceID(MonsterStatus.FREEZE) == 21120006)

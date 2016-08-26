@@ -109,8 +109,7 @@ public class MaplePortal {
                 } catch (final Exception e) {
                 }
             } else if (getTargetMapId() != 999999999) {
-                final MapleMap oldto = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(getTargetMapId());
-                final MapleMap to = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(GameConstants.getSpecialMapTarget(getTargetMapId()));
+                final MapleMap to = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(getTargetMapId());
                 if (to == null) {
                     c.getSession().write(CWvsContext.enableActions());
                     return;
@@ -127,7 +126,7 @@ public class MaplePortal {
                     c.getSession().write(CWvsContext.enableActions());
                     return;
                 }
-                c.getPlayer().changeMapPortal(to, to.getPortal(GameConstants.getSpecialPortalTarget(oldto.getId(), getTarget())) == null ? to.getPortal(0) : to.getPortal(GameConstants.getSpecialPortalTarget(oldto.getId(), getTarget()))); //late resolving makes this harder but prevents us from loading the whole world at once
+                c.getPlayer().changeMapPortal(to, to.getPortal(getTarget()) == null ? to.getPortal(0) : to.getPortal(getTarget()));
             }
         }
         if (c != null && c.getPlayer() != null && c.getPlayer().getMap() == currentmap) { // Character is still on the same map.
