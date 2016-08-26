@@ -1,7 +1,7 @@
 package client;
 
 import constants.GameConstants;
-import server.Randomizer;
+import tools.Randomizer;
 
 public class InnerAbillity {
 

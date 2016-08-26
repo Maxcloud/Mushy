@@ -29,11 +29,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.data.MapleData;
+import lib.data.MapleDataProvider;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
 import net.DatabaseConnection;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataProvider;
-import wz.data.MapleDataTool;
 
 public class DumpMobSkills {
 

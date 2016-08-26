@@ -50,7 +50,6 @@ public class ServerConstants {
     public static final String MAPLE_PATCH = "1";
     public static final String SOURCE_REVISION = "29.1";
     public static final boolean Old_Maps = false; // example: it will use old maple event's henesys instead of current one
-    public static final boolean LOG_SHARK = false;  // true = enable shark to log 
     public static boolean MultiLevel = true; // true = enable multi leveling
     public static final boolean AntiKS = false;
     public static final byte SHOP_DISCOUNT = 0; // Discount Rate (%) Higher than 100 or lower than 1 means no discount

@@ -23,12 +23,12 @@ package server.maps;
 import java.util.HashMap;
 import java.util.Map;
 
+import lib.data.MapleData;
+import lib.data.MapleDataProvider;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
 import tools.Pair;
 import tools.StringUtil;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataProvider;
-import wz.data.MapleDataTool;
 
 public class MapleReactorFactory {
 

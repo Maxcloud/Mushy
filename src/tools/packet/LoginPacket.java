@@ -14,7 +14,7 @@ import constants.ServerConstants;
 import constants.WorldConstants.WorldOption;
 import handling.SendPacketOpcode;
 import handling.login.LoginServer;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.Triple;
 import tools.data.MaplePacketLittleEndianWriter;
 
@@ -97,7 +97,7 @@ public class LoginPacket {
     
     private static void getAvailableJobs(MaplePacketLittleEndianWriter mplew) {
     	mplew.write(JobConstants.enableJobs ? 1 : 0); //toggle
-        mplew.write(JobConstants.jobOrder); // Job Order (orders are located in wz)
+        mplew.write(JobConstants.jobOrder); // Job Order (orders are located in lib)
         for (LoginJob j : LoginJob.values()) {
             mplew.write(j.getFlag());
             mplew.writeShort(j.getFlag());

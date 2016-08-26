@@ -10,10 +10,10 @@ import java.util.List;
 
 import net.DatabaseConnection;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
 import server.movement.StaticLifeMovement;
+import tools.Randomizer;
 import tools.Triple;
 
 public class MapleAndroid

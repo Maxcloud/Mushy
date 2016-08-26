@@ -55,13 +55,13 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
-import server.Randomizer;
 import server.Timer.EtcTimer;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.ConcurrentEnumMap;
 import tools.Pair;
+import tools.Randomizer;
 import tools.packet.CField;
 import tools.packet.MobPacket;
 

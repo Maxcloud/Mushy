@@ -64,19 +64,6 @@ public class GMCommand {
         return PlayerGMRank.GM;
     }
     
-    public static class Reports extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            List<CheaterData> cheaters = World.getReports();
-            for (int x = cheaters.size() - 1; x >= 0; x--) {
-                CheaterData cheater = cheaters.get(x);
-                c.getPlayer().dropMessage(6, cheater.getInfo());
-            }
-            return 1;
-        }
-    }
-    
     public static class ClearDrops extends CommandExecute {
 
         @Override

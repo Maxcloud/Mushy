@@ -16,11 +16,11 @@ import java.util.Map.Entry;
 
 import client.MapleCharacter;
 import constants.GameConstants;
+import lib.bin.ReadBin;
 import net.DatabaseConnection;
 import script.npc.NPCScriptManager;
 import tools.Pair;
 import tools.packet.CField.EffectPacket;
-import wz.bin.ReadBin;
 
 public class MapleQuest implements Serializable {
 

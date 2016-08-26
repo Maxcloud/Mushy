@@ -25,9 +25,9 @@ import handling.world.World;
 
 import java.awt.Point;
 import server.MapleItemInformationProvider;
-import server.Randomizer;
 import server.Timer.EventTimer;
 import server.life.MapleLifeFactory;
+import tools.Randomizer;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 

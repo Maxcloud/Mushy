@@ -1,4 +1,4 @@
-package server;
+package server.cash;
 
 public class CashItemInfo {
 

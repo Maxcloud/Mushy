@@ -44,7 +44,6 @@ import server.Timer.PingTimer;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
-import server.shark.SharkLogger;
 import server.stores.IMaplePlayerShop;
 import tools.MapleAESOFB;
 import tools.Pair;
@@ -84,8 +83,6 @@ public class MapleClient implements Serializable {
 	private final static Lock login_mutex = new ReentrantLock(true);
 	private final Map<Integer, Pair<Short, Short>> charInfo = new LinkedHashMap<>();
 	private int client_increnement = 1;
-	public SharkLogger sl = new SharkLogger(); // no boilerplate because i'm
-												// lazy
 
 	public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
 		this.send = send;
@@ -924,7 +921,6 @@ public class MapleClient implements Serializable {
 	}
 
 	public final void disconnect(final boolean RemoveInChannelServer, final boolean fromCS, final boolean shutdown) {
-		this.sl.dump();
 		if (player != null) {
 			MapleMap map = player.getMap();
 			final MapleParty party = player.getParty();

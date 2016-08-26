@@ -39,7 +39,6 @@ import handling.world.MapleParty;
 import handling.world.MaplePartyCharacter;
 import handling.world.exped.MapleExpedition;
 import server.MapleSquad;
-import server.Randomizer;
 import server.Timer.EventTimer;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
@@ -52,6 +51,7 @@ import server.maps.MapleMapObject;
 import server.maps.MapleReactor;
 import server.maps.MapleReactorFactory;
 import tools.FileoutputUtil;
+import tools.Randomizer;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 

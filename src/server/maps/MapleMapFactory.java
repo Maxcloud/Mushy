@@ -36,9 +36,12 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.mysql.jdbc.Connection;
 
 import constants.GameConstants;
+import lib.data.MapleData;
+import lib.data.MapleDataProvider;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
 import net.DatabaseConnection;
 import server.MaplePortal;
-import server.Randomizer;
 import server.life.AbstractLoadedMapleLife;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
@@ -47,11 +50,8 @@ import server.maps.MapleNodes.DirectionInfo;
 import server.maps.MapleNodes.MapleNodeInfo;
 import server.maps.MapleNodes.MaplePlatform;
 import tools.Pair;
+import tools.Randomizer;
 import tools.StringUtil;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataProvider;
-import wz.data.MapleDataTool;
 
 public class MapleMapFactory {
 
@@ -354,7 +354,7 @@ public class MapleMapFactory {
                         final int theSpawn = Randomizer.nextInt(herbRocks.size());
                         final MapleReactor myReactor = new MapleReactor(MapleReactorFactory.getReactor(idd), idd);
                         myReactor.setPosition(herbRocks.get(theSpawn));
-                        myReactor.setDelay(idd % 100 == 11 ? 60000 : 5000); //in the reactor's wz
+                        myReactor.setDelay(idd % 100 == 11 ? 60000 : 5000); //in the reactor's lib
                         map.spawnReactor(myReactor);
                         herbRocks.remove(theSpawn);
                     }
@@ -367,7 +367,7 @@ public class MapleMapFactory {
                     map.setMapName("");
                     map.setStreetName("");
                 }
-                map.setClock(mapData.getChildByPath("clock") != null); //clock was changed in wz to have x,y,width,height
+                map.setClock(mapData.getChildByPath("clock") != null); //clock was changed in lib to have x,y,width,height
                 map.setEverlast(MapleDataTool.getInt(mapData.getChildByPath("info/everlast"), 0) > 0);
                 map.setTown(MapleDataTool.getInt(mapData.getChildByPath("info/town"), 0) > 0);
                 map.setSoaring(MapleDataTool.getInt(mapData.getChildByPath("info/needSkillForFly"), 0) > 0);
@@ -1149,7 +1149,7 @@ public class MapleMapFactory {
                         nodeInfo.addPlatform(mni);
                     } else if (node.getChildByPath("tags") != null) {
                         String name = MapleDataTool.getString("tags", node, "");
-                        nodeInfo.addFlag(new Pair<>(name, name.endsWith("3") ? 1 : 0)); //idk, no indication in wz
+                        nodeInfo.addFlag(new Pair<>(name, name.endsWith("3") ? 1 : 0)); //idk, no indication in lib
                     }
                 }
             }

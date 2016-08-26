@@ -49,7 +49,6 @@ import handling.world.guild.MapleGuildCharacter;
 import handling.world.guild.MapleGuildSkill;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
-import server.Randomizer;
 import server.StructFamiliar;
 import server.life.MapleMonster;
 import server.life.PlayerNPC;
@@ -58,6 +57,7 @@ import server.stores.HiredMerchant;
 import server.stores.MaplePlayerShopItem;
 import tools.HexTool;
 import tools.Pair;
+import tools.Randomizer;
 import tools.StringUtil;
 import tools.data.MaplePacketLittleEndianWriter;
 

@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.events;
 
 import client.MapleCharacter;
-import server.Randomizer;
+import tools.Randomizer;
 
 public class MapleOla extends MapleSurvival { //survival/ola so similar.
     private int[] stages = new int[3];

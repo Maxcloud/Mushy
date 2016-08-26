@@ -27,11 +27,11 @@ import client.MapleTrait.MapleTraitType;
 import constants.GameConstants;
 import handling.channel.ChannelServer;
 import handling.world.MaplePartyCharacter;
-import server.Randomizer;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
+import tools.Randomizer;
 import tools.packet.CField;
 
 public class Event_DojoAgent {

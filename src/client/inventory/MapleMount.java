@@ -30,7 +30,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.io.Serializable;
 
-import server.Randomizer;
+import tools.Randomizer;
 import tools.packet.CWvsContext;
 
 public class MapleMount implements Serializable {

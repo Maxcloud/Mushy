@@ -19,7 +19,7 @@
 package server.quest;
 
 import server.RandomRewards;
-import server.Randomizer;
+import tools.Randomizer;
 
 /**
  * 
