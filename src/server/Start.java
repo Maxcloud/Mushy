@@ -24,6 +24,7 @@ import server.Timer.EventTimer;
 import server.Timer.MapTimer;
 import server.Timer.PingTimer;
 import server.Timer.WorldTimer;
+import server.cash.CashItemFactory;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonsterInformationProvider;
 import server.life.MobSkillFactory;

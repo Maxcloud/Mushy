@@ -41,10 +41,10 @@ import java.util.List;
 import java.util.Map;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
-import server.Randomizer;
 import server.maps.MapleMapObjectType;
 import tools.FileoutputUtil;
 import tools.Pair;
+import tools.Randomizer;
 import tools.packet.CField;
 
 public class GameConstants {
@@ -3027,7 +3027,7 @@ public class GameConstants {
     public static boolean icsog(int itemId) {
     return itemId == 2049122;
     }  
-    //if only there was a way to find in wz files -.-
+    //if only there was a way to find in lib files -.-
     public static boolean isEffectRing(int itemid) {
         return isFriendshipRing(itemid) || isCrushRing(itemid) || isMarriageRing(itemid);
     }
@@ -3599,7 +3599,7 @@ public class GameConstants {
             //37 = bjorn
             //38 = speedy chariot
             //57 = law officer
-            //they all have in wz so its ok
+            //they all have in lib so its ok
         }
         return 0;
     }

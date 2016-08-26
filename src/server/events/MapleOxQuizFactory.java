@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.DatabaseConnection;
-import server.Randomizer;
 import tools.Pair;
+import tools.Randomizer;
 
 public class MapleOxQuizFactory {
 

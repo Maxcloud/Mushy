@@ -30,7 +30,6 @@ import handling.world.guild.MapleGuildAlliance;
 import script.npc.NPCTalk;
 import server.MaplePackageActions;
 import server.MapleTrade;
-import server.Randomizer;
 import server.events.MapleSnowball;
 import server.life.MapleNPC;
 import server.maps.MapleDragon;
@@ -49,6 +48,7 @@ import server.shops.MapleShop;
 import tools.AttackPair;
 import tools.HexTool;
 import tools.Pair;
+import tools.Randomizer;
 import tools.Triple;
 import tools.data.MaplePacketLittleEndianWriter;
 
@@ -1977,12 +1977,12 @@ public class CField {
 				null, 0);
 	}
 
-	public static byte[] rangedAttack(int cid, byte tbyte, int skill, int level, int display, byte speed, int itemid,
+	public static byte[] rangedAttack(int cid, int tbyte, int skill, int level, int display, byte speed, int itemid,
 			List<AttackPair> damage, Point pos, int lvl, byte mastery, byte unk) {
 		return addAttackInfo(1, cid, tbyte, skill, level, display, speed, damage, lvl, mastery, unk, itemid, pos, 0);
 	}
 
-	public static byte[] strafeAttack(int cid, byte tbyte, int skill, int level, int display, byte speed, int itemid,
+	public static byte[] strafeAttack(int cid, int tbyte, int skill, int level, int display, byte speed, int itemid,
 			List<AttackPair> damage, Point pos, int lvl, byte mastery, byte unk, int ultLevel) {
 		return addAttackInfo(2, cid, tbyte, skill, level, display, speed, damage, lvl, mastery, unk, itemid, pos,
 				ultLevel);

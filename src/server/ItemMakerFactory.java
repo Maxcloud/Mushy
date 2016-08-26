@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lib.data.MapleData;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
 import tools.Pair;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataTool;
 
 public class ItemMakerFactory {
 

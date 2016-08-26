@@ -12,9 +12,10 @@ import java.awt.Point;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import server.Randomizer;
+
 import server.MapleStatEffect;
 import tools.HexTool;
+import tools.Randomizer;
 import tools.data.MaplePacketLittleEndianWriter;
 
 /**

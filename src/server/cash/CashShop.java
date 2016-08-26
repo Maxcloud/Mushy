@@ -1,4 +1,4 @@
-package server;
+package server.cash;
 
 import client.MapleClient;
 import client.inventory.Equip;
@@ -10,6 +10,8 @@ import client.inventory.MaplePet;
 import client.inventory.MapleRing;
 import constants.GameConstants;
 import net.DatabaseConnection;
+import server.MapleInventoryManipulator;
+import server.MapleItemInformationProvider;
 
 import java.io.Serializable;
 import java.sql.Connection;

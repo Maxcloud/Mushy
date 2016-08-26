@@ -3,7 +3,7 @@ package client;
 import java.io.Serializable;
 
 import handling.Buffstat;
-import server.Randomizer;
+import tools.Randomizer;
 
 public enum MapleDisease implements Serializable, Buffstat {
 

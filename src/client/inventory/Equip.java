@@ -8,7 +8,7 @@ import java.util.Map;
 
 import constants.EventConstants;
 import constants.GameConstants;
-import server.Randomizer;
+import tools.Randomizer;
 
 public class Equip extends Item implements Serializable {
 

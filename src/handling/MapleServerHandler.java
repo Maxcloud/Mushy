@@ -31,38 +31,15 @@ import client.inventory.MaplePet;
 import client.inventory.PetDataFactory;
 import constants.ServerConstants;
 import handling.cashshop.handler.CashShopOperation;
-import handling.channel.handler.AllianceHandler;
-import handling.channel.handler.BBSHandler;
-import handling.channel.handler.BuddyListHandler;
-import handling.channel.handler.ChatHandler;
-import handling.channel.handler.FamilyHandler;
-import handling.channel.handler.GuildHandler;
-import handling.channel.handler.HiredMerchantHandler;
-import handling.channel.handler.InterServerHandler;
-import handling.channel.handler.InventoryHandler;
-import handling.channel.handler.ItemMakerHandler;
-import handling.channel.handler.MobHandler;
-import handling.channel.handler.MonsterCarnivalHandler;
-import handling.channel.handler.NPCHandler;
-import handling.channel.handler.PackageHandler;
-import handling.channel.handler.PartyHandler;
-import handling.channel.handler.PetHandler;
-import handling.channel.handler.PlayerHandler;
-import handling.channel.handler.PlayerInteractionHandler;
-import handling.channel.handler.PlayersHandler;
-import handling.channel.handler.StatsHandling;
-import handling.channel.handler.SummonHandler;
-import handling.channel.handler.UserInterfaceHandler;
+import handling.channel.handler.*;
 import handling.login.LoginServer;
 import handling.login.handler.CharLoginHandler;
 import net.mina.MaplePacketDecoder;
-import server.CashItemFactory;
-import server.CashItemInfo;
-import server.Randomizer;
-import server.commands.CommandProcessor;
-import server.shark.SharkPacket;
+import server.cash.CashItemFactory;
+import server.cash.CashItemInfo;
 import tools.HexTool;
 import tools.MapleAESOFB;
+import tools.Randomizer;
 import tools.data.ByteArrayByteStream;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
@@ -187,10 +164,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
         final MapleClient c = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         if (c == null || !c.isReceiving()) {
             return;
-        }
-        if (ServerConstants.LOG_SHARK) {
-            final SharkPacket sp = new SharkPacket((byte[]) message, true);
-            c.sl.log(sp);
         }
         
         final short opcode = slea.readShort();

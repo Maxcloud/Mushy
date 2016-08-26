@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import client.MapleDisease;
+import lib.data.MapleData;
+import lib.data.MapleDataProvider;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
 import server.life.MobSkillFactory;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataProvider;
-import wz.data.MapleDataTool;
 import server.life.MobSkill;
 
 public class MapleCarnivalFactory {

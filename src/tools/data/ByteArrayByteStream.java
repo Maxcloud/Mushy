@@ -113,7 +113,7 @@ public class ByteArrayByteStream {
      */
     public int[] readLastBytes(int bytes) {
         while (pos - bytes < 1) {
-            bytes--; //Causing less errors
+            bytes--;
         }
         int[] a = null;
         int b = 0;

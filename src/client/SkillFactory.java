@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import server.Randomizer;
+import lib.data.MapleData;
+import lib.data.MapleDataDirectoryEntry;
+import lib.data.MapleDataFileEntry;
+import lib.data.MapleDataProvider;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
+import tools.Randomizer;
 import tools.StringUtil;
 import tools.Triple;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataDirectoryEntry;
-import wz.data.MapleDataFileEntry;
-import wz.data.MapleDataProvider;
-import wz.data.MapleDataTool;
 
 public class SkillFactory {
 

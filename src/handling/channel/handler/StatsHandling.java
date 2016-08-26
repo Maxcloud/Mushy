@@ -32,8 +32,8 @@ import client.Skill;
 import client.SkillEntry;
 import client.SkillFactory;
 import constants.GameConstants;
-import server.Randomizer;
 import tools.Pair;
+import tools.Randomizer;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CWvsContext;
 

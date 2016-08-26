@@ -62,18 +62,6 @@ public class GenericLittleEndianWriter implements LittleEndianWriter {
     }
 
     /**
-     * Write the number of zero bytes
-     *
-     * @param i
-     */
-    @Override
-    public final void writeZeroBytes(final int i) {
-        for (int x = 0; x < i; x++) {
-            bos.writeByte((byte) 0);
-        }
-    }
-
-    /**
      * Write an array of bytes to the stream.
      *
      * @param b The bytes to write.

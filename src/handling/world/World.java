@@ -45,7 +45,6 @@ import server.Timer.WorldTimer;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import server.maps.MapleMapItem;
-import tools.CollectionUtil;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 import tools.packet.CWvsContext.AlliancePacket;
@@ -93,24 +92,6 @@ public class World {
         }
         ret.put(0, total);
         return ret;
-    }
-
-    public static List<CheaterData> getCheaters() {
-        List<CheaterData> allCheaters = new ArrayList<>();
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
-            allCheaters.addAll(cs.getCheaters());
-        }
-        Collections.sort(allCheaters);
-        return CollectionUtil.copyFirst(allCheaters, 20);
-    }
-
-    public static List<CheaterData> getReports() {
-        List<CheaterData> allCheaters = new ArrayList<>();
-        for (ChannelServer cs : ChannelServer.getAllInstances()) {
-            allCheaters.addAll(cs.getReports());
-        }
-        Collections.sort(allCheaters);
-        return CollectionUtil.copyFirst(allCheaters, 20);
     }
 
     public static boolean isConnected(String charName) {

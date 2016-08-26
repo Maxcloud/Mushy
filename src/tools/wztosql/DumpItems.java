@@ -23,6 +23,12 @@ package tools.wztosql;
 
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import lib.data.MapleData;
+import lib.data.MapleDataDirectoryEntry;
+import lib.data.MapleDataFileEntry;
+import lib.data.MapleDataProvider;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
 import net.DatabaseConnection;
 
 import java.io.File;
@@ -38,12 +44,6 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import tools.Pair;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataDirectoryEntry;
-import wz.data.MapleDataFileEntry;
-import wz.data.MapleDataProvider;
-import wz.data.MapleDataTool;
 
 public class DumpItems {
 

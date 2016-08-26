@@ -1,7 +1,7 @@
 package client;
 
 import server.MapleInventoryManipulator;
-import server.Randomizer;
+import tools.Randomizer;
 import tools.packet.CField;
 
 public class RockPaperScissors {

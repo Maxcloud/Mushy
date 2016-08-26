@@ -33,13 +33,6 @@ import java.awt.Point;
 public interface LittleEndianWriter {
 
     /**
-     * Write the number of zero bytes
-     *
-     * @param i
-     */
-    public void writeZeroBytes(final int i);
-
-    /**
      * Write an array of bytes to the sequence.
      *
      * @param b The bytes to write.
@@ -52,7 +45,6 @@ public interface LittleEndianWriter {
      * @param b The byte to write.
      */
     public void write(final byte b);
-
     public void write(final int b);
 
     /**
@@ -68,7 +60,6 @@ public interface LittleEndianWriter {
      * @param s The short integer to write.
      */
     public void writeShort(final short s);
-
     public void writeShort(final int i);
 
     /**
@@ -84,7 +75,6 @@ public interface LittleEndianWriter {
      * @param s The ASCII string to write.
      */
     void writeAsciiString(final String s);
-
     void writeAsciiString(String s, final int max);
 
     /**

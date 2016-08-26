@@ -1,17 +1,17 @@
 package client;
 
 import constants.GameConstants;
+import lib.data.MapleData;
+import lib.data.MapleDataTool;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import server.MapleStatEffect;
-import server.Randomizer;
 import server.life.Element;
 import tools.Pair;
-import wz.data.MapleData;
-import wz.data.MapleDataTool;
+import tools.Randomizer;
 
 public class Skill implements Comparator<Skill> {
 

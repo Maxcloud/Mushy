@@ -9,8 +9,9 @@ import handling.world.MapleCharacterLook;
 
 import java.util.*;
 import java.util.Map.Entry;
-import server.CashItem;
+
 import server.MapleItemInformationProvider;
+import server.cash.CashItem;
 import server.shops.MapleShop;
 import server.shops.MapleShopItem;
 import server.movement.LifeMovementFragment;

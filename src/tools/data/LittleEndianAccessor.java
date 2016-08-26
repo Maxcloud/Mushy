@@ -111,8 +111,7 @@ public class LittleEndianAccessor {
         final long byte7 = bs.readByte();
         final long byte8 = bs.readByte();
 
-        return (long) ((byte8 << 56) + (byte7 << 48) + (byte6 << 40) + (byte5 << 32) + (byte4 << 24) + (byte3 << 16)
-                + (byte2 << 8) + byte1);
+        return (long) ((byte8 << 56) + (byte7 << 48) + (byte6 << 40) + (byte5 << 32) + (byte4 << 24) + (byte3 << 16) + (byte2 << 8) + byte1);
     }
 
     /**

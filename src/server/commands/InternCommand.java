@@ -26,6 +26,10 @@ import handling.SendPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.world.CheaterData;
 import handling.world.World;
+import lib.data.MapleData;
+import lib.data.MapleDataProvider;
+import lib.data.MapleDataProviderFactory;
+import lib.data.MapleDataTool;
 import script.event.EventManager;
 import script.npc.NPCScriptManager;
 import script.npc.NPCTalk;
@@ -47,10 +51,6 @@ import tools.Pair;
 import tools.StringUtil;
 import tools.packet.CField;
 import tools.packet.CField.NPCPacket;
-import wz.MapleDataProviderFactory;
-import wz.data.MapleData;
-import wz.data.MapleDataProvider;
-import wz.data.MapleDataTool;
 import tools.packet.CWvsContext;
 
 /**
@@ -215,19 +215,6 @@ public class InternCommand {
 			// other.getClient().DebugMessage(builder);
 
 			c.getPlayer().dropMessage(6, builder.toString());
-			return 1;
-		}
-	}
-
-	public static class Cheaters extends CommandExecute {
-
-		@Override
-		public int execute(MapleClient c, String[] splitted) {
-			List<CheaterData> cheaters = World.getCheaters();
-			for (int x = cheaters.size() - 1; x >= 0; x--) {
-				CheaterData cheater = cheaters.get(x);
-				c.getPlayer().dropMessage(6, cheater.getInfo());
-			}
 			return 1;
 		}
 	}
