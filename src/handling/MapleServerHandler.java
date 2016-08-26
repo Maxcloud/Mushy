@@ -269,16 +269,16 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 // CharLoginHandler.Character_WithoutSecondPassword(slea, c, false, false);
                 break;
             case VIEW_REGISTER_PIC:
-                CharLoginHandler.Character_WithoutSecondPassword(slea, c, true, true);
+                // CharLoginHandler.Character_WithoutSecondPassword(slea, c, true, true);
                 break;
             case PART_TIME_JOB:
                 CharLoginHandler.PartJob(slea, c);
                 break;
             case CHAR_SELECT:
-                CharLoginHandler.Character_WithoutSecondPassword(slea, c, true, false);
+                // CharLoginHandler.Character_WithoutSecondPassword(slea, c, true, false);
                 break;
             case VIEW_SELECT_PIC:
-                CharLoginHandler.Character_WithSecondPassword(slea, c, true);
+                // CharLoginHandler.Character_WithSecondPassword(slea, c, true);
                 break;
             case AUTH_SECOND_PASSWORD:
                 // CharLoginHandler.Character_WithSecondPassword(slea, c, false);

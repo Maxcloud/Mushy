@@ -12,7 +12,7 @@ import tools.packet.LoginPacket;
 
 public class CreateWithoutSecondPassword {
 	
-	@PacketHandler(opcode = RecvPacketOpcode.CHAR_SELECT_NO_PIC)
+	// @PacketHandler(opcode = RecvPacketOpcode.CHAR_SELECT_NO_PIC)
 	public static void handle(MapleClient c, LittleEndianAccessor slea) {
 		final int charId = slea.readInt();
 		slea.readByte(); // 1? 

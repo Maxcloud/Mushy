@@ -225,7 +225,7 @@ public class MapleQuest implements Serializable {
         return quests.values();
     }
 
-    public boolean canStart(MapleCharacter c, Integer npcid) {
+    public boolean canStart(MapleCharacter c, int npcid) {
         if (c.getQuest(this).getStatus() != 0 && !(c.getQuest(this).getStatus() == 2 && repeatable)) {
             return false;
         }
@@ -236,10 +236,12 @@ public class MapleQuest implements Serializable {
         //    return true; //need script
         //}
         for (MapleQuestRequirement r : startReqs) {
-            if (npcid != null) { //everyday. we don't want ok
+        	
+            if (npcid > 0) { //everyday. we don't want ok
                 forceComplete(c, npcid);
                 return false;
             }
+            
             if (!r.check(c, npcid)) {
                 return false;
             }
@@ -247,14 +249,14 @@ public class MapleQuest implements Serializable {
         return true;
     }
 
-    public boolean canComplete(MapleCharacter c, Integer npcid) {
+    public boolean canComplete(MapleCharacter c, int npcid) {
         if (c.getQuest(this).getStatus() != 1) {
             return false;
         }
         if (blocked && !c.isGM()) {
             return false;
         }
-        if (autoComplete && npcid != null && viewMedalItem <= 0) {
+        if (autoComplete && npcid > 0 && viewMedalItem <= 0) {
             forceComplete(c, npcid);
             return false; //skip script
         }
@@ -279,8 +281,9 @@ public class MapleQuest implements Serializable {
 
     public void start(MapleCharacter c, int npc) {
         if ((autoStart || checkNPCOnMap(c, npc)) && canStart(c, npc)) {
+        	
             for (MapleQuestAction a : startActs) {
-                if (!a.checkEnd(c, null)) { //just in case
+                if (!a.checkEnd(c, null)) {
                     return;
                 }
             }

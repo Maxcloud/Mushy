@@ -199,47 +199,6 @@ public class CharLoginHandler {
         c.getSession().write(LoginPacket.deleteCharResponse(Character_ID, state));
     }
 
-    public static void Character_WithoutSecondPassword(final LittleEndianAccessor slea, final MapleClient c, final boolean haspic, final boolean view) {
-        slea.readByte(); // 1?
-        slea.readByte(); // 1?
-        final int charId = slea.readInt();
-        if (view) {
-            c.setChannel(1);
-            c.setWorld(slea.readInt());
-        }
-        final String currentpw = c.getSecondPassword();
-        if (!c.isLoggedIn() || loginFailCount(c) || (currentpw != null && (!currentpw.equals("") || haspic)) || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
-            c.getSession().close();
-            return;
-        }
-        c.updateMacs(slea.readMapleAsciiString());
-        slea.readMapleAsciiString();
-        if (slea.available() != 0) {
-            final String setpassword = slea.readMapleAsciiString();
-
-            if (setpassword.length() >= 6 && setpassword.length() <= 16) {
-                c.setSecondPassword(setpassword);
-                c.updateSecondPassword();
-            } else {
-                c.getSession().write(LoginPacket.secondPwError((byte) 0x14));
-                return;
-            }
-        } else if (haspic) {
-            return;
-        }
-        if (c.getIdleTask() != null) {
-            c.getIdleTask().cancel(true);
-        }
-        final String s = c.getSessionIPAddress();
-        LoginServer.putLoginAuth(charId, s.substring(s.indexOf('/') + 1, s.length()), c.getTempIP(), c.getChannel());
-        c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, s);
-        c.getSession().write(CField.getServerIP(c, Integer.parseInt(ChannelServer.getInstance(c.getChannel()).getIP().split(":")[1]), charId));
-    }
-
-    public static void Character_WithSecondPassword(final LittleEndianAccessor slea, final MapleClient c, final boolean view) {
-        
-    }
-
     public static void partTimeJob(final LittleEndianAccessor slea, final MapleClient c) {
         System.out.println("[Part Time Job] data: " + slea);
         byte mode = slea.readByte(); //1 = start 2 = end

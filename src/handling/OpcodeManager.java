@@ -6,33 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import client.MapleClient;
-import handling.handlers.ChangeMapHandler;
-import handling.handlers.CloseRangeAttackHandler;
-import handling.handlers.EnterCashShopHandler;
-import handling.handlers.GeneralChatHandler;
-import handling.handlers.MagicAttackHandler;
-import handling.handlers.MesoDropHandler;
-import handling.handlers.MoveLifeHandler;
-import handling.handlers.MovePlayerHandler;
-import handling.handlers.NpcTalkHandler;
-import handling.handlers.NpcTalkMoreHandler;
-import handling.handlers.QuestActionHandler;
-import handling.handlers.RangedAttackHandler;
-import handling.handlers.login.AuthServerHandler;
-import handling.handlers.login.CharacterListRequest;
-import handling.handlers.login.CharacterWithSecondPassword;
-import handling.handlers.login.CheckCharacterName;
-import handling.handlers.login.ClientErrorHandler;
-import handling.handlers.login.ClientStartHandler;
-import handling.handlers.login.CreateNewCharacter;
-import handling.handlers.login.CreateWithoutSecondPassword;
-import handling.handlers.login.DeleteCharHandler;
-import handling.handlers.login.HeartbeatRequest;
-import handling.handlers.login.LoginPasswordHandler;
-import handling.handlers.login.PlayerLoggedInHandler;
-import handling.handlers.login.PongHandler;
-import handling.handlers.login.ServerListRequest;
-import handling.handlers.login.ServerStatusRequest;
+import handling.handlers.*;
+import handling.handlers.login.*;
 import tools.HexTool;
 import tools.data.LittleEndianAccessor;
 
@@ -60,6 +35,8 @@ class OpcodeManager {
 		ClientErrorHandler.class,
 		CharacterWithSecondPassword.class,
 		CreateWithoutSecondPassword.class,
+		
+		CharacterWithoutSecondPassword.class,
 		
 		// Channel
 		ChangeMapHandler.class,

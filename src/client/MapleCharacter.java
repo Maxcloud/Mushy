@@ -769,7 +769,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 if ((stat == 1 || stat == 2) && channelserver && (q == null || q.isBlocked())) { //bigbang
                     continue;
                 }
-                if (stat == 1 && channelserver && !q.canStart(ret, null)) { //bigbang
+                if (stat == 1 && channelserver && !q.canStart(ret, 0)) { //bigbang
                     continue;
                 }
                 final MapleQuestStatus status = new MapleQuestStatus(q, stat);
@@ -4542,7 +4542,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
             if (q.mobKilled(id, skillID)) {
                 client.getSession().write(InfoPacket.updateQuestMobKills(q));
-                if (q.getQuest().canComplete(this, null)) {
+                if (q.getQuest().canComplete(this, 0)) {
                     client.getSession().write(CWvsContext.showQuestCompletion(q.getQuest().getId()));
                 }
             }

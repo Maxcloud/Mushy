@@ -55,7 +55,7 @@ public class MapleClient implements Serializable {
 
 	private static final long serialVersionUID = 9179541993413738569L;
 	public static final byte LOGIN_NOTLOGGEDIN = 0, LOGIN_SERVER_TRANSITION = 1, LOGIN_LOGGEDIN = 2, CHANGE_CHANNEL = 3;
-	private static final int DEFAULT_CHARSLOT = 6;
+	private static final int DEFAULT_CHARSLOT = 8;
 	public static final String CLIENT_KEY = "CLIENT";
 	private final transient MapleAESOFB send, receive;
 	private final transient IoSession session;

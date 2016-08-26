@@ -265,8 +265,8 @@ public class CSPacket {
         mplew.writeShort(0);
         mplew.writeShort(0);
         
-        mplew.write(1);
-        mplew.write(1);
+        mplew.write(0);
+        mplew.write(0);
         
         mplew.write(1);
         mplew.writeInt(1);

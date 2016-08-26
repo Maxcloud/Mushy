@@ -119,8 +119,9 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
-    public final void startQuest(final MapleClient c, final int npc, final int quest) {
-        if (!MapleQuest.getInstance(quest).canStart(c.getPlayer(), null)) {
+    public final void startQuest(final MapleClient c, final int npcid, final int quest) {
+        if (!MapleQuest.getInstance(quest).canStart(c.getPlayer(), 0)) {
+        	// System.out.printf("[Quest]: The system tried to start '%s' with the npc '%s' %n", quest, npc);
             return;
         }
         final Lock lock = c.getNPCLock();
@@ -133,7 +134,7 @@ public class NPCScriptManager extends AbstractScriptManager {
                     return;
                 }
                 final ScriptEngine scriptengine = (ScriptEngine) iv;
-                final NPCConversationManager cm = new NPCConversationManager(c, npc, quest, null, (byte) 0, iv);
+                final NPCConversationManager cm = new NPCConversationManager(c, npcid, quest, null, (byte) 0, iv);
                 cms.put(c, cm);
                 scriptengine.put("qm", cm);
 
@@ -142,7 +143,7 @@ public class NPCScriptManager extends AbstractScriptManager {
                 iv.invokeFunction("start", (byte) 1, (byte) 0, 0); // start it off as something
             }
         } catch (final ScriptException | NoSuchMethodException e) {
-            System.err.println("Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e);
+            System.err.println("Error executing Quest script. (" + quest + ")..NPCID: " + npcid + ":" + e);
             e.printStackTrace();
             dispose(c);
         } finally {
@@ -173,21 +174,21 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
-    public final void endQuest(final MapleClient c, final int npc, final int quest, final boolean customEnd) {
-        if (!customEnd && !MapleQuest.getInstance(quest).canComplete(c.getPlayer(), null)) {
+    public final void endQuest(final MapleClient c, final int npcid, final int questid, final boolean customEnd) {
+        if (!customEnd && !MapleQuest.getInstance(questid).canComplete(c.getPlayer(), npcid)) {
             return;
         }
         final Lock lock = c.getNPCLock();
         lock.lock();
         try {
             if (!cms.containsKey(c) && c.canClickNPC()) {
-                final Invocable iv = getInvocable("quest/" + quest + ".js", c, true);
+                final Invocable iv = getInvocable("quest/" + questid + ".js", c, true);
                 if (iv == null) {
                     dispose(c);
                     return;
                 }
                 final ScriptEngine scriptengine = (ScriptEngine) iv;
-                final NPCConversationManager cm = new NPCConversationManager(c, npc, quest, null, (byte) 1, iv);
+                final NPCConversationManager cm = new NPCConversationManager(c, npcid, questid, null, (byte) 1, iv);
                 cms.put(c, cm);
                 scriptengine.put("qm", cm);
 
@@ -196,7 +197,7 @@ public class NPCScriptManager extends AbstractScriptManager {
                 iv.invokeFunction("end", (byte) 1, (byte) 0, 0); // start it off as something
             }
         } catch (ScriptException | NoSuchMethodException e) {
-            System.err.println("Error executing Quest script. (" + quest + ")..NPCID: " + npc + ":" + e);
+            System.err.println("Error executing Quest script. (" + questid + ")..NPCID: " + npcid + ":" + e);
             e.printStackTrace();
             dispose(c);
         } finally {
