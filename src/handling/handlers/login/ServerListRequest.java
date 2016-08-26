@@ -28,14 +28,6 @@ public class ServerListRequest 	{
 	}
 	
 	private static void ServerListRequest(MapleClient c) {
-		/* Random Demon Avenger Background */
-        List<Triple<String, Integer, Boolean>> backgrounds = new LinkedList<>(); //boolean for randomize
-        //backgrounds.add(new Pair<>("xsub", 0));
-        //backgrounds.add(new Pair<>("xmain", 0));
-        //backgrounds.add(new Pair<>("dsub", server.Randomizer.nextInt(2)));
-        //backgrounds.add(new Pair<>("dmain", 0));
-        backgrounds.addAll(Arrays.asList(ServerConstants.backgrounds));
-        // c.getSession().write(LoginPacket.changeBackground(backgrounds));
 
         for (WorldOption servers : WorldOption.values()) {
             if (WorldOption.getById(servers.getWorld()).show() && servers != null) {

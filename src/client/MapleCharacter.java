@@ -3094,32 +3094,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 to.setCheckStates(false);
             }
             map.removePlayer(this);
-            if (ServerConstants.AntiKS) {
-                try {
-                    MapleQuestStatus stat = getQuestNoAdd(MapleQuest.getInstance(732648172));
-                    boolean antiks;
-                    if (stat == null || stat.getCustomData() == null) {
-                        antiks = false;
-                        stat.setCustomData(antiks + ";" + 0);
-                    } else {
-                        String[] statss = stat.getCustomData().split(";");
-                        try {
-                            antiks = Boolean.parseBoolean(statss[0]);
-                        } catch (Exception ex) {
-                            antiks = false;
-                        }
-                        List<MapleMonster> monsters = map.getAllMonster();
-                        for (MapleMapObject mmo : monsters) {
-                            MapleMonster m = (MapleMonster) mmo;
-                            if (m.getBelongsTo() == getId()) {
-                                stat.setCustomData(antiks + ";" + (Integer.parseInt(statss[1]) - 1));
-                                m.expireAntiKS();
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                }
-            }
             if (shouldChange) {
                 map = to;
                 setPosition(pos);
@@ -3134,13 +3108,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             pyramidSubway.onChangeMap(this, to.getId());
         }
         updateDeathCount();
-
-        if (deathCount < 1) {
-//            dropMessage(0, "I must be very talented if I died so many times!");
-//            World.Broadcast.broadcastMessage(CField.getGameMessage(name + " has somehow died 99 times! He is very talented!", (short) 13));
-//            deathCount = 99;
-//            client.getSession().write(EffectPacket.updateDeathCount(99)); //for fun
-        }
     }
 
     public void cancelChallenge() {

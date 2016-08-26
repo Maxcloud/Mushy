@@ -1434,7 +1434,7 @@ public class PacketHelper {
     public static void addShopItemInfo(MaplePacketLittleEndianWriter mplew, MapleShopItem item, MapleShop shop, MapleItemInformationProvider ii, Item i, MapleCharacter chr) {
         mplew.writeInt(item.getItemId());
         mplew.writeInt(item.getPrice());
-        mplew.write(ServerConstants.SHOP_DISCOUNT); //Discount
+        mplew.write(0); //Discount
         mplew.writeInt(item.getReqItem());
         mplew.writeInt(item.getReqItemQ());
         mplew.writeInt(1440 * item.getExpiration());
