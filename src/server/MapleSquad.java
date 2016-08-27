@@ -13,7 +13,6 @@ import java.util.concurrent.ScheduledFuture;
 import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.World;
-import server.Timer.EtcTimer;
 import server.carnival.MapleCarnivalChallenge;
 import server.maps.MapleMap;
 import tools.Pair;
@@ -129,7 +128,7 @@ public class MapleSquad {
     }
 
     public void scheduleRemoval() {
-        removal = EtcTimer.getInstance().schedule(new Runnable() {
+        removal = TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {

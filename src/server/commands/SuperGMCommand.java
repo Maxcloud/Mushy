@@ -5,8 +5,6 @@
 package server.commands;
 
 import java.awt.Point;
-import java.io.File;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Scanner;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -35,7 +32,6 @@ import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleRing;
 import constants.GameConstants;
-import constants.ServerConstants;
 import constants.ServerConstants.PlayerGMRank;
 import handling.RecvPacketOpcode;
 import handling.SendPacketOpcode;
@@ -52,13 +48,7 @@ import server.ItemInformation;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleSquad;
-import server.Timer;
-import server.Timer.BuffTimer;
-import server.Timer.CloneTimer;
-import server.Timer.EtcTimer;
-import server.Timer.EventTimer;
-import server.Timer.MapTimer;
-import server.Timer.WorldTimer;
+import server.TimerManager;
 import server.commands.GMCommand.Ban;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
@@ -171,7 +161,7 @@ public class SuperGMCommand {
             final int time = Integer.parseInt(splitted[3]);
             c.getChannelServer().getMapFactory().getMap(map).broadcastMessage(CField.getClock(time));
             c.getChannelServer().getMapFactory().getMap(map).startMapEffect("You will be moved out of the map when the timer ends.", 5120041);
-            EventTimer.getInstance().schedule(new Runnable() {
+            TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     for (MapleCharacter mch : c.getChannelServer().getMapFactory().getMap(map).getCharacters()) {
@@ -1247,70 +1237,7 @@ public class SuperGMCommand {
             return 1;
         }
     }
-
-    public abstract static class TestTimer extends CommandExecute {
-
-        protected Timer toTest = null;
-
-        @Override
-        public int execute(final MapleClient c, String[] splitted) {
-            final int sec = Integer.parseInt(splitted[1]);
-            c.getPlayer().dropMessage(5, "Message will fame up in " + sec + " seconds.");
-            c.getPlayer().dropMessage(5, "Active: " + toTest.getSES().getActiveCount() + " Core: " + toTest.getSES().getCorePoolSize() + " Largest: " + toTest.getSES().getLargestPoolSize() + " Max: " + toTest.getSES().getMaximumPoolSize() + " Current: " + toTest.getSES().getPoolSize() + " Status: " + toTest.getSES().isShutdown() + toTest.getSES().isTerminated() + toTest.getSES().isTerminating());
-            final long oldMillis = System.currentTimeMillis();
-            toTest.schedule(new Runnable() {
-                @Override
-                public void run() {
-                    c.getPlayer().dropMessage(5, "Message has popped up in " + ((System.currentTimeMillis() - oldMillis) / 1000) + " seconds, expected was " + sec + " seconds");
-                    c.getPlayer().dropMessage(5, "Active: " + toTest.getSES().getActiveCount() + " Core: " + toTest.getSES().getCorePoolSize() + " Largest: " + toTest.getSES().getLargestPoolSize() + " Max: " + toTest.getSES().getMaximumPoolSize() + " Current: " + toTest.getSES().getPoolSize() + " Status: " + toTest.getSES().isShutdown() + toTest.getSES().isTerminated() + toTest.getSES().isTerminating());
-                }
-            }, sec * 1000);
-            return 1;
-        }
-    }
-
-    public static class TestEventTimer extends TestTimer {
-
-        public TestEventTimer() {
-            toTest = EventTimer.getInstance();
-        }
-    }
-
-    public static class TestCloneTimer extends TestTimer {
-
-        public TestCloneTimer() {
-            toTest = CloneTimer.getInstance();
-        }
-    }
-
-    public static class TestEtcTimer extends TestTimer {
-
-        public TestEtcTimer() {
-            toTest = EtcTimer.getInstance();
-        }
-    }
-
-    public static class TestMapTimer extends TestTimer {
-
-        public TestMapTimer() {
-            toTest = MapTimer.getInstance();
-        }
-    }
-
-    public static class TestWorldTimer extends TestTimer {
-
-        public TestWorldTimer() {
-            toTest = WorldTimer.getInstance();
-        }
-    }
-
-    public static class TestBuffTimer extends TestTimer {
-
-        public TestBuffTimer() {
-            toTest = BuffTimer.getInstance();
-        }
-    }
-
+    
     public static class Crash extends CommandExecute {
 
         @Override

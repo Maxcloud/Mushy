@@ -32,7 +32,7 @@ import constants.GameConstants;
 import handling.channel.ChannelServer;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Timer.EtcTimer;
+import server.TimerManager;
 import server.maps.MapleMapObjectType;
 import tools.packet.CWvsContext;
 import tools.packet.PlayerShopPacket;
@@ -48,7 +48,7 @@ public class HiredMerchant extends AbstractPlayerStore {
         super(owner, itemId, desc, "", 6);
         start = System.currentTimeMillis();
         blacklist = new LinkedList<>();
-        this.schedule = EtcTimer.getInstance().schedule(new Runnable() {
+        this.schedule = TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {

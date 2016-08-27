@@ -17,13 +17,6 @@ import handling.login.LoginInformationProvider;
 import handling.login.LoginServer;
 import handling.world.World;
 import net.DatabaseConnection;
-import server.Timer.BuffTimer;
-import server.Timer.CloneTimer;
-import server.Timer.EtcTimer;
-import server.Timer.EventTimer;
-import server.Timer.MapTimer;
-import server.Timer.PingTimer;
-import server.Timer.WorldTimer;
 import server.cash.CashItemFactory;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonsterInformationProvider;
@@ -84,14 +77,7 @@ public class Start extends Properties {
         
         System.out.print("Init...\r\n");
         
-        // Timers..
-        WorldTimer.getInstance().start();
-        EtcTimer.getInstance().start();
-        MapTimer.getInstance().start();
-        CloneTimer.getInstance().start();
-        EventTimer.getInstance().start();
-        BuffTimer.getInstance().start();
-        PingTimer.getInstance().start();
+        TimerManager.getInstance().start();
         
         GameConstants.LoadEXP();
         

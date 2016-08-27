@@ -41,7 +41,7 @@ import client.SummonSkillEntry;
 import constants.GameConstants;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
-import server.Timer.CloneTimer;
+import server.TimerManager;
 import server.life.MapleMonster;
 import server.maps.MapleDragon;
 import server.maps.MapleMap;
@@ -78,7 +78,7 @@ public static final void MoveDragon(final LittleEndianAccessor slea, final Maple
                 if (clones[i].get() != null) {
                     final MapleMap map = chr.getMap();
                     final MapleCharacter clone = clones[i].get();
-                    CloneTimer.getInstance().schedule(new Runnable() {
+                    TimerManager.getInstance().schedule(new Runnable() {
                         @Override
                         public void run() {
                             try {

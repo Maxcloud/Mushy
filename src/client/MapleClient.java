@@ -39,7 +39,7 @@ import handling.world.guild.MapleGuildCharacter;
 import net.DatabaseConnection;
 import net.DatabaseException;
 import server.CharacterCardFactory;
-import server.Timer.PingTimer;
+import server.TimerManager;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
@@ -1473,7 +1473,7 @@ public class MapleClient implements Serializable {
         final long then = System.currentTimeMillis();
         getSession().write(LoginPacket.getPing());
         
-        PingTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {

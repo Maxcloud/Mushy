@@ -1,9 +1,8 @@
 package server;
 
-import net.DatabaseConnection;
-
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
+
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
@@ -14,13 +13,7 @@ import javax.management.ObjectName;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.world.World;
-import server.Timer.BuffTimer;
-import server.Timer.CloneTimer;
-import server.Timer.EtcTimer;
-import server.Timer.EventTimer;
-import server.Timer.MapTimer;
-import server.Timer.PingTimer;
-import server.Timer.WorldTimer;
+import net.DatabaseConnection;
 import tools.packet.CWvsContext;
 
 public class ShutdownServer implements ShutdownServerMBean {
@@ -101,13 +94,7 @@ public class ShutdownServer implements ShutdownServerMBean {
             } catch (SQLException e) {
                 System.err.println("THROW" + e);
             }
-            WorldTimer.getInstance().stop();
-            MapTimer.getInstance().stop();
-            BuffTimer.getInstance().stop();
-            CloneTimer.getInstance().stop();
-            EventTimer.getInstance().stop();
-            EtcTimer.getInstance().stop();
-            PingTimer.getInstance().stop();
+            TimerManager.getInstance().stop();
             System.out.println("Shutdown 2 has finished.");
             try {
                 Thread.sleep(5000);

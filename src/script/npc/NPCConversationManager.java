@@ -21,7 +21,6 @@ package script.npc;
 import java.awt.Point;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +58,6 @@ import handling.login.LoginInformationProvider;
 import handling.world.MapleParty;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
-import handling.world.exped.ExpeditionType;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
 import lib.data.MapleDataDirectoryEntry;
@@ -80,9 +78,8 @@ import server.MapleSlideMenu.SlideMenu4;
 import server.MapleSlideMenu.SlideMenu5;
 import server.MapleSquad;
 import server.MapleStatEffect;
-import server.SpeedRunner;
 import server.StructItemOption;
-import server.Timer.CloneTimer;
+import server.TimerManager;
 import server.carnival.MapleCarnivalChallenge;
 import server.carnival.MapleCarnivalParty;
 import server.events.MapleDojoAgent;
@@ -107,7 +104,6 @@ import tools.packet.CField.UIPacket;
 import tools.packet.CWvsContext;
 import tools.packet.CWvsContext.GuildPacket;
 import tools.packet.CWvsContext.InfoPacket;
-import tools.packet.FishingPool;
 
 public class NPCConversationManager extends AbstractPlayerInteraction {
 
@@ -1765,15 +1761,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	public int getReborns() { // tjat
 		return getPlayer().getReborns();
 	}
-
-	public Triple<String, Map<Integer, String>, Long> getSpeedRun(String typ) {
-		final ExpeditionType expedtype = ExpeditionType.valueOf(typ);
-		if (SpeedRunner.getSpeedRunData(expedtype) != null) {
-			return SpeedRunner.getSpeedRunData(expedtype);
-		}
-		return new Triple<String, Map<Integer, String>, Long>("", new HashMap<Integer, String>(), 0L);
-	}
-
+	
 	public boolean getSR(Triple<String, Map<Integer, String>, Long> ma, int sel) {
 		if (ma.mid.get(sel) == null || ma.mid.get(sel).length() <= 0) {
 			dispose();
@@ -2164,7 +2152,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		final MapleCharacter player = getPlayer();
 		getMap().broadcastMessage(CWvsContext.yellowChat(player.getName() + ", do you take " + chr.getName()
 				+ " as your wife and promise to stay beside her through all downtimes, crashes, and lags?"));
-		CloneTimer.getInstance().schedule(new Runnable() {
+		TimerManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
 				if (chr == null || player == null) {
@@ -2176,7 +2164,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 				}
 			}
 		}, 10000);
-		CloneTimer.getInstance().schedule(new Runnable() {
+		TimerManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
 				if (chr == null || player == null) {

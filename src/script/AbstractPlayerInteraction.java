@@ -20,9 +20,19 @@
  */
 package script;
 
-import client.*;
+import java.awt.Point;
+import java.util.List;
+
+import client.MapleCharacter;
+import client.MapleClient;
 import client.MapleTrait.MapleTraitType;
-import client.inventory.*;
+import client.Skill;
+import client.SkillFactory;
+import client.inventory.Equip;
+import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryIdentifier;
+import client.inventory.MapleInventoryType;
+import client.inventory.MaplePet;
 import constants.GameConstants;
 import handling.channel.ChannelServer;
 import handling.world.MapleParty;
@@ -34,18 +44,18 @@ import script.event.EventInstanceManager;
 import script.event.EventManager;
 import script.npc.NPCScriptManager;
 import script.npc.NPCTalk;
-
-import java.awt.Point;
-import java.util.List;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.Timer.EventTimer;
+import server.TimerManager;
 import server.events.MapleDojoAgent;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
-import server.maps.*;
+import server.maps.MapleMap;
+import server.maps.MapleMapObject;
+import server.maps.MapleReactor;
+import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
 import tools.FileoutputUtil;
@@ -211,7 +221,7 @@ public abstract class AbstractPlayerInteraction {
         if (notice) {
             c.getChannelServer().getMapFactory().getMap(map).startMapEffect("You will be moved out of the map when the timer ends.", 5120041);
         }
-        EventTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 if (current != null) {
@@ -1285,7 +1295,7 @@ public abstract class AbstractPlayerInteraction {
         c.getChannelServer().getMapFactory().getMap(955000100).broadcastMessage(CField.getClock(20 * 60));
         c.getChannelServer().getMapFactory().getMap(955000200).broadcastMessage(CField.getClock(20 * 60));
         c.getChannelServer().getMapFactory().getMap(955000300).broadcastMessage(CField.getClock(20 * 60));
-        EventTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 if (check1 != null && check2 != null && check3 != null && (leader.getMapId() == 955000100 || leader.getMapId() == 955000200 || leader.getMapId() == 955000300)) {
@@ -1299,7 +1309,7 @@ public abstract class AbstractPlayerInteraction {
                         chrs.changeMap(262010000, 0);
                     }
                 } else {
-                    EventTimer.getInstance().stop();
+                	TimerManager.getInstance().stop();
                 }
             }
         }, 20 * 60 * 1000);
