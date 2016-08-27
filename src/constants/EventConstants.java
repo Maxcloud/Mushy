@@ -87,8 +87,6 @@ public class EventConstants {
 			"RootPierre",
 			"ChaosMagnus",
 			"HeliMagnus",
-			//"AutoSave"
-			//"lolcastle"
 		};
 
 		public static String getEvents() {

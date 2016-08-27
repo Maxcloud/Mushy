@@ -52,6 +52,7 @@ import server.life.PlayerNPC;
 import server.quest.MapleQuestStatus;
 import server.stores.HiredMerchant;
 import server.stores.MaplePlayerShopItem;
+import tools.DateUtil;
 import tools.HexTool;
 import tools.Pair;
 import tools.Randomizer;
@@ -684,7 +685,7 @@ public class CWvsContext {
 
         // mplew.writeShort(SendPacketOpcode.ECHO_MESSAGE.getValue());
         mplew.write(0);
-        mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+        mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
         mplew.writeMapleAsciiString(name);
         mplew.writeMapleAsciiString(message);
 
@@ -1578,16 +1579,16 @@ public class CWvsContext {
             mplew.writeInt(imp.getFullness());
         }
         if (((mask & MapleImp.ImpFlag.SUMMONED.getValue()) != 0) || ((mask & MapleImp.ImpFlag.UPDATE_TIME.getValue()) != 0)) {
-            mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+            mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
         }
         if (((mask & MapleImp.ImpFlag.SUMMONED.getValue()) != 0) || ((mask & MapleImp.ImpFlag.CREATE_TIME.getValue()) != 0)) {
-            mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+            mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
         }
         if (((mask & MapleImp.ImpFlag.SUMMONED.getValue()) != 0) || ((mask & MapleImp.ImpFlag.AWAKE_TIME.getValue()) != 0)) {
-            mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+            mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
         }
         if (((mask & MapleImp.ImpFlag.SUMMONED.getValue()) != 0) || ((mask & MapleImp.ImpFlag.SLEEP_TIME.getValue()) != 0)) {
-            mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+            mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
         }
         if (((mask & MapleImp.ImpFlag.SUMMONED.getValue()) != 0) || ((mask & MapleImp.ImpFlag.MAX_CLOSENESS.getValue()) != 0)) {
             mplew.writeInt(100);
@@ -2452,7 +2453,7 @@ public class CWvsContext {
             for (MapleGuildSkill i : guild.getSkills()) {
                 mplew.writeInt(i.skillID);
                 mplew.writeShort(i.level);
-                mplew.writeLong(PacketHelper.getTime(i.timestamp));
+                mplew.writeLong(DateUtil.getTime(i.timestamp));
                 mplew.writeMapleAsciiString(i.purchaser);
                 mplew.writeMapleAsciiString(i.activator);
             }
@@ -2654,7 +2655,7 @@ public class CWvsContext {
             mplew.writeInt(gid);
             mplew.writeInt(sid);
             mplew.writeShort(level);
-            mplew.writeLong(PacketHelper.getTime(expiration));
+            mplew.writeLong(DateUtil.getTime(expiration));
             mplew.writeMapleAsciiString(purchase);
             mplew.writeMapleAsciiString(activate);
 
@@ -2739,7 +2740,7 @@ public class CWvsContext {
             mplew.writeInt(rs.localthreadID);
             mplew.writeInt(rs.ownerID);
             mplew.writeMapleAsciiString(rs.name);
-            mplew.writeLong(PacketHelper.getKoreanTimestamp(rs.timestamp));
+            mplew.writeLong(DateUtil.getKoreanTimestamp(rs.timestamp));
             mplew.writeInt(rs.icon);
             mplew.writeInt(rs.getReplyCount());
         }
@@ -2751,7 +2752,7 @@ public class CWvsContext {
             mplew.write(7);
             mplew.writeInt(thread.localthreadID);
             mplew.writeInt(thread.ownerID);
-            mplew.writeLong(PacketHelper.getKoreanTimestamp(thread.timestamp));
+            mplew.writeLong(DateUtil.getKoreanTimestamp(thread.timestamp));
             mplew.writeMapleAsciiString(thread.name);
             mplew.writeMapleAsciiString(thread.text);
             mplew.writeInt(thread.icon);
@@ -2759,7 +2760,7 @@ public class CWvsContext {
             for (MapleBBSThread.MapleBBSReply reply : thread.replies.values()) {
                 mplew.writeInt(reply.replyid);
                 mplew.writeInt(reply.ownerID);
-                mplew.writeLong(PacketHelper.getKoreanTimestamp(reply.timestamp));
+                mplew.writeLong(DateUtil.getKoreanTimestamp(reply.timestamp));
                 mplew.writeMapleAsciiString(reply.content);
             }
 
@@ -2838,7 +2839,7 @@ public class CWvsContext {
                     mplew.writeMapleAsciiString(quest.getCustomData() != null ? quest.getCustomData() : "");
                     break;
                 case 2:
-                    mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+                    mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
             }
 
             return mplew.getPacket();

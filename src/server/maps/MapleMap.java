@@ -52,7 +52,7 @@ import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.QuickMove;
 import constants.QuickMove.QuickMoveNPC;
-import constants.ServerConfig;
+import constants.ServerConstants;
 import handling.channel.ChannelServer;
 import handling.world.PartyOperation;
 import handling.world.World;
@@ -787,7 +787,7 @@ public final class MapleMap {
         final int caServerrate = ChannelServer.getInstance(channel).getCashRate();
         final int cashz = (int) ((monster.getStats().isBoss() && monster.getStats().getHPDisplayType() == 0 ? 3 : 1) * caServerrate);
         final int cashModifier = (int) ((monster.getStats().isBoss() ? (monster.getStats().isPartyBonus() ? (Randomizer.nextInt(6)) : (Randomizer.nextInt(2))) : (Randomizer.nextInt(2)))); //no rate
-        if (Randomizer.nextInt(100) < ServerConfig.CASH_DROP_RATE) { //kill nx
+        if (Randomizer.nextInt(100) < ServerConstants.CASH_DROP_RATE) { //kill nx
             chr.modifyCSPoints(1, (int) ((Randomizer.nextInt(cashz) + cashz + cashModifier) * (Randomizer.nextInt(2)) * chr.getCashMod()), true);
         }
     }

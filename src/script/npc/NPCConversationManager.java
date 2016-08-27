@@ -2765,11 +2765,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 		return ii.getEquipStats(itemId).get("reqLevel").intValue();
 	}
-
-	public void sendGMBoard(String url) {
-		c.getSession().write(CWvsContext.gmBoard(c.getNextClientIncrenement(), url));
-	}
-
+	
 	public void addPendantSlot(int days) {
 		c.getPlayer().getQuestNAdd(MapleQuest.getInstance(GameConstants.PENDANT_SLOT))
 				.setCustomData(String.valueOf(System.currentTimeMillis() + ((long) days * 24 * 60 * 60 * 1000)));

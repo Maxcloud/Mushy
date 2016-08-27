@@ -9,6 +9,7 @@ import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.login.LoginWorker;
+import tools.DateUtil;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CWvsContext;
 import tools.packet.LoginPacket;
@@ -26,9 +27,7 @@ public class LoginPasswordHandler {
 		slea.skip(1); // 174.1
     	
     	String pwd = slea.readMapleAsciiString();
-        String login = slea.readMapleAsciiString();
-
-        login = login.replace("NP12:auth06:5:0:", "");
+        String login = slea.readMapleAsciiString().replace("NP12:auth06:5:0:", "");
 
         final boolean ipBan = c.hasBannedIP();
         final boolean macBan = c.hasBannedMac();
@@ -81,7 +80,7 @@ public class LoginPasswordHandler {
         } else if (tempbannedTill.getTimeInMillis() != 0) {
             if (!loginAttempt(c)) {
                 c.clearInformation();
-                c.getSession().write(LoginPacket.getTempBan(PacketHelper.getTime(tempbannedTill.getTimeInMillis()), c.getBanReason()));
+                c.getSession().write(LoginPacket.getTempBan(DateUtil.getTime(tempbannedTill.getTimeInMillis()), c.getBanReason()));
             } else {
                 c.getSession().close();
             }

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import tools.DateUtil;
 import tools.HexTool;
 import tools.Pair;
 import tools.Randomizer;
@@ -171,9 +172,9 @@ public class CSPacket {
         mplew.writeInt(0);//changes - type?
         mplew.writeInt(item.getPrice());
         mplew.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
-        mplew.writeLong(PacketHelper.MAX_TIME);
+        mplew.writeLong(DateUtil.MAX_TIME);
         mplew.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
-        mplew.writeLong(PacketHelper.MAX_TIME);
+        mplew.writeLong(DateUtil.MAX_TIME);
         mplew.writeInt(item.getPrice()); //after discount
         mplew.writeInt(0);
         mplew.writeInt(item.getQuantity());
@@ -275,7 +276,7 @@ public class CSPacket {
         mplew.write(0);
         mplew.write(0);
         mplew.write(0);
-        mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+        mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
         
         mplew.write(0);
         mplew.write(0);
@@ -907,7 +908,7 @@ public class CSPacket {
             mplew.writeInt(notes.getInt("id"));
             mplew.writeMapleAsciiString(notes.getString("from"));
             mplew.writeMapleAsciiString(notes.getString("message"));
-            mplew.writeLong(PacketHelper.getKoreanTimestamp(notes.getLong("timestamp")));
+            mplew.writeLong(DateUtil.getTime(notes.getLong("timestamp")));
             mplew.write(notes.getInt("gift"));
             notes.next();
         }

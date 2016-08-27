@@ -21,63 +21,14 @@ import server.stores.AbstractPlayerStore;
 import server.stores.IMaplePlayerShop;
 import tools.BitTools;
 import tools.HexTool;
-import tools.KoreanDateUtil;
+import tools.DateUtil;
 import tools.Pair;
 import tools.StringUtil;
 import tools.Triple;
 import tools.data.MaplePacketLittleEndianWriter;
 
 public class PacketHelper {
-
-    public static final long FT_UT_OFFSET = 116444592000000000L;
-    public static final long MAX_TIME = 150842304000000000L;
-    public static final long ZERO_TIME = 94354848000000000L;
-    public static final long PERMANENT = 150841440000000000L;
-
-    public static long getKoreanTimestamp(long realTimestamp) {
-        return getTime(realTimestamp);
-    }
-
-    public static long getTime(long realTimestamp) {
-        if (realTimestamp == -1L) { // 00 80 05 BB 46 E6 17 02, 1/1/2079
-            return MAX_TIME;
-        }
-        if (realTimestamp == -2L) { // 00 40 E0 FD 3B 37 4F 01, 1/1/1900
-            return ZERO_TIME;
-        }
-        if (realTimestamp == -3L) {
-            return PERMANENT;
-        }
-        return realTimestamp * 10000L + 116444592000000000L;
-    }
-
-    public static long decodeTime(long fakeTimestamp) {
-        if (fakeTimestamp == 150842304000000000L) {
-            return -1L;
-        }
-        if (fakeTimestamp == 94354848000000000L) {
-            return -2L;
-        }
-        if (fakeTimestamp == 150841440000000000L) {
-            return -3L;
-        }
-        return (fakeTimestamp - 116444592000000000L) / 10000L;
-    }
-
-    public static long getFileTimestamp(long timeStampinMillis, boolean roundToMinutes) {
-        if (SimpleTimeZone.getDefault().inDaylightTime(new Date())) {
-            timeStampinMillis -= 3600000L;
-        }
-        long time;
-
-        if (roundToMinutes) {
-            time = timeStampinMillis / 1000L / 60L * 600000000L;
-        } else {
-            time = timeStampinMillis * 10000L;
-        }
-        return time + 116444592000000000L;
-    }
-
+	
     public static void addImageInfo(MaplePacketLittleEndianWriter mplew, byte[] image) {
         mplew.writeInt(image.length);
         mplew.write(image);
@@ -126,7 +77,7 @@ public class PacketHelper {
         mplew.writeShort(completed.size());
         for (MapleQuestStatus q : completed) {
             mplew.writeInt(q.getQuest().getId()); // 174.1 this is an integer now..
-            mplew.writeInt(KoreanDateUtil.getQuestTimestamp(q.getCompletionTime()));
+            mplew.writeInt(DateUtil.getQuestTimestamp(q.getCompletionTime()));
         }
     }
 
@@ -296,9 +247,9 @@ public class PacketHelper {
 
         MapleQuestStatus stat = chr.getQuestNoAdd(MapleQuest.getInstance(122700));
         if ((stat != null) && (stat.getCustomData() != null) && (Long.parseLong(stat.getCustomData()) > System.currentTimeMillis())) {
-            mplew.writeLong(getTime(Long.parseLong(stat.getCustomData())));
+            mplew.writeLong(DateUtil.getTime(Long.parseLong(stat.getCustomData())));
         } else {
-            mplew.writeLong(getTime(-2L));
+            mplew.writeLong(DateUtil.getTime(-2L));
         }
         mplew.write(0); // new
         MapleInventory iv = chr.getInventory(MapleInventoryType.EQUIPPED);
@@ -414,8 +365,8 @@ public class PacketHelper {
             mplew.writeInt(0);
             mplew.writeInt(p.getMp());
 
-            mplew.writeLong(PacketHelper.getTime(p.getStartDate()));
-            mplew.writeLong(PacketHelper.getTime(p.getEndDate()));
+            mplew.writeLong(DateUtil.getTime(p.getStartDate()));
+            mplew.writeLong(DateUtil.getTime(p.getEndDate()));
         }
     }
 
@@ -479,7 +430,7 @@ public class PacketHelper {
         //    mplew.writeShort(0); //today's stats
         //}
         //mplew.write(0);
-        //mplew.writeLong(getTime(System.currentTimeMillis()));
+        //mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
         mplew.write0(21);
         
         mplew.writeInt(chr.getStat().pvpExp);
@@ -501,7 +452,7 @@ public class PacketHelper {
             mplew.writeInt(0);
         }
         
-        mplew.writeReversedLong(getTime(System.currentTimeMillis())); // account last login
+        mplew.writeReversedLong(DateUtil.getTime(System.currentTimeMillis())); // account last login
         
         // is this character burning
         mplew.write(0); 
@@ -615,7 +566,7 @@ public class PacketHelper {
 	}
 
     public static void addExpirationTime(MaplePacketLittleEndianWriter mplew, long time) {
-        mplew.writeLong(getTime(time));
+        mplew.writeLong(DateUtil.getTime(time));
     }
 
     public static void addItemPosition(MaplePacketLittleEndianWriter mplew, Item item, boolean trade, boolean bagSlot) {
@@ -869,7 +820,7 @@ public class PacketHelper {
 //        if (!hasUniqueId) {
 //            mplew.writeLong(equip.getInventoryId() <= 0 ? -1 : equip.getInventoryId()); //some tracking ID
 //        }
-//        mplew.writeLong(getTime(-2));
+//        mplew.writeLong(DateUtil.getTime(-2));
 //        mplew.writeInt(-1); //?
 //        
 //    }
@@ -891,11 +842,11 @@ public class PacketHelper {
         if (!hasUniqueId) {
             mplew.writeLong(equip.getInventoryId() <= 0 ? -1 : equip.getInventoryId()); //some tracking ID
         }
-        mplew.writeLong(getTime(-2));
+        mplew.writeLong(DateUtil.getTime(-2));
         mplew.writeInt(-1); //?
         // new 142
         mplew.writeLong(0);
-        mplew.writeLong(getTime(-2));
+        mplew.writeLong(DateUtil.getTime(-2));
         mplew.writeLong(0);
         mplew.writeLong(0);
         mplew.writeShort(0); // new
@@ -1140,7 +1091,7 @@ public class PacketHelper {
 
         if ((mask & 0x400) != 0) {
         	mplew.writeInt(0);
-            mplew.writeLong(getTime(-2));
+            mplew.writeLong(DateUtil.getTime(-2));
             mplew.writeInt(0);
         }
 
@@ -1149,7 +1100,7 @@ public class PacketHelper {
             mplew.writeInt(0);
             mplew.writeInt(0);
             mplew.writeInt(0);
-            mplew.writeLong(getTime(-2));
+            mplew.writeLong(DateUtil.getTime(-2));
             mplew.writeInt(0);
         }
         
@@ -1169,7 +1120,7 @@ public class PacketHelper {
         	mplew.writeInt(1);
         	mplew.writeInt(0);
         	mplew.writeInt(100);
-        	mplew.writeLong(getTime(-1));
+        	mplew.writeLong(DateUtil.getTime(-1));
         	mplew.writeShort(0);
             mplew.writeShort(0);
         }
@@ -1251,7 +1202,7 @@ public class PacketHelper {
         mplew.writeInt(aura.getTotal());//max
         mplew.writeInt(0);
         mplew.writeInt(0);
-        mplew.writeLong(getTime(System.currentTimeMillis() + 86400000L));
+        mplew.writeLong(DateUtil.getTime(System.currentTimeMillis() + 86400000L));
         mplew.writeInt(0);
         mplew.write(GameConstants.isJett(chr.getJob()) ? 1 : 0);*/
     	
@@ -1273,7 +1224,7 @@ public class PacketHelper {
     	mplew.writeInt(0);
     	mplew.writeInt(0);
 
-    	mplew.writeLong(getTime(-2));
+    	mplew.writeLong(DateUtil.getTime(-2));
     	mplew.write(0);
     }
 
@@ -1363,7 +1314,7 @@ public class PacketHelper {
 
     public static void addPetItemInfo(MaplePacketLittleEndianWriter mplew, Item item, MaplePet pet, boolean active) {
         if (item == null) {
-            mplew.writeLong(PacketHelper.getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
+            mplew.writeLong(DateUtil.getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
         } else {
             addExpirationTime(mplew, item.getExpiration() <= System.currentTimeMillis() ? -1L : item.getExpiration());
         }
@@ -1373,7 +1324,7 @@ public class PacketHelper {
         mplew.writeShort(pet.getCloseness());
         mplew.write(pet.getFullness());
         if (item == null) {
-            mplew.writeLong(PacketHelper.getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
+            mplew.writeLong(DateUtil.getKoreanTimestamp((long) (System.currentTimeMillis() * 1.5)));
         } else {
             addExpirationTime(mplew, item.getExpiration() <= System.currentTimeMillis() ? -1L : item.getExpiration());
         }
@@ -1440,8 +1391,8 @@ public class PacketHelper {
         mplew.writeInt(1440 * item.getExpiration());
         mplew.writeInt(item.getMinLevel());
         mplew.writeInt(0);
-        mplew.writeLong(getTime(-2L)); //new v140 1900
-        mplew.writeLong(getTime(-1L)); //new v140 2079
+        mplew.writeLong(DateUtil.getTime(-2L)); //new v140 1900
+        mplew.writeLong(DateUtil.getTime(-1L)); //new v140 2079
         mplew.writeInt(item.getCategory());
         if (GameConstants.isEquip(item.getItemId())) {
             mplew.write(item.hasPotential() ? 1 : 0);
@@ -1559,7 +1510,7 @@ public class PacketHelper {
     public static void addPartTimeJob(MaplePacketLittleEndianWriter mplew, PartTimeJob parttime) {
         mplew.write(parttime.getJob());
         if (parttime.getJob() > 0 && parttime.getJob() <= 5) {
-            mplew.writeReversedLong(parttime.getTime());
+            mplew.writeReversedLong(DateUtil.getTime(0));
         } else {
             mplew.writeReversedLong(-2);
         }

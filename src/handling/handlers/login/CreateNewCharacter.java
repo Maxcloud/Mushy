@@ -1,14 +1,8 @@
 package handling.handlers.login;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import client.MapleClient;
-import client.Skill;
-import client.SkillEntry;
-import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
@@ -100,15 +94,6 @@ public class CreateNewCharacter {
 			shield = slea.readInt();
 		}
 
-		int index = 0;
-		boolean noSkin = job == JobType.Demon || job == JobType.Mercedes || job == JobType.Jett;
-		int[] items = new int[] { face, hair, hairColor, noSkin ? -1 : skin, faceMark, hat, top, bottom, cape, shoes, weapon, shield };
-		for (int i : items) {
-			if (i > -1) {
-				index++;
-			}
-		}
-
 		MapleCharacter newchar = MapleCharacter.getDefault(c, job);
 		newchar.setWorld((byte) c.getWorld());
 		newchar.setFace(face);
@@ -170,55 +155,7 @@ public class CreateNewCharacter {
 				equip.addFromDB(item);
 			}
 		}
-
 		
-		/**
-		 * Additional skills for all first job classes. Some skills are not added by default,
-		 * so adding the skill ID here between the {}, will give the skills you entered to the desired job.
-		 * 
-		 */
-		
-		/*int[][] skills = new int[][] { { 80001152 }, // Resistance
-				{ 80001152, 1281 }, // Explorer
-				{ 10001244, 10000252, 80001152 }, // Cygnus
-				{ 20000194 }, // Aran
-				{ 20010022, 20010194 }, // Evan
-				{ 20020109, 20021110, 20020111, 20020112 }, // Mercedes
-				{ 30010112, 30010110, 30010111, 30010185 }, // Demon
-				{ 20031251, 20030204, 20030206, 20031208, 20031207, 20031203 }, // Phantom
-				{ 80001152, 1281 }, // Dualblade
-				{ 50001214 }, // Mihile
-				// {},// Luminous
-				{ 20040216, 20040217, 20040218, 20040219, 20040220, 20040221, 20041222, 27001100, 27000207, 27001201 }, // Luminous
-				{}, // Kaiser
-				{ 60011216, 60010217, 60011218, 60011219, 60011220, 60011221, 60011222 }, // Angelic
-																							// Buster
-				{}, // Cannoneer
-				{ 30020232, 30020233, 30020234, 30020240, 30021238 }, // Xenon
-				{ 100000279, 100000282, 100001262, 100001263, 100001264, 100001265, 100001266, 100001268 }, // Zero
-				{ 228, 80001151 }, // Jett
-				{}, // Hayato
-				{ 40020000, 40020001, 40020002, 40021023, 40020109 }// Kanna
-		};
-
-		if (skills[job.type].length > 0) {
-			final Map<Skill, SkillEntry> ss = new HashMap<>();
-			Skill s;
-			for (int i : skills[job.type]) {
-				s = SkillFactory.getSkill(i);
-				int maxLevel = s.getMaxLevel();
-				if (maxLevel < 1) {
-					maxLevel = s.getMasterLevel();
-				}
-				ss.put(s, new SkillEntry((byte) 1, (byte) maxLevel, -1));
-			}
-			if (job == JobType.Zero) {
-				ss.put(SkillFactory.getSkill(101000103), new SkillEntry((byte) 8, (byte) 10, -1));
-				ss.put(SkillFactory.getSkill(101000203), new SkillEntry((byte) 8, (byte) 10, -1));
-			}
-			newchar.changeSkillLevel_Skip(ss, false);
-		}*/
-
 		int[][] guidebooks = new int[][] { { 4161001, 0 }, { 4161047, 1 }, { 4161048, 2000 }, { 4161052, 2001 },
 				{ 4161054, 3 }, { 4161079, 2002 } };
 		int guidebook = 0;
@@ -263,7 +200,6 @@ public class CreateNewCharacter {
 			MapleCharacter.saveNewCharToDB(newchar, job, subcategory);
 			c.getSession().write(LoginPacket.addNewCharEntry(newchar, true));
 			c.createdChar(newchar.getId());
-			// newchar.newCharRewards();
 		} else {
 			c.getSession().write(LoginPacket.addNewCharEntry(newchar, false));
 		}

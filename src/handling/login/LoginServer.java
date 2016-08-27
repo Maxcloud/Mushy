@@ -20,22 +20,22 @@
  */
 package handling.login;
 
-import constants.GameConstants;
-import constants.ServerConfig;
-import handling.MapleServerHandler;
-import net.mina.MapleCodecFactory;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
+
+import constants.ServerConstants;
+import handling.MapleServerHandler;
+import net.mina.MapleCodecFactory;
 import tools.Triple;
 
 public class LoginServer {
@@ -79,10 +79,10 @@ public class LoginServer {
     }
 
     public static final void run_startup_configurations() {
-        userLimit = ServerConfig.userLimit;
-        serverName = ServerConfig.serverName;
-        eventMessage = ServerConfig.eventMessage;
-        maxCharacters = ServerConfig.maxCharacters;
+        userLimit = ServerConstants.USERLIMIT;
+        serverName = ServerConstants.SERVERNAME;
+        eventMessage = ServerConstants.EVENTMESSAGE;
+        maxCharacters = ServerConstants.MAXCHARACTERS;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
@@ -136,15 +136,7 @@ public class LoginServer {
         load = load_;
         usersOn = usersOn_;
     }
-
-    public static String getEventMessage(int world) { // TODO: Finish this
-        switch (world) {
-            case 0:
-                return null;
-        }
-        return null;
-    }
-
+    
     public static final int getUserLimit() {
         return userLimit;
     }
