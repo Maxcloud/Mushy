@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.DatabaseConnection;
+import tools.DateUtil;
 import tools.HexTool;
 import tools.data.MaplePacketLittleEndianWriter;
 import tools.packet.PacketHelper;
@@ -70,9 +71,9 @@ public class CSMenuItem {
         mplew.writeInt(0); // this one changes
         mplew.writeInt(csmi.op);
         mplew.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
-        mplew.writeLong(PacketHelper.MAX_TIME);
+        mplew.writeLong(DateUtil.MAX_TIME);
         mplew.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
-        mplew.writeLong(PacketHelper.MAX_TIME);
+        mplew.writeLong(DateUtil.MAX_TIME);
         mplew.writeInt(csmi.sp);
         mplew.writeInt(0);
         mplew.writeInt(csmi.qty);

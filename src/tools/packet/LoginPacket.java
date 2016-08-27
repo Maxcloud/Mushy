@@ -14,6 +14,7 @@ import constants.ServerConstants;
 import constants.WorldConstants.WorldOption;
 import handling.SendPacketOpcode;
 import handling.login.LoginServer;
+import tools.DateUtil;
 import tools.Randomizer;
 import tools.Triple;
 import tools.data.MaplePacketLittleEndianWriter;
@@ -344,7 +345,7 @@ public class LoginPacket {
         mplew.write(0); // ?
         */
         
-        mplew.writeReversedLong(PacketHelper.getTime(System.currentTimeMillis()));
+        mplew.writeReversedLong(DateUtil.getTime(System.currentTimeMillis()));
         mplew.write(0); // the amount of allowed name changes
         mplew.write0(5);
         return mplew.getPacket();
@@ -417,7 +418,7 @@ public class LoginPacket {
         mplew.write(type);
         //1) 0A D2 CD 01 70 59 9F EA
         //2) 0B D2 CD 01 B0 6B 9C 18
-        mplew.writeReversedLong(PacketHelper.getTime(time));
+        mplew.writeReversedLong(DateUtil.getTime(time));
         mplew.writeInt(0);
         mplew.write(0);
 

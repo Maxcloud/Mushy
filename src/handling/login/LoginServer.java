@@ -136,15 +136,7 @@ public class LoginServer {
         load = load_;
         usersOn = usersOn_;
     }
-
-    public static String getEventMessage(int world) { // TODO: Finish this
-        switch (world) {
-            case 0:
-                return null;
-        }
-        return null;
-    }
-
+    
     public static final int getUserLimit() {
         return userLimit;
     }

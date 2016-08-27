@@ -8,6 +8,7 @@ package tools.packet;
 import client.MapleCharacter;
 import handling.SendPacketOpcode;
 import server.maps.MapleMap;
+import tools.DateUtil;
 import tools.data.MaplePacketLittleEndianWriter;
 
 /**
@@ -125,7 +126,7 @@ public class EvolvingPacket {
         mplew.write(sp);
         mplew.writeInt(player.getStat().getHp());
         mplew.writeShort(0);
-        mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+        mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
     }
 
     public static byte[] spawnEvolvingMonster() {

@@ -46,6 +46,7 @@ import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
 import server.shops.MapleShop;
 import tools.AttackPair;
+import tools.DateUtil;
 import tools.HexTool;
 import tools.Pair;
 import tools.Randomizer;
@@ -54,8 +55,6 @@ import tools.data.MaplePacketLittleEndianWriter;
 
 public class CField {
 
-	private static int DEFAULT_BUFFMASK = 0;
-	
 	public static byte[] getPacketFromHexString(String hex) {
 		return HexTool.getByteArrayFromHexString(hex);
 	}
@@ -95,7 +94,7 @@ public class CField {
 		mplew.write(0);
 		
 		 // shutdown ? (timestamp)
-		mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+		mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
 		
 		// mplew.write(HexTool.getByteArrayFromHexString("3F 01 00 00 00 C8 00 00"));
 		// mplew.write(0);
@@ -457,7 +456,7 @@ public class CField {
 		mplew.write(0);
 		
 		// some sort of korean event fame-up
-		mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+		mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
 		
 		// ?
 		mplew.writeInt(0x64);
@@ -1025,8 +1024,8 @@ public class CField {
 				mplew.writeInt(qmn.getType());
 				mplew.writeInt(qmn.getLevel());
 				mplew.writeMapleAsciiString(qmn.getDescription());
-				mplew.writeLong(PacketHelper.getTime(-2));
-				mplew.writeLong(PacketHelper.getTime(-1));
+				mplew.writeLong(DateUtil.getTime(-2));
+				mplew.writeLong(DateUtil.getTime(-1));
 			}
 		}
 
@@ -1952,7 +1951,7 @@ public class CField {
 		mplew.writeInt(mf.getCharacterId());
 		mplew.writeInt(mf.getFamiliar());
 		mplew.writeInt(mf.getFatigue());
-		mplew.writeLong(PacketHelper.getTime(mf.getVitality() >= 3 ? System.currentTimeMillis() : -2L));
+		mplew.writeLong(DateUtil.getTime(mf.getVitality() >= 3 ? System.currentTimeMillis() : -2L));
 
 		return mplew.getPacket();
 	}
@@ -3099,7 +3098,7 @@ public class CField {
 				mplew.writeInt(dp.getPackageId());
 				mplew.writeAsciiString(dp.getSender(), 13);
 				mplew.writeInt(dp.getMesos());
-				mplew.writeLong(PacketHelper.getTime(dp.getSentTime()));
+				mplew.writeLong(DateUtil.getTime(dp.getSentTime()));
 				mplew.write0(205);
 
 				if (dp.getItem() != null) {
@@ -3202,13 +3201,13 @@ public class CField {
 	}
 
 	static {
-		DEFAULT_BUFFMASK |= MapleBuffStat.ENERGY_CHARGE.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.DASH_SPEED.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.DASH_JUMP.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.MONSTER_RIDING.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.SPEED_INFUSION.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.HOMING_BEACON.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.DEFAULT_BUFFSTAT.getValue();
+		MapleBuffStat.ENERGY_CHARGE.getValue();
+		MapleBuffStat.DASH_SPEED.getValue();
+		MapleBuffStat.DASH_JUMP.getValue();
+		MapleBuffStat.MONSTER_RIDING.getValue();
+		MapleBuffStat.SPEED_INFUSION.getValue();
+		MapleBuffStat.HOMING_BEACON.getValue();
+		MapleBuffStat.DEFAULT_BUFFSTAT.getValue();
 	}
 
 	public static byte[] viewSkills(MapleCharacter chr) {

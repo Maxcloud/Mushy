@@ -11,6 +11,7 @@ import server.maps.MapleMapObjectType;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
 import server.movement.StaticLifeMovement;
+import tools.DateUtil;
 import tools.Randomizer;
 import tools.data.MaplePacketLittleEndianWriter;
 import tools.packet.CField;
@@ -154,9 +155,9 @@ public final class MonsterFamiliar extends AnimatedMapleMapObject
         mplew.write(chr ? 1 : 0);
         mplew.writeShort(getVitality());
         mplew.writeInt(getFatigue());
-        mplew.writeLong(PacketHelper.getTime(getVitality() >= 3 ? System.currentTimeMillis() : -2L));
-        mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
-        mplew.writeLong(PacketHelper.getTime(getExpiry()));
+        mplew.writeLong(DateUtil.getTime(getVitality() >= 3 ? System.currentTimeMillis() : -2L));
+        mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
+        mplew.writeLong(DateUtil.getTime(getExpiry()));
         mplew.writeShort(getVitality());
     }
 }

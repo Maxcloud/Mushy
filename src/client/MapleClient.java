@@ -1253,7 +1253,7 @@ public class MapleClient implements Serializable {
 
 	public int getCharacterSlots() {
 		if (charslots != DEFAULT_CHARSLOT) {
-			return charslots; // save a sql
+			return charslots;
 		}
 		try {
 			Connection con = DatabaseConnection.getConnection();
@@ -1458,19 +1458,9 @@ public class MapleClient implements Serializable {
 	public void setTempIP(String s) {
 		this.tempIP = s;
 	}
-
-	public void setUsername(String what) {
-		this.accountName = what;
-	}
-
-	public int getNextClientIncrenement() {
-		int result = client_increnement;
-		client_increnement++;
-		return result;
-	}
-
+	
 	public void sendPing() {
-        final long then = System.currentTimeMillis();
+        long currentTime = System.currentTimeMillis();
         getSession().write(LoginPacket.getPing());
         
         PingTimer.getInstance().schedule(new Runnable() {
@@ -1478,17 +1468,17 @@ public class MapleClient implements Serializable {
             @Override
             public void run() {
                 try {
-                    if (lastPong - then < 0) {
+                    if (lastPong - currentTime < 0) {
                         if (getSession().isConnected()) {
-                        	System.out.println("Attempting to close the connection. :(");
-                            // 	getSession().close();
+                        	System.out.println("Ping Timeout");
+                            getSession().close();
                         }
                     }
                 } catch (NullPointerException e) {
                     // client already gone
                 }
             }
-        }, 10000); // note: idletime gets added to this too)
+        }, 15000); // 15 Seconds For Client Ping 
      
     }
 }

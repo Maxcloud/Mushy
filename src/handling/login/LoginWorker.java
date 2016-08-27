@@ -54,13 +54,6 @@ public class LoginWorker {
 
         if (c.finishLogin() == 0) {
             c.getSession().write(LoginPacket.getAuthSuccessRequest(c));
-            //start temp fix
-
-            //CharLoginHandler.ServerStatusRequest(c);
-            //c.setWorld(0);
-            //c.setChannel(Randomizer.nextInt(ChannelServer.getAllInstances().size()) + 1);
-            //c.getSession().write(LoginPacket.getCharList(c.getSecondPassword() != null, c.loadCharacters(0), c.getCharacterSlots()));
-            //end temp fix
             c.setIdleTask(PingTimer.getInstance().schedule(new Runnable() {
 
                 @Override

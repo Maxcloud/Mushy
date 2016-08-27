@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import server.MapleStatEffect;
+import tools.DateUtil;
 import tools.HexTool;
 import tools.Randomizer;
 import tools.data.MaplePacketLittleEndianWriter;
@@ -349,7 +350,7 @@ public class JobPacket {
 			mplew.write(type);
 			mplew.writeShort(7707);
 			mplew.write(2);
-			mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+			mplew.writeLong(DateUtil.getTime(System.currentTimeMillis()));
 			return mplew.getPacket();
 		}
 
