@@ -617,7 +617,7 @@ public class SuperGMCommand {
                 c.getPlayer().dropMessage(6, "You can only vac monsters while in hide.");
                 return 0;
             } else {
-                for (final MapleMapObject mmo : c.getPlayer().getMap().getAllMonstersThreadsafe()) {
+                for (final MapleMapObject mmo : c.getPlayer().getMap().getAllMonster()) {
                     final MapleMonster monster = (MapleMonster) mmo;
                     c.getPlayer().getMap().broadcastMessage(MobPacket.moveMonster(false, -1, 0, monster.getObjectId(), monster.getTruePosition(), c.getPlayer().getLastRes()));
                     monster.setPosition(c.getPlayer().getPosition());
@@ -669,7 +669,7 @@ public class SuperGMCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (MapleCharacter victim : c.getPlayer().getMap().getCharactersThreadsafe()) {
+            for (MapleCharacter victim : c.getPlayer().getMap().getCharacters()) {
                 if (victim.getId() != c.getPlayer().getId()) {
                     victim.getMap().broadcastMessage(CField.getChatText(victim.getId(), StringUtil.joinStringFrom(splitted, 1), victim.isGM(), 0));
                 }

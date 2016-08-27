@@ -268,7 +268,7 @@ public class PartyHandler {
             c.getPlayer().dropMessage(5, "You may not do party search here.");
             return;
         }
-        c.getSession().write(CWvsContext.PartyPacket.showMemberSearch(c.getPlayer().getMap().getCharactersThreadsafe()));
+        c.getSession().write(CWvsContext.PartyPacket.showMemberSearch(c.getPlayer().getMap().getCharacters()));
     }
 
     public static final void PartySearch(LittleEndianAccessor slea, MapleClient c) {
@@ -277,7 +277,7 @@ public class PartyHandler {
             return;
         }
         List parties = new ArrayList();
-        for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
+        for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
             if ((chr.getParty() != null)
                     && (chr.getParty().getId() != c.getPlayer().getParty().getId()) && (!parties.contains(chr.getParty()))) {
                 parties.add(chr.getParty());

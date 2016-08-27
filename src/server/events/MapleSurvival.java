@@ -62,7 +62,7 @@ public class MapleSurvival extends MapleEvent {
             @Override
             public void run() {
                 for (int i = 0; i < type.mapids.length; i++) {
-                    for (MapleCharacter chr : getMap(i).getCharactersThreadsafe()) {
+                    for (MapleCharacter chr : getMap(i).getCharacters()) {
                         warpBack(chr);
                     }
                     unreset();

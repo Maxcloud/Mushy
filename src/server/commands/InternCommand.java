@@ -623,7 +623,7 @@ public class InternCommand {
 			// probably bad way to do it
 			final long currentTime = System.currentTimeMillis();
 			List<Pair<String, Long>> players = new ArrayList<>();
-			for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
+			for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
 				if (!chr.isIntern()) {
 					players.add(new Pair<>(
 							MapleCharacterUtil.makeMapleReadable(chr.getName()),

@@ -179,7 +179,7 @@ public abstract class AbstractPlayerInteraction {
 
     public final void warpMap(final int mapid, final int portal) {
         final MapleMap map = getMap(mapid);
-        for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
+        for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
             chr.changeMap(map, map.getPortal(portal));
         }
     }
@@ -443,7 +443,7 @@ public abstract class AbstractPlayerInteraction {
         MapleMap map = c.getChannelServer().getMapFactory().getMap(mapid);
         MapleReactor react;
 
-        for (final MapleMapObject remo : map.getAllReactorsThreadsafe()) {
+        for (final MapleMapObject remo : map.getAllReactor()) {
             react = (MapleReactor) remo;
             if (react.getReactorId() == id) {
                 react.forceStartReactor(c);
@@ -456,7 +456,7 @@ public abstract class AbstractPlayerInteraction {
         MapleMap map = c.getChannelServer().getMapFactory().getMap(mapid);
         MapleReactor react;
 
-        for (final MapleMapObject remo : map.getAllReactorsThreadsafe()) {
+        for (final MapleMapObject remo : map.getAllReactor()) {
             react = (MapleReactor) remo;
             if (react.getReactorId() == id) {
                 react.hitReactor(c);
@@ -469,7 +469,7 @@ public abstract class AbstractPlayerInteraction {
         MapleMap map = c.getChannelServer().getMapFactory().getMap(mapid);
         MapleReactor react;
 
-        for (final MapleMapObject remo : map.getAllReactorsThreadsafe()) {
+        for (final MapleMapObject remo : map.getAllReactor()) {
             react = (MapleReactor) remo;
             if (react.getReactorId() == id) {
                 react.hitReactor(c);
@@ -958,7 +958,7 @@ public abstract class AbstractPlayerInteraction {
     }
 
     public final boolean haveMonster(final int mobid) {
-        for (MapleMapObject obj : c.getPlayer().getMap().getAllMonstersThreadsafe()) {
+        for (MapleMapObject obj : c.getPlayer().getMap().getAllMonster()) {
             final MapleMonster mob = (MapleMonster) obj;
             if (mob.getId() == mobid) {
                 return true;
@@ -1202,7 +1202,7 @@ public abstract class AbstractPlayerInteraction {
 
     public boolean isAllReactorState(final int reactorId, final int state) {
         boolean ret = false;
-        for (MapleReactor r : getMap().getAllReactorsThreadsafe()) {
+        for (MapleReactor r : getMap().getAllReactor()) {
             if (r.getReactorId() == reactorId) {
                 ret = r.getState() == state;
             }

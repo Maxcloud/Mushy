@@ -336,7 +336,7 @@ public class ChannelServer {
         }
         //hacky
         for (int i = 910000001; i <= 910000022; i++) {
-            for (MapleMapObject mmo : mapFactory.getMap(i).getAllHiredMerchantsThreadsafe()) {
+            for (MapleMapObject mmo : mapFactory.getMap(i).getAllMerchant()) {
                 ((HiredMerchant) mmo).closeShop(true, false);
                 //HiredMerchantSave.QueueShopForSave((HiredMerchant) mmo);
                 ret++;
