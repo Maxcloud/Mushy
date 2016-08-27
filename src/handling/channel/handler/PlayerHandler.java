@@ -1167,8 +1167,6 @@ public class PlayerHandler {
 		if ((chr.hasBlockedInventory()) || (chr.getMap() == null)) {
 			return;
 		}
-		
-		System.out.println(slea.toString());
 
 		AttackInfo attack = DamageParse.parseDmgM(chr, slea);
 		if (attack == null) {

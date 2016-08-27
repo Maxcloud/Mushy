@@ -28,9 +28,9 @@ public class ServerConfig {
     
     /*Rates*/
     public static boolean fixedRates = true; //use same rates for all worlds
-    public static final int EXP = 8; //exp rate (only works when fixedRates = true)
+    public static final int EXP = 9; //exp rate (only works when fixedRates = true)
     public static final int MESO = 5; //meso rate (only works when fixedRates = true)
-    public static final int DROP = 2; //drop rate (only works when fixedRates = true)
+    public static final int DROP = 3; //drop rate (only works when fixedRates = true)
     public static final int CASH_DROP_RATE = 20; //out of 100
     
     /*Red Events*/

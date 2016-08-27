@@ -130,7 +130,6 @@ public class Start extends Properties {
         PlayerNPC.loadAll();
         MapleMonsterInformationProvider.getInstance().addExtra();
         LoginServer.setOn();
-        RankingWorker.run();
         //System.out.println("Event Script List: " + ServerConfig.getEventList());
         long now = System.currentTimeMillis() - start;
         long seconds = now / 1000;

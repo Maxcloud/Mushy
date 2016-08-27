@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import constants.GameConstants;
-import lib.bin.ReadBin;
+import lib.ReadBin;
 import lib.data.MapleData;
 import lib.data.MapleDataDirectoryEntry;
 import lib.data.MapleDataFileEntry;
@@ -362,7 +362,7 @@ public class MapleLifeFactory {
         return stats;
     }
 
-    public static void decodeElementalString(MapleMonsterStats stats, String elemAttr) {
+    private static void decodeElementalString(MapleMonsterStats stats, String elemAttr) {
         for (int i = 0; i < elemAttr.length(); i += 2) {
             stats.setEffectiveness(
                     Element.getFromChar(elemAttr.charAt(i)),

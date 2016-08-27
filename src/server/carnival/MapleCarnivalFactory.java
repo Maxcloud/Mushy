@@ -1,4 +1,4 @@
-package server;
+package server.carnival;
 
 import java.io.File;
 import java.util.HashMap;

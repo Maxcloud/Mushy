@@ -18,7 +18,7 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package server.maps;
+package server.events;
 
 import java.awt.Point;
 
@@ -29,12 +29,13 @@ import handling.channel.ChannelServer;
 import handling.world.MaplePartyCharacter;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
+import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import tools.FileoutputUtil;
 import tools.Randomizer;
 import tools.packet.CField;
 
-public class Event_DojoAgent {
+public class MapleDojoAgent {
 
     private final static int baseAgentMapId = 970030000; // 9500337 = mano
     private final static Point point1 = new Point(140, 0),

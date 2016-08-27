@@ -74,8 +74,6 @@ import net.DatabaseException;
 import script.event.EventInstanceManager;
 import script.event.EventManager;
 import script.npc.NPCScriptManager;
-import server.MapleCarnivalChallenge;
-import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MaplePortal;
@@ -88,13 +86,15 @@ import server.Timer;
 import server.Timer.BuffTimer;
 import server.Timer.MapTimer;
 import server.Timer.WorldTimer;
+import server.carnival.MapleCarnivalChallenge;
+import server.carnival.MapleCarnivalParty;
 import server.cash.CashShop;
+import server.events.MaplePyramidSubway;
 import server.life.MapleMonster;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.life.PlayerNPC;
 import server.maps.AnimatedMapleMapObject;
-import server.maps.Event_PyramidSubway;
 import server.maps.FieldLimitType;
 import server.maps.MapleDoor;
 import server.maps.MapleDragon;
@@ -223,7 +223,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private final EnumMap<MapleTraitType, MapleTrait> traits;
     private MapleKeyLayout keylayout;
     private transient ScheduledFuture<?> mapTimeLimitTask;
-    private transient Event_PyramidSubway pyramidSubway = null;
+    private transient MaplePyramidSubway pyramidSubway = null;
     private transient List<Integer> pendingExpiration = null;
     private transient Map<Skill, SkillEntry> pendingSkills = null;
     private transient Map<Integer, Integer> linkMobs;
@@ -7053,11 +7053,11 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         client.getSession().write(CWvsContext.updatePlayerStats(stat, false, this));
     }
 
-    public Event_PyramidSubway getPyramidSubway() {
+    public MaplePyramidSubway getPyramidSubway() {
         return pyramidSubway;
     }
 
-    public void setPyramidSubway(Event_PyramidSubway ps) {
+    public void setPyramidSubway(MaplePyramidSubway ps) {
         this.pyramidSubway = ps;
     }
 

@@ -16,7 +16,7 @@ import java.util.Map.Entry;
 
 import client.MapleCharacter;
 import constants.GameConstants;
-import lib.bin.ReadBin;
+import lib.ReadBin;
 import net.DatabaseConnection;
 import script.npc.NPCScriptManager;
 import tools.Pair;

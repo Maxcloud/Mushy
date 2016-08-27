@@ -16,7 +16,7 @@ import handling.world.exped.ExpeditionType;
 import handling.world.exped.MapleExpedition;
 import handling.world.exped.PartySearch;
 import handling.world.exped.PartySearchType;
-import server.maps.Event_DojoAgent;
+import server.events.MapleDojoAgent;
 import server.maps.FieldLimitType;
 import server.quest.MapleQuest;
 import tools.data.LittleEndianAccessor;
@@ -100,7 +100,7 @@ public class PartyHandler {
                 }
                 if (partyplayer.equals(party.getLeader())) {
                     if (GameConstants.isDojo(c.getPlayer().getMapId())) {
-                        Event_DojoAgent.failed(c.getPlayer());
+                        MapleDojoAgent.failed(c.getPlayer());
                     }
                     if (c.getPlayer().getPyramidSubway() != null) {
                         c.getPlayer().getPyramidSubway().fail(c.getPlayer());
@@ -111,7 +111,7 @@ public class PartyHandler {
                     }
                 } else {
                     if (GameConstants.isDojo(c.getPlayer().getMapId())) {
-                        Event_DojoAgent.failed(c.getPlayer());
+                        MapleDojoAgent.failed(c.getPlayer());
                     }
                     if (c.getPlayer().getPyramidSubway() != null) {
                         c.getPlayer().getPyramidSubway().fail(c.getPlayer());
@@ -187,7 +187,7 @@ public class PartyHandler {
                 MaplePartyCharacter expelled = party.getMemberById(slea.readInt());
                 if (expelled != null) {
                     if ((GameConstants.isDojo(c.getPlayer().getMapId())) && (expelled.isOnline())) {
-                        Event_DojoAgent.failed(c.getPlayer());
+                        MapleDojoAgent.failed(c.getPlayer());
                     }
                     if ((c.getPlayer().getPyramidSubway() != null) && (expelled.isOnline())) {
                         c.getPlayer().getPyramidSubway().fail(c.getPlayer());
@@ -481,7 +481,7 @@ public class PartyHandler {
                 exped = World.Party.getExped(part.getExpeditionId());
                 if (exped != null) {
                     if (GameConstants.isDojo(c.getPlayer().getMapId())) {
-                        Event_DojoAgent.failed(c.getPlayer());
+                        MapleDojoAgent.failed(c.getPlayer());
                     }
                     if (exped.getLeader() == c.getPlayer().getId()) {
                         World.Party.disbandExped(exped.getId());
@@ -523,7 +523,7 @@ public class PartyHandler {
                             MaplePartyCharacter expelled = par.getMemberById(cid);
                             if (expelled != null) {
                                 if ((expelled.isOnline()) && (GameConstants.isDojo(c.getPlayer().getMapId()))) {
-                                    Event_DojoAgent.failed(c.getPlayer());
+                                    MapleDojoAgent.failed(c.getPlayer());
                                 }
                                 World.Party.updateParty(i, PartyOperation.EXPEL, expelled);
                                 if ((c.getPlayer().getEventInstance() != null)
@@ -607,7 +607,7 @@ public class PartyHandler {
                                         }
                                     }
                                     if (GameConstants.isDojo(c.getPlayer().getMapId())) {
-                                        Event_DojoAgent.failed(c.getPlayer());
+                                        MapleDojoAgent.failed(c.getPlayer());
                                     }
                                     World.Party.updateParty(i, PartyOperation.EXPEL, expelled);
                                     if (partyIndexTo < exped.getParties().size()) {

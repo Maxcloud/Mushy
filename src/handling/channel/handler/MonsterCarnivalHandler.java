@@ -25,8 +25,9 @@ import client.MapleClient;
 import client.MapleDisease;
 
 import java.util.List;
-import server.MapleCarnivalFactory;
-import server.MapleCarnivalFactory.MCSkill;
+
+import server.carnival.MapleCarnivalFactory;
+import server.carnival.MapleCarnivalFactory.MCSkill;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import tools.Pair;
