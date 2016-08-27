@@ -11,7 +11,7 @@ package constants;
 public class JobConstants {
 
 	public static final boolean enableJobs = true;
-	public static final int jobOrder = 8; // 174.1
+	public static final int jobOrder = 8;
 
 	public enum LoginJob {
 
@@ -56,7 +56,8 @@ public class JobConstants {
 
 		public enum JobFlag {
 
-			DISABLED(0), ENABLED(1);
+			DISABLED(0), 
+			ENABLED(1);
 			private final int flag;
 
 			private JobFlag(int flag) {

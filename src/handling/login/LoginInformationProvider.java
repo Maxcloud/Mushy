@@ -20,14 +20,12 @@
  */
 package handling.login;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import constants.GameConstants;
-import constants.ServerConfig;
 import lib.data.MapleData;
 import lib.data.MapleDataProvider;
 import lib.data.MapleDataProviderFactory;
@@ -64,7 +62,7 @@ public class LoginInformationProvider {
         private JobType(int type, int id, int map, boolean hairColor, boolean skinColor, boolean faceMark, boolean hat, boolean bottom, boolean cape) {
             this.type = type;
             this.id = id;
-            this.map = type == 0 ? map : type == 8 ? map : ServerConfig.STARTER_MAP;
+            this.map = map;
             this.hairColor = hairColor;
             this.skinColor = skinColor;
             this.faceMark = faceMark;

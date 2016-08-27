@@ -20,10 +20,6 @@ public class ServerConfig {
 	public static byte channelCount;
 	public static short userLimit;
 
-	public static final int STARTER_MAP = 10000; // Maple Island
-	public static final int HOME_MAP_ID = 923050005; // xenon lab (mob version), map used for @home
-
-
 	/* Rates */
 	public static final int EXP = 9; // exp rate (only works when fixedRates true)
 	public static final int MESO = 5; // meso rate (only works when fixedRates = true)
