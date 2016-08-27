@@ -852,33 +852,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case RING_ACTION:
                 PlayersHandler.RingAction(slea, c);
                 break;
-            case REQUEST_FAMILY:
-                FamilyHandler.RequestFamily(slea, c);
-                break;
-            case OPEN_FAMILY:
-                FamilyHandler.OpenFamily(slea, c);
-                break;
-            case FAMILY_OPERATION:
-                FamilyHandler.FamilyOperation(slea, c);
-                break;
-            case DELETE_JUNIOR:
-                FamilyHandler.DeleteJunior(slea, c);
-                break;
-            case DELETE_SENIOR:
-                FamilyHandler.DeleteSenior(slea, c);
-                break;
-            case USE_FAMILY:
-                FamilyHandler.UseFamily(slea, c);
-                break;
-            case FAMILY_PRECEPT:
-                FamilyHandler.FamilyPrecept(slea, c);
-                break;
-            case FAMILY_SUMMON:
-                FamilyHandler.FamilySummon(slea, c);
-                break;
-            case ACCEPT_FAMILY:
-                FamilyHandler.AcceptFamily(slea, c);
-                break;
             case SOLOMON:
                 PlayersHandler.Solomon(slea, c);
                 break;

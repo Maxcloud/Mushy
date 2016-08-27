@@ -78,7 +78,6 @@ public class ShutdownServer implements ShutdownServerMBean {
              }*/
             World.Guild.save();
             World.Alliance.save();
-            World.Family.save();
             System.out.println("Shutdown 1 has completed. Hired merchants saved: " + ret);
             mode++;
         } else if (mode == 1) {
