@@ -1811,7 +1811,7 @@ public class MapleStatEffect implements Serializable {
             applyto.getMap().spawnExtractor(applyto.getExtractor());
         } else if (isMistEruption()) {
             int i = info.get(MapleStatInfo.y);
-            for (MapleMist m : applyto.getMap().getAllMistsThreadsafe()) {
+            for (MapleMist m : applyto.getMap().getAllMists()) {
                 if (m.getOwnerId() == applyto.getId() && m.getSourceSkill().getId() == 2111003) {
                     if (m.getSchedule() != null) {
                         m.getSchedule().cancel(false);
@@ -1912,14 +1912,14 @@ public class MapleStatEffect implements Serializable {
         } else if (cp != 0 && applyto.getCarnivalParty() != null) {
             applyto.getCarnivalParty().addCP(applyto, cp);
             applyto.CPUpdate(false, applyto.getAvailableCP(), applyto.getTotalCP(), 0);
-            for (MapleCharacter chr : applyto.getMap().getCharactersThreadsafe()) {
+            for (MapleCharacter chr : applyto.getMap().getCharacters()) {
                 chr.CPUpdate(true, applyto.getCarnivalParty().getAvailableCP(), applyto.getCarnivalParty().getTotalCP(), applyto.getCarnivalParty().getTeam());
             }
         } else if (nuffSkill != 0 && applyto.getParty() != null) {
             final MCSkill skil = MapleCarnivalFactory.getInstance().getSkill(nuffSkill);
             if (skil != null) {
                 final MapleDisease dis = skil.getDisease();
-                for (MapleCharacter chr : applyto.getMap().getCharactersThreadsafe()) {
+                for (MapleCharacter chr : applyto.getMap().getCharacters()) {
                     if (applyto.getParty() == null || chr.getParty() == null || (chr.getParty().getId() != applyto.getParty().getId())) {
                         if (skil.targetsAll || Randomizer.nextBoolean()) {
                             if (dis == null) {
@@ -1939,7 +1939,7 @@ public class MapleStatEffect implements Serializable {
         } else if ((effectedOnEnemy > 0 || effectedOnAlly > 0) && primary && applyto.inPVP()) {
             final int eventType = Integer.parseInt(applyto.getEventInstance().getProperty("type"));
             if (eventType > 0 || effectedOnEnemy > 0) {
-                for (MapleCharacter chr : applyto.getMap().getCharactersThreadsafe()) {
+                for (MapleCharacter chr : applyto.getMap().getCharacters()) {
                     if (chr.getId() != applyto.getId() && (effectedOnAlly > 0 ? (chr.getTeam() == applyto.getTeam()) : (chr.getTeam() != applyto.getTeam() || eventType == 0))) {
                         applyTo(applyto, chr, false, pos, newDuration);
                     }
@@ -1948,7 +1948,7 @@ public class MapleStatEffect implements Serializable {
         } else if (mobSkill > 0 && mobSkillLevel > 0 && primary && applyto.inPVP()) {
             if (effectedOnEnemy > 0) {
                 final int eventType = Integer.parseInt(applyto.getEventInstance().getProperty("type"));
-                for (MapleCharacter chr : applyto.getMap().getCharactersThreadsafe()) {
+                for (MapleCharacter chr : applyto.getMap().getCharacters()) {
                     if (chr.getId() != applyto.getId() && (chr.getTeam() != applyto.getTeam() || eventType == 0)) {
                         chr.disease(mobSkill, mobSkillLevel);
                     }
@@ -2165,7 +2165,7 @@ public class MapleStatEffect implements Serializable {
                 }
             }
         } else if (familiarTarget == 3 && primary) {
-            for (MapleCharacter mc : applyfrom.getMap().getCharactersThreadsafe()) {
+            for (MapleCharacter mc : applyfrom.getMap().getCharacters()) {
                 if (mc.getId() != applyfrom.getId()) {
                     applyTo(applyfrom, mc, false, null, newDuration);
                 }
@@ -2238,14 +2238,14 @@ public class MapleStatEffect implements Serializable {
         if (isSoulStone() && sourceid != 24111002) {
             if (applyfrom.getParty() != null) {
                 int membrs = 0;
-                for (MapleCharacter chr : applyfrom.getMap().getCharactersThreadsafe()) {
+                for (MapleCharacter chr : applyfrom.getMap().getCharacters()) {
                     if (!chr.isClone() && chr.getParty() != null && chr.getParty().getId() == applyfrom.getParty().getId() && chr.isAlive()) {
                         membrs++;
                     }
                 }
                 List<MapleCharacter> awarded = new ArrayList<>();
                 while (awarded.size() < Math.min(membrs, info.get(MapleStatInfo.y))) {
-                    for (MapleCharacter chr : applyfrom.getMap().getCharactersThreadsafe()) {
+                    for (MapleCharacter chr : applyfrom.getMap().getCharacters()) {
                         if (chr != null && !chr.isClone() && chr.isAlive() && chr.getParty() != null && chr.getParty().getId() == applyfrom.getParty().getId() && !awarded.contains(chr) && Randomizer.nextInt(info.get(MapleStatInfo.y)) == 0) {
                             awarded.add(chr);
                         }

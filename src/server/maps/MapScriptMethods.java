@@ -1751,13 +1751,13 @@ public class MapScriptMethods {
                     MapleMapFactory mf = c.getChannelServer().getMapFactory();
                     int q = 0;
                     for (int i = 0; i < 5; i++) {
-                        q += mf.getMap(922010401 + i).getAllMonstersThreadsafe().size();
+                        q += mf.getMap(922010401 + i).getAllMonster().size();
                     }
                     if (q > 0) {
                         c.getPlayer().dropMessage(-1, "There are still " + q + " monsters remaining.");
                     }
                 } else if (c.getPlayer().getMapId() >= 922010401 && c.getPlayer().getMapId() <= 922010405) {
-                    if (c.getPlayer().getMap().getAllMonstersThreadsafe().size() > 0) {
+                    if (c.getPlayer().getMap().getAllMonster().size() > 0) {
                         c.getPlayer().dropMessage(-1, "There are still some monsters remaining in this map.");
                     } else {
                         c.getPlayer().dropMessage(-1, "There are no monsters remaining in this map.");

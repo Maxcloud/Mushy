@@ -136,7 +136,7 @@ public class SpawnPoint extends Spawns {
         });
         map.spawnMonster(mob, -2);
         if (carnivalTeam > -1) {
-            for (MapleReactor r : map.getAllReactorsThreadsafe()) { //parsing through everytime a monster is spawned? not good idea
+            for (MapleReactor r : map.getAllReactor()) { //parsing through everytime a monster is spawned? not good idea
                 if (r.getName().startsWith(String.valueOf(carnivalTeam)) && r.getReactorId() == (9980000 + carnivalTeam) && r.getState() < 5) {
                     final int num = Integer.parseInt(r.getName().substring(1, 2)); //00, 01, etc
                     final MCSkill skil = MapleCarnivalFactory.getInstance().getGuardian(num);
@@ -146,7 +146,7 @@ public class SpawnPoint extends Spawns {
                 }
             }
         }
-        for (MapleSummon s : map.getAllSummonsThreadsafe()) {
+        for (MapleSummon s : map.getAllSummons()) {
             if (s.getSkill() == 35111005) {
                 final MapleStatEffect effect = SkillFactory.getSkill(s.getSkill()).getEffect(s.getSkillLevel());
                 for (Map.Entry<MonsterStatus, Integer> stat : effect.getMonsterStati().entrySet()) {

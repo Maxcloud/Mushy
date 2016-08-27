@@ -7404,10 +7404,10 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void removeDoor() {
         final MapleDoor door = getDoors().iterator().next();
-        for (final MapleCharacter chr : door.getTarget().getCharactersThreadsafe()) {
+        for (final MapleCharacter chr : door.getTarget().getCharacters()) {
             door.sendDestroyData(chr.getClient());
         }
-        for (final MapleCharacter chr : door.getTown().getCharactersThreadsafe()) {
+        for (final MapleCharacter chr : door.getTown().getCharacters()) {
             door.sendDestroyData(chr.getClient());
         }
         for (final MapleDoor destroyDoor : getDoors()) {
@@ -7419,7 +7419,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void removeMechDoor() {
         for (final MechDoor destroyDoor : getMechDoors()) {
-            for (final MapleCharacter chr : getMap().getCharactersThreadsafe()) {
+            for (final MapleCharacter chr : getMap().getCharacters()) {
                 destroyDoor.sendDestroyData(chr.getClient());
             }
             getMap().removeMapObject(destroyDoor);
@@ -8581,7 +8581,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         final MapleStatEffect eff = skk.getEffect(getTotalSkillLevel(skk));
 
         if (eff.isMonsterBuff() || (eff.getStatups().isEmpty() && !eff.getMonsterStati().isEmpty())) {
-            for (MapleMonster mons : map.getAllMonstersThreadsafe()) {
+            for (MapleMonster mons : map.getAllMonster()) {
                 for (MonsterStatus b : eff.getMonsterStati().keySet()) {
                     if (mons.isBuffed(b) && mons.getBuff(b).getFromID() == this.id) {
                         mons.cancelStatus(b);
@@ -8589,7 +8589,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 }
             }
         } else if (eff.getDuration() > 0 && !eff.getStatups().isEmpty()) {
-            for (MapleCharacter chr : map.getCharactersThreadsafe()) {
+            for (MapleCharacter chr : map.getCharacters()) {
                 chr.cancelEffect(eff, false, -1, eff.getStatups());
 
             }
@@ -9281,7 +9281,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
     
                     public void HandleOtherluminous() {
-                    for (MapleCharacter chr : map.getCharactersThreadsafe()) {
+                    for (MapleCharacter chr : map.getCharacters()) {
                     MapleStatEffect Sunfire = SkillFactory.getSkill(20040216).getEffect(getSkillLevel(20040216));
                     MapleStatEffect Eclipse = SkillFactory.getSkill(20040217).getEffect(getSkillLevel(20040217));
                     AttackInfo attack = null;
@@ -9613,7 +9613,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
 
     public void giveMiracleBlessing() {
-        for (MapleCharacter chr : getMap().getCharactersThreadsafe()) {
+        for (MapleCharacter chr : getMap().getCharacters()) {
             MapleItemInformationProvider.getInstance().getItemEffect(2023055).applyTo(chr);
         }
         getMap().broadcastMessage(CField.startMapEffect(name + " has received Double Miracle Time's Mysterious Blessing. Congratulations!", 2023055, true));

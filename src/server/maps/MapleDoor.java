@@ -96,7 +96,7 @@ public class MapleDoor extends MapleMapObject {
                 }
             }
         });
-        for (final MapleMapObject obj : town.getAllDoorsThreadsafe()) {
+        for (final MapleMapObject obj : town.getAllDoor()) {
             final MapleDoor door = (MapleDoor) obj;
             /// hmm
             if (door.getOwner() != null && door.getOwner().getParty() != null && getOwner() != null && getOwner().getParty() != null && getOwner().getParty().getId() == door.getOwner().getParty().getId()) {

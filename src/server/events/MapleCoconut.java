@@ -151,7 +151,7 @@ public class MapleCoconut extends MapleEvent {
                 if (getMapleScore() == getStoryScore()) {
                     bonusTime();
                 } else {
-                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                    for (MapleCharacter chr : getMap(0).getCharacters()) {
                         if (chr.getTeam() == (getMapleScore() > getStoryScore() ? 0 : 1)) {
                             chr.getClient().getSession().write(CField.showMapEffect("event/coconut/victory"));
                             chr.getClient().getSession().write(CField.playSound("Coconut/Victory"));
@@ -173,13 +173,13 @@ public class MapleCoconut extends MapleEvent {
             @Override
             public void run() {
                 if (getMapleScore() == getStoryScore()) {
-                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                    for (MapleCharacter chr : getMap(0).getCharacters()) {
                         chr.getClient().getSession().write(CField.showMapEffect("event/coconut/lose"));
                         chr.getClient().getSession().write(CField.playSound("Coconut/Failed"));
                     }
                     warpOut();
                 } else {
-                    for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                    for (MapleCharacter chr : getMap(0).getCharacters()) {
                         if (chr.getTeam() == (getMapleScore() > getStoryScore() ? 0 : 1)) {
                             chr.getClient().getSession().write(CField.showMapEffect("event/coconut/victory"));
                             chr.getClient().getSession().write(CField.playSound("Coconut/Victory"));
@@ -201,7 +201,7 @@ public class MapleCoconut extends MapleEvent {
 
             @Override
             public void run() {
-                for (MapleCharacter chr : getMap(0).getCharactersThreadsafe()) {
+                for (MapleCharacter chr : getMap(0).getCharacters()) {
                     if ((getMapleScore() > getStoryScore() && chr.getTeam() == 0) || (getStoryScore() > getMapleScore() && chr.getTeam() == 1)) {
                         givePrize(chr);
                     }

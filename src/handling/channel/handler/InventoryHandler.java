@@ -4362,7 +4362,7 @@ case 2431935: {
 
                     final int buff = ii.getStateChangeItem(itemId);
                     if (buff != 0) {
-                        for (MapleCharacter mChar : c.getPlayer().getMap().getCharactersThreadsafe()) {
+                        for (MapleCharacter mChar : c.getPlayer().getMap().getCharacters()) {
                             ii.getItemEffect(buff).applyTo(mChar);
                         }
                     }
@@ -4788,7 +4788,7 @@ case 2431935: {
                 List<MapleMapObject> objects;
                 switch (OWL_ID) {
                     case 0:
-                        objects = mapp.getAllHiredMerchantsThreadsafe();
+                        objects = mapp.getAllMerchant();
                         for (MapleMapObject ob : objects) {
                             if (ob instanceof IMaplePlayerShop) {
                                 final IMaplePlayerShop ips = (IMaplePlayerShop) ob;
@@ -4803,7 +4803,7 @@ case 2431935: {
                         }
                         break;
                     case 1:
-                        objects = mapp.getAllHiredMerchantsThreadsafe();
+                        objects = mapp.getAllMerchant();
                         for (MapleMapObject ob : objects) {
                             if (ob instanceof IMaplePlayerShop) {
                                 final IMaplePlayerShop ips = (IMaplePlayerShop) ob;

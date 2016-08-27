@@ -139,12 +139,12 @@ public class GMCommand {
                     return 0;
                 }
                 final MapleMap from = c.getPlayer().getMap();
-                for (MapleCharacter chr : from.getCharactersThreadsafe()) {
+                for (MapleCharacter chr : from.getCharacters()) {
                     chr.changeMap(target, target.getPortal(0));
                 }
             } catch (NumberFormatException e) {
                 c.getPlayer().dropMessage(5, "Error: " + e.getMessage());
-                return 0; //assume drunk GM
+                return 0;
             }
             return 1;
         }
@@ -624,7 +624,7 @@ public class GMCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (MapleCharacter map : c.getPlayer().getMap().getCharactersThreadsafe()) {
+            for (MapleCharacter map : c.getPlayer().getMap().getCharacters()) {
                 if (map != null && !map.isIntern()) {
                     map.getStat().setHp((short) 0, map);
                     map.getStat().setMp((short) 0, map);
@@ -1166,7 +1166,7 @@ public class GMCommand {
                 }
                 victim.disease(type, CommandProcessorUtil.getOptionalIntArg(splitted, 3, 1));
             } else {
-                for (MapleCharacter victim : c.getPlayer().getMap().getCharactersThreadsafe()) {
+                for (MapleCharacter victim : c.getPlayer().getMap().getCharacters()) {
                     victim.disease(type, CommandProcessorUtil.getOptionalIntArg(splitted, 3, 1));
                 }
             }
@@ -1243,8 +1243,8 @@ public class GMCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            StringBuilder builder = new StringBuilder("Players on Map: ").append(c.getPlayer().getMap().getCharactersThreadsafe().size()).append(", ");
-            for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
+            StringBuilder builder = new StringBuilder("Players on Map: ").append(c.getPlayer().getMap().getCharacters().size()).append(", ");
+            for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
                 if (builder.length() > 150) { // wild guess :o
                     builder.setLength(builder.length() - 2);
                     c.getPlayer().dropMessage(6, builder.toString());
@@ -1497,7 +1497,7 @@ public class GMCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllNPCsThreadsafe()) {
+            for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllNPCs()) {
                 MapleNPC reactor2l = (MapleNPC) reactor1l;
                 c.getPlayer().dropMessage(5, "NPC: oID: " + reactor2l.getObjectId() + " npcID: " + reactor2l.getId() + " Position: " + reactor2l.getPosition().toString() + " Name: " + reactor2l.getName());
             }
@@ -1509,7 +1509,7 @@ public class GMCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllReactorsThreadsafe()) {
+            for (MapleMapObject reactor1l : c.getPlayer().getMap().getAllReactor()) {
                 MapleReactor reactor2l = (MapleReactor) reactor1l;
                 c.getPlayer().dropMessage(5, "Reactor: oID: " + reactor2l.getObjectId() + " reactorID: " + reactor2l.getReactorId() + " Position: " + reactor2l.getPosition().toString() + " State: " + reactor2l.getState() + " Name: " + reactor2l.getName());
             }
@@ -1712,7 +1712,7 @@ public class GMCommand {
 
         @Override
         public int execute(MapleClient c, String splitted[]) {
-            for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
+            for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
                 chr.canTalk(false);
             }
             return 1;
@@ -1723,7 +1723,7 @@ public class GMCommand {
 
         @Override
         public int execute(MapleClient c, String splitted[]) {
-            for (MapleCharacter chr : c.getPlayer().getMap().getCharactersThreadsafe()) {
+            for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
                 chr.canTalk(true);
             }
             return 1;

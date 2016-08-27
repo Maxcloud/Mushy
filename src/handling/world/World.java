@@ -1570,7 +1570,7 @@ public class World {
 
     public static void handleMap(final MapleMap map, final int numTimes, final int size, final long now) {
         if (map.getItemsSize() > 0) {
-            for (MapleMapItem item : map.getAllItemsThreadsafe()) {
+            for (MapleMapItem item : map.getAllItems()) {
                 if (item.shouldExpire(now)) {
                     item.expire(map);
                 } else if (item.shouldFFA(now)) {
@@ -1583,11 +1583,11 @@ public class World {
                 map.respawn(false, now);
             }
             boolean hurt = map.canHurt(now);
-            for (MapleCharacter chr : map.getCharactersThreadsafe()) {
+            for (MapleCharacter chr : map.getCharacters()) {
                 handleCooldowns(chr, numTimes, hurt, now);
             }
             if (map.getMobsSize() > 0) {
-                for (MapleMonster mons : map.getAllMonstersThreadsafe()) {
+                for (MapleMonster mons : map.getAllMonster()) {
                     if (mons.isAlive() && mons.shouldKill(now)) {
                         map.killMonster(mons);
                     } else if (mons.isAlive() && mons.shouldDrop(now)) {

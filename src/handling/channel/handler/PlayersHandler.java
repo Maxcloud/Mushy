@@ -163,7 +163,7 @@ public class PlayersHandler {
         final int oid = slea.readInt();
         final boolean mode = slea.readByte() == 0; // specifies if backwarp or not, 1 town to target, 0 target to town
 
-        for (MapleMapObject obj : chr.getMap().getAllDoorsThreadsafe()) {
+        for (MapleMapObject obj : chr.getMap().getAllDoor()) {
             final MapleDoor door = (MapleDoor) obj;
             if (door.getOwnerId() == oid) {
                 door.warp(chr, mode);
@@ -177,7 +177,7 @@ public class PlayersHandler {
         final Point pos = slea.readPos();
         final int mode = slea.readByte(); // specifies if backwarp or not, 1 town to target, 0 target to town
         chr.getClient().getSession().write(CWvsContext.enableActions());
-        for (MapleMapObject obj : chr.getMap().getAllMechDoorsThreadsafe()) {
+        for (MapleMapObject obj : chr.getMap().getAllMechDoors()) {
             final MechDoor door = (MechDoor) obj;
             if (door.getOwnerId() == oid && door.getId() == mode) {
                 chr.checkFollow();
@@ -1685,7 +1685,7 @@ public class PlayersHandler {
                 return true;
             }
         }
-        for (MapleMist mist : chr.getMap().getAllMistsThreadsafe()) {
+        for (MapleMist mist : chr.getMap().getAllMists()) {
             if (mist.getOwnerId() == chr.getId() && mist.isPoisonMist() == 2 && mist.getBox().contains(chr.getTruePosition())) {
                 return true;
             }
