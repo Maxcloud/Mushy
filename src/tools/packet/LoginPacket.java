@@ -64,7 +64,7 @@ public class LoginPacket {
         mplew.write(0);
         mplew.write(0);
         mplew.writeInt(2);
-        mplew.writeInt(0);
+        mplew.writeLong(0);
         mplew.write(1); // if 0, writeMapleAsciiString(CensoredNxLoginID)
         mplew.write(0);
         // mplew.write0(7); //gm stuff and new int
