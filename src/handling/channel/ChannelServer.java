@@ -44,6 +44,7 @@ import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
 
 import client.MapleCharacter;
+import constants.EventConstants;
 import constants.ServerConfig;
 import constants.WorldConstants.WorldOption;
 import handling.MapleServerHandler;
@@ -120,7 +121,7 @@ public class ChannelServer {
         try {
             serverMessage = ServerConfig.scrollingMessage;
             serverName = ServerConfig.serverName;
-            eventSM = new EventScriptManager(this, ServerConfig.events.split(","));
+            eventSM = new EventScriptManager(this, EventConstants.getEvents().split(","));
             port = (short) (DEFAULT_PORT + channel);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -263,7 +264,7 @@ public class ChannelServer {
 
     public final void reloadEvents() {
         eventSM.cancel();
-        eventSM = new EventScriptManager(this, ServerConfig.events.split(","));
+        eventSM = new EventScriptManager(this, EventConstants.getEvents().split(","));
         eventSM.init();
     }
 
