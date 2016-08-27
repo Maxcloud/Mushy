@@ -16,8 +16,7 @@ import server.movement.StaticLifeMovement;
 import tools.Randomizer;
 import tools.Triple;
 
-public class MapleAndroid
-        implements Serializable {
+public class MapleAndroid implements Serializable {
 
     private static final long serialVersionUID = 9179541993413738569L;
     private int stance = 0;

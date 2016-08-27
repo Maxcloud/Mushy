@@ -27,7 +27,6 @@ import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.ServerConstants.PlayerGMRank;
 import handling.channel.ChannelServer;
-import handling.world.CheaterData;
 import handling.world.World;
 import script.event.EventInstanceManager;
 import script.event.EventManager;

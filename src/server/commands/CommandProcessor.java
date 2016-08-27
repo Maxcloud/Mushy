@@ -20,21 +20,16 @@
  */
 package server.commands;
 
-import client.MapleCharacter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 import client.MapleClient;
 import constants.ServerConstants.CommandType;
 import constants.ServerConstants.PlayerGMRank;
 import handling.channel.ChannelServer;
-import net.DatabaseConnection;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import tools.FileoutputUtil;
 
 public class CommandProcessor {
 

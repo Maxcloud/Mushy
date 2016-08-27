@@ -1,6 +1,5 @@
 package server.commands;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +23,6 @@ import constants.ServerConstants.PlayerGMRank;
 import handling.RecvPacketOpcode;
 import handling.SendPacketOpcode;
 import handling.channel.ChannelServer;
-import handling.world.CheaterData;
 import handling.world.World;
 import lib.data.MapleData;
 import lib.data.MapleDataProvider;
