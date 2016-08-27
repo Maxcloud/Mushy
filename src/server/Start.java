@@ -9,7 +9,7 @@ import java.util.Properties;
 import client.SkillFactory;
 import client.inventory.MapleInventoryIdentifier;
 import constants.GameConstants;
-import constants.ServerConfig;
+import constants.ServerConstants;
 import constants.WorldConstants.WorldOption;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
@@ -50,18 +50,18 @@ public class Start extends Properties {
             System.exit(0);
         }
         
-        ServerConfig.interface_ = p.getProperty("ip");
-        ServerConfig.serverName = p.getProperty("name");
-        ServerConfig.eventMessage = p.getProperty("event");
-        ServerConfig.scrollingMessage = p.getProperty("message");
-        ServerConfig.maxCharacters = getByte(p, "characters");
-        ServerConfig.userLimit = getShort(p, "users");
-        ServerConfig.channelCount = getByte(p, "channels");
+        ServerConstants.HOST = p.getProperty("ip");
+        ServerConstants.SERVERNAME = p.getProperty("name");
+        ServerConstants.EVENTMESSAGE = p.getProperty("event");
+        ServerConstants.SCROLLINGMESSAGE = p.getProperty("message");
+        ServerConstants.MAXCHARACTERS = getByte(p, "characters");
+        ServerConstants.USERLIMIT = getShort(p, "users");
+        ServerConstants.CHANNELCOUNT = getByte(p, "channels");
         
-        ServerConfig.port = p.getProperty("sql_port");
-        ServerConfig.user = p.getProperty("sql_user");
-        ServerConfig.pass = p.getProperty("sql_password");
-        ServerConfig.database = p.getProperty("sql_db");
+        ServerConstants.PORT = p.getProperty("sql_port");
+        ServerConstants.USER = p.getProperty("sql_user");
+        ServerConstants.PASS = p.getProperty("sql_password");
+        ServerConstants.DATABASE = p.getProperty("sql_db");
         
         System.setProperty("wzpath", p.getProperty("wzpath"));
 
@@ -74,12 +74,8 @@ public class Start extends Properties {
         }
 
         World.init();
-        int servers = 0;
-
         for (WorldOption server : WorldOption.values()) {
-            if (server.show()) {
-                servers++;
-            }
+             server.show();
         }
         
         System.out.print("Init...\r\n");
@@ -159,11 +155,8 @@ public class Start extends Properties {
     {
        Byte value = null;
        String string = p.getProperty(key);
-       if (string != null) {
+       if (string != null)
           value = new Byte(string);
-       } else {
-    	   System.out.println("The byte was null.");
-       }
        return value;
     }
     

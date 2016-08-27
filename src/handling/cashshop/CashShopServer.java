@@ -1,18 +1,19 @@
 package handling.cashshop;
 
-import constants.ServerConfig;
-import handling.MapleServerHandler;
-import handling.channel.PlayerStorage;
-import net.mina.MapleCodecFactory;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
+
 import org.apache.mina.common.ByteBuffer;
 import org.apache.mina.common.IoAcceptor;
 import org.apache.mina.common.SimpleByteBufferAllocator;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.SocketAcceptor;
 import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
+
+import constants.ServerConstants;
+import handling.MapleServerHandler;
+import handling.channel.PlayerStorage;
+import net.mina.MapleCodecFactory;
 
 public class CashShopServer {
 
@@ -24,7 +25,7 @@ public class CashShopServer {
     private static boolean finishedShutdown = false;
 
     public static void run_startup_configurations() {
-        ip = ServerConfig.interface_ + ":" + PORT;
+        ip = ServerConstants.HOST + ":" + PORT;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());

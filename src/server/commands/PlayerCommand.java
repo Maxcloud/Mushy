@@ -6,7 +6,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleStat;
 import constants.GameConstants;
-import constants.ServerConfig;
 import constants.ServerConstants.PlayerGMRank;
 import handling.channel.ChannelServer;
 import script.npc.NPCScriptManager;
@@ -148,6 +147,8 @@ public class PlayerCommand {
 				int hair = amount;
 				player.setSecondHair(hair);
 				player.updateSingleStat(MapleStat.HAIR, player.getSecondHair());
+				break;
+			default:
 				break;
 			}
 		}

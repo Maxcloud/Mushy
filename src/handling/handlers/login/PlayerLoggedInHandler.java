@@ -9,7 +9,6 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import constants.ServerConfig;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.cashshop.CashShopServer;
@@ -24,6 +23,7 @@ import server.quest.MapleQuestStatus;
 import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
+import tools.packet.CWvsContext;
 
 public class PlayerLoggedInHandler {
 
@@ -212,7 +212,6 @@ public class PlayerLoggedInHandler {
 		/// c.getSession().write(CField.quickSlot(stat != null && stat.getCustomData() != null ? stat.getCustomData() : null));
 		// c.getSession().write(CWvsContext.getFamiliarInfo(player));
 		MapleInventory equipped = player.getInventory(MapleInventoryType.EQUIPPED);
-		MapleInventory equip = player.getInventory(MapleInventoryType.EQUIP);
 		List<Short> slots = new ArrayList<>();
 		for (Item item : equipped.newList()) {
 			slots.add(item.getPosition());
@@ -222,22 +221,6 @@ public class PlayerLoggedInHandler {
 				MapleInventoryManipulator.removeFromSlot(player.getClient(), MapleInventoryType.EQUIPPED, slot, (short) 1, false);
 			}
 		}
-		// c.getSession().write(CWvsContext.shopDiscount(ServerConstants.SHOP_DISCOUNT));
-		// List<Pair<Integer, String>> npcs = new ArrayList<>();
-		// npcs.add(new Pair<>(9070006, "Why...why has this happened to me?
-		// My knightly honor... My knightly pride..."));
-		// npcs.add(new Pair<>(9000021, "Are you enjoying the event?"));
-		// c.getSession().write(NPCPacket.setNpcScriptable(npcs));
-		// c.getSession().write(NPCPacket.setNPCScriptable());
-		// player.updateReward();
-		// player.setDeathCount(99);
-		// c.getSession().write(CField.EffectPacket.updateDeathCount(99));
-		// //for fun
-		// player.getClient().getSession().write(CWvsContext.broadcastMsg(channelServer.getServerMessage()));
-		if (c.getPlayer().getLevel() < 11 && ServerConfig.RED_EVENT_10) {
-			// NPCScriptManager.getInstance().start(c, 9000108, "LoginTot");
-		} else if (c.getPlayer().getLevel() > 10 && ServerConfig.RED_EVENT) {
-			// NPCScriptManager.getInstance().start(c, 9000108, "LoginRed");
-		}
+		player.getClient().getSession().write(CWvsContext.broadcastMsg(channelServer.getServerMessage()));
 	}
 }

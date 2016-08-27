@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import constants.ServerConfig;
+import constants.ServerConstants;
 
 /**
  * All servers maintain a Database Connection. This class therefore
@@ -121,7 +121,7 @@ public class DatabaseConnection {
         @Override
         protected Connection initialValue() {
             try {
-                return DriverManager.getConnection("jdbc:mysql://127.0.0.1:" + ServerConfig.port + "/" + ServerConfig.database + "?autoReconnect=true&useSSL=false", ServerConfig.user, ServerConfig.pass);
+                return DriverManager.getConnection("jdbc:mysql://127.0.0.1:" + ServerConstants.PORT + "/" + ServerConstants.DATABASE + "?autoReconnect=true&useSSL=false", ServerConstants.USER, ServerConstants.PASS);
             } catch (SQLException e) {
                 System.out.println("[SEVERE] Unable to make net.db connection.");
                 e.printStackTrace();

@@ -45,7 +45,7 @@ import org.apache.mina.transport.socket.nio.SocketAcceptorConfig;
 
 import client.MapleCharacter;
 import constants.EventConstants;
-import constants.ServerConfig;
+import constants.ServerConstants;
 import constants.WorldConstants.WorldOption;
 import handling.MapleServerHandler;
 import handling.login.LoginServer;
@@ -119,14 +119,14 @@ public class ChannelServer {
     private final void run_startup_configurations() {
         setChannel(channel); //instances.put
         try {
-            serverMessage = ServerConfig.scrollingMessage;
-            serverName = ServerConfig.serverName;
+            serverMessage = ServerConstants.SCROLLINGMESSAGE;
+            serverName = ServerConstants.SERVERNAME;
             eventSM = new EventScriptManager(this, EventConstants.getEvents().split(","));
             port = (short) (DEFAULT_PORT + channel);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ip = ServerConfig.interface_ + ":" + port;
+        ip = ServerConstants.HOST + ":" + port;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
@@ -283,7 +283,7 @@ public class ChannelServer {
     public static void startChannel_Main() {
         serverStartTime = System.currentTimeMillis();
 
-        for (int i = 0; i < ServerConfig.channelCount; i++) {
+        for (int i = 0; i < ServerConstants.CHANNELCOUNT; i++) {
             newInstance(i + 1).run_startup_configurations();
         }
     }

@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package constants;
-import constants.ServerConfig;
 
 /**
  *
@@ -61,9 +60,9 @@ public class WorldConstants {
 
         WorldOption(int world, byte flag, boolean show, int channels) {
             this.world = world;
-            this.exp = ServerConfig.EXP;
-            this.meso = ServerConfig.MESO;
-            this.drop =ServerConfig.DROP;
+            this.exp = ServerConstants.EXP;
+            this.meso = ServerConstants.MESO;
+            this.drop = ServerConstants.DROP;
             this.flag = flag;
             this.show = show;
             this.available = show;
@@ -85,9 +84,9 @@ public class WorldConstants {
 
         WorldOption(int world, int exp, int meso, int drop, byte flag, boolean show, boolean available, int channels, String worldtip) {
             this.world = world;
-            this.exp = ServerConfig.EXP;
-            this.meso = ServerConfig.MESO;
-            this.drop =ServerConfig.DROP;
+            this.exp = ServerConstants.EXP;
+            this.meso = ServerConstants.MESO;
+            this.drop = ServerConstants.DROP;
             this.flag = flag;
             this.show = show;
             this.available = available;
