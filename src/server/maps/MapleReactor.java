@@ -24,7 +24,7 @@ import java.awt.Rectangle;
 
 import client.MapleClient;
 import script.reactor.ReactorScriptManager;
-import server.Timer.MapTimer;
+import server.TimerManager;
 import tools.Pair;
 import tools.packet.CField;
 
@@ -150,7 +150,7 @@ public class MapleReactor extends MapleMapObject {
     }
 
     public void delayedDestroyReactor(long delay) {
-        MapTimer.getInstance().schedule(new Runnable() {
+    	TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 map.destroyReactor(getObjectId());
@@ -217,7 +217,7 @@ public class MapleReactor extends MapleMapObject {
     }
 
     public void delayedHitReactor(final MapleClient c, long delay) {
-        MapTimer.getInstance().schedule(new Runnable() {
+    	TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 hitReactor(c);
@@ -226,7 +226,7 @@ public class MapleReactor extends MapleMapObject {
     }
 
     public void scheduleSetState(final byte oldState, final byte newState, long delay) {
-        MapTimer.getInstance().schedule(new Runnable() {
+    	TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 if (MapleReactor.this.state == oldState) {

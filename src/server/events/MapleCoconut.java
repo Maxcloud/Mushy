@@ -21,10 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package server.events;
 
-import client.MapleCharacter;
 import java.util.LinkedList;
 import java.util.List;
-import server.Timer.EventTimer;
+
+import client.MapleCharacter;
+import server.TimerManager;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 
@@ -144,7 +145,7 @@ public class MapleCoconut extends MapleEvent {
         getMap(0).broadcastMessage(CField.hitCoconut(true, 0, 0));
         getMap(0).broadcastMessage(CField.getClock(300));
 
-        EventTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {
@@ -168,7 +169,7 @@ public class MapleCoconut extends MapleEvent {
 
     public void bonusTime() {
         getMap(0).broadcastMessage(CField.getClock(60));
-        EventTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {
@@ -197,7 +198,7 @@ public class MapleCoconut extends MapleEvent {
 
     public void warpOut() {
         setHittable(false);
-        EventTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {

@@ -27,8 +27,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MaplePortal;
 import server.MapleStatEffect;
-import server.Timer;
-import server.Timer.CloneTimer;
+import server.TimerManager;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
 import server.events.MapleSnowball;
@@ -1330,7 +1329,7 @@ public class PlayerHandler {
 				final double maxdamage2 = maxdamage;
 				final MapleStatEffect eff2 = effect;
 				final AttackInfo attack2 = DamageParse.DivideAttack(attack, chr.isGM() ? 1 : 4);
-				Timer.CloneTimer.getInstance().schedule(new Runnable() {
+				TimerManager.getInstance().schedule(new Runnable() {
 					@Override
 					public void run() {
 						if (!clone.isHidden()) {
@@ -1696,7 +1695,7 @@ public class PlayerHandler {
 				final int visProjectile2 = visProjectile;
 				final int skillLevel2 = skillLevel;
 				final AttackInfo attack2 = DamageParse.DivideAttack(attack, chr.isGM() ? 1 : 4);
-				Timer.CloneTimer.getInstance().schedule(new Runnable() {
+				TimerManager.getInstance().schedule(new Runnable() {
 					@Override
 					public void run() {
 						if (!clone.isHidden()) {
@@ -1837,7 +1836,7 @@ public class PlayerHandler {
 				final double maxd = maxdamage;
 				final int skillLevel2 = skillLevel;
 				final AttackInfo attack2 = DamageParse.DivideAttack(attack, chr.isGM() ? 1 : 4);
-				Timer.CloneTimer.getInstance().schedule(new Runnable() {
+				TimerManager.getInstance().schedule(new Runnable() {
 					@Override
 					public void run() {
 						if (!clone.isHidden()) {
@@ -1959,7 +1958,7 @@ public class PlayerHandler {
 			for (int i = 0; i < clones.length; i++) {
 				if (clones[i].get() != null) {
 					final MapleCharacter clone = clones[i].get();
-					CloneTimer.getInstance().schedule(new Runnable() {
+					TimerManager.getInstance().schedule(new Runnable() {
 						@Override
 						public void run() {
 							clone.getMap().broadcastMessage(CField.facialExpression(clone, emote));

@@ -10,7 +10,7 @@ import client.MapleClient;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.channel.handler.MovementParse;
-import server.Timer;
+import server.TimerManager;
 import server.maps.MapleMap;
 import server.movement.LifeMovementFragment;
 import tools.data.LittleEndianAccessor;
@@ -77,7 +77,7 @@ public class MovePlayerHandler {
                 if (clones[i].get() != null) {
                     final MapleCharacter clone = clones[i].get();
                     final List<LifeMovementFragment> res3 = res;
-                    Timer.CloneTimer.getInstance().schedule(new Runnable() {
+                    TimerManager.getInstance().schedule(new Runnable() {
                         @Override
                         public void run() {
                             try {

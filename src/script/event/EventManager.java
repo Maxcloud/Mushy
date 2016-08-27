@@ -39,7 +39,7 @@ import handling.world.MapleParty;
 import handling.world.MaplePartyCharacter;
 import handling.world.exped.MapleExpedition;
 import server.MapleSquad;
-import server.Timer.EventTimer;
+import server.TimerManager;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
 import server.life.MapleLifeFactory;
@@ -50,7 +50,6 @@ import server.maps.MapleMapFactory;
 import server.maps.MapleMapObject;
 import server.maps.MapleReactor;
 import server.maps.MapleReactorFactory;
-import tools.FileoutputUtil;
 import tools.Randomizer;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
@@ -79,7 +78,7 @@ public class EventManager {
     }
 
     public ScheduledFuture<?> schedule(final String methodName, long delay) {
-        return EventTimer.getInstance().schedule(new Runnable() {
+        return TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {
@@ -93,7 +92,7 @@ public class EventManager {
     }
 
     public ScheduledFuture<?> schedule(final String methodName, long delay, final EventInstanceManager eim) {
-        return EventTimer.getInstance().schedule(new Runnable() {
+        return TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {
@@ -107,7 +106,7 @@ public class EventManager {
     }
 
     public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
-        return EventTimer.getInstance().scheduleAtTimestamp(new Runnable() {
+        return TimerManager.getInstance().scheduleAtTimestamp(new Runnable() {
 
             @Override
             public void run() {
@@ -442,7 +441,7 @@ public class EventManager {
             broadcastYellowMsg(msg);
             return false;
         }
-        EventTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {

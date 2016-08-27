@@ -17,8 +17,8 @@ import client.MapleCharacter;
 import client.MapleCoolDownValueHolder;
 import client.MapleDisease;
 import client.MapleStat;
-import client.MonsterStatus;
 import client.MapleTrait.MapleTraitType;
+import client.MonsterStatus;
 import client.MonsterStatusEffect;
 import client.PlayerStats;
 import client.Skill;
@@ -33,7 +33,6 @@ import handling.world.World;
 import lib.data.MapleData;
 import lib.data.MapleDataTool;
 import lib.data.MapleDataType;
-import server.Timer.BuffTimer;
 import server.buffs.BuffClassFetcher;
 import server.carnival.MapleCarnivalFactory;
 import server.carnival.MapleCarnivalFactory.MCSkill;
@@ -2382,7 +2381,7 @@ public class MapleStatEffect implements Serializable {
                 localstatups.put(MapleBuffStat.MORPH, info.get(MapleStatInfo.x));
             }
             chr.getClient().getSession().write(BuffPacket.giveBuff(localsourceid, getDuration(), localstatups, this));
-            chr.registerEffect(this, starttime, BuffTimer.getInstance().schedule(new CancelEffectAction(chr, this, starttime, localstatups), isSubTime(sourceid) ? getSubTime() : getDuration()), localstatups, false, getDuration(), applyfrom.getId());
+            chr.registerEffect(this, starttime, TimerManager.getInstance().schedule(new CancelEffectAction(chr, this, starttime, localstatups), isSubTime(sourceid) ? getSubTime() : getDuration()), localstatups, false, getDuration(), applyfrom.getId());
         }
     }
 
@@ -2421,7 +2420,7 @@ public class MapleStatEffect implements Serializable {
     }
 
     public final void silentApplyBuff(final MapleCharacter chr, final long starttime, final int localDuration, final Map<MapleBuffStat, Integer> statup, final int cid) {
-        chr.registerEffect(this, starttime, BuffTimer.getInstance().schedule(new CancelEffectAction(chr, this, starttime, statup),
+        chr.registerEffect(this, starttime, TimerManager.getInstance().schedule(new CancelEffectAction(chr, this, starttime, statup),
                 ((starttime + localDuration) - System.currentTimeMillis())), statup, true, localDuration, cid);
 
         final SummonMovementType summonMovementType = getSummonMovementType();
@@ -2485,7 +2484,7 @@ public class MapleStatEffect implements Serializable {
             applyto.cancelEffect(this, true, -1, stat);
             applyto.getMap().broadcastMessage(applyto, BuffPacket.giveEnergyChargeTest(applyto.getId(), 10000, info.get(MapleStatInfo.time) / 1000), false);
             final CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime, stat);
-            final ScheduledFuture<?> schedule = BuffTimer.getInstance().schedule(cancelAction, ((starttime + info.get(MapleStatInfo.time)) - System.currentTimeMillis()));
+            final ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + info.get(MapleStatInfo.time)) - System.currentTimeMillis()));
             applyto.registerEffect(this, starttime, schedule, stat, false, info.get(MapleStatInfo.time), applyto.getId());
 
         }
@@ -2622,7 +2621,7 @@ public class MapleStatEffect implements Serializable {
             case 20041239:  {
            //  World.Broadcast.broadcastMessage(CField.getGameMessage("Change2Light.", (short) 8));
              applyto.getClient().getSession().write(JobPacket.LuminousPacket.giveLuminousState(20040220, applyto.getLightGauge(), applyto.getDarkGauge(), 10000));
-             Timer.WorldTimer.getInstance().schedule(new Runnable() {
+             TimerManager.getInstance().schedule(new Runnable() {
              @Override
              public void run() {
                 applyto.dispelBuff(20040220);
@@ -2647,7 +2646,7 @@ public class MapleStatEffect implements Serializable {
              //   World.Broadcast.broadcastMessage(CField.getGameMessage("Equalize.", (short) 8));
                 applyto.runningLight += Randomizer.nextInt(1) + 1;
                 applyto.getClient().getSession().write(JobPacket.LuminousPacket.giveLuminousState(20040220, applyto.getLightGauge(), applyto.getDarkGauge(), 10000));
-             Timer.WorldTimer.getInstance().schedule(new Runnable() {
+                TimerManager.getInstance().schedule(new Runnable() {
              @Override
              public void run() {
                 applyto.dispelBuff(20040220);
@@ -3389,7 +3388,7 @@ public class MapleStatEffect implements Serializable {
         }
         final long starttime = System.currentTimeMillis();
         final CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime, localstatups);
-        final ScheduledFuture<?> schedule = BuffTimer.getInstance().schedule(cancelAction, maskedDuration > 0 ? maskedDuration : localDuration);
+        final ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, maskedDuration > 0 ? maskedDuration : localDuration);
         applyto.registerEffect(this, starttime, schedule, localstatups, false, localDuration, applyfrom.getId());
     }
 
@@ -4329,11 +4328,7 @@ private boolean isSpiritClaw() {
     public final int getEXPLossRate() {
         return info.get(MapleStatInfo.expLossReduceR);
     }
-
-    public final int getBuffTimeRate() {
-        return info.get(MapleStatInfo.bufftimeR);
-    }
-
+    
     public final int getSuddenDeathR() {
         return info.get(MapleStatInfo.suddenDeathR);
     }
@@ -4468,6 +4463,11 @@ private boolean isSpiritClaw() {
     public final int getDex() {
         return info.get(MapleStatInfo.dex);
     }
+    
+
+	public int getBuffTimeRate() {
+		return info.get(MapleStatInfo.time);
+	}
 
     public final int getDexX() {
         return info.get(MapleStatInfo.dexX);

@@ -28,7 +28,7 @@ import handling.channel.ChannelServer;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
 import handling.world.exped.PartySearch;
-import server.Timer.MapTimer;
+import server.TimerManager;
 import server.life.MapleLifeFactory;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
@@ -59,7 +59,7 @@ public class MaplePyramidSubway {
                 }
             }
             commenceTimerNextMap(c, 1);
-            energyBarDecrease = MapTimer.getInstance().register(new Runnable() {
+            energyBarDecrease = TimerManager.getInstance().register(new Runnable() {
 
                 public void run() {
                     energybar -= (c.getParty() != null && c.getParty().getMembers().size() > 1 ? 5 : 2);
@@ -121,7 +121,7 @@ public class MaplePyramidSubway {
                 ourMap.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9700023), c.getPosition());
             }
         }
-        timerSchedule = MapTimer.getInstance().schedule(new Runnable() {
+        timerSchedule = TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {

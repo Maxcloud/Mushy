@@ -21,9 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package server.events;
 
-import client.MapleCharacter;
 import java.util.concurrent.ScheduledFuture;
-import server.Timer.EventTimer;
+
+import client.MapleCharacter;
+import server.TimerManager;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 
@@ -57,7 +58,7 @@ public class MapleSurvival extends MapleEvent {
         broadcast(CField.getClock((int) (time / 1000)));
         this.timeStarted = System.currentTimeMillis();
 
-        olaSchedule = EventTimer.getInstance().schedule(new Runnable() {
+        olaSchedule = TimerManager.getInstance().schedule(new Runnable() {
 
             @Override
             public void run() {

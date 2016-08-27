@@ -33,8 +33,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MaplePortal;
 import server.ShutdownServer;
-import server.Timer.EventTimer;
-import server.Timer.WorldTimer;
+import server.TimerManager;
 import tools.HexTool;
 import tools.Randomizer;
 import tools.StringUtil;
@@ -107,7 +106,7 @@ public class AdminCommand {
             final List<Integer> items = Arrays.asList(itemArray);
             c.getSession().write(CField.sendSealedBox(slot, 2028162, items)); //sealed box
             final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-            WorldTimer.getInstance().schedule(new Runnable() {
+            TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     MapleInventoryManipulator.removeById(c, GameConstants.getInventoryType(itemId), itemId, 1, false, false);
@@ -421,7 +420,7 @@ public class AdminCommand {
             c.getPlayer().dropMessage(6, "Shutting down... in " + minutesLeft + " minutes");
             if (ts == null && (t == null || !t.isAlive())) {
                 t = new Thread(ShutdownServer.getInstance());
-                ts = EventTimer.getInstance().register(new Runnable() {
+                ts = TimerManager.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
                         if (minutesLeft == 0) {

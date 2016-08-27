@@ -47,13 +47,12 @@ import client.inventory.MaplePet;
 import client.inventory.MaplePotionPot;
 import client.inventory.MapleRing;
 import constants.GameConstants;
-import constants.ServerConstants;
 import handling.channel.ChannelServer;
 import handling.channel.handler.AttackInfo;
 import handling.channel.handler.PlayerHandler;
 import handling.login.LoginInformationProvider;
-import handling.login.LoginServer;
 import handling.login.LoginInformationProvider.JobType;
+import handling.login.LoginServer;
 import handling.world.CharacterTransfer;
 import handling.world.MapleCharacterLook;
 import handling.world.MapleMessenger;
@@ -79,10 +78,7 @@ import server.MapleStatEffect.CancelEffectAction;
 import server.MapleStorage;
 import server.MapleTrade;
 import server.RandomRewards;
-import server.Timer;
-import server.Timer.BuffTimer;
-import server.Timer.MapTimer;
-import server.Timer.WorldTimer;
+import server.TimerManager;
 import server.carnival.MapleCarnivalChallenge;
 import server.carnival.MapleCarnivalParty;
 import server.cash.CashShop;
@@ -2109,7 +2105,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         client.getSession().write(CField.getClock(time));
         final MapleMap ourMap = getMap();
         time *= 1000;
-        mapTimeLimitTask = MapTimer.getInstance().register(new Runnable() {
+        mapTimeLimitTask = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
                 if (ourMap.getId() == GameConstants.JAIL) {
@@ -2362,7 +2358,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 client.getSession().write(BuffPacket.giveBuff(effect.getSourceId(), duration, stat, effect));
                 addHP((int) (effect.getHpR() * this.stats.getCurrentMaxHp()));
                 addMP((int) (effect.getMpR() * this.stats.getCurrentMaxMp(this.getJob())));
-                setSchedule(MapleBuffStat.INFINITY, BuffTimer.getInstance().schedule(new CancelEffectAction(this, effect, start, stat), effect.alchemistModifyVal(this, 4000, false)));
+                setSchedule(MapleBuffStat.INFINITY, TimerManager.getInstance().schedule(new CancelEffectAction(this, effect, start, stat), effect.alchemistModifyVal(this, 4000, false)));
                 return;
             } else if ((effect.getSourceId() == 15001022 || effect.getSourceId() == 27121005) && !overwrite) {
                     acaneAim = 0;
@@ -4877,7 +4873,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void sendPolice(int greason, String reason, int duration) {
         client.getSession().write(CWvsContext.GMPoliceMessage(String.format("You have been blocked by #bMapleGM for the %s reason.#k", "HACK")));
         ban(reason, true);
-        WorldTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 client.disconnect(false, false);
@@ -4888,7 +4884,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void sendPolice(String text) {
         client.getSession().write(CWvsContext.GMPoliceMessage(text));
         ban(text, true);
-        WorldTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 client.disconnect(false, false);
@@ -8799,7 +8795,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void azwanReward(final int map, final int portal) {
         client.getSession().write(CField.UIPacket.sendAzwanResult());
         client.getSession().write(CWvsContext.enableActions());
-        MapTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 changeMap(map, portal);
@@ -9317,7 +9313,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         World.Broadcast.broadcastMessage(CField.getGameMessage("Applying Equilibrium.", (short) 8));
         CWvsContext.enableActions();
         // equipChanged();
-         Timer.WorldTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 dispelBuff(20040220);
@@ -9330,7 +9326,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
          SkillFactory.getSkill(27121054).getEffect(chr.getTotalSkillLevel(27121054)).applyBuffEffect(chr, chr, true, 10000);
         World.Broadcast.broadcastMessage(CField.getGameMessage("Applying Equilibrium.", (short) 8));
         CWvsContext.enableActions();
-         Timer.WorldTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 dispelBuff(20040220);
@@ -9475,7 +9471,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
 
     public final void startXenonSupply() {
-        BuffTimer tMan = BuffTimer.getInstance();
+    	TimerManager tMan = TimerManager.getInstance();
         Runnable r = new Runnable() {
             @Override
             public void run() {

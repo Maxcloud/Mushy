@@ -33,7 +33,7 @@ import client.MapleCharacterUtil;
 import handling.world.CharacterTransfer;
 import handling.world.CheaterData;
 import handling.world.World;
-import server.Timer.PingTimer;
+import server.TimerManager;
 
 public class PlayerStorage {
 
@@ -50,7 +50,7 @@ public class PlayerStorage {
         this.channel = channel;
 
         // Prune once every 15 minutes
-        PingTimer.getInstance().register(new PersistingTask(), 60000);
+        TimerManager.getInstance().register(new PersistingTask(), 60000);
     }
 
     public final ArrayList<MapleCharacter> getAllCharacters() {

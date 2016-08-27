@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 
 import client.MapleClient;
 import handling.channel.ChannelServer;
-import server.Timer.PingTimer;
+import server.TimerManager;
 import tools.packet.LoginPacket;
 
 public class LoginWorker {
@@ -61,7 +61,7 @@ public class LoginWorker {
             //c.setChannel(Randomizer.nextInt(ChannelServer.getAllInstances().size()) + 1);
             //c.getSession().write(LoginPacket.getCharList(c.getSecondPassword() != null, c.loadCharacters(0), c.getCharacterSlots()));
             //end temp fix
-            c.setIdleTask(PingTimer.getInstance().schedule(new Runnable() {
+            c.setIdleTask(TimerManager.getInstance().schedule(new Runnable() {
 
                 @Override
                 public void run() {

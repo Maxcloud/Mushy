@@ -23,9 +23,6 @@ package server.maps;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,12 +52,10 @@ import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.QuickMove;
 import constants.QuickMove.QuickMoveNPC;
+import constants.ServerConfig;
 import handling.channel.ChannelServer;
 import handling.world.PartyOperation;
 import handling.world.World;
-import handling.world.exped.ExpeditionType;
-import constants.ServerConfig;
-import net.DatabaseConnection;
 import script.event.EventManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -68,9 +63,7 @@ import server.MaplePortal;
 import server.MapleSquad;
 import server.MapleSquad.MapleSquadType;
 import server.MapleStatEffect;
-import server.SpeedRunner;
-import server.Timer.EtcTimer;
-import server.Timer.MapTimer;
+import server.TimerManager;
 import server.carnival.MapleCarnivalFactory;
 import server.carnival.MapleCarnivalFactory.MCSkill;
 import server.life.MapleLifeFactory;
@@ -87,10 +80,8 @@ import server.maps.MapleNodes.MapleNodeInfo;
 import server.maps.MapleNodes.MaplePlatform;
 import server.maps.MapleNodes.MonsterPoint;
 import server.quest.MapleQuest;
-import tools.FileoutputUtil;
 import tools.Pair;
 import tools.Randomizer;
-import tools.StringUtil;
 import tools.packet.CField;
 import tools.packet.CField.EffectPacket;
 import tools.packet.CField.NPCPacket;
@@ -122,15 +113,14 @@ public final class MapleMap {
     private final byte channel;
     private String fieldType = "";
     private short decHP = 0, createMobInterval = 9000, top = 0, bottom = 0, left = 0, right = 0;
-    private int consumeItemCoolTime = 0, protectItem = 0, decHPInterval = 10000, mapid, returnMapId, timeLimit,
-            fieldLimit, maxRegularSpawn = 0, fixedMob, forcedReturnMap = 999999999, instanceid = -1,
+    private int consumeItemCoolTime = 0, protectItem = 0, decHPInterval = 10000, mapid, returnMapId, fieldLimit, maxRegularSpawn = 0, fixedMob, forcedReturnMap = 999999999, instanceid = -1,
             lvForceMove = 0, lvLimit = 0, permanentWeather = 0, partyBonusRate = 0;
     private boolean town, clock, personalShop, everlast = false, dropsDisabled = false, gDropsDisabled = false,
-            soaring = false, squadTimer = false, isSpawns = true, checkStates = true;
-    private String mapName, streetName, onUserEnter, onFirstUserEnter, speedRunLeader = "";
+            soaring = false, isSpawns = true, checkStates = true;
+    private String mapName, streetName, onUserEnter, onFirstUserEnter;
     private final List<Integer> dced = new ArrayList<>();
     private ScheduledFuture<?> squadSchedule;
-    private long speedRunStart = 0, lastSpawnTime = 0, lastHurtTime = 0;
+    private long lastSpawnTime = 0, lastHurtTime = 0;
     private MapleNodes nodes;
     private MapleSquadType squad;
     private final Map<String, Integer> environment = new LinkedHashMap<>();
@@ -263,7 +253,6 @@ public final class MapleMap {
     }
 
     public final void setTimeLimit(final int timeLimit) {
-        this.timeLimit = timeLimit;
     }
 
     public final void setMapName(final String mapName) {
@@ -421,29 +410,6 @@ public final class MapleMap {
         }
     }
     
-        public final void checkClockContact(final MapleCharacter chr, final MapleMonster monster) {
-        final Point m_Pos = monster.getPosition();
-        if (this.getFieldType().equals("63")) {
-            for (MapleMapObject object : this.getMapObjectsInRange(chr.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MIST))) {
-                final MapleMist clock = (MapleMist) object;
-                //  System.out.println("ë¯¸ìŠ¤íŠ¸!");
-                if (clock.isClock()) {
-                    //System.out.println("ì‹œê³„ì�¼ì‹œ");
-                    Rectangle rect = new Rectangle(clock.getBox().x, clock.getBox().y, clock.getBox().width, clock.getBox().height);
-                    //if (!clock.isUsed()) {
-                    // System.out.println("ìƒˆê±°");
-                    if (rect.intersects(monster.getRectangle())) {
-                        // System.out.println("í�¬í•¨í• ì‹œ");
-                        clock.setUsed(true);
-                      //  chr.send(UIPa("ë°˜ë°˜ì�´ ì‹œê°„ì�„ ì›€ì§�ìž„"));
-                        return;
-                    }
-                    //}
-                }
-            }
-        }
-    }
-
     public final Point calcPointBelow(final Point initial) {
         final MapleFoothold fh = footholds.findBelow(initial);
         if (fh == null) {
@@ -631,7 +597,7 @@ public final class MapleMap {
             chr.getMap().startMapEffect("So what do you think? Just as though as the original, right?! Move by going to Resercher H.", 5120039);
         }
         if ((monster.getId() == 8810122 || monster.getId() == 8810018) && !second) {
-            MapTimer.getInstance().schedule(new Runnable() {
+        	TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     killMonster(monster, chr, true, true, (byte) 1);
@@ -684,19 +650,11 @@ public final class MapleMap {
             }
         }
         final int mobid = monster.getId();
-        ExpeditionType type = null;
         if (mobid == 8810018 && mapid == 240060200) { // Horntail
             World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(6, "To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!"));
-            //FileoutputUtil.log(FileoutputUtil.Horntail_Log, MapDebug_Log());
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Horntail;
-            }
             doShrine(true);
         } else if (mobid == 8810122 && mapid == 240060201) { // Horntail
             World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(6, "To the crew that have finally conquered Chaos Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!"));
-            if (speedRunStart > 0) {
-                type = ExpeditionType.ChaosHT;
-            }
             doShrine(true);
         } else if (mobid == 9400266 && mapid == 802000111) {
             doShrine(true);
@@ -718,86 +676,28 @@ public final class MapleMap {
             my.setState((byte) 1);
             spawnReactorOnGroundBelow(my, new java.awt.Point(56, 135));   
         }else if (mobid == 8830000 && mapid == 105100300) {
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Balrog;
-            }
         } else if ((mobid == 9420544 || mobid == 9420549) && mapid == 551030200 && monster.getEventInstance() != null && monster.getEventInstance().getName().contains(getEMByMap().getName())) {
             doShrine(getAllReactor().isEmpty());
         } else if (mobid == 8820001 && mapid == 270050100) {
             World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(6, "Oh, the exploration team who has defeated Pink Bean with undying fervor! You are the true victors of time!"));
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Pink_Bean;
-            }
             doShrine(true);
         } else if (mobid == 8850011 && mapid == 274040200) {
             World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(6, "To you whom have defeated Empress Cygnus in the future, you are the heroes of time!"));
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Cygnus;
-            }
             doShrine(true);
         } else if (mobid == 8870000 && mapid == 262030300) { //hilla
             World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(6, "Hilla is dead."));
             charactersLock.readLock().lock();
-            try {
-                for (MapleCharacter c : characters) {
-                }
-            } finally {
-                charactersLock.readLock().unlock();
-            }
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Hilla;
-            }
             doShrine(true);
         } else if (mobid == 8870100 && mapid == 262031300) { //hilla
             World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(6, "Dark Hilla is dead."));
             charactersLock.readLock().lock();
-            try {
-                for (MapleCharacter c : characters) {
-                }
-            } finally {
-                charactersLock.readLock().unlock();
-            }
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Hilla;
-            }
             doShrine(true);
         } else if (mobid == 8840000 && mapid == 211070100) {
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Von_Leon;
-            }
             doShrine(true);
         } else if (mobid == 8800002 && mapid == 280030000) {
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Zakum;
-            }
             doShrine(true);
         } else if (mobid == 8800102 && mapid == 280030001) {
-            if (speedRunStart > 0) {
-                type = ExpeditionType.Chaos_Zakum;
-            }
-
             doShrine(true);
-            /*} else if (mobid >= 9400903 && mobid <= 9400910) {
-             boolean makeZakReal = true;
-             final Collection<MapleMonster> monsters = getAllMonstersThreadsafe();
-
-             for (final MapleMonster mons : monsters) {
-             if (mons.getId() >= 9400903 && mons.getId() <= 9400910) {
-             makeZakReal = false;
-             break;
-             }
-             }
-             if (makeZakReal) {
-             for (final MapleMapObject object : monsters) {
-             final MapleMonster mons = ((MapleMonster) object);
-             if (mons.getId() == 9400900) {
-             final Point pos = mons.getTruePosition();
-             this.killAllMonsters(true);
-             spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9400900), pos);
-             break;
-             }
-             }
-             }*/
         } else if (mobid >= 8800003 && mobid <= 8800010) {
             boolean makeZakReal = true;
             final Collection<MapleMonster> monsters = getAllMonstersThreadsafe();
@@ -874,17 +774,7 @@ public final class MapleMap {
                     break;
             }
         }
-        if (type != null) {
-            if (speedRunStart > 0 && speedRunLeader.length() > 0) {
-                long endTime = System.currentTimeMillis();
-                String time = StringUtil.getReadableMillis(speedRunStart, endTime);
-                broadcastMessage(CWvsContext.broadcastMsg(5, speedRunLeader + "'s squad has taken " + time + " to defeat " + type.name() + "!"));
-                getRankAndAdd(speedRunLeader, time, type, (endTime - speedRunStart), (sqd == null ? null : sqd.getMembers()));
-                endSpeedRun();
-            }
-
-        }
-
+        
         if (withDrops && dropOwner != 1) {
             MapleCharacter drop;
             if (dropOwner <= 0) {
@@ -1052,24 +942,6 @@ public final class MapleMap {
         }
     }
 
-    private String MapDebug_Log() {
-        final StringBuilder sb = new StringBuilder("Defeat time : ");
-        sb.append(FileoutputUtil.CurrentReadable_Time());
-
-        sb.append(" | Mapid : ").append(this.mapid);
-
-        charactersLock.readLock().lock();
-        try {
-            sb.append(" Users [").append(characters.size()).append("] | ");
-            for (MapleCharacter mc : characters) {
-                sb.append(mc.getName()).append(", ");
-            }
-        } finally {
-            charactersLock.readLock().unlock();
-        }
-        return sb.toString();
-    }
-
     public final void limitReactor(final int rid, final int num) {
         List<MapleReactor> toDestroy = new ArrayList<>();
         Map<Integer, Integer> contained = new LinkedHashMap<>();
@@ -1124,7 +996,7 @@ public final class MapleMap {
         reactor.setTimerActive(false);
 
         if (reactor.getDelay() > 0) {
-            MapTimer.getInstance().schedule(new Runnable() {
+        	TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public final void run() {
                     respawnReactor(reactor);
@@ -1621,7 +1493,7 @@ public final class MapleMap {
         checkRemoveAfter(monster);
 
         if (monster.getId() == 9300166) {
-            MapTimer.getInstance().schedule(new Runnable() {
+        	TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     broadcastMessage(MobPacket.killMonster(monster.getObjectId(), 2, false));
@@ -1777,14 +1649,13 @@ public final class MapleMap {
             }
         });
 
-        final MapTimer tMan = MapTimer.getInstance();
         final ScheduledFuture<?> poisonSchedule;
         switch (mist.isPoisonMist()) {
             case 1:
                 //poison: 0 = none, 1 = poisonous, 2 = recovery
                 final MapleCharacter owner = getCharacterById(mist.getOwnerId());
                 final boolean pvp = owner.inPVP();
-                poisonSchedule = tMan.register(new Runnable() {
+                poisonSchedule = TimerManager.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
                         for (final MapleMapObject mo : getMapObjectsInRect(mist.getBox(), Collections.singletonList(pvp ? MapleMapObjectType.PLAYER : MapleMapObjectType.MONSTER))) {
@@ -1798,7 +1669,7 @@ public final class MapleMap {
                 }, 2000, 2500);
                 break;
             case 4:
-                poisonSchedule = tMan.register(new Runnable() {
+                poisonSchedule = TimerManager.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
                         for (final MapleMapObject mo : getMapObjectsInRect(mist.getBox(), Collections.singletonList(MapleMapObjectType.PLAYER))) {
@@ -1815,7 +1686,7 @@ public final class MapleMap {
                 break;
         }
         mist.setPoisonSchedule(poisonSchedule);
-        mist.setSchedule(tMan.schedule(new Runnable() {
+        mist.setSchedule(TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 broadcastMessage(CField.removeMist(mist.getObjectId(), false));
@@ -1902,7 +1773,7 @@ public final class MapleMap {
         } finally {
             mapobjectlocks.get(MapleMapObjectType.ITEM).readLock().unlock();
         }
-        MapTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 final Point pos = new Point(Randomizer.nextInt(800) + 531, -806);
@@ -1972,7 +1843,7 @@ public final class MapleMap {
                     if (item.getItemId() == GameConstants.getCustomReactItem(react.getReactorId(), react.getReactItem().getLeft()) && react.getReactItem().getRight() == item.getQuantity()) {
                         if (react.getArea().contains(drop.getTruePosition())) {
                             if (!react.isTimerActive()) {
-                                MapTimer.getInstance().schedule(new ActivateItemReactor(drop, react, c), 5000);
+                            	TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, c), 5000);
                                 react.setTimerActive(true);
                                 break;
                             }
@@ -2078,7 +1949,7 @@ public final class MapleMap {
         mapEffect = new MapleMapEffect(msg, itemId);
         mapEffect.setJukebox(jukebox);
         broadcastMessage(mapEffect.makeStartData());
-        MapTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 if (mapEffect != null) {
@@ -2091,7 +1962,7 @@ public final class MapleMap {
 
     public final void startExtendedMapEffect(final String msg, final int itemId) {
         broadcastMessage(CField.startMapEffect(msg, itemId, true));
-        MapTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 broadcastMessage(CField.removeMapEffect());
@@ -2130,10 +2001,6 @@ public final class MapleMap {
         final byte[] packet = CField.spawnPlayerMapobject(chr);
         if (!chr.isHidden()) {
             broadcastMessage(chr, packet, false);
-            if (chr.isIntern() && speedRunStart > 0) {
-                endSpeedRun();
-                broadcastMessage(CWvsContext.broadcastMsg(5, "The speed run has ended."));
-            }
         } else {
             broadcastGMMessage(chr, packet, false);
         }
@@ -2188,7 +2055,7 @@ public final class MapleMap {
         if (!chr.isInBlockedMap() && chr.getLevel() > 10 && isTown() && chr.getMapId() % 1000000 == 0 && chr.getMapId() <= 600000000) {
             for (QuickMove qm : QuickMove.values()) {
                 if (qm.getMap() == chr.getMapId()) {
-                    List<QuickMoveNPC> qmn = new LinkedList();
+                    List<QuickMoveNPC> qmn = new LinkedList<>();
                     int npcs = qm.getNPCFlag();
                     for (QuickMoveNPC npc : QuickMoveNPC.values()) {
                         if ((npcs & npc.getValue()) != 0 && npc.show()) {
@@ -2200,173 +2067,8 @@ public final class MapleMap {
                 }
             }
         } else {
-            chr.getClient().getSession().write(CField.getQuickMoveInfo(false, new LinkedList()));
+            chr.getClient().getSession().write(CField.getQuickMoveInfo(false, new LinkedList<>()));
         }
-        
-        for (int npc : GameConstants.unusedNpcs) {
-	         if (getNPCById(npc) != null && getId() != 910000000) {
-	        	 // chr.getClient().getSession().write(CField.NPCPacket.toggleNPCShow(getNPCById(npc).getObjectId(), true));
-	         }
-         }
-        
-        /*if (getNPCById(9073000) != null && getId() == 931050410) {
-            chr.getClient().getSession().write(CField.NPCPacket.toggleNPCShow(getNPCById(9073000).getObjectId(), true));
-        }
-        if (GameConstants.isPhantom(chr.getJob())) {
-            chr.getClient().getSession().write(PhantomPacket.updateCardStack(chr.getCardStack()));
-        }
-        if (!chr.isClone()) {
-            final List<MapleSummon> ss = chr.getSummonsReadLock();
-            try {
-                for (MapleSummon summon : ss) {
-                    summon.setPosition(chr.getTruePosition());
-                    chr.addVisibleMapObject(summon);
-                    this.spawnSummon(summon);
-                }
-            } finally {
-                chr.unlockSummonsReadLock();
-            }
-        }
-        if (mapEffect != null) {
-            mapEffect.sendStartData(chr.getClient());
-        }
-        if (timeLimit > 0 && getForcedReturnMap() != null && !chr.isClone()) {
-            chr.startMapTimeLimitTask(timeLimit, getForcedReturnMap());
-        }
-        if (chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null && !GameConstants.isResist(chr.getJob())) {
-            if (FieldLimitType.Mount.check(fieldLimit)) {
-                chr.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
-            }
-        }
-        if (!chr.isClone()) {
-            if (chr.getEventInstance() != null && chr.getEventInstance().isTimerStarted() && !chr.isClone()) {
-                if (chr.inPVP()) {
-                    chr.getClient().getSession().write(CField.getPVPClock(Integer.parseInt(chr.getEventInstance().getProperty("type")), (int) (chr.getEventInstance().getTimeLeft() / 1000)));
-                } else {
-                    chr.getClient().getSession().write(CField.getClock((int) (chr.getEventInstance().getTimeLeft() / 1000)));
-                }
-            }
-            if (hasClock()) {
-                final Calendar cal = Calendar.getInstance();
-                chr.getClient().getSession().write((CField.getClockTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND))));
-            }
-            if (chr.getCarnivalParty() != null && chr.getEventInstance() != null) {
-                chr.getEventInstance().onMapLoad(chr);
-            }
-            MapleEvent.mapLoad(chr, channel);
-            if (getSquadBegin() != null && getSquadBegin().getTimeLeft() > 0 && getSquadBegin().getStatus() == 1) {
-                chr.getClient().getSession().write(CField.getClock((int) (getSquadBegin().getTimeLeft() / 1000)));
-            }
-            if (mapid / 1000 != 105100 && mapid / 100 != 8020003 && mapid / 100 != 8020008 && mapid != 271040100) { //no boss_balrog/2095/coreblaze/auf/cygnus. but coreblaze/auf/cygnus does AFTER
-                final MapleSquad sqd = getSquadByMap(); //for all squads
-                final EventManager em = getEMByMap();
-                if (!squadTimer && sqd != null && chr.getName().equals(sqd.getLeaderName()) && em != null && em.getProperty("leader") != null && em.getProperty("leader").equals("true") && checkStates) {
-                    //leader? display
-                    doShrine(false);
-                    squadTimer = true;
-                }
-            }
-            if (getNumMonsters() > 0 && (mapid == 280030001 || mapid == 240060201 || mapid == 280030000 || mapid == 240060200 || mapid == 220080001 || mapid == 541020800 || mapid == 541010100)) {
-                String music = "Bgm09/TimeAttack";
-                switch (mapid) {
-                    case 240060200:
-                    case 240060201:
-                        music = "Bgm14/HonTale";
-                        break;
-                    case 280030000:
-                    case 280030001:
-                        music = "Bgm06/FinalFight";
-                        break;
-                }
-                chr.getClient().getSession().write(CField.musicChange(music));
-                //maybe timer too for zak/ht
-            }
-            for (final WeakReference<MapleCharacter> chrz : chr.getClones()) {
-                if (chrz.get() != null) {
-                    chrz.get().setPosition(chr.getTruePosition());
-                    chrz.get().setMap(this);
-                    addPlayer(chrz.get());
-                }
-            }
-            if (mapid == 914000000 || mapid == 927000000) {
-                chr.getClient().getSession().write(CWvsContext.temporaryStats_Aran());
-            } else if (mapid == 105100300 && chr.getLevel() >= 91) {
-                chr.getClient().getSession().write(CWvsContext.temporaryStats_Balrog(chr));
-            } else if (mapid == 140090000 || mapid == 105100301 || mapid == 105100401 || mapid == 105100100) {
-                chr.getClient().getSession().write(CWvsContext.temporaryStats_Reset());
-            }
-        }
-        if (GameConstants.isEvan(chr.getJob()) && chr.getJob() >= 2200) {
-            if (chr.getDragon() == null) {
-                chr.makeDragon();
-            } else {
-                chr.getDragon().setPosition(chr.getPosition());
-            }
-            if (chr.getDragon() != null) {
-                broadcastMessage(CField.spawnDragon(chr.getDragon()));
-            }
-        }
-        if (GameConstants.isKanna(chr.getJob())) {
-            if (chr.getHaku() == null && chr.getBuffedValue(MapleBuffStat.HAKU_REBORN) == null) {
-                chr.makeHaku();
-            } else {
-                chr.getHaku().setPosition(chr.getPosition());
-            }
-            if (chr.getHaku() != null) {
-                if (chr.getBuffSource(MapleBuffStat.HAKU_REBORN) > 0) {
-                    chr.getHaku().sendStats();
-                    chr.getMap().broadcastMessage(chr, CField.spawnHaku_change0(chr.getId()), true);
-                    chr.getMap().broadcastMessage(chr, CField.spawnHaku_change1(chr.getHaku()), true);
-                    chr.getMap().broadcastMessage(chr, CField.spawnHaku_bianshen(chr.getId(), chr.getHaku().getObjectId(), chr.getHaku().getStats()), true);
-                } else {
-                    broadcastMessage(CField.spawnHaku(chr.getHaku()));
-                }
-            }
-        }
-        
-        if (this.mapid == 103050900) {
-            try {
-                chr.getClient().getSession().write(CField.UIPacket.IntroEnableUI(1));
-                chr.getClient().getSession().write(CField.UIPacket.getDirectionInfo(1, 8000));
-                chr.getClient().getSession().write(CField.UIPacket.getDirectionInfo(1, 8000));
-                chr.getClient().getSession().write(CField.UIPacket.getDirectionInfo(3, 2));
-                chr.dropMessage(-1, "On A Rainy Day");
-                chr.dropMessage(-1, "The Secret Garden Depths");
-                chr.getClient().removeClickedNPC();
-                Thread.sleep(11000L);
-            } catch (InterruptedException e) {
-            }
-            chr.getClient().getSession().write(CField.UIPacket.getDirectionStatus(false));
-            chr.getClient().getSession().write(CField.UIPacket.IntroEnableUI(0));
-            chr.getClient().removeClickedNPC();
-            chr.dropMessage(-1, "Click on ryden to get your first quest");
-        }
-        
-        if (permanentWeather > 0) {
-            chr.getClient().getSession().write(CField.startMapEffect("", permanentWeather, false)); //snow, no msg
-        }
-        if (getPlatforms().size() > 0) {
-            chr.getClient().getSession().write(CField.getMovingPlatforms(this));
-        }
-        if (environment.size() > 0) {
-            chr.getClient().getSession().write(CField.getUpdateEnvironment(this));
-        }
-        //if (partyBonusRate > 0) {
-        //    chr.dropMessage(-1, partyBonusRate + "% additional EXP will be applied per each party member here.");
-        //    chr.dropMessage(-1, "You've entered the party play zone.");
-        //}
-        if (isTown()) {
-            chr.cancelEffectFromBuffStat(MapleBuffStat.RAINING_MINES);
-        }
-        if (!canSoar()) {
-            chr.cancelEffectFromBuffStat(MapleBuffStat.SOARING);
-        }
-        if (chr.getJob() < 3200 || chr.getJob() > 3212) {
-            //chr.cancelEffectFromBuffStat(MapleBuffStat.AURA);
-        }
-        if (chr.getCustomBGState() == 1) {
-            chr.removeBGLayers();
-        }*/
     }
 
     public int getNumItems() {
@@ -2483,7 +2185,7 @@ public final class MapleMap {
                     }
                 };
             }
-            squadSchedule = MapTimer.getInstance().schedule(run, 300000); //5 mins
+            squadSchedule = TimerManager.getInstance().schedule(run, 300000); //5 mins
         }
     }
 
@@ -3217,7 +2919,7 @@ public final class MapleMap {
                 reactor.setTimerActive(false);
 
                 if (reactor.getDelay() > 0) {
-                    MapTimer.getInstance().schedule(new Runnable() {
+                	TimerManager.getInstance().schedule(new Runnable() {
                         @Override
                         public void run() {
                             reactor.forceHitReactor((byte) 0);
@@ -3311,78 +3013,7 @@ public final class MapleMap {
     public void resetDisconnected() {
         dced.clear();
     }
-
-    public void startSpeedRun() {
-        final MapleSquad squad = getSquadByMap();
-        if (squad != null) {
-            charactersLock.readLock().lock();
-            try {
-                for (MapleCharacter chr : characters) {
-                    if (chr.getName().equals(squad.getLeaderName()) && !chr.isIntern()) {
-                        startSpeedRun(chr.getName());
-                        return;
-                    }
-                }
-            } finally {
-                charactersLock.readLock().unlock();
-            }
-        }
-    }
-
-    public void startSpeedRun(String leader) {
-        speedRunStart = System.currentTimeMillis();
-        speedRunLeader = leader;
-    }
-
-    public void endSpeedRun() {
-        speedRunStart = 0;
-        speedRunLeader = "";
-    }
-
-    public void getRankAndAdd(String leader, String time, ExpeditionType type, long timz, Collection<String> squad) {
-        try {
-            long lastTime = SpeedRunner.getSpeedRunData(type) == null ? 0 : SpeedRunner.getSpeedRunData(type).right;
-            //if(timz > lastTime && lastTime > 0) {
-            //return;
-            //}
-            //Pair<String, Map<Integer, String>>
-            StringBuilder rett = new StringBuilder();
-            if (squad != null) {
-                for (String chr : squad) {
-                    rett.append(chr);
-                    rett.append(",");
-                }
-            }
-            String z = rett.toString();
-            if (squad != null) {
-                z = z.substring(0, z.length() - 1);
-            }
-            Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("INSERT INTO speedruns(`type`, `leader`, `timestring`, `time`, `members`) VALUES (?,?,?,?,?)")) {
-                ps.setString(1, type.name());
-                ps.setString(2, leader);
-                ps.setString(3, time);
-                ps.setLong(4, timz);
-                ps.setString(5, z);
-                ps.executeUpdate();
-            }
-
-            if (lastTime == 0) { //great, we just add it
-                SpeedRunner.addSpeedRunData(type, SpeedRunner.addSpeedRunData(new StringBuilder(SpeedRunner.getPreamble(type)), new HashMap<Integer, String>(), z, leader, 1, time), timz);
-            } else {
-                //i wish we had a way to get the rank
-                //TODO revamp
-                SpeedRunner.removeSpeedRunData(type);
-                SpeedRunner.loadSpeedRunData(type);
-            }
-        } catch (SQLException e) {
-        }
-    }
-
-    public long getSpeedRunStart() {
-        return speedRunStart;
-    }
-
+    
     public final void disconnectAll() {
         for (MapleCharacter chr : getCharactersThreadsafe()) {
             if (!chr.isGM()) {
@@ -3440,7 +3071,6 @@ public final class MapleMap {
         resetNPCs();
         resetSpawns();
         resetDisconnected();
-        endSpeedRun();
         cancelSquadSchedule(true);
         resetPortals();
         environment.clear();
@@ -3450,7 +3080,6 @@ public final class MapleMap {
     }
 
     public final void cancelSquadSchedule(boolean interrupt) {
-        squadTimer = false;
         checkStates = true;
         if (squadSchedule != null) {
             squadSchedule.cancel(interrupt);
@@ -3628,16 +3257,6 @@ public final class MapleMap {
                 em.setProperty("leader", "true");
             }
         }
-        if (speedRunStart > 0 && size == 0) {
-            endSpeedRun();
-        }
-        //if (squad != null) {
-        //    final MapleSquad sqdd = ChannelServer.getInstance(channel).getMapleSquad(squad);
-        //    if (sqdd != null && chr != null && chr.length() > 0 && sqdd.getAllNextPlayer().contains(chr)) {
-        //	sqdd.getAllNextPlayer().remove(chr);
-        //	broadcastMessage(CWvsContext.broadcastMsg(5, "The queued player " + chr + " has left the map."));
-        //    }
-        //}
     }
 
     public void setCheckStates(boolean b) {
@@ -3698,8 +3317,7 @@ public final class MapleMap {
 
         charactersLock.readLock().lock();
         try {
-            final Iterator<MapleCharacter> ltr = characters.iterator();
-            MapleCharacter a;
+            Iterator<MapleCharacter> ltr = characters.iterator();
             while (ltr.hasNext()) {
                 if (rect.contains(ltr.next().getTruePosition())) {
                     ret++;
@@ -3804,7 +3422,7 @@ public final class MapleMap {
     public final void resetShammos(final MapleClient c) {
         killAllMonsters(true);
         broadcastMessage(CWvsContext.broadcastMsg(5, "A player has moved too far from Shammos. Shammos is going back to the start."));
-        EtcTimer.getInstance().schedule(new Runnable() {
+        TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 if (c.getPlayer() != null) {

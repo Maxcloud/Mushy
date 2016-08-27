@@ -27,7 +27,7 @@ import handling.channel.ChannelServer;
 import handling.world.World;
 import server.MapleInventoryManipulator;
 import server.RandomRewards;
-import server.Timer.EventTimer;
+import server.TimerManager;
 import server.maps.FieldLimitType;
 import server.maps.MapleMap;
 import server.maps.SavedLocationType;
@@ -161,10 +161,10 @@ public abstract class MapleEvent {
                 if (e.isRunning) {
                     for (int i : e.type.mapids) {
                         if (cserv.getEvent() == i) {
-			    World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(0, "Entries for the event are now closed!"));
+                        	World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(0, "Entries for the event are now closed!"));
                             e.broadcast(CWvsContext.broadcastMsg(0, "The event will start in 30 seconds!"));
                             e.broadcast(CField.getClock(30));
-                            EventTimer.getInstance().schedule(new Runnable() {
+                            TimerManager.getInstance().schedule(new Runnable() {
 
                                 @Override
                                 public void run() {
