@@ -239,11 +239,7 @@ public final class MapleMap {
     }
 
     public final void setForcedReturnMap(final int map) {
-        if (GameConstants.isCustomReturnMap(mapid)) {
-            this.forcedReturnMap = GameConstants.getCustomReturnMap(mapid);
-        } else {
-            this.forcedReturnMap = map;
-        }
+        this.forcedReturnMap = map;
     }
 
     public final float getRecoveryRate() {

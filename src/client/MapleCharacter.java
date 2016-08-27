@@ -2607,7 +2607,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     }
 
     public int getTotalSkillLevel(int skillid) {
-        if (GameConstants.iskaiser_Transfiguration_Skill(skillid)) {
+        if (GameConstants.isKaiserTransfigurationSkill(skillid)) {
             return SkillFactory.getSkill(skillid).getMaxLevel();
         }
         return getTotalSkillLevel(SkillFactory.getSkill(skillid));
@@ -7691,11 +7691,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if ((getMapId() >= 680000210 && getMapId() <= 680000502) || (getMapId() / 10000 == 92502 && getMapId() >= 925020100) || (getMapId() / 10000 == 92503) || getMapId() == GameConstants.JAIL) {
             return true;
         }
-        for (int i : GameConstants.blockedMaps) {
-            if (getMapId() == i) {
-                return true;
-            }
-        }
         if (getMapId() >= 689010000 && getMapId() < 689014000) { //Pink Zakum
             return true;
         }
@@ -7705,11 +7700,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public boolean isInTownMap() {
         if (hasBlockedInventory() || !getMap().isTown() || FieldLimitType.VipRock.check(getMap().getFieldLimit()) || getEventInstance() != null) {
             return false;
-        }
-        for (int i : GameConstants.blockedMaps) {
-            if (getMapId() == i) {
-                return false;
-            }
         }
         return true;
     }

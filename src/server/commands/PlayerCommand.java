@@ -363,12 +363,6 @@ public class PlayerCommand {
 
 		@Override
 		public int execute(MapleClient c, String[] splitted) {
-			for (int i : GameConstants.blockedMaps) {
-				if (c.getPlayer().getMapId() == i) {
-					c.getPlayer().dropMessage(5, "You may not use this command here.");
-					return 0;
-				}
-			}
 			if (c.getPlayer().getLevel() < 10 && c.getPlayer().getJob() != 200) {
 				c.getPlayer().dropMessage(5, "You must be over level 10 to use this command.");
 				return 0;
