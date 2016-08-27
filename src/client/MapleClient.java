@@ -35,7 +35,6 @@ import handling.world.MapleParty;
 import handling.world.MaplePartyCharacter;
 import handling.world.PartyOperation;
 import handling.world.World;
-import handling.world.family.MapleFamilyCharacter;
 import handling.world.guild.MapleGuildCharacter;
 import net.DatabaseConnection;
 import net.DatabaseException;
@@ -928,12 +927,11 @@ public class MapleClient implements Serializable {
 			final String namez = player.getName();
 			final int idz = player.getId(),
 					messengerid = player.getMessenger() == null ? 0 : player.getMessenger().getId(),
-					gid = player.getGuildId(), fid = player.getFamilyId();
+					gid = player.getGuildId();
 			final BuddyList bl = player.getBuddylist();
 			final MaplePartyCharacter chrp = new MaplePartyCharacter(player);
 			final MapleMessengerCharacter chrm = new MapleMessengerCharacter(player);
 			final MapleGuildCharacter chrg = player.getMGC();
-			final MapleFamilyCharacter chrf = player.getMFC();
 
 			removalTask(shutdown);
 			LoginServer.getLoginAuth(player.getId());
@@ -985,9 +983,6 @@ public class MapleClient implements Serializable {
 					if (gid > 0 && chrg != null) {
 						World.Guild.setGuildMemberOnline(chrg, false, -1);
 					}
-					if (fid > 0 && chrf != null) {
-						World.Family.setFamilyMemberOnline(chrf, false, -1);
-					}
 				} catch (final Exception e) {
 					System.err.println(getLogMessage(this, "ERROR") + e);
 				} finally {
@@ -1014,9 +1009,6 @@ public class MapleClient implements Serializable {
 					}
 					if (gid > 0 && chrg != null) {
 						World.Guild.setGuildMemberOnline(chrg, false, -1);
-					}
-					if (fid > 0 && chrf != null) {
-						World.Family.setFamilyMemberOnline(chrf, false, -1);
 					}
 					if (player != null) {
 						player.setMessenger(null);
@@ -1100,9 +1092,6 @@ public class MapleClient implements Serializable {
 							return 22;
 						}
 						World.Guild.deleteGuildCharacter(rs.getInt("guildid"), cid);
-					}
-					if (rs.getInt("familyid") > 0 && World.Family.getFamily(rs.getInt("familyid")) != null) {
-						World.Family.getFamily(rs.getInt("familyid")).leaveFamily(cid);
 					}
 				}
 			}

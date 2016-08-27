@@ -4308,13 +4308,6 @@ case 2431935: {
             case 5450013:
             case 5450003:
             case 5450000: { // Mu Mu the Travelling Merchant
-                for (int i : GameConstants.blockedMaps) {
-                    if (c.getPlayer().getMapId() == i) {
-                        c.getPlayer().dropMessage(5, "You may not use this here.");
-                        c.getSession().write(CWvsContext.enableActions());
-                        return;
-                    }
-                }
                 if (c.getPlayer().getLevel() < 10) {
                     c.getPlayer().dropMessage(5, "You must be over level 10 to use this.");
                 } else if (c.getPlayer().hasBlockedInventory() || c.getPlayer().getMap().getSquadByMap() != null || c.getPlayer().getEventInstance() != null || c.getPlayer().getMap().getEMByMap() != null || c.getPlayer().getMapId() >= 990000000) {

@@ -26,17 +26,34 @@ import org.apache.mina.common.IoSession;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.inventory.Item;
 import client.inventory.MaplePet;
 import client.inventory.PetDataFactory;
 import constants.ServerConstants;
 import handling.cashshop.handler.CashShopOperation;
-import handling.channel.handler.*;
+import handling.channel.handler.AllianceHandler;
+import handling.channel.handler.BBSHandler;
+import handling.channel.handler.BuddyListHandler;
+import handling.channel.handler.ChatHandler;
+import handling.channel.handler.GuildHandler;
+import handling.channel.handler.HiredMerchantHandler;
+import handling.channel.handler.InterServerHandler;
+import handling.channel.handler.InventoryHandler;
+import handling.channel.handler.ItemMakerHandler;
+import handling.channel.handler.MobHandler;
+import handling.channel.handler.MonsterCarnivalHandler;
+import handling.channel.handler.NPCHandler;
+import handling.channel.handler.PackageHandler;
+import handling.channel.handler.PartyHandler;
+import handling.channel.handler.PetHandler;
+import handling.channel.handler.PlayerHandler;
+import handling.channel.handler.PlayerInteractionHandler;
+import handling.channel.handler.PlayersHandler;
+import handling.channel.handler.StatsHandling;
+import handling.channel.handler.SummonHandler;
+import handling.channel.handler.UserInterfaceHandler;
 import handling.login.LoginServer;
 import handling.login.handler.CharLoginHandler;
 import net.mina.MaplePacketDecoder;
-import server.cash.CashItemFactory;
-import server.cash.CashItemInfo;
 import tools.HexTool;
 import tools.MapleAESOFB;
 import tools.Randomizer;
@@ -703,8 +720,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 break;
             case TWIN_DRAGON_EGG:
                 System.out.println("TWIN_DRAGON_EGG: " + slea.toString());
-                final CashItemInfo item = CashItemFactory.getInstance().getItem(10003055);
-                Item itemz = c.getPlayer().getCashInventory().toItem(item);
+                //final CashItemInfo item = CashItemFactory.getInstance().getItem(10003055);
+                //Item itemz = c.getPlayer().getCashInventory().toItem(item);
                 //Aristocat c.getSession().write(CSPacket.sendTwinDragonEgg(true, true, 38, itemz, 1));
                 break;
             case XMAS_SURPRISE:
@@ -851,33 +868,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 break;
             case RING_ACTION:
                 PlayersHandler.RingAction(slea, c);
-                break;
-            case REQUEST_FAMILY:
-                FamilyHandler.RequestFamily(slea, c);
-                break;
-            case OPEN_FAMILY:
-                FamilyHandler.OpenFamily(slea, c);
-                break;
-            case FAMILY_OPERATION:
-                FamilyHandler.FamilyOperation(slea, c);
-                break;
-            case DELETE_JUNIOR:
-                FamilyHandler.DeleteJunior(slea, c);
-                break;
-            case DELETE_SENIOR:
-                FamilyHandler.DeleteSenior(slea, c);
-                break;
-            case USE_FAMILY:
-                FamilyHandler.UseFamily(slea, c);
-                break;
-            case FAMILY_PRECEPT:
-                FamilyHandler.FamilyPrecept(slea, c);
-                break;
-            case FAMILY_SUMMON:
-                FamilyHandler.FamilySummon(slea, c);
-                break;
-            case ACCEPT_FAMILY:
-                FamilyHandler.AcceptFamily(slea, c);
                 break;
             case SOLOMON:
                 PlayersHandler.Solomon(slea, c);

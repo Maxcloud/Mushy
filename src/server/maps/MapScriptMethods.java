@@ -36,6 +36,7 @@ import script.npc.NPCScriptManager;
 import server.MapleItemInformationProvider;
 import server.Timer.EventTimer;
 import server.Timer.MapTimer;
+import server.events.MaplePyramidSubway;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.life.OverrideMonsterStats;
@@ -3172,7 +3173,7 @@ public class MapScriptMethods {
             }
             case Massacre_first: { //sends a whole bunch of shit.
                 if (c.getPlayer().getPyramidSubway() == null) {
-                    c.getPlayer().setPyramidSubway(new Event_PyramidSubway(c.getPlayer()));
+                    c.getPlayer().setPyramidSubway(new MaplePyramidSubway(c.getPlayer()));
                 }
                 break;
             }

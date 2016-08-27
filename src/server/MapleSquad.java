@@ -14,6 +14,7 @@ import client.MapleCharacter;
 import handling.channel.ChannelServer;
 import handling.world.World;
 import server.Timer.EtcTimer;
+import server.carnival.MapleCarnivalChallenge;
 import server.maps.MapleMap;
 import tools.Pair;
 import tools.packet.CField;

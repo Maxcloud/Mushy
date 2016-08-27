@@ -136,14 +136,8 @@ public class CharacterTransfer implements Externalizable {
         this.subcategory = chr.getSubcategory();
         this.imps = chr.getImps();
         this.fatigue = (short) chr.getFatigue();
-        this.currentrep = chr.getCurrentRep();
-        this.totalrep = chr.getTotalRep();
-        this.familyid = chr.getFamilyId();
         this.totalWins = chr.getTotalWins();
         this.totalLosses = chr.getTotalLosses();
-        this.seniorid = chr.getSeniorId();
-        this.junior1 = chr.getJunior1();
-        this.junior2 = chr.getJunior2();
         this.battleshipHP = chr.currentBattleshipHP();
         this.gachexp = chr.getGachExp();
         this.familiars = chr.getFamiliars();

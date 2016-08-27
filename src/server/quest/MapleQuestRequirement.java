@@ -37,7 +37,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
-import lib.bin.ReadBin;
+import lib.ReadBin;
 
 /**
  * 

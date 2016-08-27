@@ -37,7 +37,7 @@ import client.SkillFactory;
 import client.inventory.InventoryException;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
-import lib.bin.ReadBin;
+import lib.ReadBin;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.FileoutputUtil;

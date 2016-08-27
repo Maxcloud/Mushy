@@ -20,7 +20,6 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.EventConstants;
 import constants.GameConstants;
-import constants.ServerConstants;
 import constants.ServerConstants.PlayerGMRank;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;

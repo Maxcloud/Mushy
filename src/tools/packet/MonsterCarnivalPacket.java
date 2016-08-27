@@ -22,9 +22,10 @@ package tools.packet;
 
 import client.MapleCharacter;
 import handling.SendPacketOpcode;
+import server.carnival.MapleCarnivalParty;
 
 import java.util.List;
-import server.MapleCarnivalParty;
+
 import tools.data.MaplePacketLittleEndianWriter;
 
 public class MonsterCarnivalPacket {

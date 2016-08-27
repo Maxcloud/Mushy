@@ -18,7 +18,7 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package server.maps;
+package server.events;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -30,20 +30,21 @@ import handling.world.World;
 import handling.world.exped.PartySearch;
 import server.Timer.MapTimer;
 import server.life.MapleLifeFactory;
+import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
 import tools.Randomizer;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 
-public class Event_PyramidSubway {
+public class MaplePyramidSubway {
 
     private int kill = 0, cool = 0, miss = 0, skill = 0, type, energybar = 100, bar = 0;
     private boolean broaded = false;
     private ScheduledFuture<?> energyBarDecrease, timerSchedule;
     //type: -1 = subway, 0-3 = difficulty of nett's pyramid.
 
-    public Event_PyramidSubway(final MapleCharacter c) {
+    public MaplePyramidSubway(final MapleCharacter c) {
         final int mapid = c.getMapId();
         if (mapid / 10000 == 91032) {
             type = -1;

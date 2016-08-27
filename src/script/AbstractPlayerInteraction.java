@@ -40,6 +40,7 @@ import java.util.List;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.Timer.EventTimer;
+import server.events.MapleDojoAgent;
 import server.events.MapleEvent;
 import server.events.MapleEventType;
 import server.life.MapleLifeFactory;
@@ -1013,16 +1014,16 @@ public abstract class AbstractPlayerInteraction {
 
     public final boolean dojoAgent_NextMap(final boolean dojo, final boolean fromresting) {
         if (dojo) {
-            return Event_DojoAgent.warpNextMap(c.getPlayer(), fromresting, c.getPlayer().getMap());
+            return MapleDojoAgent.warpNextMap(c.getPlayer(), fromresting, c.getPlayer().getMap());
         }
-        return Event_DojoAgent.warpNextMap_Agent(c.getPlayer(), fromresting);
+        return MapleDojoAgent.warpNextMap_Agent(c.getPlayer(), fromresting);
     }
 
     public final boolean dojoAgent_NextMap(final boolean dojo, final boolean fromresting, final int mapid) {
         if (dojo) {
-            return Event_DojoAgent.warpNextMap(c.getPlayer(), fromresting, getMap(mapid));
+            return MapleDojoAgent.warpNextMap(c.getPlayer(), fromresting, getMap(mapid));
         }
-        return Event_DojoAgent.warpNextMap_Agent(c.getPlayer(), fromresting);
+        return MapleDojoAgent.warpNextMap_Agent(c.getPlayer(), fromresting);
     }
 
     public final int dojo_getPts() {

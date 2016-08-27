@@ -69,8 +69,6 @@ import lib.data.MapleDataProviderFactory;
 import net.DatabaseConnection;
 import script.AbstractPlayerInteraction;
 import script.event.EventInstanceManager;
-import server.MapleCarnivalChallenge;
-import server.MapleCarnivalParty;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleSlideMenu;
@@ -85,13 +83,15 @@ import server.MapleStatEffect;
 import server.SpeedRunner;
 import server.StructItemOption;
 import server.Timer.CloneTimer;
+import server.carnival.MapleCarnivalChallenge;
+import server.carnival.MapleCarnivalParty;
+import server.events.MapleDojoAgent;
+import server.events.MaplePyramidSubway;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 import server.life.MapleNPC;
 import server.life.MonsterDropEntry;
-import server.maps.Event_DojoAgent;
-import server.maps.Event_PyramidSubway;
 import server.maps.MapleMap;
 import server.quest.MapleQuest;
 import server.shops.MapleShopFactory;
@@ -1514,23 +1514,23 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
 	public boolean start_DojoAgent(final boolean dojo, final boolean party, final int mapid) {
 		if (dojo) {
-			return Event_DojoAgent.warpStartDojo(c.getPlayer(), party, getMap(mapid));
+			return MapleDojoAgent.warpStartDojo(c.getPlayer(), party, getMap(mapid));
 		}
-		return Event_DojoAgent.warpStartAgent(c.getPlayer(), party);
+		return MapleDojoAgent.warpStartAgent(c.getPlayer(), party);
 	}
 
 	public boolean start_PyramidSubway(final int pyramid) {
 		if (pyramid >= 0) {
-			return Event_PyramidSubway.warpStartPyramid(c.getPlayer(), pyramid);
+			return MaplePyramidSubway.warpStartPyramid(c.getPlayer(), pyramid);
 		}
-		return Event_PyramidSubway.warpStartSubway(c.getPlayer());
+		return MaplePyramidSubway.warpStartSubway(c.getPlayer());
 	}
 
 	public boolean bonus_PyramidSubway(final int pyramid) {
 		if (pyramid >= 0) {
-			return Event_PyramidSubway.warpBonusPyramid(c.getPlayer(), pyramid);
+			return MaplePyramidSubway.warpBonusPyramid(c.getPlayer(), pyramid);
 		}
-		return Event_PyramidSubway.warpBonusSubway(c.getPlayer());
+		return MaplePyramidSubway.warpBonusSubway(c.getPlayer());
 	}
 
 	public final short getKegs() {
@@ -2200,16 +2200,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 					if (chr.getGuildId() > 0) {
 						World.Guild.guildPacket(chr.getGuildId(), CWvsContext.sendMarriage(false, chr.getName()));
 					}
-					if (chr.getFamilyId() > 0) {
-						World.Family.familyPacket(chr.getFamilyId(), CWvsContext.sendMarriage(true, chr.getName()),
-								chr.getId());
-					}
 					if (player.getGuildId() > 0) {
 						World.Guild.guildPacket(player.getGuildId(), CWvsContext.sendMarriage(false, player.getName()));
-					}
-					if (player.getFamilyId() > 0) {
-						World.Family.familyPacket(player.getFamilyId(), CWvsContext.sendMarriage(true, chr.getName()),
-								player.getId());
 					}
 				}
 			}

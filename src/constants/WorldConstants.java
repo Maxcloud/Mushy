@@ -61,9 +61,9 @@ public class WorldConstants {
 
         WorldOption(int world, byte flag, boolean show, int channels) {
             this.world = world;
-            this.exp = (ServerConfig.fixedRates ? ServerConfig.EXP : 1);
-            this.meso = (ServerConfig.fixedRates ? ServerConfig.MESO : 5);
-            this.drop = (ServerConfig.fixedRates ? ServerConfig.DROP : 2);
+            this.exp = ServerConfig.EXP;
+            this.meso = ServerConfig.MESO;
+            this.drop =ServerConfig.DROP;
             this.flag = flag;
             this.show = show;
             this.available = show;
@@ -73,9 +73,9 @@ public class WorldConstants {
 
         WorldOption(int world, int exp, int meso, int drop, byte flag, boolean show, boolean available, int channels) {
             this.world = world;
-            this.exp = (ServerConfig.fixedRates ? ServerConfig.EXP : exp);
-            this.meso = (ServerConfig.fixedRates ? ServerConfig.MESO : meso);
-            this.drop = (ServerConfig.fixedRates ? ServerConfig.DROP : drop);
+            this.exp = exp;
+            this.meso = meso;
+            this.drop = drop;
             this.flag = flag;
             this.show = show;
             this.available = available;
@@ -85,9 +85,9 @@ public class WorldConstants {
 
         WorldOption(int world, int exp, int meso, int drop, byte flag, boolean show, boolean available, int channels, String worldtip) {
             this.world = world;
-            this.exp = (ServerConfig.fixedRates ? ServerConfig.EXP : exp);
-            this.meso = (ServerConfig.fixedRates ? ServerConfig.MESO : meso);
-            this.drop = (ServerConfig.fixedRates ? ServerConfig.DROP : drop);
+            this.exp = ServerConfig.EXP;
+            this.meso = ServerConfig.MESO;
+            this.drop =ServerConfig.DROP;
             this.flag = flag;
             this.show = show;
             this.available = available;
