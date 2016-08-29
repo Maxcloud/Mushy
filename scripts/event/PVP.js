@@ -1,5 +1,3 @@
-importPackage(Packages.tools.packet);
-
 /**
  *
  * @author: Eric
