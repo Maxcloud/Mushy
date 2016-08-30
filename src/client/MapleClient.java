@@ -80,7 +80,7 @@ public class MapleClient implements Serializable {
 	private final static Lock login_mutex = new ReentrantLock(true);
 	private final Map<Integer, Pair<Short, Short>> charInfo = new LinkedHashMap<>();
 	private int client_increnement = 1;
-	
+
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MapleClient.class);
 
 	public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
@@ -231,7 +231,7 @@ public class MapleClient implements Serializable {
 	private Calendar getTempBanCalendar(ResultSet rs) throws SQLException {
 		Calendar lTempban = Calendar.getInstance();
 		if (rs.getLong("tempban") == 0) { // basically if timestamp in db is
-											// 0000-00-00
+			// 0000-00-00
 			lTempban.setTimeInMillis(0);
 			return lTempban;
 		}
@@ -317,11 +317,11 @@ public class MapleClient implements Serializable {
 				reason.append("System has detected hacking or illegal use of third-party programs.");
 			} else if (showId) {
 				reason.append("MapleGM has blocked your account ").append(AccountID)
-						.append(" for the following reason: ").append(getTrueBanReason(AccountID)); // Default
-																									// reason
+				.append(" for the following reason: ").append(getTrueBanReason(AccountID)); // Default
+				// reason
 			} else {
 				reason.append("Your account was blocked by the MapleStory GM's for ")
-						.append(getTrueBanReason(AccountID));
+				.append(getTrueBanReason(AccountID));
 			}
 			break;
 		}
@@ -553,7 +553,7 @@ public class MapleClient implements Serializable {
 					}
 					byte loginstate = getLoginState();
 					if (loginstate > MapleClient.LOGIN_NOTLOGGEDIN) { // already
-																		// loggedin
+						// loggedin
 						loggedIn = false;
 						loginok = 7;
 						if (pwd.equalsIgnoreCase("fixme")) {
@@ -590,9 +590,9 @@ public class MapleClient implements Serializable {
 							loginok = 0; // new standard
 						} else if (salt != null && LoginCrypto.checkSaltedSha512Hash(passhash, pwd, salt)) {
 							updatePasswordHash = true; // migrates away from
-														// Sha512, higher bit
-														// count but
-														// incompatible
+							// Sha512, higher bit
+							// count but
+							// incompatible
 							loginok = 0;
 							/*
 							 * Take out to reflect salted SHA1 Redirector Java's
@@ -697,54 +697,27 @@ public class MapleClient implements Serializable {
 		return 0;
 	}
 
-	public void updateMacs(String macData, String macData2) {
-        if (macData2.contains("_")) {
-            String additionalMac = formatMacAddress(macData2.split("_")[0]);
-            if (additionalMac.length() > 11 && !macData.contains(additionalMac)) {
-                if (macData.length() > 16)
-                    macData += ", ";
-                macData += additionalMac;
-            }
-        }
-        for (String mac : macData.split(", ")) {
-            if (!mac.equals("00-00-00-00-00-00"))
-                macs.add(mac);
-        }
-        if (macs.isEmpty()) {
-            disconnect(true, true);
-            return;
-        }
-        StringBuilder newMacData = new StringBuilder();
-        Iterator<String> iter = macs.iterator();
-        while (iter.hasNext()) {
-            String cur = iter.next();
-            newMacData.append(cur);
-            if (iter.hasNext()) {
-                newMacData.append(", ");
-            }
-        }
-        Connection con = DatabaseConnection.getConnection();
-        try {
-            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?");
-            ps.setString(1, newMacData.toString());
-            ps.setInt(2, accId);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e) {
-            log.error("Error saving MACs", e);
-        }
-    }
-	
-	private String formatMacAddress(String mac) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < mac.length(); i++) {
-            sb.append(mac.substring(i, i + 2));
-            if (i % 2 == 0 && i != mac.length() - 2)
-                sb.append("-");
-            i++;
-        }
-        return sb.toString();
-    }
+	public void updateMacs(String macData) {
+		macs.addAll(Arrays.asList(macData.split(", ")));
+		StringBuilder newMacData = new StringBuilder();
+		Iterator<String> iter = macs.iterator();
+		while (iter.hasNext()) {
+			newMacData.append(iter.next());
+			if (iter.hasNext()) {
+				newMacData.append(", ");
+			}
+		}
+		try {
+			Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?")) {
+				ps.setString(1, newMacData.toString());
+				ps.setInt(2, accId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			System.err.println("Error saving MACs" + e);
+		}
+	}
 
 	public void setAccID(int id) {
 		this.accId = id;
@@ -813,9 +786,9 @@ public class MapleClient implements Serializable {
 				state = rs.getByte("loggedin");
 				if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.CHANGE_CHANNEL) {
 					if (rs.getTimestamp("lastlogin").getTime() + 20000 < System.currentTimeMillis()) { // connecting
-																										// to
-																										// chanserver
-																										// timeout
+						// to
+						// chanserver
+						// timeout
 						state = MapleClient.LOGIN_NOTLOGGEDIN;
 						updateLoginState(state, getSessionIPAddress());
 					}
@@ -923,8 +896,8 @@ public class MapleClient implements Serializable {
 					}
 					if (questID > 0) {
 						player.getQuestNAdd(MapleQuest.getInstance(questID)).setCustomData("0"); // reset
-																									// the
-																									// time.
+						// the
+						// time.
 					}
 				} else if (player.isAlive()) {
 					switch (player.getMapId()) {
@@ -954,7 +927,7 @@ public class MapleClient implements Serializable {
 			final String namez = player.getName();
 			final int idz = player.getId(),
 					messengerid = player.getMessenger() == null ? 0 : player.getMessenger().getId(),
-					gid = player.getGuildId();
+							gid = player.getGuildId();
 			final BuddyList bl = player.getBuddylist();
 			final MaplePartyCharacter chrp = new MaplePartyCharacter(player);
 			final MapleMessengerCharacter chrm = new MapleMessengerCharacter(player);
@@ -1073,7 +1046,7 @@ public class MapleClient implements Serializable {
 					if (rs.next()) {
 						final String sessionIP = rs.getString("SessionIP");
 						if (sessionIP != null) { // Probably a login proced
-													// skipper?
+							// skipper?
 							canlogin = getSessionIPAddress().equals(sessionIP.split(":")[0]);
 						}
 						if (rs.getInt("banned") > 0) {
@@ -1111,9 +1084,9 @@ public class MapleClient implements Serializable {
 						return 9;
 					}
 					if (rs.getInt("guildid") > 0) { // is in a guild when
-													// deleted
+						// deleted
 						if (rs.getInt("guildrank") == 1) { // cant delete when
-															// leader
+							// leader
 							rs.close();
 							ps.close();
 							return 22;
@@ -1497,25 +1470,25 @@ public class MapleClient implements Serializable {
 	}
 
 	public void sendPing() {
-        final long then = System.currentTimeMillis();
-        getSession().write(LoginPacket.getPing());
-        
-        PingTimer.getInstance().schedule(new Runnable() {
+		final long then = System.currentTimeMillis();
+		getSession().write(LoginPacket.getPing());
 
-            @Override
-            public void run() {
-                try {
-                    if (lastPong - then < 0) {
-                        if (getSession().isConnected()) {
-                        	System.out.println("Attempting to close the connection. :(");
-                            // 	getSession().close();
-                        }
-                    }
-                } catch (NullPointerException e) {
-                    // client already gone
-                }
-            }
-        }, 10000); // note: idletime gets added to this too)
-     
-    }
+		PingTimer.getInstance().schedule(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					if (lastPong - then < 0) {
+						if (getSession().isConnected()) {
+							System.out.println("Attempting to close the connection. :(");
+							// 	getSession().close();
+						}
+					}
+				} catch (NullPointerException e) {
+					// client already gone
+				}
+			}
+		}, 10000); // note: idletime gets added to this too)
+
+	}
 }

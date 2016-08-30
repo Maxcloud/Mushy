@@ -18,8 +18,8 @@ public class CharacterWithoutSecondPassword {
         lea.readByte(); // 1?
         
         int charId = lea.readInt();
-        String firstMacAddress = lea.readMapleAsciiString();
-        String lastMacAddress = lea.readMapleAsciiString();
+        String macAddress = lea.readMapleAsciiString();
+        lea.readMapleAsciiString();
         
         final String currentpw = c.getSecondPassword();
         if (!c.isLoggedIn() || loginFailCount(c) || (currentpw != null && !currentpw.equals("")) || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
@@ -27,7 +27,7 @@ public class CharacterWithoutSecondPassword {
             return;
         }
         
-        c.updateMacs(firstMacAddress, lastMacAddress);
+        c.updateMacs(macAddress);
                 
         if (lea.available() != 0) {
             final String setpassword = lea.readMapleAsciiString();

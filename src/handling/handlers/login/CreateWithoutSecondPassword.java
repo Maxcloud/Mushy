@@ -17,8 +17,9 @@ public class CreateWithoutSecondPassword {
         lea.readByte(); // 1?
 		
         final String secondPassword = c.getSecondPassword();
-        String firstMacAddress = lea.readMapleAsciiString();
-        String lastMacAddress = lea.readMapleAsciiString();
+        String macAddress = lea.readMapleAsciiString();
+        lea.readMapleAsciiString();
+        
         
         
         if (!c.isLoggedIn() || (secondPassword != null && (!secondPassword.equals(""))) || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
@@ -26,7 +27,7 @@ public class CreateWithoutSecondPassword {
         	c.getSession().close();
             return;
         }
-        c.updateMacs(firstMacAddress, lastMacAddress);
+        c.updateMacs(macAddress);
         
         if (lea.available() != 0) {
             final String setpassword = lea.readMapleAsciiString();
