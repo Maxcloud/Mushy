@@ -14,11 +14,10 @@ import tools.packet.CField;
 public class CharSelectHandler {
 
     @PacketHandler(opcode = RecvPacketOpcode.CHAR_SELECT)
-    public static void handle(MapleClient c, LittleEndianAccessor lea){ //onCheckCharacterResult
-        //
-        //Add in a check for DISABLE_PIC? Currently not a constant
+    public static void handle(MapleClient c, LittleEndianAccessor lea){
+        //onCheckCharacterResult
         int charId = lea.readInt();
-        String charName = lea.readMapleAsciiString();
+        //String charName = lea.readMapleAsciiString(); // You can use it for logging or something.
         final String s = c.getSessionIPAddress();
         LoginServer.putLoginAuth(charId, s.substring(s.indexOf('/') + 1, s.length()), c.getTempIP(), c.getChannel());
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, s);
