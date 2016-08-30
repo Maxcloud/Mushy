@@ -16,23 +16,19 @@ public class CharacterWithoutSecondPassword {
 	public static void handle (MapleClient c, LittleEndianAccessor lea) {
 		lea.readByte(); // 1?
         lea.readByte(); // 1?
-        final int charid = lea.readInt();
         
-        /*if (view) {
-            c.setChannel(1);
-            c.setWorld(lea.readInt());
-        }*/
+        int charId = lea.readInt();
+        String macAddress = lea.readMapleAsciiString();
+        String hwid = lea.readMapleAsciiString();
         
         final String currentpw = c.getSecondPassword();
-        if (!c.isLoggedIn() || loginFailCount(c) || (currentpw != null && !currentpw.equals("")) || !c.login_Auth(charid) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
+        if (!c.isLoggedIn() || loginFailCount(c) || (currentpw != null && !currentpw.equals("")) || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
             c.getSession().close();
             return;
         }
         
-        c.updateMacs(lea.readMapleAsciiString());
-        
-        lea.readMapleAsciiString();
-        
+        c.updateMacs(macAddress);
+                
         if (lea.available() != 0) {
             final String setpassword = lea.readMapleAsciiString();
 
@@ -49,9 +45,9 @@ public class CharacterWithoutSecondPassword {
             c.getIdleTask().cancel(true);
         }
         final String s = c.getSessionIPAddress();
-        LoginServer.putLoginAuth(charid, s.substring(s.indexOf('/') + 1, s.length()), c.getTempIP(), c.getChannel());
+        LoginServer.putLoginAuth(charId, s.substring(s.indexOf('/') + 1, s.length()), c.getTempIP(), c.getChannel());
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION, s);
-        c.getSession().write(CField.getServerIP(c, Integer.parseInt(ChannelServer.getInstance(c.getChannel()).getIP().split(":")[1]), charid));
+        c.getSession().write(CField.getServerIP(c, Integer.parseInt(ChannelServer.getInstance(c.getChannel()).getIP().split(":")[1]), charId));
 	}
 	
 	private static boolean loginFailCount(final MapleClient c) {

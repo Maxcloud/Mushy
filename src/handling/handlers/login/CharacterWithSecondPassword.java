@@ -15,20 +15,19 @@ public class CharacterWithSecondPassword {
 	@PacketHandler(opcode = RecvPacketOpcode.AUTH_SECOND_PASSWORD)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		
-		final String password = lea.readMapleAsciiString();
-        final int charId = lea.readInt();
-        /*if (view) {
-            c.setChannel(1);
-            c.setWorld(slea.readInt());
-        }*/
+		String secondPassword = lea.readMapleAsciiString();
+        int charId = lea.readInt();
+        lea.readByte(); // New ? v175
+        String macAddress = lea.readMapleAsciiString();
+        String hwid = lea.readMapleAsciiString();
         
-        // || loginFailCount(c)
         if (!c.isLoggedIn() || c.getSecondPassword() == null || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
             c.getSession().close();
             return;
         }
-        c.updateMacs(lea.readMapleAsciiString());
-        if (c.CheckSecondPassword(password) && password.length() >= 6 && password.length() <= 16 || c.isGm()) {
+        c.updateMacs(macAddress);
+        
+        if (c.CheckSecondPassword(secondPassword) && secondPassword.length() >= 6 && secondPassword.length() <= 16 || c.isGm()) {
             if (c.getIdleTask() != null) {
                 c.getIdleTask().cancel(true);
             }

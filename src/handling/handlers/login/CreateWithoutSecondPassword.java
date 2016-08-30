@@ -16,14 +16,19 @@ public class CreateWithoutSecondPassword {
 		lea.readByte(); // 1? 
         lea.readByte(); // 1?
 		
-        final String currentpw = c.getSecondPassword();
+        final String secondPassword = c.getSecondPassword();
+        String macAddress = lea.readMapleAsciiString();
+        String hwid = lea.readMapleAsciiString();
         
-        if (!c.isLoggedIn() || (currentpw != null && (!currentpw.equals(""))) || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
+        
+        
+        if (!c.isLoggedIn() || (secondPassword != null && (!secondPassword.equals(""))) || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
             System.out.println("The session wants to close");
         	c.getSession().close();
             return;
         }
-        c.updateMacs(lea.readMapleAsciiString());
+        c.updateMacs(macAddress);
+        
         if (lea.available() != 0) {
             final String setpassword = lea.readMapleAsciiString();
 
