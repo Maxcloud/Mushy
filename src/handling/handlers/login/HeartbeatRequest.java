@@ -10,8 +10,8 @@ import tools.packet.LoginPacket;
 public class HeartbeatRequest {
 
 	@PacketHandler(opcode = RecvPacketOpcode.AUTH_REQUEST)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
-        c.getSession().write(LoginPacket.sendAuthResponse(SendPacketOpcode.AUTH_RESPONSE.getValue() ^ slea.readInt()));
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
+        c.getSession().write(LoginPacket.sendAuthResponse(SendPacketOpcode.AUTH_RESPONSE.getValue() ^ lea.readInt()));
 	}
 
 }

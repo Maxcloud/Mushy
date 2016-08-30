@@ -11,8 +11,8 @@ import tools.packet.LoginPacket;
 public class CheckCharacterName {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CHECK_CHAR_NAME)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
-		String name = slea.readMapleAsciiString();
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
+		String name = lea.readMapleAsciiString();
 		
 		LoginInformationProvider li = LoginInformationProvider.getInstance();
         boolean nameUsed = true;

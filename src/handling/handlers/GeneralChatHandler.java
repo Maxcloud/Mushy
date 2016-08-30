@@ -17,37 +17,44 @@ public class GeneralChatHandler {
 		if (c.getPlayer() != null && c.getPlayer().getMap() != null) {
 			slea.skip(4); // update tick
             String text = slea.readMapleAsciiString();
-            byte unk = slea.readByte();
+            byte bOnlyBalloon = slea.readByte();
             
-            if (text.length() > 0 && c.getPlayer() != null && c.getPlayer().getMap() != null && !CommandProcessor.processCommand(c, text, CommandType.NORMAL)) {
-                if (!c.getPlayer().isIntern() && text.length() >= 80) {
+            if (CommandProcessor.processCommand(c, text, CommandType.NORMAL))
+            	return;
+            
+            if (text.length() > 0 && c.getPlayer() != null && c.getPlayer().getMap() != null) {
+                
+            	if (!c.getPlayer().isIntern() && text.length() >= 80) {
                     return;
                 }
-                if (c.getPlayer().getCanTalk() || c.getPlayer().isStaff()) {
+                
+                if (c.getPlayer().getCanTalk()) {
                 	
-                    //Note: This patch is needed to prevent chat packet from being broadcast to people who might be packet sniffing.
+                    // Note: This patch is needed to prevent chat packet from being broadcast to people who might be packet sniffing.
                     if (c.getPlayer().isHidden()) {
-                        if (c.getPlayer().isIntern() && !c.getPlayer().isSuperGM() && unk == 0) {
+                        if (c.getPlayer().isIntern() && !c.getPlayer().isSuperGM() && bOnlyBalloon == 0) {
                         	c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), CField.getChatText(c.getPlayer().getId(), text, c.getPlayer().isSuperGM(), (byte) 1), true);
-                            if (unk == 0) {
+                            if (bOnlyBalloon == 0) {
                             	c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), CWvsContext.broadcastMsg(2, c.getPlayer().getName() + " : " + text), true);
                             }
                         } else {
-                        	c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), CField.getChatText(c.getPlayer().getId(), text, c.getPlayer().isSuperGM(), unk), true);
+                        	c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), CField.getChatText(c.getPlayer().getId(), text, c.getPlayer().isSuperGM(), bOnlyBalloon), true);
                         }
                     } else {
                     	
-                        if (c.getPlayer().isIntern() && !c.getPlayer().isSuperGM() && unk == 0) {
-                            c.getPlayer().getMap().broadcastMessage(CField.getChatText(c.getPlayer().getId(), text, false, unk));
+                        if (c.getPlayer().isIntern() && !c.getPlayer().isSuperGM() && bOnlyBalloon == 0) {
+                            c.getPlayer().getMap().broadcastMessage(CField.getChatText(c.getPlayer().getId(), text, false, bOnlyBalloon));
                         	c.getPlayer().getMap().broadcastMessage(CField.getChatText(c.getPlayer().getId(), text, c.getPlayer().isSuperGM(), 1));
                         } else {
-                        	c.getPlayer().getMap().broadcastMessage(CField.getChatText(c.getPlayer().getId(), text, false, unk));
-                        	c.getPlayer().getMap().broadcastMessage(CField.getChatText(c.getPlayer().getId(), text, c.getPlayer().isSuperGM(), 1));//was1
+                        	c.getPlayer().getMap().broadcastMessage(CField.getChatText(c.getPlayer().getId(), text, false, bOnlyBalloon));
+                        	c.getPlayer().getMap().broadcastMessage(CField.getChatText(c.getPlayer().getId(), text, c.getPlayer().isSuperGM(), 1));
                         }
                     }
+
                 } else {
                     c.getSession().write(CWvsContext.broadcastMsg(6, "You have been muted and are therefore unable to talk."));
                 }
+
             }
         }
 	}

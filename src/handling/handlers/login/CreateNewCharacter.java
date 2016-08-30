@@ -1,14 +1,8 @@
 package handling.handlers.login;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import client.MapleClient;
-import client.Skill;
-import client.SkillEntry;
-import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
@@ -24,24 +18,24 @@ import tools.packet.LoginPacket;
 public class CreateNewCharacter {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CREATE_CHAR)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		
 		String name;
 		byte gender, skin;
 		short subcategory;
 		int face, hair, hairColor = -1, hat = -1, top, bottom = -1, shoes, weapon, cape = -1, faceMark = -1, shield = -1;
 		
-		name = slea.readMapleAsciiString();
+		name = lea.readMapleAsciiString();
 
 		if (!MapleCharacterUtil.canCreateChar(name, false)) {
 			System.out.println("char name hack: " + name);
 			return;
 		}
 
-		slea.skip(4); // key type setting
-		slea.skip(4); // -1
+		lea.skip(4); // key type setting
+		lea.skip(4); // -1
 		
-		int job_type = slea.readInt();
+		int job_type = lea.readInt();
 		JobType job = JobType.getByType(job_type);
 		
 		if (job == null) {
@@ -58,46 +52,46 @@ public class CreateNewCharacter {
 			}
 		}
 
-		subcategory = slea.readShort();
-		gender = slea.readByte();
-		skin = slea.readByte();
+		subcategory = lea.readShort();
+		gender = lea.readByte();
+		skin = lea.readByte();
 		
-		slea.skip(1);
+		lea.skip(1);
 		
-		face = slea.readInt();
-		hair = slea.readInt();
+		face = lea.readInt();
+		hair = lea.readInt();
 		
 		if (job.hairColor) {
-			hairColor = slea.readInt();
+			hairColor = lea.readInt();
 		}
 		
 		if (job.skinColor) {
-			slea.readInt();
+			lea.readInt();
 		}
 		
 		if (job.faceMark) {
-			faceMark = slea.readInt();
+			faceMark = lea.readInt();
 		}
 		
 		if (job.hat) {
-			hat = slea.readInt();
+			hat = lea.readInt();
 		}
 		
-		top = slea.readInt();
+		top = lea.readInt();
 		
 		if (job.bottom) {
-			bottom = slea.readInt();
+			bottom = lea.readInt();
 		}
 		
 		if (job.cape) {
-			cape = slea.readInt();
+			cape = lea.readInt();
 		}
 
-		shoes = slea.readInt();
-		weapon = slea.readInt();
+		shoes = lea.readInt();
+		weapon = lea.readInt();
 
-		if (slea.available() >= 4) {
-			shield = slea.readInt();
+		if (lea.available() >= 4) {
+			shield = lea.readInt();
 		}
 
 		int index = 0;
@@ -174,7 +168,7 @@ public class CreateNewCharacter {
 		
 		/**
 		 * Additional skills for all first job classes. Some skills are not added by default,
-		 * so adding the skill ID here between the {}, will give the skills you entered to the desired job.
+		 * so adding the skillid ID here between the {}, will give the skills you entered to the desired job.
 		 * 
 		 */
 		

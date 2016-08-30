@@ -2,8 +2,6 @@ package handling.handlers.login;
 
 import client.MapleClient;
 import constants.WorldConstants.WorldOption;
-import handling.PacketHandler;
-import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
 import tools.data.LittleEndianAccessor;
@@ -13,10 +11,10 @@ import tools.packet.LoginPacket;
 public class CreateWithoutSecondPassword {
 	
 	// @PacketHandler(opcode = RecvPacketOpcode.CHAR_SELECT_NO_PIC)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
-		final int charId = slea.readInt();
-		slea.readByte(); // 1? 
-        slea.readByte(); // 1?
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
+		final int charId = lea.readInt();
+		lea.readByte(); // 1? 
+        lea.readByte(); // 1?
 		
         final String currentpw = c.getSecondPassword();
         
@@ -25,9 +23,9 @@ public class CreateWithoutSecondPassword {
         	c.getSession().close();
             return;
         }
-        c.updateMacs(slea.readMapleAsciiString());
-        if (slea.available() != 0) {
-            final String setpassword = slea.readMapleAsciiString();
+        c.updateMacs(lea.readMapleAsciiString());
+        if (lea.available() != 0) {
+            final String setpassword = lea.readMapleAsciiString();
 
             if (setpassword.length() >= 6 && setpassword.length() <= 16) {
                 c.setSecondPassword(setpassword);

@@ -15,14 +15,14 @@ import tools.packet.LoginPacket;
 public class CharacterListRequest {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CHARLIST_REQUEST)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		if (!c.isLoggedIn()) {
             c.getSession().close();
             return;
         }
-        slea.readByte();
-        final int server = slea.readByte();
-        final int channel = slea.readByte() + 1;
+        lea.readByte();
+        final int server = lea.readByte();
+        final int channel = lea.readByte() + 1;
         if (!World.isChannelAvailable(channel, server) || !WorldOption.isExists(server)) {
             c.getSession().write(LoginPacket.getLoginFailed(10)); // cannot process so many
             return;

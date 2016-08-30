@@ -1,17 +1,13 @@
 package handling.handlers.login;
 
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.ServerConstants;
 import constants.WorldConstants.WorldOption;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.login.LoginServer;
-import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.LoginPacket;
 

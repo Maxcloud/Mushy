@@ -9,11 +9,11 @@ import tools.packet.LoginPacket;
 public class PongHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.PONG)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		
-		if (slea.available() > 0) {
+		if (lea.available() > 0) {
 			
-			if(slea.readInt() == 28)
+			if(lea.readInt() == 28)
 				c.getSession().write(LoginPacket.getPing());
 			
 		}

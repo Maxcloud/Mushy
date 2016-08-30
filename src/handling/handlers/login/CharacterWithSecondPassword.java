@@ -6,7 +6,6 @@ import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
-import tools.FileoutputUtil;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.LoginPacket;
@@ -14,10 +13,10 @@ import tools.packet.LoginPacket;
 public class CharacterWithSecondPassword {
 
 	@PacketHandler(opcode = RecvPacketOpcode.AUTH_SECOND_PASSWORD)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		
-		final String password = slea.readMapleAsciiString();
-        final int charId = slea.readInt();
+		final String password = lea.readMapleAsciiString();
+        final int charId = lea.readInt();
         /*if (view) {
             c.setChannel(1);
             c.setWorld(slea.readInt());
@@ -28,7 +27,7 @@ public class CharacterWithSecondPassword {
             c.getSession().close();
             return;
         }
-        c.updateMacs(slea.readMapleAsciiString());
+        c.updateMacs(lea.readMapleAsciiString());
         if (c.CheckSecondPassword(password) && password.length() >= 6 && password.length() <= 16 || c.isGm()) {
             if (c.getIdleTask() != null) {
                 c.getIdleTask().cancel(true);

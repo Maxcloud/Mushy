@@ -10,7 +10,7 @@ import tools.packet.LoginPacket;
 public class ServerStatusRequest {
 
 	@PacketHandler(opcode = RecvPacketOpcode.SERVERSTATUS_REQUEST)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
         // 0 = Select world normally
         // 1 = "Since there are many users, you may encounter some..."
         // 2 = "The concurrent users in this world have reached the max"

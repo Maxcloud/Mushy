@@ -3438,211 +3438,211 @@ public class GameConstants {
 	public static int getMountItemEx(final int sourceid) {
 		final int riding = 1932000;
 		switch (sourceid) {
-		case 1204: // ‚°‚°­‚‚°‚
+		case 1204:
 			return riding + 0;
-		case 80001163: //  ‚¤­“¯‚´ ‚¤‚°‚
+		case 80001163:
 			return riding + 2;
-		case 80001449: //  ‚¤­“¯‚´ ‚¤‚°‚2
+		case 80001449:
 			return riding + 225;
-		case 80001450: // “‚¤­‚ ‚ ‚°‚ï¯‚´2
+		case 80001450:
 			return riding + 226;
-		case 80001451: //   ­ ‚¸2
+		case 80001451:
 			return riding + 227;
-		case 80001026: // ‚‚¯‚£‚¨
+		case 80001026:
 			return riding + 5;
-		case 80001003: // ‚‚‚§ 
+		case 80001003:
 			return riding + 6;
-		case 80001004: // ‚‚¦‚‚´
+		case 80001004:
 			return riding + 7;
-		case 80001005: // “‚¤­‚ ‚ ‚°‚ï¯‚´ (‚° ‚°)
+		case 80001005:
 			return riding + 8;
-		case 80001006: // “‚¤­‚ ‚ ‚°‚ï¯‚´ (‚¶‚­ž¯‚°)
+		case 80001006:
 			return riding + 9;
-		case 80001007: // ‚µ‚‚¦‚
+		case 80001007:
 			return riding + 11;
-		case 80001008: // ‚§‚‚§ ‚°‚¡¯
+		case 80001008:
 			return riding + 10;
-		case 80001009: // ‚  ¯‚´‚‚±‚‚´
+		case 80001009:
 			return riding + 13;
-		case 80001010: // ­‚ï‚‚‚°‚ ­“‚¸‚Ë¯‚´
+		case 80001010:
 			return riding + 14;
-		case 80001011: // ‚¯‚¸ ‚¤­ ‚¸ ‚°‚¡¯ (‚ ‚‚²‚´‚‚¨ ‚µ)
+		case 80001011:
 			return riding + 12;
-		case 80001013: // ‚£‚­ž‚‚²‚‚‚¯
+		case 80001013:
 			return riding + 23;
-		case 80001014: // ‚¶ ­ ‚ï ‚§¯
+		case 80001014:
 			return riding + 25;
-		case 80001015: // ­‚¡‚°
+		case 80001015:
 			return riding + 26;
-		case 80001016: // ­‚‚Ë­¯‚‚³‚° ‚‚´‚¸‚°‚µ‚
+		case 80001016:
 			return riding + 27;
-		case 80001017: // ­‚Ë ‚¡‚´‚¡
+		case 80001017:
 			return riding + 28;
-		case 80001018: // “‚¤­‚ ‚ ‚°‚ï¯‚´ (‚‚¨‚°‚‚°)
+		case 80001018:
 			return riding + 34;
-		case 80001019: // ­‚º‚“   ­ ‚¸
+		case 80001019:
 			return riding + 35;
-		case 80001020: // ¯‚¯‚´‚‚¸­‚¡‚
+		case 80001020:
 			return riding + 41;
-		case 80001021: // ‚¸‚ï‚£‚¨  ‚¤‚‚ ¯‚ï
+		case 80001021:
 			return riding + 43;
-		case 80001022: // ‚£‚¨¯­‚Ë‚¸ ‚°‚¡¯
+		case 80001022:
 			return riding + 44;
-		case 80001023: // ‚³‚µ‚£‚‚¨‚¸‚ 
+		case 80001023:
 			return riding + 48;
-		case 80001027: // ‚¡“‚‚´ ‚‚­‚‚°‚¸‚°
+		case 80001027:
 			return riding + 49;
-		case 80001028: // ‚‚¨‚°‚ ‚‚­‚‚°‚¸‚°
+		case 80001028:
 			return riding + 50;
-		case 80001038: // ­ž‚‚¸  ‚‚¯ ‚°‚°
+		case 80001038:
 			return riding + 53;
-		case 80001030: // ‚‚­
+		case 80001030:
 			return riding + 54;
-		case 80001031: // ‚¶‚‚°¯‚´
+		case 80001031:
 			return riding + 55;
-		case 80001032: // ­‚Ë ¯¯ž‚°‚¨
+		case 80001032:
 			return riding + 56;
-		case 80001033: // ‚‚´‚ ‚° ¯‚¯‚´‚ï‚
+		case 80001033:
 			return riding + 57;
-		case 80001044: // ‚‚‚§ ­‚ ‚ ‚¸‚°
+		case 80001044:
 			return riding + 90;
-		case 80001082: // ­ž‚‚ 
+		case 80001082:
 			return riding + 93;
-		case 80001083: //  “‚  ‚‚­‚ ‚ ¯‚
+		case 80001083:
 			return riding + 94;
-		case 80001084: // ‚‚°‚‚´‚¡‚´­‚ ‚ ¯‚
+		case 80001084:
 			return riding + 95;
-		case 80001090: // ‚¶‚ï‚‚‚§¯‚‚§
+		case 80001090:
 			return riding + 96;
-		case 80001137: // ‚²¯‚¶‚‚°¯‚´
+		case 80001137:
 			return riding + 110;
-		case 80001144: // ‚“­“‚¸ “‚  ‚‚
+		case 80001144:
 			return riding + 113;
-		case 80001148: // ‚‚¨‚°‚‚¶‚‚¶‚‚°‚¨
+		case 80001148:
 			return riding + 114;
-		case 80001149: // ‚‚‚§‚ ‚¡‚´‚¡
+		case 80001149:
 			return riding + 115;
-		case 80001198: // ‚““‚³‚ ‚ ‚‚´
+		case 80001198:
 			return riding + 140;
-		case 80001220: // ­‚­‚¦
+		case 80001220:
 			return riding + 143;
-		case 80001221: // ‚‚‚¦‚‚‚
+		case 80001221:
 			return riding + 144;
-		case 80001228: // ‚‚·‚‚´
+		case 80001228:
 			return riding + 148;
-		case 80001237: // ‚¸‚ïžž¯‚´‚² 
+		case 80001237:
 			return riding + 153;
-		case 80001243: // ž‚¸‚°¯‚ ‚‚±‚°
+		case 80001243:
 			return riding + 156;
-		case 80001244: // ‚²‚¨¡‚¸ž‚‚µ‚­
+		case 80001244:
 			return riding + 157;
-		case 80001246: // ‚‚
+		case 80001246:
 			return riding + 159;
-		case 80001257: // ­‚‚Ë­¯‚‚  ‚Ë‚‚Ë‚
+		case 80001257:
 			return riding + 161;
-		case 80001258: // ‚¸‚ïž‚  ‚Ë‚‚Ë‚
+		case 80001258:
 			return riding + 162;
-		case 80001261: // ‚‚´‚‚¤ ¯‚´¯­‚‚¦‚
+		case 80001261:
 			return riding + 164;
-		case 80001285: // ­‚„¯‚‚  ‚Ë‚‚Ë‚
+		case 80001285:
 			return riding + 167;
-		case 80001289: // ¯‚°‚‚‚¡‚´
+		case 80001289:
 			return riding + 170;
-		case 80001290: // ‚‚ ‚‚‚‚‚§ 
+		case 80001290:
 			return riding + 171;
-		case 80001292: // ‚‚´‚¦‚°ž‚¯
+		case 80001292:
 			return riding + 173;
-		case 80001302: // ‚²¯ ‚““‚³‚¤
+		case 80001302:
 			return riding + 178;
-		case 80001304: // ‚‚§¯‚‚§
+		case 80001304:
 			return riding + 179;
-		case 80001305: // ¯‚‚º‚° ‚¸‚°
+		case 80001305:
 			return riding + 180;
-		case 80001306: // ‚  ‚“ ‚“¯‚‚‚ï
+		case 80001306:
 			return riding + 181;
-		case 80001307: // ­‚‚°­‚‚°‚‚‚¡“
+		case 80001307:
 			return riding + 182;
-		case 80001308: // ­‚‚°­‚‚°“‚¤
+		case 80001308:
 			return riding + 183;
-		case 80001309: // ‚‚ ‚¡‚°
+		case 80001309:
 			return riding + 184;
-		case 80001312: // ‚“­“‚¸ 1
+		case 80001312:
 			return riding + 187;
-		case 80001313: // ‚“­“‚¸ 2
+		case 80001313:
 			return riding + 188;
-		case 80001314: // ‚“­“‚¸ 3
+		case 80001314:
 			return riding + 189;
-		case 80001315: // ‚“­“‚¸ 4
+		case 80001315:
 			return riding + 190;
-		case 80001316: // ‚¯‚°“ 1
+		case 80001316:
 			return riding + 191;
-		case 80001317: // ‚¯‚°“ 2
+		case 80001317:
 			return riding + 192;
-		case 80001318: // ‚¯‚°“ 3
+		case 80001318:
 			return riding + 193;
-		case 80001319: // ­‚“¯‚´‚¯‚¡“
+		case 80001319:
 			return riding + 194;
-		case 80001327: // ¯‚¯‚
+		case 80001327:
 			return riding + 198;
-		case 80001331: // ‚³‚´‚¯ ‚‚ ‚¤
+		case 80001331:
 			return riding + 199;
-		case 80001336: // ­‚“‚‚³‚Ë‚‚‚¦‚
+		case 80001336:
 			return riding + 200;
-		case 80001338: // ‚‚¡‚°¯
+		case 80001338:
 			return riding + 201;
-		case 80001333: // ‚‚¨‚°‚‚·‚‚Ë¯¡‚´
+		case 80001333:
 			return riding + 205;
-		case 80001347: // ‚‚¦‚§ ‚¦‚
+		case 80001347:
 			return riding + 207;
-		case 80001348: // ­ž­‚‚
+		case 80001348:
 			return riding + 208;
-		case 80001353: // ‚‚¦‚§ ‚¦‚2
+		case 80001353:
 			return riding + 211;
-		case 80001413: // ¸¯‚°“
+		case 80001413:
 			return riding + 219;
-		case 80001421: // ‚§ ‚°‚¨
+		case 80001421:
 			return riding + 221;
-		case 80001423: // ‚²‚¨‚£‚¸
+		case 80001423:
 			return riding + 222;
-		case 80001445: // ‚‚º‚¡‚ ‚°
+		case 80001445:
 			return riding + 242;
-		case 80001447: // ‚‚´‚Ë‚ ‚¡‚ ‚°
+		case 80001447:
 			return riding + 243;
-		case 80001484: // ‚¶‚¸‚ 
+		case 80001484:
 			return riding + 235;
-		case 80001508: // ‚‚¯‚§¯
+		case 80001508:
 			return riding + 244;
-		case 80001345:// ­‚‚¤‚‚´­‚ ‚¤‚£‚‚¨‚
+		case 80001345:
 			return riding + 204;
-		case 80001199:// ¯‚¦ “‚‚¦‚ ‚²“
+		case 80001199:
 			return riding + 256;
-		case 80001490: // ‚¡“‚‚¦‚ ‚²“
+		case 80001490:
 			return riding + 259;
-		case 80001491: // ­‚‚‚¦‚‚‚­‚‚° ‚²“
+		case 80001491:
 			return riding + 258;
-		case 80001505: // ‚§‚°¯­‚ ‚‚   
+		case 80001505:
 			return riding + 251;
-		case 80001492: // ‚‚‚¡“‚‚     
+		case 80001492:
 			return riding + 249;
-		case 80001503: // ­ ‚‚‚¦‚°‚¡¯
+		case 80001503:
 			return riding + 12;
-		case 80001531: //¯‚´¯­‚‚§¯
+		case 80001531:
 			return riding + 253;
-		case 80001549: //‚‚ï¯‚´­‚ï‚°‚¨?
+		case 80001549:
 			return riding + 254;
-		case 80001550: //­‚¯‚ï
+		case 80001550:
 			return riding + 255;
-		case 80001355://¯‚³‚ “    
+		case 80001355:
 			return riding + 212;
-		case 80001411://‚‚‚­ ‚¸¸‚­
+		case 80001411:
 			return riding + 218;
-			/*case 80001552: //¯‚¦ “‚‚¦‚
+			/*case 80001552:
              case 80001553:    
              return + 256;
-             case 80001554: //­‚‚‚¦‚‚‚­‚‚°?
+             case 80001554:
              case 80001555:
              return + 258;
-             /* case 80001557://‚¡“‚‚¦‚
+             /* case 80001557:
              case 80001558:    
              return + 259;*/
 		default:

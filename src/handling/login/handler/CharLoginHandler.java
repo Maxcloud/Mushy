@@ -17,13 +17,11 @@ import constants.GameConstants;
 import constants.WorldConstants.WorldOption;
 import handling.channel.ChannelServer;
 import handling.login.LoginInformationProvider;
-import handling.login.LoginServer;
-import handling.login.LoginWorker;
 import handling.login.LoginInformationProvider.JobType;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
-import tools.FileoutputUtil;
 import tools.data.LittleEndianAccessor;
+import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.LoginPacket;
 
@@ -165,16 +163,16 @@ public class CharLoginHandler {
         }
     }
 
-    public static void DeleteChar(final LittleEndianAccessor slea, final MapleClient c) {
-        String Secondpw_Client = slea.readMapleAsciiString();
+    public static void DeleteChar(final LittleEndianAccessor lea, final MapleClient c) {
+        String Secondpw_Client = lea.readMapleAsciiString();
         if (Secondpw_Client == null) {
-            if (slea.readByte() > 0) { // Specific if user have second password or not
-                Secondpw_Client = slea.readMapleAsciiString();
+            if (lea.readByte() > 0) { // Specific if user have second password or not
+                Secondpw_Client = lea.readMapleAsciiString();
             }
-            slea.readMapleAsciiString();
+            lea.readMapleAsciiString();
         }
 
-        final int Character_ID = slea.readInt();
+        final int Character_ID = lea.readInt();
 
         if (!c.login_Auth(Character_ID) || !c.isLoggedIn() || loginFailCount(c)) {
             c.getSession().close();

@@ -22,11 +22,11 @@ public class LoginPasswordHandler {
     }
     
     @PacketHandler(opcode = RecvPacketOpcode.LOGIN_PASSWORD)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
-		slea.skip(1); // 174.1
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
+		lea.skip(1); // 174.1
     	
-    	String pwd = slea.readMapleAsciiString();
-        String login = slea.readMapleAsciiString();
+    	String pwd = lea.readMapleAsciiString();
+        String login = lea.readMapleAsciiString();
 
         login = login.replace("NP12:auth06:5:0:", "");
 

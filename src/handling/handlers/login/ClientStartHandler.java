@@ -9,7 +9,7 @@ import tools.packet.LoginPacket;
 public class ClientStartHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CLIENT_START)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		c.getSession().write(LoginPacket.getStart());
 	}
 

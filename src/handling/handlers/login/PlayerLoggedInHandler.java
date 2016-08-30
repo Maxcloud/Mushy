@@ -28,9 +28,9 @@ import tools.packet.CField;
 public class PlayerLoggedInHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.PLAYER_LOGGEDIN)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
-		slea.readInt(); // this could be the world or account
-		final int playerid = slea.readInt();
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
+		lea.readInt(); // this could be the world or account
+		final int playerid = lea.readInt();
 
 		MapleCharacter player;
 		
