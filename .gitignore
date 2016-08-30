@@ -1,4 +1,5 @@
 # Folders
+.idea/
 .settings/
 bin/
 dat/
@@ -8,3 +9,4 @@ wz/
 # Files
 *.classpath
 *.project
+Mushy.iml

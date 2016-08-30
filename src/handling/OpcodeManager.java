@@ -35,8 +35,9 @@ class OpcodeManager {
 		ClientErrorHandler.class,
 		CharacterWithSecondPassword.class,
 		CreateWithoutSecondPassword.class,
-		
+
 		CharacterWithoutSecondPassword.class,
+		CharSelectHandler.class,
 		
 		// Channel
 		ChangeMapHandler.class,
