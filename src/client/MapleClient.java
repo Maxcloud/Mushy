@@ -73,15 +73,15 @@ public class MapleClient implements Serializable {
 	private final transient Set<String> macs = new HashSet<>();
 	private final transient Map<String, ScriptEngine> engines = new HashMap<>();
 	private transient ScheduledFuture<?> idleTask = null;
-	private transient String secondPassword, salt2, tempIP = ""; // To be used
-																	// only on
-																	// login
+	private transient String secondPassword, salt2, tempIP = "";
 	private final transient Lock mutex = new ReentrantLock(true);
 	private final transient Lock npc_mutex = new ReentrantLock();
 	private long lastNpcClick = 0;
 	private final static Lock login_mutex = new ReentrantLock(true);
 	private final Map<Integer, Pair<Short, Short>> charInfo = new LinkedHashMap<>();
 	private int client_increnement = 1;
+	
+	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MapleClient.class);
 
 	public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
 		this.send = send;
@@ -697,27 +697,54 @@ public class MapleClient implements Serializable {
 		return 0;
 	}
 
-	public void updateMacs(String macData) {
-		macs.addAll(Arrays.asList(macData.split(", ")));
-		StringBuilder newMacData = new StringBuilder();
-		Iterator<String> iter = macs.iterator();
-		while (iter.hasNext()) {
-			newMacData.append(iter.next());
-			if (iter.hasNext()) {
-				newMacData.append(", ");
-			}
-		}
-		try {
-			Connection con = DatabaseConnection.getConnection();
-			try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?")) {
-				ps.setString(1, newMacData.toString());
-				ps.setInt(2, accId);
-				ps.executeUpdate();
-			}
-		} catch (SQLException e) {
-			System.err.println("Error saving MACs" + e);
-		}
-	}
+	public void updateMacs(String macData, String macData2) {
+        if (macData2.contains("_")) {
+            String additionalMac = formatMacAddress(macData2.split("_")[0]);
+            if (additionalMac.length() > 11 && !macData.contains(additionalMac)) {
+                if (macData.length() > 16)
+                    macData += ", ";
+                macData += additionalMac;
+            }
+        }
+        for (String mac : macData.split(", ")) {
+            if (!mac.equals("00-00-00-00-00-00"))
+                macs.add(mac);
+        }
+        if (macs.isEmpty()) {
+            disconnect(true, true);
+            return;
+        }
+        StringBuilder newMacData = new StringBuilder();
+        Iterator<String> iter = macs.iterator();
+        while (iter.hasNext()) {
+            String cur = iter.next();
+            newMacData.append(cur);
+            if (iter.hasNext()) {
+                newMacData.append(", ");
+            }
+        }
+        Connection con = DatabaseConnection.getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?");
+            ps.setString(1, newMacData.toString());
+            ps.setInt(2, accId);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            log.error("Error saving MACs", e);
+        }
+    }
+	
+	private String formatMacAddress(String mac) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mac.length(); i++) {
+            sb.append(mac.substring(i, i + 2));
+            if (i % 2 == 0 && i != mac.length() - 2)
+                sb.append("-");
+            i++;
+        }
+        return sb.toString();
+    }
 
 	public void setAccID(int id) {
 		this.accId = id;
