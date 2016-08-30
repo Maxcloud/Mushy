@@ -47,6 +47,8 @@ class OpcodeManager {
 		RangedAttackHandler.class,
 		MagicAttackHandler.class,
 		GeneralChatHandler.class,
+
+		ItemMoveHandler.class,
 		
 		MesoDropHandler.class,
 		QuestActionHandler.class,

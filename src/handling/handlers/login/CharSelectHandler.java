@@ -14,9 +14,8 @@ import tools.packet.CField;
 public class CharSelectHandler {
 
     @PacketHandler(opcode = RecvPacketOpcode.CHAR_SELECT)
-    public static void handle(MapleClient c, LittleEndianAccessor lea){ //onCheckCharacterResult
-        //
-        //Add in a check for DISABLE_PIC? Currently not a constant
+    public static void handle(MapleClient c, LittleEndianAccessor lea){
+        //onCheckCharacterResult
         int charId = lea.readInt();
         String charName = lea.readMapleAsciiString();
         final String s = c.getSessionIPAddress();
