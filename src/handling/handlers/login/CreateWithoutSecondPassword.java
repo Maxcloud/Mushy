@@ -18,7 +18,7 @@ public class CreateWithoutSecondPassword {
 		
         final String secondPassword = c.getSecondPassword();
         String macAddress = lea.readMapleAsciiString();
-        lea.readMapleAsciiString();
+        String hwid = lea.readMapleAsciiString();
         
         
         

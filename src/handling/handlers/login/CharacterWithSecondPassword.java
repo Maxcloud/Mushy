@@ -19,7 +19,7 @@ public class CharacterWithSecondPassword {
         int charId = lea.readInt();
         lea.readByte(); // New ? v175
         String macAddress = lea.readMapleAsciiString();
-        lea.readMapleAsciiString();
+        String hwid = lea.readMapleAsciiString();
         
         if (!c.isLoggedIn() || c.getSecondPassword() == null || !c.login_Auth(charId) || ChannelServer.getInstance(c.getChannel()) == null || !WorldOption.isExists(c.getWorld())) {
             c.getSession().close();
