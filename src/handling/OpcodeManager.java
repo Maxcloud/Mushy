@@ -45,7 +45,9 @@ class OpcodeManager {
 		ChangeMapHandler.class,
 		EnterCashShopHandler.class,
 		MovePlayerHandler.class,
-		
+		ChangeChannelHandler.class,
+		ChangeFmMapHandler.class,
+
 		CloseRangeAttackHandler.class,
 		RangedAttackHandler.class,
 		PassiveEnergyAttackHandler.class,

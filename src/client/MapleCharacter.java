@@ -9611,4 +9611,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         updateSingleStat(MapleStat.HAIR, this.hair);
         equipChanged();
     }
+
+    public boolean isInFmRoom(){
+        return getMapId() >= 910000001 && getMapId() < 910000022; //fm maps
+    }
 }
