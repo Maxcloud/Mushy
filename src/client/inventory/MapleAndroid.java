@@ -12,7 +12,6 @@ import net.DatabaseConnection;
 import server.MapleItemInformationProvider;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
-import server.movement.StaticLifeMovement;
 import tools.Randomizer;
 import tools.Triple;
 
@@ -165,10 +164,10 @@ public class MapleAndroid implements Serializable {
     public final void updatePosition(List<LifeMovementFragment> movement) {
         for (LifeMovementFragment move : movement) {
             if ((move instanceof LifeMovement)) {
-                if ((move instanceof StaticLifeMovement)) {
+                // if ((move instanceof StaticLifeMovement)) {
                     setPos(((LifeMovement) move).getPosition());
-                }
-                setStance(((LifeMovement) move).getNewstate());
+                // }
+                setStance(((LifeMovement) move).getMoveAction()); // .getNewstate());
             }
         }
     }

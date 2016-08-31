@@ -2009,7 +2009,7 @@ public class CField {
 
 		mplew.writeInt(cid);
 		mplew.write(tbyte);
-		// System.out.println(tbyte + " - tbyte");
+		// System.out.println(nMobCount + " - nMobCount");
 		mplew.write(lvl);
 		if ((skill > 0) || (type == 3)) {
 			mplew.write(level);

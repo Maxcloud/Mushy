@@ -232,37 +232,38 @@ public class MobPacket {
 		return mplew.getPacket();
 	}
 
-	public static byte[] moveMonster(boolean useskill, int skill, int unk, int oid, Point startPos,
-			List<LifeMovementFragment> moves) {
-		return moveMonster(useskill, skill, unk, oid, startPos, moves, null, null);
-	}
-
-	public static byte[] moveMonster(boolean useskill, int skill, int unk, int oid, Point startPos,
-			List<LifeMovementFragment> moves, List<Integer> unk2, List<Pair<Integer, Integer>> unk3) {
+	public static byte[] moveMonster(boolean useskill, int skill, int unk, int oid, Point xy, List<LifeMovementFragment> moves) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 		mplew.writeShort(SendPacketOpcode.MOVE_MONSTER.getValue());
 		mplew.writeInt(oid);
+		
 		mplew.write(useskill ? 1 : 0);
 		mplew.write(skill);
 		mplew.writeInt(unk);
-		mplew.write(unk3 == null ? 0 : unk3.size());
-		if (unk3 != null) {
+		
+		mplew.write(0); // unk3 == null ? 0 : unk3.size());
+		
+		/*if (unk3 != null) {
 			for (Pair i : unk3) {
 				mplew.writeShort(((Integer) i.left).intValue());
 				mplew.writeShort(((Integer) i.right).intValue());
 			}
-		}
-		mplew.write(unk2 == null ? 0 : unk2.size());
-		if (unk2 != null) {
+		}*/
+		
+		mplew.write(0); // unk2 == null ? 0 : unk2.size());
+		
+		/*if (unk2 != null) {
 			for (Integer i : unk2) {
 				mplew.writeShort(i.intValue());
 			}
-		}
+		}*/
 
-		mplew.writeInt(0);
-		mplew.writePos(startPos);
-		mplew.writeInt(0);
+		mplew.writeInt(0); // EncodedGatherDuration
+		mplew.writePos(xy);
+		mplew.writeShort(0); // vx
+		mplew.writeShort(0); // vy
+		
 		PacketHelper.serializeMovementList(mplew, moves);
 		mplew.write(0); // ...
 		return mplew.getPacket();
@@ -335,10 +336,9 @@ public class MobPacket {
 		}
 
 		// CMob::SetTemporaryStat
-		mplew.write(HexTool.getByteArrayFromHexString("00 00 00 00 00 00 00 60 80 FF A7 00"));
-
+		mplew.write(new byte[12]);
+		
 		// MobStat::DecodeTemporary
-		mplew.write(new byte[158]);
 	}
 
 	public static byte[] controlMonster(MapleMonster life, boolean newSpawn, boolean aggro, boolean azwan) {
@@ -382,11 +382,11 @@ public class MobPacket {
 		return mplew.getPacket();
 	}
 
-	public static void addMonsterInformation(MaplePacketLittleEndianWriter mplew, MapleMonster life, boolean summon,
+	private static void addMonsterInformation(MaplePacketLittleEndianWriter mplew, MapleMonster life, boolean summon,
 			byte spawnType, int link, boolean newSpawn) {
 		
 		mplew.writePos(life.getTruePosition());
-		mplew.write(0); // ...
+		// mplew.write(0); // ...
 		mplew.write(life.getStance());
 		mplew.writeShort(life.getFh());
 		mplew.writeShort(life.getFh());
@@ -432,7 +432,7 @@ public class MobPacket {
 		mplew.writeInt(-1);
 		mplew.write(0);
 		mplew.writeInt(0);
-		mplew.writeInt(0); // 0x64
+		mplew.writeInt(0x64); // monster scale
 		mplew.writeInt(-1);
 		mplew.write(0);
 		mplew.writeInt(0);
