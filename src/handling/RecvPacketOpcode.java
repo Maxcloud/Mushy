@@ -300,7 +300,8 @@ public enum RecvPacketOpcode {
 	REWARD(0x2EC),
 	BLACK_FRIDAY(0x2BE),
 	UPDATE_RED_LEAF(0x29C),
-	
+
+	CHANGE_FM_MAP(0x1C3), //UserTransferFreeMarketRequest
 	//Not Placed:
 	SPECIAL_STAT(0x10C),
 	UPDATE_HYPER(0x171),
