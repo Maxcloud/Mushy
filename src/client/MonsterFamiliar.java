@@ -10,7 +10,6 @@ import server.maps.AnimatedMapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
-import server.movement.StaticLifeMovement;
 import tools.Randomizer;
 import tools.data.MaplePacketLittleEndianWriter;
 import tools.packet.CField;
@@ -140,9 +139,8 @@ public final class MonsterFamiliar extends AnimatedMapleMapObject
 
     public final void updatePosition(List<LifeMovementFragment> movement) {
         for (LifeMovementFragment move : movement) {
-            if (((move instanceof LifeMovement))
-                    && ((move instanceof StaticLifeMovement))) {
-                setFh(((StaticLifeMovement) move).getUnk());
+            if ((move instanceof LifeMovement)) { // && ((move instanceof StaticLifeMovement))) {
+                setFh(((LifeMovement) move).getFh()); // setFh(((StaticLifeMovement) move).getUnk());
             }
         }
     }

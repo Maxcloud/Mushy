@@ -17,11 +17,25 @@
  */
 package server.movement;
 
+import java.awt.Point;
+
 public interface LifeMovement extends LifeMovementFragment {
+    
+    byte getCommand();
+	
+    byte getMoveAction();
+    
+    byte getForcedStop();
+    
+    byte getBStat();
 
-    int getNewstate();
+    short getFh();
+    
+    short getFhFootStart();
+    
+    short getDuration();
 
-    int getDuration();
-
-    int getType();
+    Point getVPosition();
+    
+    Point getOffset();
 }

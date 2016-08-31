@@ -240,11 +240,11 @@ public class GameConstants {
 	}
 
 	public static int maxViewRangeSq() {
-		return 1000000; // 1024 * 768
+		return 1700000; // 1366 * 768
 	}
 
 	public static int maxViewRangeSq_Half() {
-		return 500000; // 800 * 800
+		return maxViewRangeSq() / 2;
 	}
 
 	public static boolean isJobFamily(final int baseJob, final int currentJob) {

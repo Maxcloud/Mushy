@@ -11,7 +11,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
-import server.movement.StaticLifeMovement;
 import tools.packet.CField;
 
 /**
@@ -81,10 +80,10 @@ public class MapleHaku extends AnimatedMapleMapObject {
     public final void updatePosition(List<LifeMovementFragment> movement) {
         for (LifeMovementFragment move : movement) {
             if ((move instanceof LifeMovement)) {
-                if ((move instanceof StaticLifeMovement)) {
+                // if ((move instanceof StaticLifeMovement)) {
                     setPos(((LifeMovement) move).getPosition());
-                }
-                setStance(((LifeMovement) move).getNewstate());
+                // }
+                setStance(((LifeMovement) move).getMoveAction()); // .getNewstate());
             }
         }
     }

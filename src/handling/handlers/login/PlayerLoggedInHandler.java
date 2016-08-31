@@ -24,6 +24,7 @@ import server.quest.MapleQuestStatus;
 import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
+import tools.packet.CWvsContext;
 
 public class PlayerLoggedInHandler {
 
@@ -108,7 +109,7 @@ public class PlayerLoggedInHandler {
 
 		// c.getSession().write(HexTool.getByteArrayFromHexString("18 01 00 00 FF 00 00 FF 00 00 FF 00 00 FF 00 00 FF"));
 		
-		// c.getSession().write(CWvsContext.updateCrowns(new int[] { -1, -1, -1, -1, -1 }));
+		c.getSession().write(CWvsContext.updateCrowns(new int[] { -1, -1, -1, -1, -1 }));
 		c.getSession().write(CField.getWarpToMap(player, null, 0, true));
 		
 		// PlayersHandler.calcHyperSkillPointCount(c);
