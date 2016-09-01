@@ -610,4 +610,13 @@ public enum SendPacketOpcode {
     private SendPacketOpcode(int code) {
     	this.code = ((short) code);
     }
+    
+	public static String getNameByValue(int value) {
+		for (SendPacketOpcode opcode : SendPacketOpcode.values()) {
+			if (opcode.getValue() == value) {
+				return opcode.name();
+			}
+		}
+		return "UNKNOWN";
+	}
 }

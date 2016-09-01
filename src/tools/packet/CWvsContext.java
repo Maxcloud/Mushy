@@ -114,13 +114,29 @@ public class CWvsContext {
                 case EXP:
                 case MESO:
                     mplew.writeLong((statupdate.getValue()).longValue());
+                    mplew.write(-1);
+                	mplew.writeInt(0);
                     break;
                 case TRAIT_LIMIT:
-                    mplew.writeInt((statupdate.getValue()).intValue());
-                    mplew.writeInt((statupdate.getValue()).intValue());
-                    mplew.writeInt((statupdate.getValue()).intValue());
+    				Long statup = mystats.get(MapleStat.CHARISMA);
+    				mplew.writeShort(statup != null ? statup.shortValue() : 0);
+    				statup = mystats.get(MapleStat.INSIGHT);
+    				mplew.writeShort(statup != null ? statup.shortValue() : 0);
+    				statup = mystats.get(MapleStat.WILL);
+    				mplew.writeShort(statup != null ? statup.shortValue() : 0);
+    				statup = mystats.get(MapleStat.CRAFT);
+    				mplew.writeShort(statup != null ? statup.shortValue() : 0);
+    				statup = mystats.get(MapleStat.SENSE);
+    				mplew.writeShort(statup != null ? statup.shortValue() : 0);
+    				statup = mystats.get(MapleStat.CHARM);
+    				mplew.writeShort(statup != null ? statup.shortValue() : 0);
+    				mplew.write(0);
+    				mplew.writeLong(PacketHelper.getTime(-2));
                     break;
                 case PET:
+                    mplew.write(-1);
+                    mplew.write(0);
+                    mplew.write(0);
                     mplew.writeLong((statupdate.getValue()).intValue());
                     mplew.writeLong((statupdate.getValue()).intValue());
                     mplew.writeLong((statupdate.getValue()).intValue());
