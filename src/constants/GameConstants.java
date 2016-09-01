@@ -4793,6 +4793,15 @@ public class GameConstants {
 		return skill.getId() % 1000 >= 30;
 	}
 
+	/**
+	 * Checks if the given skill is a beginner skill.
+	 * @param skillId
+	 * @return
+	 */
+	public static boolean isBeginnerSkill(int skillId){
+		return isBeginnerJob(skillId / 10000) && (skillId % 10000 == 1000 || skillId % 10000 == 1001 || skillId % 10000 == 1002 || skillId % 10000 == 2);
+	}
+
 	//dojo = 150000, bpq = 150001, master monster portals: 122600
 	//compensate evan = 170000, compensate sp = 170001
 	public static final int OMOK_SCORE = 122200;
