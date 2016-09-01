@@ -141,6 +141,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
             }
             
             session.close();
+            client.disconnect(true, false);
             session.removeAttribute(MapleClient.CLIENT_KEY);
         }
         super.sessionClosed(session);
@@ -166,7 +167,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
     	
     	String bytes = lea.toString();
     	
-    	// System.out.println("[Sent] (" + opcode + ") " + bytes);
+    	 System.out.println("[Sent] (" + opcode + ") " + bytes);
     }
 
     @Override
