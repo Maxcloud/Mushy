@@ -27,6 +27,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.RingSet;
 import constants.GameConstants;
+import constants.MapConstants;
 import lib.data.MapleData;
 import lib.data.MapleDataProvider;
 import lib.data.MapleDataProviderFactory;
@@ -1032,13 +1033,13 @@ public class MapleInventoryManipulator {
                 } else if (ItemFlag.KARMA_USE.check(flag)) {
                     target.setFlag((byte) (flag - ItemFlag.KARMA_USE.getValue()));
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos, true, true);
-                } else if (GameConstants.isAnyDropMap(c.getPlayer().getMapId())) {
+                } else if (MapConstants.isAnyDropMap(c.getPlayer().getMapId())) {
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos, true, true);
                 } else {
                     c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
                 }
             } else {
-                if ((GameConstants.isPet(source.getItemId()) || ItemFlag.UNTRADABLE.check(flag)) && !GameConstants.isAnyDropMap(c.getPlayer().getMapId())) {
+                if ((GameConstants.isPet(source.getItemId()) || ItemFlag.UNTRADABLE.check(flag)) && !MapConstants.isAnyDropMap(c.getPlayer().getMapId())) {
                     c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
                 } else {
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos, true, true);
@@ -1060,13 +1061,13 @@ public class MapleInventoryManipulator {
                 } else if (ItemFlag.KARMA_USE.check(flag)) {
                     source.setFlag((byte) (flag - ItemFlag.KARMA_USE.getValue()));
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos, true, true);
-                } else if (GameConstants.isAnyDropMap(c.getPlayer().getMapId())) {
+                } else if (MapConstants.isAnyDropMap(c.getPlayer().getMapId())) {
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos, true, true);
                 } else {
                     c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos);
                 }
             } else {
-                if ((GameConstants.isPet(source.getItemId()) || ItemFlag.UNTRADABLE.check(flag)) && !GameConstants.isAnyDropMap(c.getPlayer().getMapId())) {
+                if ((GameConstants.isPet(source.getItemId()) || ItemFlag.UNTRADABLE.check(flag)) && !MapConstants.isAnyDropMap(c.getPlayer().getMapId())) {
                     c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos);
                 } else {
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos, true, true);

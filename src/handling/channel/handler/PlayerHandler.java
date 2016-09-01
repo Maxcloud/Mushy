@@ -21,6 +21,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import constants.MapConstants;
 import handling.channel.ChannelServer;
 import handling.world.World;
 import server.MapleInventoryManipulator;
@@ -200,7 +201,7 @@ public class PlayerHandler {
 		if (toUse == null) {
 			return;
 		}
-		if (GameConstants.isFishingMap(chr.getMapId()) && itemId == 3011000) {
+		if (MapConstants.isFishingMap(chr.getMapId()) && itemId == 3011000) {
 			chr.startFishingTask();
 		}
 		chr.setChair(itemId);
@@ -668,7 +669,7 @@ public class PlayerHandler {
 				return;
 			}
 		}
-		if (GameConstants.isEventMap(chr.getMapId())) {
+		if (MapConstants.isEventMap(chr.getMapId())) {
 			for (MapleEventType t : MapleEventType.values()) {
 				MapleEvent e = ChannelServer.getInstance(chr.getClient().getChannel()).getEvent(t);
 				if ((e.isRunning()) && (!chr.isGM())) {
@@ -969,7 +970,7 @@ public class PlayerHandler {
 				return;
 			}
 			
-			if (GameConstants.isEventMap(c.getPlayer().getMapId())) {
+			if (MapConstants.isEventMap(c.getPlayer().getMapId())) {
 				for (MapleEventType t : MapleEventType.values()) {
 					MapleEvent e = ChannelServer.getInstance(c.getPlayer().getClient().getChannel()).getEvent(t);
 					if ((e.isRunning()) && (!c.getPlayer().isGM())) {
@@ -1133,7 +1134,7 @@ public class PlayerHandler {
 			if (effect == null) {
 				return;
 			}
-			if (GameConstants.isEventMap(chr.getMapId())) {
+			if (MapConstants.isEventMap(chr.getMapId())) {
 				for (MapleEventType t : MapleEventType.values()) {
 					MapleEvent e = ChannelServer.getInstance(chr.getClient().getChannel()).getEvent(t);
 					if ((e.isRunning()) && (!chr.isGM())) {
@@ -1518,7 +1519,7 @@ public class PlayerHandler {
 		
 		attack = DamageParse.Modify_AttackCrit(attack, chr, 3, effect);
 		
-		if (GameConstants.isEventMap(chr.getMapId())) {
+		if (MapConstants.isEventMap(chr.getMapId())) {
 			for (MapleEventType t : MapleEventType.values()) {
 				MapleEvent e = ChannelServer.getInstance(chr.getClient().getChannel()).getEvent(t);
 				if ((e.isRunning()) && (!chr.isGM())) {
@@ -1749,7 +1750,7 @@ public class PlayerHandler {
 				slea.skip(4); // update tick
 			}
 			slea.skip(1);
-			boolean wheel = (slea.readShort() > 0) && (!GameConstants.isEventMap(chr.getMapId()))
+			boolean wheel = (slea.readShort() > 0) && (!MapConstants.isEventMap(chr.getMapId()))
 					&& (chr.haveItem(5510000, 1, false, true)) && (chr.getMapId() / 1000000 != 925);
 
 			if ((targetid != -1) && (!chr.isAlive())) {

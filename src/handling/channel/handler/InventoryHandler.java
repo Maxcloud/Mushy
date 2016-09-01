@@ -59,6 +59,7 @@ import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MaplePet.PetFlag;
 import constants.GameConstants;
+import constants.MapConstants;
 import handling.channel.ChannelServer;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
@@ -3741,7 +3742,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3769,7 +3770,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3797,7 +3798,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3829,7 +3830,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3851,7 +3852,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3880,7 +3881,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3910,7 +3911,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3940,7 +3941,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3983,7 +3984,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -4021,7 +4022,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -4274,7 +4275,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }

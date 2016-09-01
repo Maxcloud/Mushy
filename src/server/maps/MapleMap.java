@@ -50,6 +50,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
+import constants.MapConstants;
 import constants.QuickMove;
 import constants.QuickMove.QuickMoveNPC;
 import constants.ServerConfig;
@@ -134,7 +135,7 @@ public final class MapleMap {
         if (this.returnMapId == 999999999) {
             this.returnMapId = mapid;
         }
-        if (GameConstants.getPartyPlay(mapid) > 0) {
+        if (MapConstants.getPartyPlay(mapid) > 0) {
             this.monsterRate = (monsterRate - 1.0f) * 2.5f + 1.0f;
         } else {
             this.monsterRate = monsterRate;
@@ -551,7 +552,7 @@ public final class MapleMap {
             return;
         }
         spawnedMonstersOnMap.decrementAndGet();
-        if (GameConstants.isAzwanMap(mapid)) {
+        if (MapConstants.isAzwanMap(mapid)) {
             broadcastMessage(MobPacket.killMonster(monster.getObjectId(), 0, true));
         } else {
             broadcastMessage(MobPacket.killMonster(monster.getObjectId(), 0, false));
@@ -615,7 +616,7 @@ public final class MapleMap {
         final boolean instanced = sqd != null || monster.getEventInstance() != null || getEMByMap() != null;
         int dropOwner = monster.killBy(chr, lastSkill);
         if (animation >= 0) {
-            if (GameConstants.isAzwanMap(getId())) {
+            if (MapConstants.isAzwanMap(getId())) {
                 broadcastMessage(MobPacket.killMonster(monster.getObjectId(), animation, true));
             } else {
                 broadcastMessage(MobPacket.killMonster(monster.getObjectId(), animation, false));
@@ -898,7 +899,7 @@ public final class MapleMap {
             final MapleMonster monster = (MapleMonster) monstermo;
             spawnedMonstersOnMap.decrementAndGet();
             monster.setHp(0);
-            if (GameConstants.isAzwanMap(mapid)) {
+            if (MapConstants.isAzwanMap(mapid)) {
                 broadcastMessage(MobPacket.killMonster(monster.getObjectId(), animate ? 1 : 0, true));
             } else {
                 broadcastMessage(MobPacket.killMonster(monster.getObjectId(), animate ? 1 : 0, false));
@@ -913,7 +914,7 @@ public final class MapleMap {
             if (((MapleMonster) mmo).getId() == monsId) {
                 spawnedMonstersOnMap.decrementAndGet();
                 removeMapObject(mmo);
-                if (GameConstants.isAzwanMap(mapid)) {
+                if (MapConstants.isAzwanMap(mapid)) {
                     broadcastMessage(MobPacket.killMonster(mmo.getObjectId(), 1, true));
                 } else {
                     broadcastMessage(MobPacket.killMonster(mmo.getObjectId(), 1, false));
@@ -1432,7 +1433,7 @@ public final class MapleMap {
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
             public final void sendPackets(MapleClient c) {
-                if (GameConstants.isAzwanMap(c.getPlayer().getMapId())) {
+                if (MapConstants.isAzwanMap(c.getPlayer().getMapId())) {
                     c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 ? -3 : monster.getStats().getSummonType(), oid, true)); // TODO effect
                 } else {
                     c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 ? -3 : monster.getStats().getSummonType(), oid, false)); // TODO effect
@@ -1480,7 +1481,7 @@ public final class MapleMap {
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
             public final void sendPackets(MapleClient c) {
-                if (GameConstants.isAzwanMap(c.getPlayer().getMapId())) {
+                if (MapConstants.isAzwanMap(c.getPlayer().getMapId())) {
                     c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 || monster.getStats().getSummonType() == 27 || overwrite ? spawnType : monster.getStats().getSummonType(), 0, true));
                 } else {
                     c.getSession().write(MobPacket.spawnMonster(monster, monster.getStats().getSummonType() <= 1 || monster.getStats().getSummonType() == 27 || overwrite ? spawnType : monster.getStats().getSummonType(), 0, false));
@@ -1500,7 +1501,7 @@ public final class MapleMap {
             spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
                 @Override
                 public final void sendPackets(MapleClient c) {
-                    if (GameConstants.isAzwanMap(c.getPlayer().getMapId())) {
+                    if (MapConstants.isAzwanMap(c.getPlayer().getMapId())) {
                         c.getSession().write(MobPacket.spawnMonster(monster, effect, 0, true));
                     } else {
                         c.getSession().write(MobPacket.spawnMonster(monster, effect, 0, false));
@@ -1523,7 +1524,7 @@ public final class MapleMap {
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
             public final void sendPackets(MapleClient c) {
-                if (GameConstants.isAzwanMap(c.getPlayer().getMapId())) {
+                if (MapConstants.isAzwanMap(c.getPlayer().getMapId())) {
                     c.getSession().write(MobPacket.spawnMonster(monster, -4, 0, true));
                 } else {
                     c.getSession().write(MobPacket.spawnMonster(monster, -4, 0, false));
@@ -1955,7 +1956,7 @@ public final class MapleMap {
             charactersLock.writeLock().unlock();
         }
         chr.setChangeTime();
-        if (GameConstants.isTeamMap(mapid) && !chr.inPVP()) {
+        if (MapConstants.isTeamMap(mapid) && !chr.inPVP()) {
             chr.setTeam(getAndSwitchTeam() ? 0 : 1);
         }
         final byte[] packet = CField.spawnPlayerMapobject(chr);
@@ -1978,9 +1979,9 @@ public final class MapleMap {
                 MapScriptMethods.startScript_User(chr.getClient(), onUserEnter);
             }
 
-            GameConstants.achievementRatio(chr.getClient());
+            MapConstants.achievementRatio(chr.getClient());
             //chr.getClient().getSession().write(CField.spawnFlags(nodes.getFlags()));
-            if (GameConstants.isTeamMap(mapid) && !chr.inPVP()) {
+            if (MapConstants.isTeamMap(mapid) && !chr.inPVP()) {
                 chr.getClient().getSession().write(CField.showEquipEffect(chr.getTeam()));
             }
             switch (mapid) {
@@ -2420,7 +2421,7 @@ public final class MapleMap {
         if (c == null || c.isClone()) {
             return;
         }
-        for (final MapleMapObject o : getMapObjectsInRange(c.getTruePosition(), c.getRange(), GameConstants.rangedMapobjectTypes)) {
+        for (final MapleMapObject o : getMapObjectsInRange(c.getTruePosition(), c.getRange(), MapConstants.rangedMapobjectTypes)) {
             if (o.getType() == MapleMapObjectType.REACTOR) {
                 if (!((MapleReactor) o).isAlive()) {
                     continue;
@@ -2604,7 +2605,7 @@ public final class MapleMap {
 
         if (first && spawnSize > 0) {
             lastSpawnTime = System.currentTimeMillis();
-            if (GameConstants.isForceRespawn(mapid)) {
+            if (MapConstants.isForceRespawn(mapid)) {
                 createMobInterval = 15000;
             }
             respawn(false); // this should do the trick, we don't need to wait upon entering map
@@ -2909,7 +2910,7 @@ public final class MapleMap {
                 }
             }
         } else {
-            final int numShouldSpawn = (GameConstants.isForceRespawn(mapid) ? monsterSpawn.size() : maxRegularSpawn) - spawnedMonstersOnMap.get();
+            final int numShouldSpawn = (MapConstants.isForceRespawn(mapid) ? monsterSpawn.size() : maxRegularSpawn) - spawnedMonstersOnMap.get();
             if (numShouldSpawn > 0) {
                 int spawned = 0;
 
@@ -2920,7 +2921,7 @@ public final class MapleMap {
                     if (!isSpawns && spawnPoint.getMobTime() > 0) {
                         continue;
                     }
-                    if (spawnPoint.shouldSpawn(lastSpawnTime) || GameConstants.isForceRespawn(mapid) || (maxRegularSpawn * partyBonusRate > 0)) {
+                    if (spawnPoint.shouldSpawn(lastSpawnTime) || MapConstants.isForceRespawn(mapid) || (maxRegularSpawn * partyBonusRate > 0)) {
                         spawnPoint.spawnMonster(this);
                         spawned++;
                     }

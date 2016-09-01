@@ -47,6 +47,7 @@ import client.inventory.MaplePet;
 import client.inventory.MaplePotionPot;
 import client.inventory.MapleRing;
 import constants.GameConstants;
+import constants.MapConstants;
 import constants.ServerConstants;
 import handling.channel.ChannelServer;
 import handling.channel.handler.AttackInfo;
@@ -2112,7 +2113,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         mapTimeLimitTask = MapTimer.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                if (ourMap.getId() == GameConstants.JAIL) {
+                if (ourMap.getId() == MapConstants.JAIL) {
                     getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_TIME)).setCustomData(String.valueOf(System.currentTimeMillis()));
                     getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST)).setCustomData("0"); //release them!
                 }
@@ -2162,7 +2163,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void doFish(long now) {
         lastFishingTime = now;
-        if (client == null || client.getPlayer() == null || !client.isReceiving() || (!haveItem(2270008, 1, false, true)) || !GameConstants.isFishingMap(getMapId()) || chair <= 0) {
+        if (client == null || client.getPlayer() == null || !client.isReceiving() || (!haveItem(2270008, 1, false, true)) || !MapConstants.isFishingMap(getMapId()) || chair <= 0) {
             cancelFishingTask();
             return;
         }
@@ -3687,10 +3688,10 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         checkFollow();
         dotHP = 0;
         lastDOTTime = 0;
-        if (GameConstants.isAzwanMap(getMapId())) {
+        if (MapConstants.isAzwanMap(getMapId())) {
             client.getSession().write(CWvsContext.showAzwanKilled());
         }
-        if (!GameConstants.isBeginnerJob(job) && !inPVP() && !GameConstants.isAzwanMap(getMapId())) {
+        if (!GameConstants.isBeginnerJob(job) && !inPVP() && !MapConstants.isAzwanMap(getMapId())) {
             int charms = getItemQuantity(5130000, false);
             if (charms > 0) {
                 MapleInventoryManipulator.removeById(client, MapleInventoryType.CASH, 5130000, 1, true, false);
@@ -4223,7 +4224,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         } finally {
             controlledLock.writeLock().unlock();
         }
-        client.getSession().write(MobPacket.controlMonster(monster, false, aggro, GameConstants.isAzwanMap(getMapId())));
+        client.getSession().write(MobPacket.controlMonster(monster, false, aggro, MapConstants.isAzwanMap(getMapId())));
 
         monster.sendStatus(client);
     }
@@ -7293,7 +7294,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (!isAlive() || getPyramidSubway() != null || getMap().getSquadByMap() != null || getEventInstance() != null || getMap().getEMByMap() != null) {
             return true;
         }
-        if ((getMapId() >= 680000210 && getMapId() <= 680000502) || (getMapId() / 10000 == 92502 && getMapId() >= 925020100) || (getMapId() / 10000 == 92503) || getMapId() == GameConstants.JAIL) {
+        if ((getMapId() >= 680000210 && getMapId() <= 680000502) || (getMapId() / 10000 == 92502 && getMapId() >= 925020100) || (getMapId() / 10000 == 92503) || getMapId() == MapConstants.JAIL) {
             return true;
         }
         if (getMapId() >= 689010000 && getMapId() < 689014000) { //Pink Zakum
@@ -9610,9 +9611,5 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         updateSingleStat(MapleStat.FACE, this.face);
         updateSingleStat(MapleStat.HAIR, this.hair);
         equipChanged();
-    }
-
-    public boolean isInFmRoom(){
-        return getMapId() >= 910000001 && getMapId() < 910000022; //fm maps
     }
 }

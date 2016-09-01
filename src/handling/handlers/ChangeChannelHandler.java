@@ -2,6 +2,7 @@ package handling.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import constants.MapConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
@@ -19,7 +20,7 @@ public class ChangeChannelHandler {
     @PacketHandler(opcode = RecvPacketOpcode.CHANGE_CHANNEL)
     public static void handle(MapleClient c, LittleEndianAccessor lea){
         MapleCharacter chr = c.getPlayer();
-        boolean isInFmRoom = chr.isInFmRoom();
+        boolean isInFmRoom = MapConstants.isFmMap(chr.getMapId());
         if (chr == null || chr.hasBlockedInventory() || chr.getEventInstance() != null || chr.getMap() == null
                 || chr.isInBlockedMap() || FieldLimitType.ChannelSwitch.check(chr.getMap().getFieldLimit())) {
             c.getSession().write(CWvsContext.enableActions());
