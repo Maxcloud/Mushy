@@ -135,7 +135,7 @@ public final class MapleMap {
         if (this.returnMapId == 999999999) {
             this.returnMapId = mapid;
         }
-        if (GameConstants.getPartyPlay(mapid) > 0) {
+        if (MapConstants.getPartyPlay(mapid) > 0) {
             this.monsterRate = (monsterRate - 1.0f) * 2.5f + 1.0f;
         } else {
             this.monsterRate = monsterRate;
@@ -1979,7 +1979,7 @@ public final class MapleMap {
                 MapScriptMethods.startScript_User(chr.getClient(), onUserEnter);
             }
 
-            GameConstants.achievementRatio(chr.getClient());
+            MapConstants.achievementRatio(chr.getClient());
             //chr.getClient().getSession().write(CField.spawnFlags(nodes.getFlags()));
             if (MapConstants.isTeamMap(mapid) && !chr.inPVP()) {
                 chr.getClient().getSession().write(CField.showEquipEffect(chr.getTeam()));
@@ -2421,7 +2421,7 @@ public final class MapleMap {
         if (c == null || c.isClone()) {
             return;
         }
-        for (final MapleMapObject o : getMapObjectsInRange(c.getTruePosition(), c.getRange(), GameConstants.rangedMapobjectTypes)) {
+        for (final MapleMapObject o : getMapObjectsInRange(c.getTruePosition(), c.getRange(), MapConstants.rangedMapobjectTypes)) {
             if (o.getType() == MapleMapObjectType.REACTOR) {
                 if (!((MapleReactor) o).isAlive()) {
                     continue;
@@ -2605,7 +2605,7 @@ public final class MapleMap {
 
         if (first && spawnSize > 0) {
             lastSpawnTime = System.currentTimeMillis();
-            if (GameConstants.isForceRespawn(mapid)) {
+            if (MapConstants.isForceRespawn(mapid)) {
                 createMobInterval = 15000;
             }
             respawn(false); // this should do the trick, we don't need to wait upon entering map
@@ -2910,7 +2910,7 @@ public final class MapleMap {
                 }
             }
         } else {
-            final int numShouldSpawn = (GameConstants.isForceRespawn(mapid) ? monsterSpawn.size() : maxRegularSpawn) - spawnedMonstersOnMap.get();
+            final int numShouldSpawn = (MapConstants.isForceRespawn(mapid) ? monsterSpawn.size() : maxRegularSpawn) - spawnedMonstersOnMap.get();
             if (numShouldSpawn > 0) {
                 int spawned = 0;
 
@@ -2921,7 +2921,7 @@ public final class MapleMap {
                     if (!isSpawns && spawnPoint.getMobTime() > 0) {
                         continue;
                     }
-                    if (spawnPoint.shouldSpawn(lastSpawnTime) || GameConstants.isForceRespawn(mapid) || (maxRegularSpawn * partyBonusRate > 0)) {
+                    if (spawnPoint.shouldSpawn(lastSpawnTime) || MapConstants.isForceRespawn(mapid) || (maxRegularSpawn * partyBonusRate > 0)) {
                         spawnPoint.spawnMonster(this);
                         spawned++;
                     }

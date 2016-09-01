@@ -1483,7 +1483,7 @@ public class GMCommand {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             final int minutes = Math.max(0, Integer.parseInt(splitted[2]));
             if (victim != null && c.getPlayer().getGMLevel() >= victim.getGMLevel()) {
-                MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(GameConstants.JAIL);
+                MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(MapConstants.JAIL);
                 victim.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST)).setCustomData(String.valueOf(minutes * 60));
                 victim.changeMap(target, target.getPortal(0));
             } else {

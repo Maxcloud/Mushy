@@ -6,7 +6,7 @@ import java.util.List;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.GameConstants;
+import constants.MapConstants;
 import handling.channel.ChannelServer;
 import handling.world.MapleParty;
 import handling.world.MaplePartyCharacter;
@@ -99,7 +99,7 @@ public class PartyHandler {
                     return;
                 }
                 if (partyplayer.equals(party.getLeader())) {
-                    if (GameConstants.isDojo(c.getPlayer().getMapId())) {
+                    if (MapConstants.isDojo(c.getPlayer().getMapId())) {
                         MapleDojoAgent.failed(c.getPlayer());
                     }
                     if (c.getPlayer().getPyramidSubway() != null) {
@@ -110,7 +110,7 @@ public class PartyHandler {
                         c.getPlayer().getEventInstance().disbandParty();
                     }
                 } else {
-                    if (GameConstants.isDojo(c.getPlayer().getMapId())) {
+                    if (MapConstants.isDojo(c.getPlayer().getMapId())) {
                         MapleDojoAgent.failed(c.getPlayer());
                     }
                     if (c.getPlayer().getPyramidSubway() != null) {
@@ -186,7 +186,7 @@ public class PartyHandler {
                 }
                 MaplePartyCharacter expelled = party.getMemberById(slea.readInt());
                 if (expelled != null) {
-                    if ((GameConstants.isDojo(c.getPlayer().getMapId())) && (expelled.isOnline())) {
+                    if ((MapConstants.isDojo(c.getPlayer().getMapId())) && (expelled.isOnline())) {
                         MapleDojoAgent.failed(c.getPlayer());
                     }
                     if ((c.getPlayer().getPyramidSubway() != null) && (expelled.isOnline())) {
@@ -215,7 +215,7 @@ public class PartyHandler {
                 break;
             case 66://was 7
                 if (party != null) {
-                    if ((c.getPlayer().getEventInstance() != null) || (c.getPlayer().getPyramidSubway() != null) || (party.getExpeditionId() > 0) || (GameConstants.isDojo(c.getPlayer().getMapId()))) {
+                    if ((c.getPlayer().getEventInstance() != null) || (c.getPlayer().getPyramidSubway() != null) || (party.getExpeditionId() > 0) || (MapConstants.isDojo(c.getPlayer().getMapId()))) {
                         c.getPlayer().dropMessage(5, "You may not do party operations while in a raid.");
                         return;
                     }
@@ -480,7 +480,7 @@ public class PartyHandler {
                 }
                 exped = World.Party.getExped(part.getExpeditionId());
                 if (exped != null) {
-                    if (GameConstants.isDojo(c.getPlayer().getMapId())) {
+                    if (MapConstants.isDojo(c.getPlayer().getMapId())) {
                         MapleDojoAgent.failed(c.getPlayer());
                     }
                     if (exped.getLeader() == c.getPlayer().getId()) {
@@ -522,7 +522,7 @@ public class PartyHandler {
                         if (par != null) {
                             MaplePartyCharacter expelled = par.getMemberById(cid);
                             if (expelled != null) {
-                                if ((expelled.isOnline()) && (GameConstants.isDojo(c.getPlayer().getMapId()))) {
+                                if ((expelled.isOnline()) && (MapConstants.isDojo(c.getPlayer().getMapId()))) {
                                     MapleDojoAgent.failed(c.getPlayer());
                                 }
                                 World.Party.updateParty(i, PartyOperation.EXPEL, expelled);
@@ -606,7 +606,7 @@ public class PartyHandler {
                                             break;
                                         }
                                     }
-                                    if (GameConstants.isDojo(c.getPlayer().getMapId())) {
+                                    if (MapConstants.isDojo(c.getPlayer().getMapId())) {
                                         MapleDojoAgent.failed(c.getPlayer());
                                     }
                                     World.Party.updateParty(i, PartyOperation.EXPEL, expelled);

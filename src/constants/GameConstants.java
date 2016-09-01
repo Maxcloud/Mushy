@@ -33,15 +33,12 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
-import server.maps.MapleMapObjectType;
 import tools.FileoutputUtil;
 import tools.Pair;
 import tools.Randomizer;
@@ -49,16 +46,6 @@ import tools.packet.CField;
 
 public class GameConstants {
 
-	public static final List<MapleMapObjectType> rangedMapobjectTypes = Collections.unmodifiableList(Arrays.asList(
-			MapleMapObjectType.ITEM,
-			MapleMapObjectType.MONSTER,
-			MapleMapObjectType.DOOR,
-			MapleMapObjectType.REACTOR,
-			MapleMapObjectType.SUMMON,
-			MapleMapObjectType.NPC,
-			MapleMapObjectType.MIST,
-			MapleMapObjectType.FAMILIAR,
-			MapleMapObjectType.EXTRACTOR));
 	private static final long[] exp = new long[251];
 	private static final int[] closeness = {0, 1, 3, 6, 14, 31, 60, 108, 181, 287, 434, 632, 891, 1224, 1642, 2161, 2793,
 			3557, 4467, 5542, 6801, 8263, 9950, 11882, 14084, 16578, 19391, 22547, 26074,

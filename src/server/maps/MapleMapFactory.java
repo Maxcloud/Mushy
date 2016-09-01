@@ -36,6 +36,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.mysql.jdbc.Connection;
 
 import constants.GameConstants;
+import constants.MapConstants;
 import lib.data.MapleData;
 import lib.data.MapleDataProvider;
 import lib.data.MapleDataProviderFactory;
@@ -264,7 +265,7 @@ public class MapleMapFactory {
                     if ((npcs || !type.equals("n")) && !limited.equals("Stage0")) { //alien pq stuff
                         myLife = loadLife(life, MapleDataTool.getString(life.getChildByPath("id")), type);
 
-                        if (myLife instanceof MapleMonster && !GameConstants.isNoSpawn(mapid)) {
+                        if (myLife instanceof MapleMonster && !MapConstants.isNoSpawn(mapid)) {
                             final MapleMonster mob = (MapleMonster) myLife;
 
                             herbRocks.add(map.addMonsterSpawn(mob,
@@ -313,7 +314,7 @@ public class MapleMapFactory {
                 addAreaBossSpawn(map);
                 map.setCreateMobInterval((short) MapleDataTool.getInt(mapData.getChildByPath("info/createMobInterval"), 9000));
                 map.setFixedMob(MapleDataTool.getInt(mapData.getChildByPath("info/fixedMobCapacity"), 0));
-                map.setPartyBonusRate(GameConstants.getPartyPlay(mapid, MapleDataTool.getInt(mapData.getChildByPath("info/partyBonusR"), 0)));
+                map.setPartyBonusRate(MapConstants.getPartyPlay(mapid, MapleDataTool.getInt(mapData.getChildByPath("info/partyBonusR"), 0)));
                 map.loadMonsterRate(true);
                 map.setNodes(loadNodes(mapid, mapData));
 
@@ -328,7 +329,7 @@ public class MapleMapFactory {
                     }
                 }
                 map.setFirstUserEnter(MapleDataTool.getString(mapData.getChildByPath("info/onFirstUserEnter"), ""));
-                map.setUserEnter(mapid == GameConstants.JAIL ? "jail" : MapleDataTool.getString(mapData.getChildByPath("info/onUserEnter"), ""));
+                map.setUserEnter(mapid == MapConstants.JAIL ? "jail" : MapleDataTool.getString(mapData.getChildByPath("info/onUserEnter"), ""));
                 if (reactors && herbRocks.size() > 0 && highestLevel >= 30 && map.getFirstUserEnter().equals("") && map.getUserEnter().equals("")) {
                     final List<Integer> allowedSpawn = new ArrayList<>(24);
                     allowedSpawn.add(100011);
@@ -382,7 +383,7 @@ public class MapleMapFactory {
                 map.setRecoveryRate(MapleDataTool.getFloat(mapData.getChildByPath("info/recovery"), 1));
                 map.setFixedMob(MapleDataTool.getInt(mapData.getChildByPath("info/fixedMobCapacity"), 0));
                 map.setFieldType(MapleDataTool.getString(mapData.getChildByPath("info/fieldType"), ""));
-                map.setPartyBonusRate(GameConstants.getPartyPlay(mapid, MapleDataTool.getInt(mapData.getChildByPath("info/partyBonusR"), 0)));
+                map.setPartyBonusRate(MapConstants.getPartyPlay(mapid, MapleDataTool.getInt(mapData.getChildByPath("info/partyBonusR"), 0)));
                 map.setConsumeItemCoolTime(MapleDataTool.getInt(mapData.getChildByPath("info/consumeItemCoolTime"), 0));
 
                 maps.put(omapid, map);
@@ -519,7 +520,7 @@ public class MapleMapFactory {
             if ((npcs || !type.equals("n")) && limited.equals("")) {
                 myLife = loadLife(life, MapleDataTool.getString(life.getChildByPath("id")), type);
 
-                if (myLife instanceof MapleMonster && !GameConstants.isNoSpawn(mapid)) {
+                if (myLife instanceof MapleMonster && !MapConstants.isNoSpawn(mapid)) {
                     final MapleMonster mob = (MapleMonster) myLife;
 
                     map.addMonsterSpawn(mob,
@@ -535,7 +536,7 @@ public class MapleMapFactory {
         addAreaBossSpawn(map);
         map.setCreateMobInterval((short) MapleDataTool.getInt(mapData.getChildByPath("info/createMobInterval"), 9000));
         map.setFixedMob(MapleDataTool.getInt(mapData.getChildByPath("info/fixedMobCapacity"), 0));
-        map.setPartyBonusRate(GameConstants.getPartyPlay(mapid, MapleDataTool.getInt(mapData.getChildByPath("info/partyBonusR"), 0)));
+        map.setPartyBonusRate(MapConstants.getPartyPlay(mapid, MapleDataTool.getInt(mapData.getChildByPath("info/partyBonusR"), 0)));
         map.loadMonsterRate(true);
         map.setNodes(loadNodes(mapid, mapData));
 

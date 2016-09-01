@@ -2113,7 +2113,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         mapTimeLimitTask = MapTimer.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                if (ourMap.getId() == GameConstants.JAIL) {
+                if (ourMap.getId() == MapConstants.JAIL) {
                     getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_TIME)).setCustomData(String.valueOf(System.currentTimeMillis()));
                     getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST)).setCustomData("0"); //release them!
                 }
@@ -7294,7 +7294,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (!isAlive() || getPyramidSubway() != null || getMap().getSquadByMap() != null || getEventInstance() != null || getMap().getEMByMap() != null) {
             return true;
         }
-        if ((getMapId() >= 680000210 && getMapId() <= 680000502) || (getMapId() / 10000 == 92502 && getMapId() >= 925020100) || (getMapId() / 10000 == 92503) || getMapId() == GameConstants.JAIL) {
+        if ((getMapId() >= 680000210 && getMapId() <= 680000502) || (getMapId() / 10000 == 92502 && getMapId() >= 925020100) || (getMapId() / 10000 == 92503) || getMapId() == MapConstants.JAIL) {
             return true;
         }
         if (getMapId() >= 689010000 && getMapId() < 689014000) { //Pink Zakum
