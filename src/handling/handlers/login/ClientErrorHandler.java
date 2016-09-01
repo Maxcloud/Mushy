@@ -9,6 +9,7 @@ public class ClientErrorHandler {
 	
 	@PacketHandler(opcode = RecvPacketOpcode.CLIENT_ERROR)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
+        c.disconnect(true, false);
 		if (lea.available() < 8) {
             System.out.println(lea.toString());
             return;

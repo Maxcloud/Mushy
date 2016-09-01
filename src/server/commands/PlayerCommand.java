@@ -112,7 +112,7 @@ public class PlayerCommand {
 	public abstract static class DistributeStatCommands extends CommandExecute {
 
 		protected MapleStat stat = null;
-		private static final int statLim = 999;
+		private static final int statLim = 500000;
 		private static final int hpMpLim = 500000;
 
 		private void setStat(MapleCharacter player, int current, int amount) {

@@ -141,6 +141,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
             }
             
             session.close();
+            client.disconnect(true, false);
             session.removeAttribute(MapleClient.CLIENT_KEY);
         }
         super.sessionClosed(session);

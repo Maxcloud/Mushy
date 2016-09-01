@@ -32,12 +32,12 @@ public enum SendPacketOpcode {
     // CWvsContext::OnPacket (this has been updated.)
     INVENTORY_OPERATION(0x47),
     INVENTORY_GROW(0x48),
-    UPDATE_STATS(0x49),
+    UPDATE_STATS(0x49), // OnStatUpdate
     GIVE_BUFF(0x4A),
     CANCEL_BUFF(0x4B),
     TEMP_STATS(0x4C),
     TEMP_STATS_RESET(0x4D),
-    UPDATE_SKILLS(0x4E),
+    UPDATE_SKILLS(0x4E), // OnChangeSkillRecordResult
     UPDATE_STOLEN_SKILLS(0x4F),
     TARGET_SKILL(0x56),
     FAME_RESPONSE(0x58),
