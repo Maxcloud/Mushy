@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.events;
 
 import client.MapleCharacter;
-import constants.GameConstants;
+import constants.MapConstants;
 import handling.channel.ChannelServer;
 import handling.world.World;
 import server.MapleInventoryManipulator;
@@ -130,7 +130,7 @@ public abstract class MapleEvent {
     public abstract void startEvent();
 
     public void onMapLoad(MapleCharacter chr) { //most dont do shit here
-	if (GameConstants.isEventMap(chr.getMapId()) && FieldLimitType.Event.check(chr.getMap().getFieldLimit()) && FieldLimitType.Event2.check(chr.getMap().getFieldLimit())) {
+	if (MapConstants.isEventMap(chr.getMapId()) && FieldLimitType.Event.check(chr.getMap().getFieldLimit()) && FieldLimitType.Event2.check(chr.getMap().getFieldLimit())) {
 	    chr.getClient().getSession().write(CField.showEventInstructions());
 	}
     }

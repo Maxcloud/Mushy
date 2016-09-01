@@ -25,6 +25,7 @@ import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
+import constants.MapConstants;
 import constants.ServerConstants.PlayerGMRank;
 import handling.channel.ChannelServer;
 import handling.world.World;
@@ -115,13 +116,13 @@ public class GMCommand {
                     //chrs.dropMessage(0, "Event Map: " + c.getPlayer().getMap().getMapName());
                     //World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(25, 0, "MapleGM is hosting an event! Use the @joinevent command to join the event!"));
                     //World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(26, 0, "Event Map: " + c.getPlayer().getMap().getMapName()));
-                    chrs.getClient().getSession().write(CWvsContext.broadcastMsg(GameConstants.isEventMap(chrs.getMapId()) ? 0 : 25, c.getChannel(), "Event : MapleGM is hosting an event! Use the @joinevent command to join the event!"));
-                    chrs.getClient().getSession().write(CWvsContext.broadcastMsg(GameConstants.isEventMap(chrs.getMapId()) ? 0 : 26, c.getChannel(), "Event : Event Channel: " + c.getChannel() + " Event Map: " + c.getPlayer().getMap().getMapName()));
+                    chrs.getClient().getSession().write(CWvsContext.broadcastMsg(MapConstants.isEventMap(chrs.getMapId()) ? 0 : 25, c.getChannel(), "Event : MapleGM is hosting an event! Use the @joinevent command to join the event!"));
+                    chrs.getClient().getSession().write(CWvsContext.broadcastMsg(MapConstants.isEventMap(chrs.getMapId()) ? 0 : 26, c.getChannel(), "Event : Event Channel: " + c.getChannel() + " Event Map: " + c.getPlayer().getMap().getMapName()));
                 }
             } else {
                 for (MapleCharacter chrs : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                     //World.Broadcast.broadcastMessage(CWvsContext.broadcastMsg(22, 0, "Enteries to the GM event are closed. The event has began!"));
-                    chrs.getClient().getSession().write(CWvsContext.broadcastMsg(GameConstants.isEventMap(chrs.getMapId()) ? 0 : 22, c.getChannel(), "Event : Enteries to the GM event are closed. The event has began!"));
+                    chrs.getClient().getSession().write(CWvsContext.broadcastMsg(MapConstants.isEventMap(chrs.getMapId()) ? 0 : 22, c.getChannel(), "Event : Enteries to the GM event are closed. The event has began!"));
                 }
             }
             return 1;
