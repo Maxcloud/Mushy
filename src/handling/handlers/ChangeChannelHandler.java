@@ -10,9 +10,6 @@ import server.maps.FieldLimitType;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CWvsContext;
 
-/**
- * Created by Tim on 9/1/2016.
- */
 public class ChangeChannelHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CHANGE_CHANNEL)

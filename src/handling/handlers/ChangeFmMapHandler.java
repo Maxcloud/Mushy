@@ -11,9 +11,6 @@ import server.maps.MapleMap;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CWvsContext;
 
-/**
- * Created by Tim on 9/1/2016.
- */
 public class ChangeFmMapHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CHANGE_FM_MAP)

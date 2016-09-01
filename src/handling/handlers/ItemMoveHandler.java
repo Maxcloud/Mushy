@@ -7,9 +7,6 @@ import handling.RecvPacketOpcode;
 import server.MapleInventoryManipulator;
 import tools.data.LittleEndianAccessor;
 
-/**
- * Created by Tim on 8/27/2016.
- */
 public class ItemMoveHandler {
 
     @PacketHandler(opcode = RecvPacketOpcode.ITEM_MOVE)
