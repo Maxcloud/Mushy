@@ -69,6 +69,7 @@ public class CWvsContext {
     }
 
     public static byte[] updatePlayerStats(Map<MapleStat, Long> mystats, boolean itemReaction, MapleCharacter chr) {
+        // OnStatUpdate
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.UPDATE_STATS.getValue());
@@ -128,6 +129,8 @@ public class CWvsContext {
                 case VIRTUE:
                     mplew.writeLong((statupdate.getValue()).longValue());
                     break;
+                case CHARM: // also other trait values?
+                    mplew.write(statupdate.getValue().byteValue()); //LOBYTE(nCharmOld) = CInPacket::Decode1(retaddr);
                 default:
                     mplew.writeInt((statupdate.getValue()).intValue());
             }
@@ -221,20 +224,39 @@ public class CWvsContext {
         return mplew.getPacket();
     }
 
-    public static byte[] updateSkills(Map<Skill, SkillEntry> update, boolean hyper) {
+    public static byte[] removeLinkSkill(Map<Skill, SkillEntry> update){
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
         mplew.writeShort(SendPacketOpcode.UPDATE_SKILLS.getValue());
-        mplew.write(1);
-        mplew.writeShort(0);//wasbyte142
-        mplew.writeShort(update.size());
+        mplew.write(1); // setExclRequestSent()
+        mplew.write(0); // bShowResult
+        mplew.write(1); // bRemoveLinkSkill
         for (Map.Entry z : update.entrySet()) {
             mplew.writeInt(((Skill) z.getKey()).getId());
             mplew.writeInt(((SkillEntry) z.getValue()).skillevel);
             mplew.writeInt(((SkillEntry) z.getValue()).masterlevel);
             PacketHelper.addExpirationTime(mplew, ((SkillEntry) z.getValue()).expiration);
         }
-        mplew.write(/*hyper ? 0x0C : */4);
+
+        return mplew.getPacket();
+    }
+
+    public static byte[] updateSkills(Map<Skill, SkillEntry> update, boolean hyper) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+        mplew.writeShort(SendPacketOpcode.UPDATE_SKILLS.getValue());
+        mplew.write(1); // setExclRequestSent()
+        mplew.write(0); // bShowResult
+        mplew.write(0); // bRemoveLinkSkill
+        mplew.writeShort(update.size()); // i
+        for (Map.Entry z : update.entrySet()) {
+            mplew.writeInt(((Skill) z.getKey()).getId()); //nSkillID
+            mplew.writeInt(((SkillEntry) z.getValue()).skillevel); //nInfo
+            mplew.writeInt(((SkillEntry) z.getValue()).masterlevel); //nInfo
+            PacketHelper.addExpirationTime(mplew, ((SkillEntry) z.getValue()).expiration); //dateExpire
+        }
+//        mplew.write(/*hyper ? 0x0C : */4); ? No idea, but IDA says something else
+        mplew.write(0); // LOBYTE(bSN), only gets accessed if bShowResult is true.
 
 
         return mplew.getPacket();

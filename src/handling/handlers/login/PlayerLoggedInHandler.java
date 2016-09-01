@@ -114,8 +114,7 @@ public class PlayerLoggedInHandler {
 		
 		// PlayersHandler.calcHyperSkillPointCount(c);
 		// c.getSession().write(CSPacket.enableCSUse());
-		// c.getSession().write(CWvsContext.updateSkills(c.getPlayer().getSkills(),
-		// false));//skill to 0 "fix"
+		c.getSession().write(CWvsContext.updateSkills(c.getPlayer().getSkills(), false));//skill to 0 "fix"
 		// player.getStolenSkills();
 		// c.getSession().write(JobPacket.addStolenSkill());
 
