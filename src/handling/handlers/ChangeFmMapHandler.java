@@ -34,7 +34,7 @@ public class ChangeFmMapHandler {
 			c.getSession().write(CWvsContext.enableActions());
 			return;
 		}
-		
+
 		if (c.getChannel() != toChannel) {	
 			//cc them if they asked for it
 			chr.changeChannel(toChannel);		

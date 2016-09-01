@@ -4716,7 +4716,6 @@ public class GameConstants {
 		return list;
 	}
 
-
 	public static List<Integer> getMasteryBook(int itemId) {
 		List<Integer> list = new LinkedList<Integer>();
 		int[] items = {};
