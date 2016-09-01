@@ -13,7 +13,10 @@ public class ChangeKeymapHandler {
 	
 	@PacketHandler(opcode = RecvPacketOpcode.CHANGE_KEYMAP)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
-		if ((lea.available() > 8L) && (c.getPlayer() != null)) {
+		if (c.getPlayer() == null){
+			return;
+		}
+		if (lea.available() > 8L) {
 			lea.skip(4);
 			int numChanges = lea.readInt();
 
@@ -31,7 +34,7 @@ public class ChangeKeymapHandler {
 				}
 				c.getPlayer().changeKeybinding(key, type, action);
 			}
-		} else if (c.getPlayer() != null) {
+		} else {
 			int type = lea.readInt();
 			int data = lea.readInt();
 			switch (type) {

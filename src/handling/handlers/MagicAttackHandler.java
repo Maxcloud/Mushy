@@ -12,5 +12,4 @@ public class MagicAttackHandler {
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		PlayerHandler.MagicDamage(lea, c, c.getPlayer());
 	}
-	
 }
