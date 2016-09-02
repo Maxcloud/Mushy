@@ -1902,7 +1902,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final int getNumQuest() {
         int i = 0;
         for (final MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 2 && !(q.isCustom())) {
+            if (q.getStatus() == 2) {
                 i++;
             }
         }
@@ -1955,11 +1955,9 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public final void updateQuest(final MapleQuestStatus quest, final boolean update) {
         quests.put(quest.getQuest(), quest);
-        if (!(quest.isCustom())) {
-            client.getSession().write(InfoPacket.updateQuest(quest));
-            if (quest.getStatus() == 1 && !update) {
-                client.getSession().write(CField.updateQuestInfo(this, quest.getQuest().getId(), quest.getNpc(), (byte) 11));//was10
-            }
+        client.getSession().write(InfoPacket.updateQuest(quest));
+        if (quest.getStatus() == 1 && !update) {
+            client.getSession().write(CField.updateQuestInfo(this, quest.getQuest().getId(), quest.getNpc(), (byte) 11));
         }
     }
 
@@ -4279,7 +4277,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final List<MapleQuestStatus> getStartedQuests() {
         List<MapleQuestStatus> ret = new LinkedList<>();
         for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 1 && !q.isCustom() && !q.getQuest().isBlocked()) {
+            if (q.getStatus() == 1 && !q.getQuest().isBlocked()) {
                 ret.add(q);
             }
         }
@@ -4289,7 +4287,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final List<MapleQuestStatus> getCompletedQuests() {
         List<MapleQuestStatus> ret = new LinkedList<>();
         for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 2 && !q.isCustom() && !q.getQuest().isBlocked()) {
+            if (q.getStatus() == 2 && !q.getQuest().isBlocked()) {
                 ret.add(q);
             }
         }
@@ -4299,7 +4297,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final List<Pair<Integer, Long>> getCompletedMedals() {
         List<Pair<Integer, Long>> ret = new ArrayList<>();
         for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 2 && !q.isCustom() && !q.getQuest().isBlocked() && q.getQuest().getMedalItem() > 0 && GameConstants.getInventoryType(q.getQuest().getMedalItem()) == MapleInventoryType.EQUIP) {
+            if (q.getStatus() == 2 && !q.getQuest().isBlocked() && q.getQuest().getMedalItem() > 0 && GameConstants.getInventoryType(q.getQuest().getMedalItem()) == MapleInventoryType.EQUIP) {
                 ret.add(new Pair<>(q.getQuest().getId(), q.getCompletionTime()));
             }
         }

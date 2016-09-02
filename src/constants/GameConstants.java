@@ -1422,10 +1422,6 @@ public class GameConstants {
 		return false;
 	}
 
-	public static boolean isCustomQuest(final int id) {
-		return id > 99999;
-	}
-
 	public static int getTaxAmount(final int meso) {
 		if (meso >= 100000000) {
 			return (int) Math.round(0.06 * meso);
