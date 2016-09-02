@@ -7,12 +7,8 @@ import handling.RecvPacketOpcode;
 import server.MapleInventoryManipulator;
 import tools.data.LittleEndianAccessor;
 
-/**
- * Created by Tim on 8/27/2016.
- */
 public class ItemMoveHandler {
 
-    // simply taken from the old handler, credits to whoever made that.
     @PacketHandler(opcode = RecvPacketOpcode.ITEM_MOVE)
     public static void handle(MapleClient c, LittleEndianAccessor lea) {
         if(c.getPlayer().hasBlockedInventory()){ //same hack as before :(

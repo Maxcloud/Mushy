@@ -18,15 +18,20 @@ public class UseInnerPortalHandler {
 		}
 		String portalName = lea.readMapleAsciiString();
 		MaplePortal portal = c.getPlayer().getMap().getPortal(portalName);
-		int toX = lea.readShort();
-		int toY = lea.readShort();
 
 		if (portal == null) {
 			return;
 		}
+		//That "22500" should not be hard coded in this manner
 		if ((portal.getPosition().distanceSq(c.getPlayer().getTruePosition()) > 22500.0D) && (!c.getPlayer().isGM())) {
 			return;
 		}
+		
+		int toX = lea.readShort();
+		int toY = lea.readShort();
+		
+		//Are there not suppose to be checks here? Can players not just PE any x and y value they want?
+		
 		c.getPlayer().getMap().movePlayer(c.getPlayer(), new Point(toX, toY));
 		c.getPlayer().checkFollow();
 	}

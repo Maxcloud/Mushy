@@ -5,72 +5,28 @@ import client.MapleClient;
 import constants.MapConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
-import handling.channel.ChannelServer;
 import handling.world.World;
 import server.maps.FieldLimitType;
-import server.maps.MapleMap;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CWvsContext;
 
-/**
- * Created by Tim on 9/1/2016.
- */
 public class ChangeChannelHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CHANGE_CHANNEL)
 	public static void handle(MapleClient c, LittleEndianAccessor lea){
 		MapleCharacter chr = c.getPlayer();
-		boolean isInFmRoom = MapConstants.isFmMap(chr.getMapId());
-		if (chr == null || chr.hasBlockedInventory() || chr.getEventInstance() != null || chr.getMap() == null || chr.isInBlockedMap() || FieldLimitType.ChannelSwitch.check(chr.getMap().getFieldLimit())) {
+		int toChannel = lea.readByte() + 1;
+		if (chr == null || chr.hasBlockedInventory() || chr.getEventInstance() != null || chr.getMap() == null || chr.isInBlockedMap() || FieldLimitType.ChannelSwitch.check(chr.getMap().getFieldLimit()) || MapConstants.isFmMap(chr.getMapId()) || c.getChannel() == toChannel) {
 			c.getSession().write(CWvsContext.enableActions());
 			return;
 		}
-		if (World.getPendingCharacterSize() >= 10) {
-			chr.dropMessage(1, "The server is busy at the moment. Please try again in less than a minute.");
+		if (World.getPendingCharacterSize() >= 10 || !World.isChannelAvailable(toChannel, chr.getWorld())) {
+			chr.dropMessage(1, "We could not change your channel at this moment. Please try again soon.");
 			c.getSession().write(CWvsContext.enableActions());
 			return;
 		}
-		final int toChannel = lea.readByte() + 1;
-		int mapid = 0;
-		if (isInFmRoom) {
-			mapid = lea.readInt();
-		}
-		lea.skip(4); // update tick
-		if (!World.isChannelAvailable(toChannel, chr.getWorld())) {
-			chr.dropMessage(1, "Request denied due to an unknown error.");
-			c.getSession().write(CWvsContext.enableActions());
-			return;
-		}
-		// this stuff is for FM map changing, which SHOULD only be called with 0x13C.
-		// so it's just here in case some magic happens.
-		if (isInFmRoom && MapConstants.isFmMap(mapid)) {
-			// yes I know, it's only been like 20 lines since this was checked
-			chr.dropMessage(1, "Request denied due to an unknown error.");
-			c.getSession().write(CWvsContext.enableActions());
-			return;
-		}
-		if (!isInFmRoom){
-			chr.changeChannel(toChannel);
-			return;
-		}
-		if (chr.getMapId() == mapid) {
-			if (c.getChannel() == toChannel) {
-				chr.dropMessage(1, "You are already in " + chr.getMap().getMapName());
-				c.getSession().write(CWvsContext.enableActions());
-			} else { // diff channel
-				chr.changeChannel(toChannel);
-			}
-		} else { // diff map
-			if (c.getChannel() != toChannel) {
-				chr.changeChannel(toChannel);
-			}
-			final MapleMap warpMap = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(mapid);
-			if (warpMap != null) {
-				chr.changeMap(warpMap, warpMap.getPortal("out00"));
-			} else {
-				chr.dropMessage(1, "Request denied due to an unknown error.");
-				c.getSession().write(CWvsContext.enableActions());
-			}
-		}
+		int tick = lea.readInt();
+
+		chr.changeChannel(toChannel);
 	}
 }

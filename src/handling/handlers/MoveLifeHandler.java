@@ -31,11 +31,7 @@ public class MoveLifeHandler {
         int oid = lea.readInt();
         
         MapleMonster monster = map.getMonsterByOid(oid);
-        if (monster == null) {
-            return;
-        }
-        
-        if (monster.getLinkCID() > 0) {
+        if (monster == null || monster.getLinkCID() > 0) {
             return;
         }
         

@@ -10,7 +10,7 @@ public class MesoDropHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.MESO_DROP)
 	public static void handle(MapleClient c, LittleEndianAccessor slea) {
-		slea.skip(4); // update tick
+		int tick = slea.readInt();
         PlayerHandler.DropMeso(slea.readInt(), c.getPlayer());
 	}
 }
