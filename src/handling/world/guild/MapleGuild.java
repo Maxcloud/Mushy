@@ -956,7 +956,7 @@ public class MapleGuild implements java.io.Serializable {
         level = calculateLevel();
         broadcast(GuildPacket.updateGP(id, gp, level));
         if (broadcast) {
-            broadcast(InfoPacket.getGPMsg(amount));
+            broadcast(InfoPacket.getGPMessage(amount));
         }
     }
 

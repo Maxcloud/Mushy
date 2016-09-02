@@ -3161,7 +3161,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                         changeSp = 3;
                     }
                     remainingSp[GameConstants.getSkillBook(newJob, 0)] += changeSp;
-                    client.getSession().write(InfoPacket.getSPMsg((byte) changeSp, (short) newJob));
+                    client.getSession().write(InfoPacket.getSpMessage(newJob, changeSp));
                 } else {
                     remainingSp[GameConstants.getSkillBook(newJob, 0)]++;
                     if (newJob % 10 >= 2) {
@@ -3413,13 +3413,13 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void gainSP(int sp) {
         this.remainingSp[GameConstants.getSkillBook(job, 0)] += sp; //default
         updateSingleStat(MapleStat.AVAILABLESP, 0); // we don't care the value here
-        client.getSession().write(InfoPacket.getSPMsg((byte) sp, (short) job));
+        client.getSession().write(InfoPacket.getSpMessage(job, sp));
     }
 
     public void gainSP(int sp, final int skillbook) {
         this.remainingSp[skillbook] += sp;
         updateSingleStat(MapleStat.AVAILABLESP, 0);
-        client.getSession().write(InfoPacket.getSPMsg((byte) sp, (short) 0));
+        client.getSession().write(InfoPacket.getSpMessage(0, sp));
     }
 
     public void gainHSP(int mode, int hsp) {
@@ -4059,7 +4059,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (pending) {
             if (pendingExpiration != null) {
                 for (Integer z : pendingExpiration) {
-                    client.getSession().write(InfoPacket.itemExpired(z.intValue()));
+                    client.getSession().write(InfoPacket.getExpiredMessage(z.intValue()));
                     if (!firstLoad) {
                         final Pair<Integer, String> replace = ii.replaceItemInfo(z.intValue());
                         if (replace != null && replace.left > 0 && replace.right.length() > 0) {
@@ -7567,7 +7567,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void setBattlePoints(int p) {
         if (p != pvpPoints) {
-            client.getSession().write(InfoPacket.getBPMsg(p - pvpPoints));
+            client.getSession().write(InfoPacket.showBattleMessage(p - pvpPoints));
             updateSingleStat(MapleStat.BATTLE_POINTS, p);
         }
         this.pvpPoints = p;
@@ -8589,7 +8589,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void gainHonor(int honor, boolean show) {
         addHonorExp(honor, false);
         if (show) {
-            client.getSession().write(InfoPacket.showInfo(honor + " Honor EXP obtained."));
+            client.getSession().write(InfoPacket.getMessage(honor + " Honor EXP obtained."));
         }
     }
 
