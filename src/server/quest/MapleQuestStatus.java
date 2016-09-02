@@ -71,10 +71,6 @@ public class MapleQuestStatus implements Serializable {
         this.npc = npc;
     }
 
-    public boolean isCustom() {
-        return GameConstants.isCustomQuest(quest.getId());
-    }
-
     private void registerMobs() {
         killedMobs = new LinkedHashMap<>();
         for (final int i : quest.getRelevantMobs().keySet()) {
