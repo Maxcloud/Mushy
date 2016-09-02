@@ -3,7 +3,7 @@ package constants;
 public class ServerConstants {
 	
     public static final short MAPLE_VERSION = (short) 175;
-    public static final String MAPLE_PATCH = "1";
+    public static final String MAPLE_PATCH = "2";
 
     public static enum PlayerGMRank {
 
