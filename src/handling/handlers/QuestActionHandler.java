@@ -22,8 +22,9 @@ public class QuestActionHandler {
             return;
         }
         
-        if (c.getPlayer() == null)
+        if (c.getPlayer() == null){
             return;
+        }
         
         MapleQuest q = MapleQuest.getInstance(quest);
         switch (action) {
