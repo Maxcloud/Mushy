@@ -1129,7 +1129,8 @@ public class DamageParse {
 		AttackInfo ai = new AttackInfo();
 		lea.skip(1); // bFieldKey
 		ai.nMobCount = (int) lea.readByte();
-		
+		ai.skillid = lea.readInt();
+		byte skillLevel = lea.readByte();
 		// System.out.printf("Targets: %s Data: %s%n", ai.getTargets(), lea);
 		
 		if (ai.getTargets() == 0) {
@@ -1141,33 +1142,29 @@ public class DamageParse {
 	}
 	
 	private static void parseNormalAttack(LittleEndianAccessor lea, AttackInfo ai, MapleCharacter chr) {
-		ai.skillid = lea.readInt();
-		byte skillLevel = lea.readByte();
 		
 		lea.skip(1); // bAddAttackProc
-		lea.skip(4); // skillid crc
-		lea.skip(1);
+		lea.skip(4); // crc
+		
 		lea.skip(1);
 		
+		lea.skip(1);
 		ai.display = lea.readShort();
-		
 		lea.skip(4);
 		lea.skip(1);
-		
 		ai.speed = lea.readByte();
+		
 		ai.lastAttackTickCount = lea.readInt();
 		
 		lea.skip(4);
-		lea.skip(4);
-		lea.skip(2);
-		lea.skip(2);
+		lea.skip(4); // final attack
+		lea.skip(2); // slot
+		lea.skip(2); // csstar
 	}
 	
 	private static void parseMeleeAttack(LittleEndianAccessor lea, AttackInfo ai, MapleCharacter chr, boolean energy) {
 		int pGrenade = 0;
-		
-		ai.setSkillId(lea.readInt());
-		byte skillLevel = lea.readByte();
+
 		lea.skip(1); // bAddAttackProc
 		lea.skip(4); // skillid crc
 		
@@ -1184,7 +1181,7 @@ public class DamageParse {
 			lea.skip(1);
 		
 		// is_userclone_summoned_able_skill
-		// There should be an int here but I can't see the skillids. :\
+		// nBySummonedID = lea.readInt();
 
 		if (!energy)
 			lea.skip(1);
@@ -1193,10 +1190,10 @@ public class DamageParse {
 		ai.display = lea.readShort();
 		lea.skip(4);
 		lea.skip(1);
-		lea.skip(1);
+		ai.speed = lea.readByte();
 		
 		if (!energy)
-			lea.skip(4); // time
+			ai.lastAttackTickCount = lea.readInt();
 		
 		lea.skip(4);
 		int finalAttack = lea.readInt();
@@ -1255,8 +1252,8 @@ public class DamageParse {
 		} else {
 			
 			if (Skill.isSuperNovaSkill(skillid)) {
-				lea.skip(2);
-				lea.skip(2);
+				lea.skip(2); // ptAttackRefPoint.x
+				lea.skip(2); // ptAttackRefPoint.y
 			}
 			
 			if (skillid == 101000102) { // air riot
@@ -1274,8 +1271,8 @@ public class DamageParse {
 		
 		
 		if (skillid == 21120019 || skillid == 37121052) { // finisher - hunter's prey, hyper magnum punch
-			lea.skip(4);
-			lea.skip(4);
+			lea.skip(4); // m_teleport.pt.x
+			lea.skip(4); // m_teleport.pt.y
 		}
 		
 		if (skillid == 61121105 || skillid == 61121222 || skillid == 24121052) { // inferno breath, carte rose finale
@@ -1292,13 +1289,164 @@ public class DamageParse {
 		}
 		
 		if (skillid == 14111006 && pGrenade > 0) {
-			lea.skip(2);
-			lea.skip(2);
+			lea.skip(2); // x
+			lea.skip(2); // y
 		}
 		
 	}
+	
+	public static AttackInfo parseMagicAttack(LittleEndianAccessor lea) {
+		AttackInfo ai = new AttackInfo();
+		lea.skip(1); // bFieldKey
+		ai.nMobCount = (int) lea.readByte();
+		ai.skillid = lea.readInt();
+		byte skillLevel = lea.readByte();
+		
+		// lea.skip(1); // bAddAttackProc
+		lea.skip(4); // crc
+		
+		int skillid = ai.getSkillId();
+		
+		if (Skill.isKeyDownSkill(skillid))
+			ai.charge = lea.readInt();
+		
+		lea.skip(1);
+		lea.skip(1);
+		ai.display = lea.readShort();
+		lea.skip(4);
+		lea.skip(1);
+		
+		if (Skill.isEvanForceSkill(skillid))
+			lea.skip(1);
+		
+		ai.speed = lea.readByte();
+		// ai.lastAttackTickCount = lea.readInt();
+		lea.skip(4);
+		lea.skip(4); // final attack
+		// lea.skip(2); // slot
+		// lea.skip(2); // csstar
+		
+		ai.allDamage = new ArrayList<>();
+		
+		for(int mob = 0 ; mob < ai.getTargets(); mob++) {
+			int oid = lea.readInt();
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(4);
+			lea.skip(1);
+			lea.skip(2);
+			lea.skip(2);
+			lea.skip(2);
+			lea.skip(2);
+			lea.skip(1); // m_nHPpercentage
+			if (ai.skillid == 80001835) { // soul shear
+				lea.skip(1);
+			} else {
+				lea.skip(2);
+			}
+			
+			List<Pair<Integer, Boolean>> damageNumbers = new ArrayList<>();
+			for(int hit = 0; hit < ai.getHits(); hit++) {
+				int damage = lea.readInt();
+				damageNumbers.add(new Pair<>(damage, false));
+			}
+			lea.skip(4); // GetMobUpDownYRange
+			lea.skip(4); // crc
+			
+			// PACKETMAKER::MakeAttackInfoPacket
+			byte bSkeleton = lea.readByte();
+			if (bSkeleton == 1) {
+				lea.readMapleAsciiString();
+				lea.readInt();
+				
+				// v9 = v2->pHitPartProcessor.p;
+				
+				// if (v9) {
+				
+					// HitPartsProcessor::Encode
+					// int size = lea.readInt();
+					// for(int i = 0; i < size; i++) {
+					//     lea.readMapleAsciiString(); // animation
+					// }
+					
+				// } else {
+					// lea.readMapleAsciiString();
+					// lea.readInt();
+				// }
+				
+			} else if (bSkeleton == 2) {
+				lea.readMapleAsciiString();
+				lea.readInt();
+			}
+			
+			ai.allDamage.add(new AttackPair(oid, damageNumbers));
+		}
+		
+		if (ai.getTargets() <= 0 && skillid == 2121011) {
+			lea.skip(2); // x
+			lea.skip(2); // y
+		}	
+		if (ai.skillid > 27111303) {
+	        if (ai.skillid == 80001837 || ai.skillid == 27121052) {
+	        	lea.readShort(); //x
+	        	lea.readShort(); //y
+	        }
+		} else {
+			if (ai.skillid != 32111016) {
+				short nForcedX = lea.readShort();
+				short nForcedY = lea.readShort();
+				
+				boolean dragon = lea.readByte() > 0;
+				if (dragon) {
+					lea.readShort();
+					lea.readShort();
+					
+					lea.readShort(); // x
+					lea.readShort(); // y
+					
+					lea.readShort();
+					
+					lea.readByte();
+					lea.readByte();
+					lea.readByte();
+					
+					if (ai.skillid == 12100029) {
+						/* if ( pExcept ) */
+						lea.readInt();
+					} else {
+						switch(ai.skillid) {
+						case 2121003:
+							byte size = lea.readByte();
+							for(int j = 0; j < size; j++) {
+								lea.readInt();
+							}
+							break;
+						case 2111003:
+							lea.readByte(); // bForce
+							lea.readShort(); // nForcedX
+							lea.readShort(); // nForcedY
+							break;
+						case 80001835:
+							byte size1 = lea.readByte();
+							for(int s = 0; s < size1; s++) {
+								lea.readInt(); // dwID
+								lea.readShort();
+							}
+							lea.readShort(); // tDelay
+							break;
+						}
+					}
+					
+				}
+			}
+		}
+		return ai;
+	}
 
-	public static AttackInfo parseDmgMa(LittleEndianAccessor lea, MapleCharacter chr) // magic
+	/*public static AttackInfo parseDmgMa(LittleEndianAccessor lea, MapleCharacter chr) // magic
 	{
 		try {
 			AttackInfo ai = new AttackInfo();
@@ -1309,7 +1457,7 @@ public class DamageParse {
 			// ret.targets = ((byte) (ret.tbyte >>> 4 & 0xF));
 			// ret.hits = ((byte) (ret.tbyte & 0xF));
 			
-			ai.setSkillId(lea.readInt());
+			ai.skillid = lea.readInt();
 			if (ai.getSkillId() >= 91000000 && ai.getSkillId() < 100000000) {
 				return null;
 			}
@@ -1326,6 +1474,7 @@ public class DamageParse {
 			ai.setSpeed(lea.readByte());
 			ai.lastAttackTickCount = lea.readInt();
 			lea.skip(4);
+			
 			ai.allDamage = new ArrayList();
 
 			for (int i = 0; i < ai.getTargets(); i++) {
@@ -1350,112 +1499,6 @@ public class DamageParse {
 		} catch (Exception e) {
 		}
 		return null;
-	}
-
-	/*public static AttackInfo parseDmgM(MapleCharacter chr, LittleEndianAccessor lea)// reg att
-	{
-
-		AttackInfo ret = new AttackInfo();
-		ret.tbyte = lea.readByte();
-
-		ret.targets = ((byte) (ret.tbyte >>> 4 & 0xF));
-		ret.hits = ((byte) (ret.tbyte & 0xF));
-		ret.skill = lea.readInt();
-		if (GameConstants.isZero(chr.getJob()) && ret.skill != 0) {
-			lea.skip(1); // zero has byte
-		}
-		if (ret.skill == 2221012 || ret.skill == 36101001 || ret.skill == 42120003) {
-			lea.skip(1);
-		}
-		lea.skip(1);
-		lea.readInt();
-		lea.readInt(); // same as above
-		lea.readShort();
-		switch (ret.skill) {
-			case 1311011:// La Mancha Spear
-			case 2221012:
-			case 4341002:
-			case 4341003:
-			case 4221052:
-			case 5201002:
-			case 5300007:
-			case 5301001:
-			case 11121052:// Styx Crossing
-			case 11121055:// Styx Crossing charged
-			case 31201001:
-			case 31211001:
-			case 14111006:
-			case 24121000:
-			case 24121005:
-			case 27101202:
-			case 27111100:
-			case 27120211:
-			case 27121201:
-			case 31001000:
-			case 31101000:
-			case 31111005:
-			case 36121000:
-			case 36101001:
-			case 42120003: // Monkey Spirits
-			case 61111100:
-			case 61111111:
-			case 61111113:
-			case 65121003:
-			case 65121052:// Supreme Supernova
-			case 101110101:
-			case 101110102:
-			case 101110104:
-			case 101120200:
-			case 101120203:
-			case 101120205:
-			case 32121003: // Tornado Spin
-			// case 36121001:
-			ret.charge = lea.readInt();
-			break;
-		default:
-			ret.charge = 0;
-		}
-
-		ret.unk = lea.readByte();
-		ret.display = lea.readUShort();
-		if (ret.skill == 2221012 || ret.skill == 36101001 || ret.skill == 42120003) {
-			lea.skip(4);
-		} else {
-			lea.skip(5);
-		}
-		if ((ret.skill == 5300007) || (ret.skill == 5101012) || (ret.skill == 5081001) || (ret.skill == 15101010)) {
-			lea.readInt();
-		}
-		ret.speed = lea.readByte();
-		ret.lastAttackTickCount = lea.readInt();
-		if (GameConstants.isEnergyBuff(ret.skill)) {
-			lea.skip(4);
-		} else if (ret.skill == 4341052) {// Asura - Mixtamal6
-			lea.skip(3); // new
-		} else {
-			lea.skip(8);
-		}
-
-		ret.allDamage = new ArrayList();
-
-		for (int i = 0; i < ret.targets; i++) {
-			int oid = lea.readInt();
-
-			lea.skip(20);// was 19
-
-			List allDamageNumbers = new ArrayList();
-
-			for (int j = 0; j < ret.hits; j++) {
-				int damage = lea.readInt();
-
-				allDamageNumbers.add(new Pair(Integer.valueOf(damage), Boolean.valueOf(false)));
-			}
-			lea.skip(8);
-			ret.allDamage.add(new AttackPair(Integer.valueOf(oid).intValue(), allDamageNumbers));
-		}
-		// ret.position = lea.readPos();
-
-		return ret;
 	}*/
 
 	public static AttackInfo parseDmgR(LittleEndianAccessor lea, MapleCharacter chr)// ranged
@@ -1477,26 +1520,26 @@ public class DamageParse {
 		lea.readInt(); // same as above
 		lea.readShort();
 		switch (ai.getSkillId()) {
-		case 3121004:
-		case 3221001:
-		case 5321052:
-		case 5221004:
-		case 5311002:
-		case 5711002:
-		case 5721001:
-		case 13111002:// Hurricane
-		case 13111020:// Sentient Arrow
-		case 13121001:// Song of Heaven
-		case 23121000:
-		case 24121000:
-		case 33121009:
-		case 35001001:
-		case 35101009:
-		case 60011216:// Soul Buster
-		case 3101008:
-		case 3111009:// Hurricane
-		case 3121013:// Arrow Blaster
-		case 5221022:
+			case 3121004:
+			case 3221001:
+			case 5321052:
+			case 5221004:
+			case 5311002:
+			case 5711002:
+			case 5721001:
+			case 13111002:// Hurricane
+			case 13111020:// Sentient Arrow
+			case 13121001:// Song of Heaven
+			case 23121000:
+			case 24121000:
+			case 33121009:
+			case 35001001:
+			case 35101009:
+			case 60011216:// Soul Buster
+			case 3101008:
+			case 3111009:// Hurricane
+			case 3121013:// Arrow Blaster
+			case 5221022:
 			lea.skip(4);
 		}
 

@@ -865,13 +865,27 @@ public class Skill implements Comparator<Skill> {
     
     public static boolean isNonConsumingBulletMeleeAttack(int skillid) {
     	switch(skillid) {
-		case 14000028: // shadow bat
-		case 14000029: // shadow bat
-		case 14121003: // dark omen
-		case 14121052: // dominion
-			return true;
-		default: 
-			return false;
+			case 14000028: // shadow bat
+			case 14000029: // shadow bat
+			case 14121003: // dark omen
+			case 14121052: // dominion
+				return true;
+			default: 
+				return false;
+    	}
+    }
+    
+    public static boolean isEvanForceSkill(int skillid) {
+    	switch(skillid) {
+    		case 22110022: // dragon flash
+    		case 22110023: // dragon flash
+    		case 22141011: // thunder circle
+    		case 22171062: // earth circle
+    		case 22140022: // dragon dive
+    		case 80001894: // dragon flash
+    			return true;
+    		default:
+    			return false;
     	}
     }
 
