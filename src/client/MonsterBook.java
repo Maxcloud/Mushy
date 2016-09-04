@@ -192,30 +192,36 @@ public final class MonsterBook
         eq.setDex((short) this.level);
         eq.setInt((short) this.level);
         eq.setLuk((short) this.level);
-        eq.setPotential1(0);
-        eq.setPotential2(0);
-        eq.setPotential3(0);
-        eq.setPotential4(0);
-        eq.setPotential5(0);
+        eq.setMainPotentialByLine(0, 0);
+        eq.setMainPotentialByLine(0, 0);
+        eq.setMainPotentialByLine(0, 0);
         if (this.currentSet > -1) {
             Triple set = MapleItemInformationProvider.getInstance().getMonsterBookInfo(this.currentSet);
             if (set != null) {
                 for (int i = 0; i < ((List) set.right).size(); i++) {
-                    if (i == 0) {
-                        eq.setPotential1(((Integer) ((List) set.right).get(i)).intValue());
-                    } else if (i == 1) {
-                        eq.setPotential2(((Integer) ((List) set.right).get(i)).intValue());
-                    } else if (i == 2) {
-                        eq.setPotential3(((Integer) ((List) set.right).get(i)).intValue());
-                    } else {
-                        if (i == 3) {
-                            break;
-                        }
-                        if (i == 4) {
-                            eq.setPotential5(((Integer) ((List) set.right).get(i)).intValue());
-                            break;
-                        }
+                    if(i > 6){ // max of 6 potentials on an item
+                        break;
                     }
+                    if(i >= 0 && i <= 2){
+                        eq.setMainPotentialByLine(i, ((Integer) ((List) set.right).get(i)).intValue());
+                    }else{
+                        eq.setBonusPotentialByLine(i, ((Integer) ((List) set.right).get(i)).intValue());
+                    }
+//                    if (i == 0) {
+//                        eq.setPotential1(((Integer) ((List) set.right).get(i)).intValue());
+//                    } else if (i == 1) {
+//                        eq.setPotential2(((Integer) ((List) set.right).get(i)).intValue());
+//                    } else if (i == 2) {
+//                        eq.setPotential3(((Integer) ((List) set.right).get(i)).intValue());
+//                    } else {
+//                        if (i == 3) {
+//                            break;
+//                        }
+//                        if (i == 4) {
+//                            eq.setBonusPotentialByLine(1, ((Integer) ((List) set.right).get(i)).intValue());
+//                            break;
+//                        }
+//                    }
                 }
             } else {
                 this.currentSet = -1;

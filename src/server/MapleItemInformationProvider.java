@@ -961,17 +961,19 @@ public class MapleItemInformationProvider {
                             break;
                         } else if (GameConstants.isPotentialScroll(scrollId.getItemId())) {
                             if (nEquip.getState() <= 17 && (scrollId.getItemId() / 100 == 20497)) {
-                                final int chanc = (scrollId.getItemId() == 2049701 ? 80 : 100) + added; // 2049701
+//                                final int chanc = (scrollId.getItemId() == 2049701 ? 80 : 100) + added; // 2049701
+                                final int chanc = GameConstants.getChanceOfScrollSuccess(scrollId.getItemId()) + added; // 2049701
                                 if (Randomizer.nextInt(100) > chanc) {
-                                    return null; //destroyed, nib
+                                    return null; //boom
                                 }
                                 nEquip.renewPotential(2, 0, (short) 0, false);
                             } else if (nEquip.getState() == 0) {
-                                final int chanc = (scrollId.getItemId() == 5534000 || scrollId.getItemId() == 2049402 || scrollId.getItemId() == 2049406 ? 100 : scrollId.getItemId() == 2049701 ? 80 : (scrollId.getItemId() == 2049400 || scrollId.getItemId() == 2049407 || scrollId.getItemId() == 2049413 ? 90 : 70)) + added;
+//                                final int chanc = (scrollId.getItemId() == 5534000 || scrollId.getItemId() == 2049402 || scrollId.getItemId() == 2049406 ? 100 : scrollId.getItemId() == 2049701 ? 80 : (scrollId.getItemId() == 2049400 || scrollId.getItemId() == 2049407 || scrollId.getItemId() == 2049413 ? 90 : 70)) + added;
+                                final int chanc = GameConstants.getChanceOfScrollSuccess(scrollId.getItemId()) + added; // 2049701
                                 if (Randomizer.nextInt(100) > chanc) {
-                                    return null; //destroyed, nib
+                                    return null; //boom
                                 }
-                                nEquip.resetPotential();
+                                nEquip.resetPotentialWithRank(GameConstants.getStateOfPotScroll(scrollId.getItemId()), GameConstants.CHANCE_ON_3RD_LINE_WITH_POT_SCROLL);
                             }
                             break;
                         } else {

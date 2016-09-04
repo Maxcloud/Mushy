@@ -36,6 +36,7 @@ import server.cash.CashItemFactory;
 import server.cash.CashItemInfo;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
+import tools.ArrayUtil;
 import tools.Pair;
 import tools.Randomizer;
 import tools.StringUtil;
@@ -895,7 +896,7 @@ public class MapleInventoryManipulator {
     }
     if (source.getState() >= 17) {
         final Map<Skill, SkillEntry> ss = new HashMap<>();
-        int[] potentials = {source.getPotential1(), source.getPotential2(), source.getPotential3(), source.getBonusPotential1(), source.getBonusPotential2()};
+        int[] potentials = ArrayUtil.concat(source.getMainPotential(), source.getBonusPotential());
         for (int i : potentials) {
             if (i > 0) {
                 StructItemOption pot = ii.getPotentialInfo(i).get(ii.getReqLevel(source.getItemId()) / 10);
@@ -908,7 +909,7 @@ public class MapleInventoryManipulator {
         }
     if (source.getSocketState() > 15) {
         final Map<Skill, SkillEntry> ss = new HashMap<>();
-        int[] sockets = {source.getSocket1(), source.getSocket2(), source.getSocket3()};
+        int[] sockets = source.getSockets();
         for (int i : sockets) {
             if (i > 0) {
                 StructItemOption soc = ii.getSocketInfo(i);
@@ -964,7 +965,7 @@ public class MapleInventoryManipulator {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (source.getState() >= 17) {
             final Map<Skill, SkillEntry> ss = new HashMap<>();
-            int[] potentials = {source.getPotential1(), source.getPotential2(), source.getPotential3(), source.getBonusPotential1(), source.getBonusPotential2()};
+            int[] potentials = ArrayUtil.concat(source.getMainPotential(), source.getBonusPotential());
             for (int i : potentials) {
                 if (i > 0) {
                     StructItemOption pot = ii.getPotentialInfo(i).get(ii.getReqLevel(source.getItemId()) / 10);
@@ -977,7 +978,7 @@ public class MapleInventoryManipulator {
         }
         if (source.getSocketState() > 15) {
             final Map<Skill, SkillEntry> ss = new HashMap<>();
-            int[] sockets = {source.getSocket1(), source.getSocket2(), source.getSocket3()};
+            int[] sockets = source.getSockets();
             for (int i : sockets) {
                 if (i > 0) {
                     StructItemOption soc = ii.getSocketInfo(i);

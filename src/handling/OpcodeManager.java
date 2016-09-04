@@ -60,6 +60,7 @@ class OpcodeManager {
 
 		ItemMoveHandler.class,
 		UseItemHandler.class,
+		UsePotentialScrollHandler.class,
 
 		MesoDropHandler.class,
 		QuestActionHandler.class,

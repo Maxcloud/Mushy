@@ -688,7 +688,7 @@ public class PlayersHandler {
                     Equip equip = (Equip) MapleItemInformationProvider.getInstance().getEquipById(itemId);
                     equip.setQuantity((short) 1);
                     equip.setGMLog("BUY_SILENT_CRUSADE");
-                    equip.setPotential1(-potentialGrade);
+                    equip.setMainPotentialByLine(0, -potentialGrade);
                     if (!MapleInventoryManipulator.addbyItem(c, equip)) {
                         c.getSession().write(CWvsContext.getSilentCrusadeMsg((byte) 2));
                         c.getSession().write(CWvsContext.enableActions());

@@ -877,17 +877,17 @@ public class PacketHelper {
         mplew.writeMapleAsciiString(equip.getOwner());
         mplew.write(equip.getState()); // 17 = rare, 18 = epic, 19 = unique, 20 = legendary, potential flags. special grade is 14 but it crashes
         mplew.write(equip.getEnhance());
-        mplew.writeShort(equip.getPotential1());
-        mplew.writeShort(equip.getPotential2());
-        mplew.writeShort(equip.getPotential3());
-        mplew.writeShort(equip.getBonusPotential1());
-        mplew.writeShort(equip.getBonusPotential2());
-        mplew.writeShort(equip.getBonusPotential3());
+        for(int pot : equip.getMainPotential()){
+            mplew.writeShort(pot);
+        }
+        for(int pot : equip.getBonusPotential()){
+            mplew.writeShort(pot);
+        }
         mplew.writeShort(equip.getFusionAnvil() % 100000);
         mplew.writeShort(equip.getSocketState());
-        mplew.writeShort(equip.getSocket1() % 10000); // > 0 = mounted, 0 = empty, -1 = none.
-        mplew.writeShort(equip.getSocket2() % 10000);
-        mplew.writeShort(equip.getSocket3() % 10000);
+        for(int socket : equip.getSockets()){
+            mplew.writeShort(socket % 10000); // > 0 = mounted, 0 = empty, -1 = none.
+        }
         if (!hasUniqueId) {
             mplew.writeLong(equip.getInventoryId() <= 0 ? -1 : equip.getInventoryId()); //some tracking ID
         }

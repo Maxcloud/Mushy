@@ -2,7 +2,6 @@ package handling.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.MapleDisease;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import handling.PacketHandler;
