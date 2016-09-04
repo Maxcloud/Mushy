@@ -105,29 +105,6 @@ import tools.packet.PlayerShopPacket;
 
 public class InventoryHandler {
 
-    public static final void ItemMove(final LittleEndianAccessor slea, final MapleClient c) {
-        if (c.getPlayer().hasBlockedInventory()) { //hack
-            return;
-        }
-        c.getPlayer().setScrolledPosition((short) 0);
-        slea.skip(4); // update tick
-        final MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
-        final short src = slea.readShort();
-        final short dst = slea.readShort();
-        final short quantity = slea.readShort();
-        //System.out.println("item move " + type.name() + " " + src + " " + dst + " " + quantity);
-
-        if (src < 0 && dst > 0) {
-            MapleInventoryManipulator.unequip(c, src, dst);
-        } else if (dst < 0) {
-            MapleInventoryManipulator.equip(c, src, dst);
-        } else if (dst == 0) {
-            MapleInventoryManipulator.drop(c, type, src, quantity);
-        } else {
-            MapleInventoryManipulator.move(c, type, src, dst);
-        }
-    }
-
     public static final void SwitchBag(final LittleEndianAccessor slea, final MapleClient c) {
         if (c.getPlayer().hasBlockedInventory()) { //hack
             return;

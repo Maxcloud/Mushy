@@ -168,8 +168,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
 		byte[] hex = HexTool.getByteArrayFromHexString(bytes);
 		String hexString = new String(hex, "ASCII");
 		
-    	System.out.println("[Sent] " + opcode + ": " + bytes);
-    	System.out.println(hexString);
+    	// System.out.println("[Sent] " + opcode + ": " + bytes);
+    	// System.out.println(hexString);
     }
 
     @Override
@@ -188,7 +188,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         
         final short opcode = lea.readShort();
         try {
-        	// System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
+        	System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
             // handlePacket(recv, slea, c);
         	OpcodeManager.handle(c, opcode, lea);
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
@@ -320,9 +320,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 break;
             case SPECIAL_MOVE:
                 PlayerHandler.SpecialMove(lea, c, c.getPlayer());
-                break;
-            case PASSIVE_ENERGY:
-                // PlayerHandler.closeRangeAttack(slea, c, c.getPlayer(), true);
                 break;
             case GET_BOOK_INFO:
                 PlayersHandler.MonsterBookInfoRequest(lea, c, c.getPlayer());
@@ -486,9 +483,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case ITEM_GATHER:
                 InventoryHandler.ItemGather(lea, c);
                 break;
-            case ITEM_MOVE:
-                InventoryHandler.ItemMove(lea, c);
-                break;
             case MOVE_BAG:
                 InventoryHandler.MoveBag(lea, c);
                 break;
@@ -637,12 +631,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 break;
             case AUTO_ASSIGN_AP:
                 StatsHandling.AutoAssignAP(lea, c, c.getPlayer());
-                break;
-            case DISTRIBUTE_AP:
-                StatsHandling.DistributeAP(lea, c, c.getPlayer());
-                break;
-            case DISTRIBUTE_SP:
-                StatsHandling.DistributeSP(lea, c, c.getPlayer());
                 break;
             case PLAYER_INTERACTION:
                 PlayerInteractionHandler.PlayerInteraction(lea, c, c.getPlayer());

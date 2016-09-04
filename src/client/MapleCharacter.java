@@ -1902,7 +1902,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final int getNumQuest() {
         int i = 0;
         for (final MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 2 && !(q.isCustom())) {
+            if (q.getStatus() == 2) {
                 i++;
             }
         }
@@ -1955,11 +1955,9 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public final void updateQuest(final MapleQuestStatus quest, final boolean update) {
         quests.put(quest.getQuest(), quest);
-        if (!(quest.isCustom())) {
-            client.getSession().write(InfoPacket.updateQuest(quest));
-            if (quest.getStatus() == 1 && !update) {
-                client.getSession().write(CField.updateQuestInfo(this, quest.getQuest().getId(), quest.getNpc(), (byte) 11));//was10
-            }
+        client.getSession().write(InfoPacket.updateQuest(quest));
+        if (quest.getStatus() == 1 && !update) {
+            client.getSession().write(CField.updateQuestInfo(this, quest.getQuest().getId(), quest.getNpc(), (byte) 11));
         }
     }
 
@@ -3163,7 +3161,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                         changeSp = 3;
                     }
                     remainingSp[GameConstants.getSkillBook(newJob, 0)] += changeSp;
-                    client.getSession().write(InfoPacket.getSPMsg((byte) changeSp, (short) newJob));
+                    client.getSession().write(InfoPacket.getSpMessage(newJob, changeSp));
                 } else {
                     remainingSp[GameConstants.getSkillBook(newJob, 0)]++;
                     if (newJob % 10 >= 2) {
@@ -3415,13 +3413,13 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void gainSP(int sp) {
         this.remainingSp[GameConstants.getSkillBook(job, 0)] += sp; //default
         updateSingleStat(MapleStat.AVAILABLESP, 0); // we don't care the value here
-        client.getSession().write(InfoPacket.getSPMsg((byte) sp, (short) job));
+        client.getSession().write(InfoPacket.getSpMessage(job, sp));
     }
 
     public void gainSP(int sp, final int skillbook) {
         this.remainingSp[skillbook] += sp;
         updateSingleStat(MapleStat.AVAILABLESP, 0);
-        client.getSession().write(InfoPacket.getSPMsg((byte) sp, (short) 0));
+        client.getSession().write(InfoPacket.getSpMessage(0, sp));
     }
 
     public void gainHSP(int mode, int hsp) {
@@ -4061,7 +4059,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (pending) {
             if (pendingExpiration != null) {
                 for (Integer z : pendingExpiration) {
-                    client.getSession().write(InfoPacket.itemExpired(z.intValue()));
+                    client.getSession().write(InfoPacket.getExpiredMessage(z.intValue()));
                     if (!firstLoad) {
                         final Pair<Integer, String> replace = ii.replaceItemInfo(z.intValue());
                         if (replace != null && replace.left > 0 && replace.right.length() > 0) {
@@ -4279,7 +4277,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final List<MapleQuestStatus> getStartedQuests() {
         List<MapleQuestStatus> ret = new LinkedList<>();
         for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 1 && !q.isCustom() && !q.getQuest().isBlocked()) {
+            if (q.getStatus() == 1 && !q.getQuest().isBlocked()) {
                 ret.add(q);
             }
         }
@@ -4289,7 +4287,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final List<MapleQuestStatus> getCompletedQuests() {
         List<MapleQuestStatus> ret = new LinkedList<>();
         for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 2 && !q.isCustom() && !q.getQuest().isBlocked()) {
+            if (q.getStatus() == 2 && !q.getQuest().isBlocked()) {
                 ret.add(q);
             }
         }
@@ -4299,7 +4297,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public final List<Pair<Integer, Long>> getCompletedMedals() {
         List<Pair<Integer, Long>> ret = new ArrayList<>();
         for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus() == 2 && !q.isCustom() && !q.getQuest().isBlocked() && q.getQuest().getMedalItem() > 0 && GameConstants.getInventoryType(q.getQuest().getMedalItem()) == MapleInventoryType.EQUIP) {
+            if (q.getStatus() == 2 && !q.getQuest().isBlocked() && q.getQuest().getMedalItem() > 0 && GameConstants.getInventoryType(q.getQuest().getMedalItem()) == MapleInventoryType.EQUIP) {
                 ret.add(new Pair<>(q.getQuest().getId(), q.getCompletionTime()));
             }
         }
@@ -7569,7 +7567,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public void setBattlePoints(int p) {
         if (p != pvpPoints) {
-            client.getSession().write(InfoPacket.getBPMsg(p - pvpPoints));
+            client.getSession().write(InfoPacket.showBattleMessage(p - pvpPoints));
             updateSingleStat(MapleStat.BATTLE_POINTS, p);
         }
         this.pvpPoints = p;
@@ -8591,7 +8589,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     public void gainHonor(int honor, boolean show) {
         addHonorExp(honor, false);
         if (show) {
-            client.getSession().write(InfoPacket.showInfo(honor + " Honor EXP obtained."));
+            client.getSession().write(InfoPacket.getMessage(honor + " Honor EXP obtained."));
         }
     }
 

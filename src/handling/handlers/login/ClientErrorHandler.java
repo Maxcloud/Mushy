@@ -4,6 +4,7 @@ import client.MapleClient;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.SendPacketOpcode;
+import tools.HexTool;
 import tools.data.LittleEndianAccessor;
 
 public class ClientErrorHandler {
@@ -31,9 +32,8 @@ public class ClientErrorHandler {
         short data_length = lea.readShort();
         
         lea.skip(4);
-
         short code = lea.readShort();
-
+        
         String opcode = SendPacketOpcode.getNameByValue(code);
 
         System.out.printf("[Error %s] (%s) Data: %s%n", errortype, opcode, lea);

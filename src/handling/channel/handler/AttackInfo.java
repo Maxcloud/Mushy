@@ -33,7 +33,7 @@ import tools.HexTool;
 
 public class AttackInfo {
 
-	public byte speed; 
+	public byte speed;  // attack speed
 	public byte csstar; 
 	public byte AOE; 
 	public byte slot; 

@@ -56,6 +56,7 @@ class OpcodeManager {
 		TakeDamageHandler.class,
 		GeneralChatHandler.class,
 
+		DistributeApHandler.class,
 		DistributeSpHandler.class,
 
 		ItemMoveHandler.class,
@@ -66,6 +67,7 @@ class OpcodeManager {
 		QuestActionHandler.class,
 		
 		MoveLifeHandler.class,
+		NpcActionHandler.class,
 		NpcTalkHandler.class,
 		NpcTalkMoreHandler.class,
 		
