@@ -4885,4 +4885,8 @@ public class GameConstants {
 		return skins.toArray(list);
 	}
 
+	public static boolean isAllowedPotentialStat(Equip equip, int opID) {
+		//TODO: Implement to make sure certain pots don't go on certain equips.
+		return true;
+	}
 }

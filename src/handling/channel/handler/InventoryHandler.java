@@ -646,22 +646,22 @@ public class InventoryHandler {
                 || insight || magnify.getItemId() == 2460003 || (magnify.getItemId() == 2460002 && reqLevel <= 12)
                 || (magnify.getItemId() == 2460001 && reqLevel <= 7) || (magnify.getItemId() == 2460000 && reqLevel <= 3))) {
             final List<List<StructItemOption>> pots = new LinkedList<>(ii.getAllPotentialInfo().values());
-            int lockedLine = 0;
-            int locked = 0;
-            if (Math.abs(eqq.getPotentialByLine(0)) / 100000 > 0) {
-                lockedLine = 1;
-                locked = Math.abs(eqq.getPotentialByLine(0));
-            } else if (Math.abs(eqq.getPotentialByLine(1)) / 100000 > 0) {
-                lockedLine = 2;
-                locked = Math.abs(eqq.getPotentialByLine(1));
-            } else if (Math.abs(eqq.getPotentialByLine(2)) / 100000 > 0) {
-                lockedLine = 3;
-                locked = Math.abs(eqq.getPotentialByLine(2));
-            }
+//            int lockedLine = 0;
+//            int locked = 0;
+//            if (Math.abs(eqq.getPotentialByLine(0)) / 100000 > 0) {
+//                lockedLine = 1;
+//                locked = Math.abs(eqq.getPotentialByLine(0));
+//            } else if (Math.abs(eqq.getPotentialByLine(1)) / 100000 > 0) {
+//                lockedLine = 2;
+//                locked = Math.abs(eqq.getPotentialByLine(1));
+//            } else if (Math.abs(eqq.getPotentialByLine(2)) / 100000 > 0) {
+//                lockedLine = 3;
+//                locked = Math.abs(eqq.getPotentialByLine(2));
+//            }
             int new_state = Math.abs(eqq.getPotentialByLine(0));
-            if (lockedLine == 1) {
-                new_state = locked / 10000 < 1 ? 17 : 16 + locked / 10000;
-            }
+//            if (lockedLine == 1) {
+//                new_state = locked / 10000 < 1 ? 17 : 16 + locked / 10000;
+//            }
             if (new_state > 20 || new_state < 17) { // incase overflow
                 new_state = 17;
             }
@@ -687,9 +687,9 @@ public class InventoryHandler {
                     }
                 }
             }
-            if(lockedLine >= 1 && lockedLine <= 3){
-                eqq.setPotentialByLine(lockedLine - 1, Math.abs(locked - lockedLine * 100000));
-            }
+//            if(lockedLine >= 1 && lockedLine <= 3){
+//                eqq.setPotentialByLine(lockedLine - 1, Math.abs(locked - lockedLine * 100000));
+//            }
 //            switch (lockedLine) {
 //                case 1:
 //                    eqq.setPotentialByLine(0, Math.abs(locked - lockedLine * 100000));

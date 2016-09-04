@@ -76,12 +76,11 @@ public class UsePotentialScrollHandler {
                 }
             }
 
-            chr.getMap().broadcastMessage(chr, CField.getScrollEffect(c.getPlayer().getId(), scrollSuccess, false, scroll.getItemId(), scroll.getItemId()), false);
-            //toscroll
-            //scroll
             c.getSession().write(CField.enchantResult(scrollSuccess == Equip.ScrollResult.SUCCESS ? 1 : scrollSuccess == Equip.ScrollResult.CURSE ? 2 : 0));
-            //addToScrollLog(chr.getAccountID(), chr.getId(), scroll.getItemId(), itemID, oldSlots, (byte)(scrolled == null ? -1 : scrolled.getUpgradeSlots()), oldVH, scrollSuccess.name(), whiteScroll, legendarySpirit, vegas);
-            // equipped item was scrolled and changed
+            chr.getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, equip.getItemId()));
+            chr.forceReAddItem_NoUpdate(equip, MapleInventoryType.EQUIP);
+            chr.getMap().broadcastMessage(chr, CField.getScrollEffect(c.getPlayer().getId(), scrollSuccess, false, scroll.getItemId(), scroll.getItemId()), false);
+
             if (equipSlot < 0 && (scrollSuccess == Equip.ScrollResult.SUCCESS || scrollSuccess == Equip.ScrollResult.CURSE)) {
                 chr.equipChanged();
             }

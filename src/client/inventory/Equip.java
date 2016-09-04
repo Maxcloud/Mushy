@@ -492,11 +492,11 @@ public class Equip extends Item implements Serializable {
     public int max(int[] intArray){
         int max = Integer.MIN_VALUE;
         for(int i = 0; i < intArray.length; i++){
-            if(Math.abs(intArray[i]) > max){
+            if(Math.abs(intArray[i]) > max && intArray[i] != 0){
                 max = intArray[i];
             }
         }
-        return max;
+        return max == Integer.MIN_VALUE ? 0 : max;
     }
 
     /**
