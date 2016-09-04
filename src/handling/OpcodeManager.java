@@ -60,7 +60,8 @@ class OpcodeManager {
 		DistributeSpHandler.class,
 
 		ItemMoveHandler.class,
-		
+		UseItemHandler.class,
+
 		MesoDropHandler.class,
 		QuestActionHandler.class,
 		

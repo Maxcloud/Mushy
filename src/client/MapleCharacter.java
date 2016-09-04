@@ -9611,4 +9611,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         updateSingleStat(MapleStat.HAIR, this.hair);
         equipChanged();
     }
+
+    public boolean canUsePotion(){
+        return isAlive() && getMap() != null && !hasDisease(MapleDisease.POTION) && !hasBlockedInventory() && !inPVP();
+    }
 }
