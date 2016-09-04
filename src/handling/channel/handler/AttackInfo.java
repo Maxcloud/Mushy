@@ -21,6 +21,7 @@
 package handling.channel.handler;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import client.MapleCharacter;
@@ -48,7 +49,7 @@ public class AttackInfo {
     public boolean real = true;
     
     public Point position;
-    public List<AttackPair> allDamage;
+    public List<AttackPair> allDamage = new ArrayList<AttackPair>();
     
     public byte getHits() {
     	return ((byte) (nMobCount & 0xF));

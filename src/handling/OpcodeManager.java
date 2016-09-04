@@ -51,7 +51,6 @@ class OpcodeManager {
 		CloseRangeAttackHandler.class,
 		RangedAttackHandler.class,
 		PassiveEnergyAttackHandler.class,
-
 		MagicAttackHandler.class,
 		TakeDamageHandler.class,
 		GeneralChatHandler.class,

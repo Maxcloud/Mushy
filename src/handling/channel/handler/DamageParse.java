@@ -9,6 +9,7 @@ import java.util.Map;
 
 import client.MapleBuffStat;
 import client.MapleCharacter;
+import client.MapleClient;
 import client.MonsterStatus;
 import client.MonsterStatusEffect;
 import client.PlayerStats;
@@ -1131,8 +1132,7 @@ public class DamageParse {
 		ai.nMobCount = (int) lea.readByte();
 		ai.skillid = lea.readInt();
 		byte skillLevel = lea.readByte();
-		// System.out.printf("Targets: %s Data: %s%n", ai.getTargets(), lea);
-		
+
 		if (ai.getTargets() == 0) {
 			parseNormalAttack(lea, ai, chr);
 		} else {
@@ -1243,6 +1243,32 @@ public class DamageParse {
 			// IsResWarriorLiftPress
 			// slea.skip(1);
 			
+			// PACKETMAKER::MakeAttackInfoPacket
+			byte bSkeleton = lea.readByte();
+			if (bSkeleton == 1) {
+				lea.readMapleAsciiString();
+				lea.readInt();
+				
+				// v9 = v2->pHitPartProcessor.p;
+				
+				// if (v9) {
+				
+					// HitPartsProcessor::Encode
+					// int size = lea.readInt();
+					// for(int i = 0; i < size; i++) {
+					//     lea.readMapleAsciiString(); // animation
+					// }
+					
+				// } else {
+					// lea.readMapleAsciiString();
+					// lea.readInt();
+				// }
+				
+			} else if (bSkeleton == 2) {
+				lea.readMapleAsciiString();
+				lea.readInt();
+			}
+						
 			ai.allDamage.add(new AttackPair(oid, damageNumbers));
 		}
 		
@@ -1445,142 +1471,169 @@ public class DamageParse {
 		}
 		return ai;
 	}
-
-	/*public static AttackInfo parseDmgMa(LittleEndianAccessor lea, MapleCharacter chr) // magic
-	{
-		try {
-			AttackInfo ai = new AttackInfo();
-
-			lea.skip(1);
-			ai.nMobCount = lea.readByte();
-
-			// ret.targets = ((byte) (ret.tbyte >>> 4 & 0xF));
-			// ret.hits = ((byte) (ret.tbyte & 0xF));
-			
-			ai.skillid = lea.readInt();
-			if (ai.getSkillId() >= 91000000 && ai.getSkillId() < 100000000) {
-				return null;
-			}
-			lea.skip(11);
-			if (GameConstants.isMagicChargeSkill(ai.getSkillId())) {
-				ai.charge = lea.readInt();
-			} else {
-				ai.charge = -1;
-			}
-			lea.skip(1); // unk
-			ai.display = lea.readUShort();
-
-			lea.skip(4);
-			ai.setSpeed(lea.readByte());
-			ai.lastAttackTickCount = lea.readInt();
-			lea.skip(4);
-			
-			ai.allDamage = new ArrayList();
-
-			for (int i = 0; i < ai.getTargets(); i++) {
-				int oid = lea.readInt();
-				lea.skip(20);// v140 = 19
-				List allDamageNumbers = new ArrayList();
-
-				for (int j = 0; j < ai.getHits(); j++) {
-					int damage = lea.readInt();
-					allDamageNumbers.add(new Pair(Integer.valueOf(damage), Boolean.valueOf(false)));
-				}
-				lea.skip(8);
-				ai.allDamage.add(new AttackPair(Integer.valueOf(oid).intValue(), allDamageNumbers));
-			}
-			if (lea.available() >= 4L) {
-				ai.position = lea.readPos();
-			}
-			// if (ret.skill == 2321054){//Asura - Mixtamal6
-			// lea.skip(3); //new
-			// }
-			return ai;
-		} catch (Exception e) {
-		}
-		return null;
-	}*/
-
-	public static AttackInfo parseDmgR(LittleEndianAccessor lea, MapleCharacter chr)// ranged
-																					// att
-	{
+	
+	public static AttackInfo parseRangedAttack(LittleEndianAccessor lea, MapleClient c) {
 		AttackInfo ai = new AttackInfo();
 		lea.skip(1);
-		ai.nMobCount = lea.readByte();
-
-		// ret.targets = ((byte) (ret.tbyte >>> 4 & 0xF));
-		// ret.hits = ((byte) (ret.tbyte & 0xF));
+		lea.skip(1); // bFieldKey
+		ai.nMobCount = (int) lea.readByte();
+		ai.skillid = lea.readInt();
+		byte skillLevel = lea.readByte();
+		byte bAddAttackProc = lea.readByte();
 		
-		ai.setSkillId(lea.readInt());
-		if (GameConstants.isZero(chr.getJob())) {
-			lea.skip(1); // zero has byte
-		}
+		lea.skip(4); // crc
+		
+		int skillid = ai.skillid;
+		
+		if (Skill.isKeyDownSkill(skillid))
+			ai.charge = lea.readInt();
+		
+		if (GameConstants.isZero(c.getPlayer().getJob()))
+			lea.readByte();
+		
+		// is_userclone_summoned_able_skill
+		// nBySummonedID = lea.readInt();
+		
 		lea.skip(1);
-		lea.readInt();
-		lea.readInt(); // same as above
-		lea.readShort();
-		switch (ai.getSkillId()) {
-			case 3121004:
-			case 3221001:
-			case 5321052:
-			case 5221004:
-			case 5311002:
-			case 5711002:
-			case 5721001:
-			case 13111002:// Hurricane
-			case 13111020:// Sentient Arrow
-			case 13121001:// Song of Heaven
-			case 23121000:
-			case 24121000:
-			case 33121009:
-			case 35001001:
-			case 35101009:
-			case 60011216:// Soul Buster
-			case 3101008:
-			case 3111009:// Hurricane
-			case 3121013:// Arrow Blaster
-			case 5221022:
-			lea.skip(4);
-		}
-
-		ai.charge = -1;
-		lea.skip(1); // unk
-		ai.display = lea.readUShort();
-		lea.skip(5);
-		if (ai.getSkillId() == 23111001 || ai.getSkillId() == 36111010) {
-			lea.skip(12);
-		} else if (ai.getSkillId() == 3121013) {// Arrow Blaster
-			lea.skip(8);
-		}
-		if ((ai.getSkillId() == 5221022) || (ai.getSkillId() == 5220023) || (ai.getSkillId() == 95001000)) {// Corsair
-																							// BoarSide
-																							// IDSkills
-			lea.readInt();// newv144
-			lea.readInt();// newv144
-		}
-		ai.setSpeed(lea.readByte());
+		lea.skip(1);
+		
+		lea.skip(4);
+		lea.skip(1);
+		
+		ai.display = lea.readShort();
+		lea.skip(4);
+		lea.skip(1);
+		
+		if (ai.skillid == 23111001 || ai.skillid == 80001915 || ai.skillid == 36111010) {
+            lea.skip(4);
+            lea.skip(4);
+            lea.skip(4);
+        }
+		
+		ai.speed = lea.readByte();
 		ai.lastAttackTickCount = lea.readInt();
 		lea.skip(4);
 		ai.slot = ((byte) lea.readShort());
 		ai.csstar = ((byte) lea.readShort());
-		ai.AOE = lea.readByte();
-		ai.allDamage = new ArrayList();
-
-		for (int i = 0; i < ai.getTargets(); i++) {
+		ai.AOE = lea.readByte(); // nShootRange
+		
+		// !is_shoot_skill_not_consuming_bullet
+		lea.skip(4);
+		
+		lea.skip(2);
+		lea.skip(2);
+		lea.skip(2);
+		lea.skip(2);
+		
+		ai.allDamage = new ArrayList<>();
+		
+		for(int mob = 0 ; mob < ai.getTargets(); mob++) {
 			int oid = lea.readInt();
-			lea.skip(20);// v140 = 19
-			List allDamageNumbers = new ArrayList();
-			for (int j = 0; j < ai.getHits(); j++) {
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(1);
+			lea.skip(4);
+			lea.skip(1);
+			lea.skip(2);
+			lea.skip(2);
+			lea.skip(2);
+			lea.skip(2);
+			lea.skip(2);
+			
+			/**
+			 * if ( SHIDWORD(v747) > 0 )
+			      {
+			        v638 = (int)(v625 + 6);
+			        do
+			        {
+			          COutPacket::Encode4((COutPacket *)((char *)&v763 + 8), *(_DWORD *)v638);
+			          if ( TSingleton<CBattleRecordMan>::ms_pInstance )
+			            CBattleRecordMan::SetBattleDamageInfo(
+			              TSingleton<CBattleRecordMan>::ms_pInstance,
+			              (int)v767,
+			              v637,
+			              SHIDWORD(v733),
+			              *(_DWORD *)v638,
+			              *(_DWORD *)(v638 + 60),
+			              0);
+			          ++v637;
+			          v638 += 4;
+			        }
+			        while ( v637 < SHIDWORD(v747) );
+			      }
+			 */
+			
+			List<Pair<Integer, Boolean>> damageNumbers = new ArrayList<>();
+			for(int hit = 0; hit < ai.getHits(); hit++) {
 				int damage = lea.readInt();
-				allDamageNumbers.add(new Pair(Integer.valueOf(damage), Boolean.valueOf(false)));
+				damageNumbers.add(new Pair<>(damage, false));
 			}
-			lea.skip(8);
-			ai.allDamage.add(new AttackPair(Integer.valueOf(oid).intValue(), allDamageNumbers));
+			lea.skip(4); // GetMobUpDownYRange
+			lea.skip(4); // mob crc
+			
+			// PACKETMAKER::MakeAttackInfoPacket
+			byte bSkeleton = lea.readByte();
+			if (bSkeleton == 1) {
+				lea.readMapleAsciiString();
+				lea.readInt();
+				
+				// v9 = v2->pHitPartProcessor.p;
+				
+				// if (v9) {
+				
+					// HitPartsProcessor::Encode
+					// int size = lea.readInt();
+					// for(int i = 0; i < size; i++) {
+					//     lea.readMapleAsciiString(); // animation
+					// }
+					
+				// } else {
+					// lea.readMapleAsciiString();
+					// lea.readInt();
+				// }
+				
+			} else if (bSkeleton == 2) {
+				lea.readMapleAsciiString();
+				lea.readInt();
+			}
+			
+			ai.allDamage.add(new AttackPair(oid, damageNumbers));
 		}
-		ai.position = lea.readPos();
-		if (lea.available() >= 4) {
-			lea.skip(4);// moved after pos in v141
+		
+		if (Skill.isScreenCenterAttackSkill(skillid)) {
+			lea.skip(2);
+			lea.skip(2);
+		} else {
+			ai.position = lea.readPos();
 		}
+		
+		if (c.getPlayer().getSummonsSize() > 1) {
+			if (ai.skillid == 14111024 || ai.skillid > 14121053 && ai.skillid <= 14121056) {
+	        	lea.readShort();
+	        	lea.readShort();
+	        }
+		}
+		
+		if (Skill.isAranFallingStopSkill(skillid))
+			lea.skip(1);
+		
+		if (skillid / 100 == 33) {
+			lea.skip(2);
+			lea.skip(2);
+		}
+		
+		// is_keydown_skill_rect_move_xy
+		if (ai.skillid == 13111020) {
+        	lea.readShort();
+        	lea.readShort();
+        }
+		
+		if (ai.skillid == 23121002 || ai.skillid == 80001914) {
+        	lea.readByte(); // m_pfh
+        }
+		
 		return ai;
 	}
 
