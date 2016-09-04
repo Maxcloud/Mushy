@@ -70,8 +70,9 @@ public class QuestActionHandler {
             case 4: { // scripted start quest
                 int npc = lea.readInt();
                 
-                if (c.getPlayer().hasBlockedInventory())
+                if (c.getPlayer().hasBlockedInventory()){
                     return;
+                }
                 
                 NPCScriptManager.getInstance().startQuest(c, npc, quest);
                 break;

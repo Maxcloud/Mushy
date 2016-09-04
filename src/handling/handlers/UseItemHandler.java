@@ -2,7 +2,6 @@ package handling.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.MapleDisease;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import handling.PacketHandler;
@@ -15,7 +14,7 @@ import tools.packet.CWvsContext;
 
 public class UseItemHandler {
 
-    //Solidly nearly fully copied from InventoryHandler
+
     @PacketHandler(opcode = RecvPacketOpcode.USE_ITEM)
     public static void handle(MapleClient c, LittleEndianAccessor lea){
         MapleCharacter chr = c.getPlayer();
@@ -29,7 +28,7 @@ public class UseItemHandler {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
-        lea.skip(4); // update tick
+        int tick = lea.readInt();
         final byte slot = (byte) lea.readShort();
         final int itemId = lea.readInt();
         final Item toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
