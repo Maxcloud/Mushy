@@ -56,6 +56,7 @@ class OpcodeManager {
 		TakeDamageHandler.class,
 		GeneralChatHandler.class,
 
+		DistributeApHandler.class,
 		DistributeSpHandler.class,
 
 		ItemMoveHandler.class,
