@@ -2,11 +2,10 @@ package client.inventory;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.stream.Collectors;
 
-import com.sun.deploy.util.ArrayUtil;
 import constants.EventConstants;
 import constants.GameConstants;
+import server.MapleItemInformationProvider;
 import tools.Randomizer;
 
 public class Equip extends Item implements Serializable {
@@ -25,7 +24,7 @@ public class Equip extends Item implements Serializable {
     private int durability = -1, incSkill = -1, fusionAnvil = 0;
     private long itemEXP = 0;
     private boolean finalStrike = false;
-    private int[] mainPotential = new int[8]; // max 8?
+    private int[] mainPotential = new int[3]; // max 8?
     private int[] bonusPotential = new int[3]; // max 3?
     private int[] socket = new int[3]; // max 3?
     private MapleRing ring = null;
@@ -450,19 +449,19 @@ public class Equip extends Item implements Serializable {
         enhance = en;
     }
 
-    public int getMainPotentialByLine(int line){
+    public int getPotentialByLine(int line){
         return mainPotential[line];
     }
 
-    public void setMainPotentialByLine(int line, int potential){
+    public void setPotentialByLine(int line, int potential){
         mainPotential[line] = potential;
     }
 
-    public int[] getMainPotential(){
+    public int[] getPotential(){
         return mainPotential;
     }
 
-    public void setMainPotential(int[] newMainPotential){
+    public void setPotential(int[] newMainPotential){
         mainPotential = newMainPotential;
     }
 
@@ -503,29 +502,20 @@ public class Equip extends Item implements Serializable {
     /**
      * Uses a potential scroll on this item.
      * @param scrollId
-     * @return Whether it boomed or not.
+     * @return Whether it failed or not.
      */
     public boolean usePotentialScroll(int scrollId){
-        if (getState() <= 17 && (scrollId / 100 == 20497)) {
-//                                final int chanc = (scrollId.getItemId() == 2049701 ? 80 : 100) + added; // 2049701
-            final int chanc = GameConstants.getChanceOfScrollSuccess(scrollId); // 2049701
-            if (Randomizer.nextInt(100) > chanc) {
-                return true; //boom
-            }
-            renewPotential(2, 0, (short) 0, false);
-        } else if (getState() == 0) {
-//                                final int chanc = (scrollId.getItemId() == 5534000 || scrollId.getItemId() == 2049402 || scrollId.getItemId() == 2049406 ? 100 : scrollId.getItemId() == 2049701 ? 80 : (scrollId.getItemId() == 2049400 || scrollId.getItemId() == 2049407 || scrollId.getItemId() == 2049413 ? 90 : 70)) + added;
-            final int chanc = GameConstants.getChanceOfScrollSuccess(scrollId); // 2049701
-            if (Randomizer.nextInt(100) > chanc) {
-                return true; //boom
-            }
-            resetPotentialWithRank(GameConstants.getStateOfPotScroll(scrollId), GameConstants.CHANCE_ON_3RD_LINE_WITH_POT_SCROLL);
+        Map<String, Integer> scrollInfo = MapleItemInformationProvider.getInstance().getEquipStats(scrollId);
+        final int chance = scrollInfo.containsKey("success") ? scrollInfo.get("success") : 0;
+        if (Randomizer.nextInt(100) > chance) {
+            return true; //fail
         }
+        resetPotentialWithRank(GameConstants.getStateOfPotScroll(scrollId), GameConstants.CHANCE_ON_3RD_LINE_WITH_POT_SCROLL);
         return false;
     }
 
     public byte getState() {
-        int maxPot = max(getMainPotential());
+        int maxPot = max(getPotential());
         byte res = 0;
         if (maxPot < 0) {
             res = HIDDEN; //hidden
@@ -567,9 +557,9 @@ public class Equip extends Item implements Serializable {
         if (Randomizer.nextInt(100) < 4) {
             potentialState -= Randomizer.nextInt(100) < 4 ? 2 : 1;
         }
-        setMainPotentialByLine(0, potentialState);
-        setMainPotentialByLine(1, potentialState);
-        setMainPotentialByLine(2, (Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
+        setPotentialByLine(0, potentialState);
+        setPotentialByLine(1, potentialState);
+        setPotentialByLine(2, (Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
 //        setPotential1(potentialState); // leaving this here commented to maybe look at later
 //        setPotential2((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //1/10 chance of 3 line
 //        setPotential3((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //just set it theoretically
@@ -594,15 +584,15 @@ public class Equip extends Item implements Serializable {
 
     public void resetPotential() {
         final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -19 : -18) : -17;
-        setMainPotentialByLine(0, rank);
-        setMainPotentialByLine(1, rank);
-        setMainPotentialByLine(2, (Randomizer.nextInt(10) == 0 ? rank : 0));
+        setPotentialByLine(0, rank);
+        setPotentialByLine(1, rank);
+        setPotentialByLine(2, (Randomizer.nextInt(10) == 0 ? rank : 0));
     }
 
     public void resetPotentialWithRank(int rank, int chanceOnThirdLine){
-        setMainPotentialByLine(0, rank);
-        setMainPotentialByLine(1, rank);
-        setMainPotentialByLine(2, (Randomizer.nextInt(100) < chanceOnThirdLine) ? rank : 0);
+        setPotentialByLine(0, -rank);
+        setPotentialByLine(1, -rank);
+        setPotentialByLine(2, (Randomizer.nextInt(100) < chanceOnThirdLine) ? -rank : 0);
     }
 
     public void resetBonusPotential() {
@@ -626,27 +616,27 @@ public class Equip extends Item implements Serializable {
             setBonusPotentialByLine(1, rank);
         } else {
             rank = type == 2 ? -18 : type == 5 ? (Randomizer.nextInt(100) < 3 * miracleRate && getState() != 20 ? -20 : Randomizer.nextInt(100) < 10 * miracleRate && getState() != 20 ? -(getState() + 1) : -(getState())) : (Randomizer.nextInt(100) < 4 * miracleRate && getState() != (type == 3 ? 20 : 19) ? -(getState() + 1) : -(getState())); // 4 % chance to up 1 tier
-            setMainPotentialByLine(1, rank);
+            setPotentialByLine(1, rank);
         }
-        if (getMainPotentialByLine(2) > 0 && !bonus) {
-            setMainPotentialByLine(1, rank); // put back old 3rd line
-            setMainPotentialByLine(2, 0);
+        if (getPotentialByLine(2) > 0 && !bonus) {
+            setPotentialByLine(1, rank); // put back old 3rd line
+            setPotentialByLine(2, 0);
         } else {
             switch (type) {
                 case 1: // premium-> suppose to be 25%
-                    setMainPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //1/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //1/10 chance of 3 line
                     break;
                 case 2: // epic pot
-                    setMainPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //2/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //2/10 chance of 3 line
                     break;
                 case 3: // super
-                    setMainPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //3/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //3/10 chance of 3 line
                     break;
                 case 4: // revolutionary
-                    setMainPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //4/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //4/10 chance of 3 line
                     break;
                 case 5: // enlightening
-                    setMainPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //3/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //3/10 chance of 3 line
                //     setBonusPotential2(Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
                     break;
                 case 6: // master
@@ -654,29 +644,28 @@ public class Equip extends Item implements Serializable {
                         return;
                     }
                     setBonusPotentialByLine(2, Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
-                    setMainPotentialByLine(2, Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
+                    setPotentialByLine(2, Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
                     break;
                 default:
-                    setMainPotentialByLine(2, 0);
+                    setPotentialByLine(2, 0);
                     break;
             }
         }
 
-        if (getMainPotentialByLine(4) > 0) {
-            setMainPotentialByLine(3, rank);
-        } else if (type == 3) {
-            setMainPotentialByLine(3, Randomizer.nextInt(100) <= 2 ? rank : 0);
-        } else {
-            setMainPotentialByLine(3, 0);
-        }
-        if (getMainPotentialByLine(5) > 0) {
-            setMainPotentialByLine(4, rank);
-        } else if (type == 3) {
-            setMainPotentialByLine(4, Randomizer.nextInt(100) <= 1 ? rank : 0);
-        } else {
-            setMainPotentialByLine(4, 0);
-        }
-        setMainPotentialByLine(5, 0);
+        //bunch of stuff that shouldn't be here
+//        if (type == 3) {
+//            setPotentialByLine(3, Randomizer.nextInt(100) <= 2 ? rank : 0);
+//        } else {
+//            setPotentialByLine(3, 0);
+//        }
+//        if (getPotentialByLine(5) > 0) {
+//            setPotentialByLine(4, rank);
+//        } else if (type == 3) {
+//            setPotentialByLine(4, Randomizer.nextInt(100) <= 1 ? rank : 0);
+//        } else {
+//            setPotentialByLine(4, 0);
+//        }
+//        setPotentialByLine(5, 0);
 
         if (bonus) {
             if (getBonusPotentialByLine(2) > 0) {
@@ -694,10 +683,10 @@ public class Equip extends Item implements Serializable {
 //                //Don't lock
 //                break;
 //            case 1:
-//                setMainPotentialByLine(1, -(toLock + line * 100000 + (rank > getState() ? 10000 : 0)));
+//                setPotentialByLine(1, -(toLock + line * 100000 + (rank > getState() ? 10000 : 0)));
 //                break;
 //            case 2:
-//                setMainPotentialByLine(2, -(toLock + line * 100000));
+//                setPotentialByLine(2, -(toLock + line * 100000));
 //                break;
 //            case 3:
 //                setPotential3(-(toLock + line * 100000));
@@ -709,7 +698,7 @@ public class Equip extends Item implements Serializable {
 
         // potential locking exists?
         if(line > 0 && line <= 3){
-            setMainPotentialByLine(line, -(toLock + line * 100000));
+            setPotentialByLine(line, -(toLock + line * 100000));
         }
     }
 

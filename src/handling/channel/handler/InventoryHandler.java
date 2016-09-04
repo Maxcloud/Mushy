@@ -648,17 +648,17 @@ public class InventoryHandler {
             final List<List<StructItemOption>> pots = new LinkedList<>(ii.getAllPotentialInfo().values());
             int lockedLine = 0;
             int locked = 0;
-            if (Math.abs(eqq.getMainPotentialByLine(0)) / 100000 > 0) {
+            if (Math.abs(eqq.getPotentialByLine(0)) / 100000 > 0) {
                 lockedLine = 1;
-                locked = Math.abs(eqq.getMainPotentialByLine(0));
-            } else if (Math.abs(eqq.getMainPotentialByLine(1)) / 100000 > 0) {
+                locked = Math.abs(eqq.getPotentialByLine(0));
+            } else if (Math.abs(eqq.getPotentialByLine(1)) / 100000 > 0) {
                 lockedLine = 2;
-                locked = Math.abs(eqq.getMainPotentialByLine(1));
-            } else if (Math.abs(eqq.getMainPotentialByLine(2)) / 100000 > 0) {
+                locked = Math.abs(eqq.getPotentialByLine(1));
+            } else if (Math.abs(eqq.getPotentialByLine(2)) / 100000 > 0) {
                 lockedLine = 3;
-                locked = Math.abs(eqq.getMainPotentialByLine(2));
+                locked = Math.abs(eqq.getPotentialByLine(2));
             }
-            int new_state = Math.abs(eqq.getMainPotentialByLine(0));
+            int new_state = Math.abs(eqq.getPotentialByLine(0));
             if (lockedLine == 1) {
                 new_state = locked / 10000 < 1 ? 17 : 16 + locked / 10000;
             }
@@ -666,7 +666,7 @@ public class InventoryHandler {
                 new_state = 17;
             }
             int lines = 2; // default
-            if (eqq.getMainPotentialByLine(1) != 0) {
+            if (eqq.getPotentialByLine(1) != 0) {
                 lines++;
             }
             while (eqq.getState() != new_state) {
@@ -678,36 +678,29 @@ public class InventoryHandler {
                         if (pot != null && pot.reqLevel / 1 <= reqLevel && GameConstants.optionTypeFits(pot.optionType, eqq.getItemId()) && GameConstants.potentialIDFits(pot.opID, new_state, i)) { //optionType
                             //have to research optionType before making this truely official-like
                             if (isAllowedPotentialStat(eqq, pot.opID)) {
-                                eqq.setMainPotentialByLine(i, pot.opID);
-//                                if (i == 0) {
-//                                    eqq.setMainPotentialByLine(0, pot.opID);
-//                                } else if (i == 1) {
-//                                    eqq.setPotential2(pot.opID);
-//                                } else if (i == 2) {
-//                                    eqq.setPotential3(pot.opID);
-//                                } else if (i == 3) {
-//                                    eqq.setPotential4(pot.opID);
-//                                }
+                                if(i >= 0 && i <= 2){
+                                    eqq.setPotentialByLine(0, pot.opID);
+                                }
                                 rewarded = true;
                             }
                         }
                     }
                 }
             }
+            if(lockedLine >= 1 && lockedLine <= 3){
+                eqq.setPotentialByLine(lockedLine - 1, Math.abs(locked - lockedLine * 100000));
+            }
 //            switch (lockedLine) {
 //                case 1:
-//                    eqq.setPotential1(Math.abs(locked - lockedLine * 100000));
+//                    eqq.setPotentialByLine(0, Math.abs(locked - lockedLine * 100000));
 //                    break;
 //                case 2:
-//                    eqq.setPotential2(Math.abs(locked - lockedLine * 100000));
+//                    eqq.setPotentialByLine(1, Math.abs(locked - lockedLine * 100000));
 //                    break;
 //                case 3:
-//                    eqq.setPotential3(Math.abs(locked - lockedLine * 100000));
+//                    eqq.setPotentialByLine(2, Math.abs(locked - lockedLine * 100000));
 //                    break;
 //            }
-            if(lockedLine >= 1 && lockedLine <= 3){
-                eqq.setMainPotentialByLine(lockedLine, Math.abs(locked - lockedLine * 100000));
-            }
             c.getPlayer().getTrait(MapleTraitType.insight).addExp((src == 0x7F && price != -1 ? 10 : insight ? 10 : ((magnify.getItemId() + 2) - 2460000)) * 2, c.getPlayer());
             c.getPlayer().getMap().broadcastMessage(CField.showMagnifyingEffect(c.getPlayer().getId(), eqq.getPosition()));
             if (!insight && src != 0x7F) {
@@ -737,17 +730,17 @@ public class InventoryHandler {
             final List<List<StructItemOption>> pots = new LinkedList<>(ii.getAllPotentialInfo().values());
             int lockedLine = 0;
             int locked = 0;
-            if (Math.abs(eqq.getMainPotentialByLine(0)) / 100000 > 0) {
+            if (Math.abs(eqq.getPotentialByLine(0)) / 100000 > 0) {
                 lockedLine = 1;
-                locked = Math.abs(eqq.getMainPotentialByLine(0));
-            } else if (Math.abs(eqq.getMainPotentialByLine(1)) / 100000 > 0) {
+                locked = Math.abs(eqq.getPotentialByLine(0));
+            } else if (Math.abs(eqq.getPotentialByLine(1)) / 100000 > 0) {
                 lockedLine = 2;
-                locked = Math.abs(eqq.getMainPotentialByLine(1));
-            } else if (Math.abs(eqq.getMainPotentialByLine(2)) / 100000 > 0) {
+                locked = Math.abs(eqq.getPotentialByLine(1));
+            } else if (Math.abs(eqq.getPotentialByLine(2)) / 100000 > 0) {
                 lockedLine = 3;
-                locked = Math.abs(eqq.getMainPotentialByLine(2));
+                locked = Math.abs(eqq.getPotentialByLine(2));
             }
-            int new_state = Math.abs(eqq.getMainPotentialByLine(0));
+            int new_state = Math.abs(eqq.getPotentialByLine(0));
             if (lockedLine == 1) {
                 new_state = locked / 10000 < 1 ? 17 : 16 + locked / 10000;
             }
@@ -755,7 +748,7 @@ public class InventoryHandler {
                 new_state = 17;
             }
             int lines = 2; // default
-            if (eqq.getMainPotentialByLine(1) != 0) {
+            if (eqq.getPotentialByLine(1) != 0) {
                 lines++;
             }
             while (eqq.getState() != new_state) {
@@ -767,35 +760,31 @@ public class InventoryHandler {
                         if (pot != null && pot.reqLevel / 10 <= reqLevel && GameConstants.optionTypeFits(pot.optionType, eqq.getItemId()) && GameConstants.potentialIDFits(pot.opID, new_state, i)) { //optionType
                             //have to research optionType before making this truely official-like
                             if (isAllowedPotentialStat(eqq, pot.opID)) {
-                                eqq.setMainPotentialByLine(i, pot.opID);
-//                                if (i == 0) {
-//                                    eqq.setPotential1(pot.opID);
-//                                } else if (i == 1) {
-//                                    eqq.setPotential2(pot.opID);
-//                                } else if (i == 2) {
-//                                    eqq.setPotential3(pot.opID);
-//                                }  else if (i == 3) {
-//                                    eqq.setPotential4(pot.opID);
-//                                }
+                                if (i == 0) {
+                                    eqq.setPotentialByLine(0, pot.opID);
+                                } else if (i == 1) {
+                                    eqq.setPotentialByLine(1, pot.opID);
+                                } else if (i == 2) {
+                                    eqq.setPotentialByLine(2, pot.opID);
+                                }  else if (i == 3) {
+                                    eqq.setPotentialByLine(3, pot.opID);
+                                }
                                 rewarded = true;
                             }
                         }
                     }
                 }
             }
-//            switch (lockedLine) {
-//                case 1:
-//                    eqq.setPotential1(Math.abs(locked - lockedLine * 100000));
-//                    break;
-//                case 2:
-//                    eqq.setPotential2(Math.abs(locked - lockedLine * 100000));
-//                    break;
-//                case 3:
-//                    eqq.setPotential3(Math.abs(locked - lockedLine * 100000));
-//                    break;
-//            }
-            if(lockedLine >= 1 || lockedLine <= 3){
-                eqq.setMainPotentialByLine(lockedLine, Math.abs(locked - lockedLine * 100000));
+            switch (lockedLine) {
+                case 1:
+                    eqq.setPotentialByLine(0, Math.abs(locked - lockedLine * 100000));
+                    break;
+                case 2:
+                    eqq.setPotentialByLine(1, Math.abs(locked - lockedLine * 100000));
+                    break;
+                case 3:
+                    eqq.setPotentialByLine(2, Math.abs(locked - lockedLine * 100000));
+                    break;
             }
             c.getPlayer().getTrait(MapleTraitType.insight).addExp((insight ? 10 : ((magnify.getItemId() + 2) - 2460000)) * 2, c.getPlayer());
             c.getPlayer().getMap().broadcastMessage(CField.showMagnifyingEffect(c.getPlayer().getId(), eqq.getPosition()));
@@ -856,7 +845,7 @@ public class InventoryHandler {
                 return false;
             }
         }
-//        if (scroll.getItemId() == 5064200) { //Item doesn't exist anymore
+//        if (scroll.getItemId() == 5064200) { //TODO: test this
 //            Item item = chr.getInventory(MapleInventoryType.EQUIPPED).getItem(toScroll.getPosition());
 //            Equip equip = (Equip) item;
 //            int itemid = toScroll.getItemId();
@@ -883,8 +872,7 @@ public class InventoryHandler {
                 return false;
             }
         }
-        if (!GameConstants.isSpecialScroll(scroll.getItemId()) && !GameConstants.isCleanSlate(scroll.getItemId())
-                && !GameConstants.isEquipScroll(scroll.getItemId()) && !GameConstants.isPotentialScroll(scroll.getItemId())) {
+        if (!GameConstants.isSpecialScroll(scroll.getItemId()) && !GameConstants.isCleanSlate(scroll.getItemId()) && !GameConstants.isEquipScroll(scroll.getItemId()) && !GameConstants.isPotentialScroll(scroll.getItemId())) {
             if (toScroll.getUpgradeSlots() < 1) {
                 c.getSession().write(InventoryPacket.getInventoryFull());
                 c.getSession().write(CWvsContext.enableActions());
@@ -899,9 +887,7 @@ public class InventoryHandler {
         } else if (GameConstants.isPotentialScroll(scroll.getItemId())) {
             final boolean isEpic = scroll.getItemId() / 100 == 20497 && scroll.getItemId() < 2049750;
             final boolean isUnique = scroll.getItemId() / 100 == 20497 && scroll.getItemId() >= 2049750;
-            if ((!isEpic && !isUnique && toScroll.getState() >= 1) || (isEpic && toScroll.getState() >= 18) ||
-                    (isUnique && toScroll.getState() >= 19) || (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0
-                    && toScroll.getItemId() / 10000 != 135/* && !isEpic && !isUnique*/) || vegas > 0 || ii.isCash(toScroll.getItemId())) {
+            if ((!isEpic && !isUnique && toScroll.getState() >= 1) || (isEpic && toScroll.getState() >= 18) || (isUnique && toScroll.getState() >= 19) || (toScroll.getLevel() == 0 && toScroll.getUpgradeSlots() == 0 && toScroll.getItemId() / 10000 != 135/* && !isEpic && !isUnique*/) || vegas > 0 || ii.isCash(toScroll.getItemId())) {
                 c.getSession().write(InventoryPacket.getInventoryFull());
                 c.getSession().write(CWvsContext.enableActions());
                 return false;
@@ -1250,14 +1236,13 @@ public class InventoryHandler {
                             StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
                             if (pot != null && pot.reqLevel / 10 <= reqLevel && GameConstants.optionTypeFits(pot.optionType, eq.getItemId()) && GameConstants.potentialIDFits(pot.opID, new_state, i)) { //optionType
                                 if (isAllowedPotentialStat(eq, pot.opID)) {
-//                                    if (i == 0) {
-//                                        eq.setBonusPotential1(pot.opID);
-//                                    } else if (i == 1) {
-//                                        eq.setBonusPotential2(pot.opID);
-//                                    } else if (i == 2) {
-//                                        eq.setBonusPotential3(pot.opID);
-//                                    }
-                                    eq.setBonusPotentialByLine(i, pot.opID);
+                                    if (i == 0) {
+                                        eq.setBonusPotentialByLine(0, pot.opID);
+                                    } else if (i == 1) {
+                                        eq.setBonusPotentialByLine(1, pot.opID);
+                                    } else if (i == 2) {
+                                        eq.setBonusPotentialByLine(2, pot.opID);
+                                    }
                                     rewarded = true;
                                 }
                             }
@@ -3418,14 +3403,14 @@ case 2431935: {
                         c.getPlayer().dropMessage(5, "This item's Potential cannot be reset.");
                         return;
                     }
-                    if (eq.getMainPotentialByLine(2) != 0) {
+                    if (eq.getPotentialByLine(2) != 0) {
                         c.getPlayer().dropMessage(5, "Cannot be used on this item.");
                         return;
                     }
                     final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                     final List<List<StructItemOption>> pots = new LinkedList<>(ii.getAllPotentialInfo().values());
                     final int reqLevel = ii.getReqLevel(eq.getItemId()) / 10;
-                    int new_state = Math.abs(eq.getMainPotentialByLine(0));
+                    int new_state = Math.abs(eq.getPotentialByLine(0));
                     if (new_state > 20 || new_state < 17) { // incase overflow
                         new_state = 17;
                     }
@@ -3433,7 +3418,7 @@ case 2431935: {
                     while (!rewarded) {
                         StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
                         if (pot != null && pot.reqLevel / 10 <= reqLevel && GameConstants.optionTypeFits(pot.optionType, eq.getItemId()) && GameConstants.potentialIDFits(pot.opID, new_state, 3)) { //optionType
-                            eq.setMainPotentialByLine(2, pot.opID);
+                            eq.setPotentialByLine(2, pot.opID);
                             rewarded = true;
                         }
                     }
@@ -4920,9 +4905,9 @@ case 2431935: {
             System.out.println("[Hacking Attempt] " + MapleCharacterUtil.makeMapleReadable(chr.getName()) + " Tried to lock potential line which does not exists.");
             return false;
         }
-        if (line == 1 && eq.getBonusPotentialByLine(0) != potential - line * 100000
-         || line == 2 && eq.getBonusPotentialByLine(1) != potential - line * 100000
-         || line == 3 && eq.getBonusPotentialByLine(2) != potential - line * 100000) {
+        if (line == 1 && eq.getPotentialByLine(0) != potential - line * 100000
+         || line == 2 && eq.getPotentialByLine(1) != potential - line * 100000
+         || line == 3 && eq.getPotentialByLine(2) != potential - line * 100000) {
             System.out.println("[Hacking Attempt] " + MapleCharacterUtil.makeMapleReadable(chr.getName()) + " Tried to lock potential which equip doesn't have.");
             return false;
         }

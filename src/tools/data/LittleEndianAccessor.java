@@ -23,7 +23,6 @@ package tools.data;
 import java.awt.Point;
 import java.io.IOException;
 
-import tools.data.input.ByteInputStream;
 import tools.data.input.SeekableInputStreamBytestream;
 
 /**

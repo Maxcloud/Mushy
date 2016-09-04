@@ -9,9 +9,12 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
+import server.MapleItemInformationProvider;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
+
+import java.util.Map;
 
 public class UsePotentialScrollHandler {
 
@@ -48,8 +51,10 @@ public class UsePotentialScrollHandler {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }else{
-            if(equip.usePotentialScroll(scroll.getItemId())){
-                if(ItemFlag.SHIELD_WARD.check(equip.getFlag())){
+            Map<String, Integer> scrollInfo = MapleItemInformationProvider.getInstance().getEquipStats(scroll.getItemId());
+            final boolean cursed = !scrollInfo.containsKey("cursed") ? false : scrollInfo.get("cursed") == 1;
+            if(equip.usePotentialScroll(scroll.getItemId())){ //check for boom
+                if(!cursed || (cursed && ItemFlag.SHIELD_WARD.check(equip.getFlag()))){
                     equip.setFlag((short) (equip.getFlag() - ItemFlag.SHIELD_WARD.getValue()));
                     scrollSuccess = Equip.ScrollResult.FAIL;
                 }else {
@@ -82,5 +87,6 @@ public class UsePotentialScrollHandler {
             }
 
         }
+        c.getSession().write(CWvsContext.enableActions());
     }
 }

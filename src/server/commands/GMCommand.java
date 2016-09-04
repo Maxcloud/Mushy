@@ -746,6 +746,22 @@ public class GMCommand {
         }
     }
 
+    public static class EquipInfo extends CommandExecute {
+        @Override
+        public int execute(MapleClient c, String[] splitted) {
+            MapleCharacter chr = c.getPlayer();
+            Equip item = (Equip) chr.getInventory(MapleInventoryType.EQUIP).getItem(Short.parseShort(splitted[1]));
+            chr.dropMessage(6, "Equip " + item.getItemId());
+            for(int i = 0; i < item.getPotential().length; i++){
+                chr.dropMessage(6, "Main[" + i + "] = " + item.getPotentialByLine(i));
+            }
+            for(int i = 0; i < item.getBonusPotential().length; i++){
+                chr.dropMessage(6, "Bonus[" + i + "] = " + item.getBonusPotentialByLine(i));
+            }
+            return 1;
+        }
+    }
+
     public static class PotentialItem extends CommandExecute {
 
         @Override
@@ -767,9 +783,9 @@ public class GMCommand {
             } else {
                 Equip equip;
                 equip = ii.randomizeStats((Equip) ii.getEquipById(itemId));
-                equip.setMainPotentialByLine(0, Integer.parseInt(splitted[2]));
-                equip.setMainPotentialByLine(1, Integer.parseInt(splitted[3]));
-                equip.setMainPotentialByLine(2, Integer.parseInt(splitted[4]));
+                equip.setPotentialByLine(0, Integer.parseInt(splitted[2]));
+                equip.setPotentialByLine(1, Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(2, Integer.parseInt(splitted[4]));
                 equip.setBonusPotentialByLine(0, Integer.parseInt(splitted[5]));
                 equip.setBonusPotentialByLine(1, Integer.parseInt(splitted[6]));
                 equip.setBonusPotentialByLine(2, Integer.parseInt(splitted[7]));
@@ -806,27 +822,11 @@ public class GMCommand {
                 equip.setLuk(Short.parseShort(splitted[2]));
                 equip.setWatk(Short.parseShort(splitted[2]));
                 equip.setMatk(Short.parseShort(splitted[2]));
-                equip.setMainPotentialByLine(0, Integer.parseInt(splitted[3]));
-                equip.setMainPotentialByLine(1, Integer.parseInt(splitted[3]));
-                equip.setMainPotentialByLine(2, Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(0, Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(1, Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(2, Integer.parseInt(splitted[3]));
                 equip.setOwner(c.getPlayer().getName());
                 MapleInventoryManipulator.addbyItem(c, equip);
-            }
-            return 1;
-        }
-    }
-
-    public static class EquipInfo extends CommandExecute {
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            MapleCharacter chr = c.getPlayer();
-            Equip item = (Equip) chr.getInventory(MapleInventoryType.EQUIP).getItem(Short.parseShort(splitted[1]));
-            chr.dropMessage(6, "Equip " + item.getItemId());
-            for(int i = 0; i < item.getMainPotential().length; i++){
-                chr.dropMessage(6, "Main[" + i + "] = " + item.getMainPotentialByLine(i));
-            }
-            for(int i = 0; i < item.getBonusPotential().length; i++){
-                chr.dropMessage(6, "Bonus[" + i + "] = " + item.getBonusPotentialByLine(i));
             }
             return 1;
         }

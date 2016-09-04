@@ -4041,9 +4041,9 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         eq.setMdef((short) 300);
         eq.setSpeed((short) 40);
         eq.setJump((short) 20);
-        eq.setMainPotentialByLine(0, 60001);
-        eq.setMainPotentialByLine(1, 60002);
-        eq.setMainPotentialByLine(2, 60003);
+        eq.setPotentialByLine(0, 60001);
+        eq.setPotentialByLine(1, 60002);
+        eq.setPotentialByLine(2, 60003);
     }
 
     public final MapleInventory getInventory(MapleInventoryType type) {

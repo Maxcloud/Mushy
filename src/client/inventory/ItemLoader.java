@@ -98,9 +98,9 @@ public enum ItemLoader {
                             equip.setGMLog(rs.getString("GM_Log"));
                             equip.setDurability(rs.getInt("durability"));
                             equip.setEnhance(rs.getByte("enhance"));
-                            equip.setMainPotentialByLine(0, rs.getInt("potential1"));
-                            equip.setMainPotentialByLine(1, rs.getInt("potential2"));
-                            equip.setMainPotentialByLine(2, rs.getInt("potential3"));
+                            equip.setPotentialByLine(0, rs.getInt("potential1"));
+                            equip.setPotentialByLine(1, rs.getInt("potential2"));
+                            equip.setPotentialByLine(2, rs.getInt("potential3"));
                             equip.setBonusPotentialByLine(0, rs.getInt("potential4"));
                             equip.setBonusPotentialByLine(1, rs.getInt("potential5"));
                             equip.setBonusPotentialByLine(2, rs.getInt("potential6"));
@@ -270,9 +270,9 @@ public enum ItemLoader {
                 pse.setLong(++i, equip.getItemEXP());
                 pse.setInt(++i, equip.getDurability());
                 pse.setByte(++i, equip.getEnhance());
-                pse.setInt(++i, equip.getMainPotentialByLine(0));
-                pse.setInt(++i, equip.getMainPotentialByLine(1));
-                pse.setInt(++i, equip.getMainPotentialByLine(2));
+                pse.setInt(++i, equip.getPotentialByLine(0));
+                pse.setInt(++i, equip.getPotentialByLine(1));
+                pse.setInt(++i, equip.getPotentialByLine(2));
                 pse.setInt(++i, equip.getBonusPotentialByLine(0));
                 pse.setInt(++i, equip.getBonusPotentialByLine(1));
                 pse.setInt(++i, equip.getBonusPotentialByLine(2));

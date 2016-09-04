@@ -1402,13 +1402,13 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			sel.setEnhance((byte) amount);
 			break;
 		case 19:
-			sel.setMainPotentialByLine(0, amount);
+			sel.setPotentialByLine(0, amount);
 			break;
 		case 20:
-			sel.setMainPotentialByLine(1, amount);
+			sel.setPotentialByLine(1, amount);
 			break;
 		case 21:
-			sel.setMainPotentialByLine(2, amount);
+			sel.setPotentialByLine(2, amount);
 			break;
 		case 22:
 			sel.setBonusPotentialByLine(0, amount);
@@ -2466,9 +2466,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		Equip equip = (Equip) getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(slot);
 		StringBuilder sb = new StringBuilder();
 		int[] potentials;
-		potentials = equip.getMainPotential();
+		potentials = new int[] { equip.getPotentialByLine(0), equip.getPotentialByLine(1), equip.getPotentialByLine(2) };
 		for (int i : potentials) {
-			StructItemOption op = MapleItemInformationProvider.getInstance().getPotentialInfo(equip.getMainPotentialByLine(0))
+			StructItemOption op = MapleItemInformationProvider.getInstance().getPotentialInfo(equip.getPotentialByLine(0))
 					.get(MapleItemInformationProvider.getInstance().getReqLevel(equip.getItemId()) / 10);
 			sb.append("\r\nPotential ").append(i).append(" - ").append(op.toString());
 		}
@@ -2694,14 +2694,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			final Equip item = (Equip) (ii.getEquipById(itemid));
 			switch (reward) {
 			case 0: // 9% ATT, 9% MAGIC, 30% Boss Damage
-				item.setMainPotentialByLine(0, 40051); // 9% Att
-				item.setMainPotentialByLine(1, 40052); // 9% Magic
-				item.setMainPotentialByLine(2, 40601); // 30% Boss Damage
+				item.setPotentialByLine(0, 40051); // 9% Att
+				item.setPotentialByLine(1, 40052); // 9% Magic
+				item.setPotentialByLine(2, 40601); // 30% Boss Damage
 				break;
 			case 1: // 30% All Stat
-				item.setMainPotentialByLine(0, 40086); // 9% All Stat
-				item.setMainPotentialByLine(1, 40086); // 9% All Stat
-				item.setMainPotentialByLine(2, 40086); // 9% All Stat
+				item.setPotentialByLine(0, 40086); // 9% All Stat
+				item.setPotentialByLine(1, 40086); // 9% All Stat
+				item.setPotentialByLine(2, 40086); // 9% All Stat
 				item.setSocketByNmb(0, ii.getSocketInfo(3063280).opID); // 3% All Stat
 				break;
 			}

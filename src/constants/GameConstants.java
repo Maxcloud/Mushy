@@ -89,7 +89,7 @@ public class GameConstants {
 	public static final String[] RESERVED = {"Alpha", "Aristocat", "Donor", "MapleNews", "Hack"};
 	public static final String[] stats = {"tuc", "reqLevel", "reqJob", "reqSTR", "reqDEX", "reqINT", "reqLUK", "reqPOP", "cash", "cursed", "success", "setItemID", "equipTradeBlock", "durability", "randOption", "randStat", "masterLevel", "reqSkillLevel", "elemDefault", "incRMAS", "incRMAF", "incRMAI", "incRMAL", "canLevel", "skill", "charmEXP"};
 	public static int[] noSpawnNPC = {9201030, 9010037, 9010038};
-	public static final int CHANCE_ON_3RD_LINE_WITH_POT_SCROLL = 25;
+	public static final int CHANCE_ON_3RD_LINE_WITH_POT_SCROLL = 25; //deal with the name
 
 	public static final int[] unusedNpcs = {9201142, 9201254, 9201030, 9010037, 9010038, 9010039, 9010040, 9300010, 9070004, 9070006, 9000017, 2041017, 9270075, 9000069, 9201029, 9130024, 9330072, 9133080, 9201152, 9330189};
 
@@ -1245,11 +1245,6 @@ public class GameConstants {
 
 	public static boolean isEquipScroll(int scrollId) {
 		return scrollId / 100 == 20493;
-	}
-
-	public static int getChanceOfScrollSuccess(int scrollId){
-		//is there really no better way than to hard code it?
-		return MapleItemInformationProvider.getInstance().getItemInformation(scrollId).totalprob; //hopefully
 	}
 
 	public static boolean isPotentialScroll(int scrollId) {

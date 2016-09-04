@@ -36,7 +36,6 @@ import server.cash.CashItemFactory;
 import server.cash.CashItemInfo;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
-import tools.ArrayUtil;
 import tools.Pair;
 import tools.Randomizer;
 import tools.StringUtil;
@@ -896,7 +895,7 @@ public class MapleInventoryManipulator {
     }
     if (source.getState() >= 17) {
         final Map<Skill, SkillEntry> ss = new HashMap<>();
-        int[] potentials = ArrayUtil.concat(source.getMainPotential(), source.getBonusPotential());
+        int[] potentials = {source.getPotentialByLine(0), source.getPotentialByLine(1), source.getPotentialByLine(2), source.getBonusPotentialByLine(0), source.getBonusPotentialByLine(1)};
         for (int i : potentials) {
             if (i > 0) {
                 StructItemOption pot = ii.getPotentialInfo(i).get(ii.getReqLevel(source.getItemId()) / 10);
@@ -909,7 +908,7 @@ public class MapleInventoryManipulator {
         }
     if (source.getSocketState() > 15) {
         final Map<Skill, SkillEntry> ss = new HashMap<>();
-        int[] sockets = source.getSockets();
+        int[] sockets = {source.getSocketByNmb(0), source.getSocketByNmb(1), source.getSocketByNmb(2)};
         for (int i : sockets) {
             if (i > 0) {
                 StructItemOption soc = ii.getSocketInfo(i);
@@ -965,7 +964,7 @@ public class MapleInventoryManipulator {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (source.getState() >= 17) {
             final Map<Skill, SkillEntry> ss = new HashMap<>();
-            int[] potentials = ArrayUtil.concat(source.getMainPotential(), source.getBonusPotential());
+            int[] potentials = {source.getPotentialByLine(0), source.getPotentialByLine(1), source.getPotentialByLine(2), source.getBonusPotentialByLine(0), source.getBonusPotentialByLine(2)};
             for (int i : potentials) {
                 if (i > 0) {
                     StructItemOption pot = ii.getPotentialInfo(i).get(ii.getReqLevel(source.getItemId()) / 10);
@@ -978,7 +977,7 @@ public class MapleInventoryManipulator {
         }
         if (source.getSocketState() > 15) {
             final Map<Skill, SkillEntry> ss = new HashMap<>();
-            int[] sockets = source.getSockets();
+            int[] sockets = {source.getSocketByNmb(0), source.getSocketByNmb(1), source.getSocketByNmb(2)};
             for (int i : sockets) {
                 if (i > 0) {
                     StructItemOption soc = ii.getSocketInfo(i);
