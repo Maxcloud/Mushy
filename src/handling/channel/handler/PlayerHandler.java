@@ -1022,7 +1022,7 @@ public class PlayerHandler {
 			
 		}
 		
-		attack = DamageParse.Modify_AttackCrit(attack, c.getPlayer(), 1, effect);
+		attack = DamageParse.ModifyAttackCrit(attack, c.getPlayer(), 1, effect);
 		attackCount *= (mirror ? 2 : 1);
 		
 		if (!energy) {

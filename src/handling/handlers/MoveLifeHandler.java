@@ -10,6 +10,7 @@ import handling.RecvPacketOpcode;
 import handling.channel.handler.MovementParse;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
+import server.movement.LifeMovementFragment;
 import tools.Randomizer;
 import tools.data.LittleEndianAccessor;
 import tools.packet.MobPacket;
@@ -103,13 +104,7 @@ public class MoveLifeHandler {
         
         Point startPos = monster.getPosition();
         
-        List res;
-        try {
-            res = MovementParse.parseMovement(lea, 2);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            // System.out.println("Move_life : Log_Movement  AIOBE Type2");
-            return;
-        }
+        List<LifeMovementFragment> res = MovementParse.parseMovement(lea, 2);
         
         if ((GameConstants.isLuminous(c.getPlayer().getJob())) && (Randomizer.nextInt(100) < 20)) {
             c.getPlayer().applyBlackBlessingBuff(1);

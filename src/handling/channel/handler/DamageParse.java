@@ -1060,7 +1060,7 @@ public class DamageParse {
 		return attack;
 	}
 
-	public static final AttackInfo Modify_AttackCrit(AttackInfo attack, MapleCharacter chr, int type,
+	public static final AttackInfo ModifyAttackCrit(AttackInfo attack, MapleCharacter chr, int type,
 			MapleStatEffect effect) {
 		int CriticalRate;
 		boolean shadow;

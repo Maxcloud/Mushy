@@ -37,10 +37,7 @@ public class RangedAttackHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.RANGED_ATTACK)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
-		if (c.getPlayer() == null) {
-			return;
-		}
-		if ((c.getPlayer().hasBlockedInventory()) || (c.getPlayer().getMap() == null)) {
+		if (c.getPlayer() == null || c.getPlayer().hasBlockedInventory() || c.getPlayer().getMap() == null) {
 			return;
 		}
 		AttackInfo attack = DamageParse.parseRangedAttack(lea, c);
@@ -234,7 +231,7 @@ public class RangedAttackHandler {
 				c.getPlayer().addCooldown(attack.skillid, System.currentTimeMillis(), effect.getCooldown(c.getPlayer()) * 1000);
 			}
 		}
-		attack = DamageParse.Modify_AttackCrit(attack, c.getPlayer(), 2, effect);
+		attack = DamageParse.ModifyAttackCrit(attack, c.getPlayer(), 2, effect);
 		Integer ShadowPartner = c.getPlayer().getBuffedValue(MapleBuffStat.SHADOWPARTNER);
 		if (ShadowPartner != null) {
 			bulletCount *= 2;

@@ -40,21 +40,19 @@ public class MagicAttackHandler {
 		
 		Skill skill = SkillFactory.getSkill(GameConstants.getLinkedAttackSkill(attack.skillid));
 		
-		if ((skill == null) || ((GameConstants.isAngel(attack.skillid))
-				&& (c.getPlayer().getStat().equippedSummon % 10000 != attack.skillid % 10000))) {
+		if (skill == null || ((GameConstants.isAngel(attack.skillid)) && (c.getPlayer().getStat().equippedSummon % 10000 != attack.skillid % 10000))) {
 			c.getSession().write(CWvsContext.enableActions());
 			return;
 		}
 		
-		int skillLevel = c.getPlayer().getTotalSkillLevel(skill);
+		int level = c.getPlayer().getTotalSkillLevel(skill);
 		
-		MapleStatEffect effect = attack.getAttackEffect(c.getPlayer(), skillLevel, skill);
+		MapleStatEffect effect = attack.getAttackEffect(c.getPlayer(), level, skill);
 		if (effect == null) {
 			return;
 		}
 		
-		if (skill.getId() >= 27100000 && skill.getId() < 27120400 && attack.getTargets() > 0
-				&& c.getPlayer().getLuminousState() < 20040000) {
+		if (skill.getId() >= 27100000 && skill.getId() < 27120400 && attack.getTargets() > 0 && c.getPlayer().getLuminousState() < 20040000) {
 			// chr.changeSkillLevel(SkillFactory.getSkill(20040216), (byte) 1,
 			// (byte) 1);
 			// chr.changeSkillLevel(SkillFactory.getSkill(20040217), (byte) 1,
@@ -64,12 +62,11 @@ public class MagicAttackHandler {
 			// chr.changeSkillLevel(SkillFactory.getSkill(20041239), (byte) 1,
 			// (byte) 1);
 			c.getPlayer().setLuminousState(GameConstants.getLuminousSkillMode(skill.getId()));
-			c.getSession().write(JobPacket.LuminousPacket.giveLuminousState(
-					GameConstants.getLuminousSkillMode(skill.getId()), c.getPlayer().getLightGauge(), c.getPlayer().getDarkGauge(), 10000));
+			c.getSession().write(JobPacket.LuminousPacket.giveLuminousState(GameConstants.getLuminousSkillMode(skill.getId()), c.getPlayer().getLightGauge(), c.getPlayer().getDarkGauge(), 10000));
 			SkillFactory.getSkill(GameConstants.getLuminousSkillMode(skill.getId())).getEffect(1).applyTo(c.getPlayer());
 		}
 		
-		attack = DamageParse.Modify_AttackCrit(attack, c.getPlayer(), 3, effect);
+		attack = DamageParse.ModifyAttackCrit(attack, c.getPlayer(), 3, effect);
 		
 		if (MapConstants.isEventMap(c.getPlayer().getMapId())) {
 			for (MapleEventType t : MapleEventType.values()) {
@@ -104,13 +101,11 @@ public class MagicAttackHandler {
 		
 		c.getPlayer().checkFollow();
 		
+		byte [] packet = CField.magicAttack(c.getPlayer().getId(), attack.nMobCount, attack.skillid, level, attack.display, attack.speed, attack.allDamage, attack.charge, c.getPlayer().getLevel(), attack.unk);
 		if (!c.getPlayer().isHidden()) {
-			c.getPlayer().getMap().broadcastMessage(c.getPlayer(),
-					CField.magicAttack(c.getPlayer().getId(), attack.nMobCount, attack.skillid, skillLevel, attack.display,
-							attack.speed, attack.allDamage, attack.charge, c.getPlayer().getLevel(), attack.unk),
-					c.getPlayer().getTruePosition());
+			c.getPlayer().getMap().broadcastMessage(c.getPlayer(), packet, c.getPlayer().getTruePosition());
 		} else {
-			c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), CField.magicAttack(c.getPlayer().getId(), attack.nMobCount, attack.skillid, skillLevel, attack.display, attack.speed, attack.allDamage, attack.charge, c.getPlayer().getLevel(), attack.unk), false);
+			c.getPlayer().getMap().broadcastGMMessage(c.getPlayer(), packet, false);
 		}
 		
 		DamageParse.applyAttackMagic(attack, skill, c.getPlayer(), effect, maxdamage);
@@ -122,22 +117,16 @@ public class MagicAttackHandler {
 				final Skill skil2 = skill;
 				final MapleStatEffect eff2 = effect;
 				final double maxd = maxdamage;
-				final int skillLevel2 = skillLevel;
+				final int skillLevel2 = level;
 				final AttackInfo attack2 = DamageParse.DivideAttack(attack, c.getPlayer().isGM() ? 1 : 4);
 				Timer.CloneTimer.getInstance().schedule(new Runnable() {
 					@Override
 					public void run() {
+						byte [] packet = CField.magicAttack(clone.getId(), attack2.nMobCount, attack2.skillid, skillLevel2, attack2.display, attack2.speed, attack2.allDamage, attack2.charge, clone.getLevel(), attack2.unk);
 						if (!clone.isHidden()) {
-							clone.getMap()
-									.broadcastMessage(CField.magicAttack(clone.getId(), attack2.nMobCount, attack2.skillid,
-											skillLevel2, attack2.display, attack2.speed, attack2.allDamage,
-											attack2.charge, clone.getLevel(), attack2.unk));
+							clone.getMap().broadcastMessage(packet);
 						} else {
-							clone.getMap().broadcastGMMessage(clone,
-									CField.magicAttack(clone.getId(), attack2.nMobCount, attack2.skillid, skillLevel2,
-											attack2.display, attack2.speed, attack2.allDamage, attack2.charge,
-											clone.getLevel(), attack2.unk),
-									false);
+							clone.getMap().broadcastGMMessage(clone, packet, false);
 						}
 						DamageParse.applyAttackMagic(attack2, skil2, c.getPlayer(), eff2, maxd);
 					}
@@ -145,7 +134,7 @@ public class MagicAttackHandler {
 			}
 		}
 		
-		int bulletCount = 1;
+		int bulletCount = 1; //This isn't even being used anywhere
 		switch (attack.skillid) {
 		case 27101100: // Sylvan Lance
 		case 27101202: // Pressure Void
@@ -166,10 +155,10 @@ public class MagicAttackHandler {
 		case 27121303:
 		case 27111303:
 		case 36121013:
-			// case 36101009:
-			// case 36111010:
+		// case 36101009:
+		// case 36111010:
 			bulletCount = effect.getAttackCount();
-			DamageParse.applyAttack(attack, skill, c.getPlayer(), skillLevel, maxdamage, effect, AttackType.RANGED);
+			DamageParse.applyAttack(attack, skill, c.getPlayer(), level, maxdamage, effect, AttackType.RANGED);
 			break;
 		default:
 			DamageParse.applyAttackMagic(attack, skill, c.getPlayer(), effect, maxdamage);

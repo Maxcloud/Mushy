@@ -32,14 +32,8 @@ public class MovePlayerHandler {
             return;
         }
         
-        final Point Original_Pos = chr.getPosition();
-        List res;
-        try {
-            res = MovementParse.parseMovement(slea, 1, chr);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(new StringBuilder().append("AIOBE Type1:\n").append(slea.toString(true)).toString());
-            return;
-        }
+        final Point originalPos = chr.getPosition();
+        List<LifeMovementFragment> res = MovementParse.parseMovement(slea, 1, chr);
 
         if ((res != null) && (c.getPlayer().getMap() != null)) {
             if ((slea.available() < 10L) || (slea.available() > 26L)) {
@@ -50,9 +44,9 @@ public class MovePlayerHandler {
 
             if (chr.isHidden()) {
                 chr.setLastRes(res);
-                c.getPlayer().getMap().broadcastGMMessage(chr, CField.movePlayer(chr.getId(), res, Original_Pos), false);
+                c.getPlayer().getMap().broadcastGMMessage(chr, CField.movePlayer(chr.getId(), res, originalPos), false);
             } else {
-                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), CField.movePlayer(chr.getId(), res, Original_Pos), false);
+                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), CField.movePlayer(chr.getId(), res, originalPos), false);
             }
 
             MovementParse.updatePosition(res, chr, 0);
@@ -63,7 +57,7 @@ public class MovePlayerHandler {
                 MapleCharacter fol = map.getCharacterById(chr.getFollowId());
                 if (fol != null) {
                     Point original_pos = fol.getPosition();
-                    fol.getClient().getSession().write(CField.moveFollow(Original_Pos, original_pos, pos, res));
+                    fol.getClient().getSession().write(CField.moveFollow(originalPos, original_pos, pos, res));
                     MovementParse.updatePosition(res, fol, 0);
                     map.movePlayer(fol, pos);
                     map.broadcastMessage(fol, CField.movePlayer(fol.getId(), res, original_pos), false);
@@ -82,16 +76,17 @@ public class MovePlayerHandler {
                         public void run() {
                             try {
                                 if (clone.getMap() == map) {
+                                	byte [] packet = CField.movePlayer(clone.getId(), res3, originalPos);
                                     if (clone.isHidden()) {
-                                        map.broadcastGMMessage(clone, CField.movePlayer(clone.getId(), res3, Original_Pos), false);
+                                        map.broadcastGMMessage(clone, packet, false);
                                     } else {
-                                        map.broadcastMessage(clone, CField.movePlayer(clone.getId(), res3, Original_Pos), false);
+                                        map.broadcastMessage(clone, packet, false);
                                     }
                                     MovementParse.updatePosition(res3, clone, 0);
                                     map.movePlayer(clone, pos);
                                 }
                             } catch (Exception e) {
-                                //very rarely swallowed
+                                System.out.println("Something bad happened idk");
                             }
                         }
                     }, 500 * i + 500);
