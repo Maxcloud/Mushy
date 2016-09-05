@@ -495,9 +495,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case ITEM_MAKER:
                 ItemMakerHandler.ItemMaker(lea, c);
                 break;
-            case ITEM_PICKUP:
-                InventoryHandler.Pickup_Player(lea, c, c.getPlayer());
-                break;
             case USE_CASH_ITEM:
                 InventoryHandler.UseCashItem(lea, c);
                 break;

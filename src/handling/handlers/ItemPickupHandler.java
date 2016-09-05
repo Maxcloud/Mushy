@@ -3,13 +3,13 @@ package handling.handlers;
 import client.MapleClient;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
-import handling.channel.handler.NPCHandler;
+import handling.channel.handler.InventoryHandler;
 import tools.data.LittleEndianAccessor;
 
-public class NpcTalkMoreHandler {
+public class ItemPickupHandler {
 
-	@PacketHandler(opcode = RecvPacketOpcode.NPC_TALK_MORE)
+	@PacketHandler(opcode = RecvPacketOpcode.ITEM_PICKUP)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
-		NPCHandler.NPCMoreTalk(lea, c);
+		InventoryHandler.Pickup_Player(lea, c, c.getPlayer());
 	}
 }

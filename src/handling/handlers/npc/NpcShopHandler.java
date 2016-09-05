@@ -1,4 +1,4 @@
-package handling.handlers;
+package handling.handlers.npc;
 
 import client.MapleClient;
 import constants.GameConstants;
