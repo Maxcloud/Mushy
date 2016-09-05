@@ -35,7 +35,7 @@ public class MovePlayerHandler {
         final Point originalPos = chr.getPosition();
         List<LifeMovementFragment> res = MovementParse.parseMovement(slea, 1, chr);
 
-        if ((res != null) && (c.getPlayer().getMap() != null)) {
+        if (res != null && c.getPlayer().getMap() != null) {
             if ((slea.available() < 10L) || (slea.available() > 26L)) {
 //                 if (slea.available() != 18L) {
                 return;

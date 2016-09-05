@@ -14,7 +14,6 @@ import tools.packet.CWvsContext;
 
 public class UseItemHandler {
 
-
     @PacketHandler(opcode = RecvPacketOpcode.USE_ITEM)
     public static void handle(MapleClient c, LittleEndianAccessor lea){
         MapleCharacter chr = c.getPlayer();

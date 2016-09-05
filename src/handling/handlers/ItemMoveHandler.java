@@ -11,15 +11,15 @@ public class ItemMoveHandler {
 
     @PacketHandler(opcode = RecvPacketOpcode.ITEM_MOVE)
     public static void handle(MapleClient c, LittleEndianAccessor lea) {
-        if(c.getPlayer().hasBlockedInventory()){ //same hack as before :(
+        if(c.getPlayer().hasBlockedInventory()){ 
             return;
         }
         c.getPlayer().setScrolledPosition((short) 0);
-        lea.skip(4); // update tick
-        final MapleInventoryType type = MapleInventoryType.getByType(lea.readByte());
-        final short src = lea.readShort();
-        final short dst = lea.readShort();
-        final short quantity = lea.readShort();
+        int tick = lea.readInt();
+        MapleInventoryType type = MapleInventoryType.getByType(lea.readByte());
+        short src = lea.readShort();
+        short dst = lea.readShort();
+        short quantity = lea.readShort();
 
         if (src < 0 && dst > 0) {
             MapleInventoryManipulator.unequip(c, src, dst);
