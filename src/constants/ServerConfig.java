@@ -22,8 +22,8 @@ public class ServerConfig {
 
 	/* Rates */
 	public static final int EXP = 9; // exp rate (only works when fixedRates true)
-	public static final int MESO = 5; // meso rate (only works when fixedRates = true)
-	public static final int DROP = 3; // drop rate (only works when fixedRates =  true)
+	public static final int MESO = 50; // meso rate (only works when fixedRates = true)
+	public static final int DROP = 15; // drop rate (only works when fixedRates =  true)
 	
 	public static final int CASH_DROP_RATE = 20; // out of 100
 	/* Red Events */

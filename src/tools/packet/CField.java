@@ -2549,18 +2549,20 @@ public class CField {
 
 		return mplew.getPacket();
 	}
-
-	public static byte[] dropItemFromMapObject(MapleMapItem drop, Point dropfrom, Point dropto, byte mod) {
+	
+	public static byte[] dropItemFromMapObject(MapleMapItem drop, Point dropfrom, Point dropto, byte mod) { // JEFF Did this
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 		mplew.writeShort(SendPacketOpcode.DROP_ITEM_FROM_MAPOBJECT.getValue());
-		mplew.write(0); // ...
+		mplew.write(0);
 		mplew.write(mod);
 		mplew.writeInt(drop.getObjectId());
 		mplew.write(drop.getMeso() > 0 ? 1 : 0);
-		mplew.writeInt(0); // ...
-		mplew.writeInt(0); // ...
-		mplew.writeInt(0); // ...
+		
+		mplew.writeInt(0);
+		mplew.writeInt(0);
+		mplew.writeInt(0);
+		
 		mplew.writeInt(drop.getItemId());
 		mplew.writeInt(drop.getOwner());
 		mplew.write(drop.getDropType());
@@ -2568,21 +2570,16 @@ public class CField {
 		mplew.writeInt(0);
 		if (mod != 2) {
 			mplew.writePos(dropfrom);
-			mplew.writeInt(0); // 175.1
+			mplew.writeShort(0);
+			mplew.writeShort(0); // added in v172.2
 		}
 		mplew.write(0);
-		
 		if (drop.getMeso() == 0) {
 			PacketHelper.addExpirationTime(mplew, drop.getItem().getExpiration());
 		}
-		mplew.write(0); // ...
-		mplew.write(0); // ...
 		mplew.writeShort(drop.isPlayerDrop() ? 0 : 1);
-		mplew.write(0);
-		mplew.write(0);
-		mplew.writeInt(0);
-		mplew.write(0);
-		mplew.write(0);
+		mplew.write0(10);
+
 		return mplew.getPacket();
 	}
 

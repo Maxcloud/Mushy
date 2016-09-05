@@ -665,8 +665,9 @@ public class PacketHelper {
                 addEquipBonusStats(mplew, equip, hasUniqueId);
             } else {
                 mplew.writeShort(item.getQuantity());
-                mplew.writeMapleAsciiString(item.getOwner());
-                mplew.writeShort(item.getFlag());
+                mplew.writeInt(0);
+                //mplew.writeMapleAsciiString(item.getOwner());
+                //mplew.writeShort(item.getFlag());
                 if (GameConstants.isThrowingStar(item.getItemId()) || GameConstants.isBullet(item.getItemId()) || item.getItemId() / 10000 == 287) {
                     mplew.writeLong(item.getInventoryId() <= 0 ? -1 : item.getInventoryId());
                 }

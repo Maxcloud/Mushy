@@ -334,7 +334,7 @@ public class MapleInventoryManipulator {
     public static boolean addFromDrop(final MapleClient c, final Item item, final boolean show) {
         return addFromDrop(c, item, show, false);
     }
-
+    
     public static boolean addFromDrop(final MapleClient c, Item item, final boolean show, final boolean enhance) {
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 
@@ -366,7 +366,9 @@ public class MapleInventoryManipulator {
                                 final short newQ = (short) Math.min(oldQ + quantity, slotMax);
                                 quantity -= (newQ - oldQ);
                                 eItem.setQuantity(newQ);
-                                c.getSession().write(InventoryPacket.updateInventorySlot(type, eItem, true));
+                                System.out.println("Update Slot");
+                                c.getSession().write(InventoryPacket.addInventorySlot(type, eItem, true));
+                                //c.getSession().write(InventoryPacket.updateInventorySlot(type, eItem, true)); // looking at gms packet sniffs Nexon doesn't seem to use this
                             }
                         } else {
                             break;
@@ -445,7 +447,7 @@ public class MapleInventoryManipulator {
         //}
         c.getPlayer().havePartyQuest(item.getItemId());
         if (show) {
-            c.getSession().write(InfoPacket.getShowItemGain(item.getItemId(), item.getQuantity()));
+            //c.getSession().write(InfoPacket.getShowItemGain(item.getItemId(), item.getQuantity())); // Bugged needs fixing
         }
         return true;
     }

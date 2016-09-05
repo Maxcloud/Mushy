@@ -27,11 +27,40 @@ import tools.packet.CWvsContext;
  */
 public class PlayerCommand {
 
+	///////JEFF ADDED COMMANDS FOR EASIER DEVELOPMENT//////////
+	public static class warp extends CommandExecute {
+		@Override
+		public int execute(MapleClient c, String[] splitted) {
+			int mapid = Integer.parseInt(splitted[1]);
+			c.getPlayer().changeMap(mapid, 0);
+			return 1;
+		}
+	}	
+	public static class getmap extends CommandExecute {
+		@Override
+		public int execute(MapleClient c, String[] splitted) {
+			c.getPlayer().dropMessage(5, ""+c.getPlayer().getMapId());
+			return 1;
+		}
+	}
+	public static class gainitem extends CommandExecute {
+		@Override
+		public int execute(MapleClient c, String[] splitted) {	
+			int itemid = Integer.parseInt(splitted[1]);
+			int quantity = Integer.parseInt(splitted[2]);
+			c.getPlayer().gainItem(itemid, quantity);
+			return 1;
+		}
+	}
+	//////////////////////////////////////////////////////////////
+	
+	
+	
 	public static PlayerGMRank getPlayerLevelRequired() {
 		return PlayerGMRank.NORMAL;
 	}
 
-	public static class Dispose extends CommandExecute {
+	public static class dispose extends CommandExecute {
 
 		@Override
 		public int execute(MapleClient c, String[] splitted) {
