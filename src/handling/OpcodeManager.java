@@ -68,6 +68,7 @@ class OpcodeManager {
 		NpcActionHandler.class,
 		NpcTalkHandler.class,
 		NpcTalkMoreHandler.class,
+		NpcShopHandler.class,
 		
 		ChangeMapSpecialHandler.class,
 		UseInnerPortalHandler.class,

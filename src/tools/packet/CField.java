@@ -2560,7 +2560,7 @@ public class CField {
 		mplew.write(drop.getMeso() > 0 ? 1 : 0);
 		mplew.writeInt(0); // ...
 		mplew.writeInt(0); // ...
-		mplew.writeInt(0); // ...
+		mplew.writeInt(0); // bNoMove
 		mplew.writeInt(drop.getItemId());
 		mplew.writeInt(drop.getOwner());
 		mplew.write(drop.getDropType());
@@ -2568,7 +2568,7 @@ public class CField {
 		mplew.writeInt(0);
 		if (mod != 2) {
 			mplew.writePos(dropfrom);
-			mplew.writeInt(0); // 175.1
+			mplew.writeInt(0); // tDelay
 		}
 		mplew.write(0);
 		
@@ -3734,8 +3734,16 @@ public class CField {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 			mplew.writeShort(SendPacketOpcode.OPEN_NPC_SHOP.getValue());
-			mplew.writeInt(0);
-			mplew.writeInt(sid);
+			
+			mplew.write(0);
+			/*
+			 * if ( CInPacket::Decode1(iPacket) )
+      		 * 	v62 = CInPacket::Decode4(v68);
+			 */
+			mplew.writeInt(0); // m_nSelectNpcItemID
+			mplew.writeInt(shop.getNpcId()); // m_dwNpcTemplateID
+			mplew.writeInt(0); // m_nStarCoin
+			mplew.writeInt(0); // m_nShopVerNo
 			PacketHelper.addShopInfo(mplew, shop, c);
 
 			return mplew.getPacket();
@@ -3747,8 +3755,10 @@ public class CField {
 			mplew.writeShort(SendPacketOpcode.CONFIRM_SHOP_TRANSACTION.getValue());
 			mplew.write(code);
 			if (code == 5) {
-				mplew.writeInt(0);
-				mplew.writeInt(shop.getNpcId());
+				mplew.writeInt(0); // m_nSelectNpcItemID
+				mplew.writeInt(shop.getNpcId()); // m_dwNpcTemplateID
+				mplew.writeInt(0); // m_nStarCoin
+				mplew.writeInt(0); // m_nShopVerNo
 				PacketHelper.addShopInfo(mplew, shop, c);
 			} else {
 				mplew.write(indexBought >= 0 ? 1 : 0);
@@ -3756,6 +3766,7 @@ public class CField {
 					mplew.writeInt(indexBought);
 				} else {
 					mplew.write(0);
+					mplew.writeInt(0);
 				}
 			}
 

@@ -243,7 +243,7 @@ public class MapleShop {
             if ((price != -1.0D) && (recvMesos > 0)) {
                 c.getPlayer().gainMeso(recvMesos, false);
             }
-            c.getSession().write(CField.NPCPacket.confirmShopTransaction((byte) 5, this, c, -1));
+            c.getSession().write(CField.NPCPacket.confirmShopTransaction((byte) 0, this, c, -1));
         }
     }
 

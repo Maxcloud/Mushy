@@ -249,7 +249,9 @@ public class LoginPacket {
                 load = 1200;
             }
             mplew.writeMapleAsciiString(worldName + "-" + i);
-            mplew.writeInt(load);
+            
+            load = (int) Math.round(((load/12) + 10) * 0.60);
+            mplew.writeInt(load); // load -60 = 100%
             mplew.write(serverId);
             mplew.writeShort(i - 1);
         }
