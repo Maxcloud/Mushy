@@ -60,7 +60,7 @@ public enum SendPacketOpcode {
     EXP_POTION(0x43), // needs updating
     CHAR_INFO(0x71),
     PARTY_OPERATION(0x72),
-    MEMBER_SEARCH(0x59), // needs updating
+    MEMBER_SEARCH(0x73),
     PARTY_SEARCH(0x5A), // needs updating
     BOOK_INFO(0x5B), // needs updating
     CODEX_INFO_RESPONSE(0x5C), // needs updating
@@ -123,7 +123,7 @@ public enum SendPacketOpcode {
     ITEM_POT(0xC8),
     MULUNG_DOJO_RANKING(0xD1),
     REPLACE_SKILLS(0xD5),
-    INNER_ABILITY_MSG(0xD6), // needs updating
+    INNER_ABILITY_MSG(0xD8), // needs updating
     ENABLE_INNER_ABILITY(0xD9),
     DISABLE_INNER_ABILITY(0xDA),
     UPDATE_HONOUR(0xDB),
@@ -134,7 +134,7 @@ public enum SendPacketOpcode {
     LOCK_CHARGE_SKILL(0x100),
     EVOLVING_ACTION(0x103),
     CANDY_RANKING(0x108),
-    MESSENGER_OPEN(0x10B), // needs updating
+    MESSENGER_OPEN(0x10D), // needs updating
     AVATAR_MEGA(0x112),
     AVATAR_MEGA_REMOVE(0x113),
     EVENT_CROWN(0x118),
@@ -288,7 +288,7 @@ public enum SendPacketOpcode {
     LOAD_TEAM(0x28F),
     SHOW_HARVEST(0x290),
     PVP_HP(0x1D7), // needs updating
-    CANCEL_CHAIR(0x1E3), // needs updating
+    CANCEL_CHAIR(0x22B), // needs updating
     
     INNER_ABILITY_RESET_MSG(0x2CC),
     
@@ -331,9 +331,9 @@ public enum SendPacketOpcode {
     PLAY_MOVIE(0x2DF),
     PHANTOM_CARD(0x2E1),
     LUMINOUS_COMBO(0x2E4),
-    MOVE_SCREEN_X(0x199), // needs updating.
-    MOVE_SCREEN_DOWN(0x19A), // needs updating.
-    SEALED_BOX(0x212), // needs updating.
+	MOVE_SCREEN_X(0x1A9),
+	MOVE_SCREEN_DOWN(0x1AA),
+	SEALED_BOX(0x222), // needs updating.
     COOLDOWN(0x333),
     R_MESOBAG_SUCCESS(0x34C),
     R_MESOBAG_FAILURE(0x34D),
@@ -350,8 +350,8 @@ public enum SendPacketOpcode {
     SUMMON_ATTACK(0x37C),
     PVP_SUMMON(0x37D),
     SUMMON_SKILL(0x37E),
-    SUMMON_SKILL_2(0x380),
-    DAMAGE_SUMMON(0x388), // needs testing
+    SUMMON_SKILL_2(0x37F),
+    DAMAGE_SUMMON(0x380), // needs testing
     
     // CMobPool::OnPacket (this has been updated.)
     SPAWN_MONSTER(0x389),
@@ -365,8 +365,8 @@ public enum SendPacketOpcode {
     CANCEL_MONSTER_STATUS(0x393),
     DAMAGE_MONSTER(0x396),
     SKILL_EFFECT_MOB(0x397),
-    TELE_MONSTER(0x999), // needs updating.
-    MONSTER_SKILL(0x27E), // needs updating.
+    TELE_MONSTER(0x3A8), // needs updating.
+    MONSTER_SKILL(0x3A1), // needs updating.
     SHOW_MONSTER_HP(0x39B),
     SHOW_MAGNET(0x39C),
     ITEM_EFFECT_MOB(0x39D),
@@ -520,7 +520,7 @@ public enum SendPacketOpcode {
     XMAS_SURPRISE(0x546),
     CASH_SHOP(0x54C),
     CASH_SHOP_UPDATE(0x54D),
-    ONE_A_DAY(0x258), // needs updating
+    ONE_A_DAY(0x545), // needs updating (lol yolo)
     
     // CFuncKeyMappedMan::OnPacket (this has been updated.)
     KEYMAP(0x587),

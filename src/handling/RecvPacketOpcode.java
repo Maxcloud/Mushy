@@ -334,4 +334,12 @@ public enum RecvPacketOpcode {
 		this.code = ((short) code);
 	}
 
+	public static RecvPacketOpcode getByValue(short value){
+		for (RecvPacketOpcode op : RecvPacketOpcode.values()){
+			if (op.getValue() == value){
+				return op;
+			}
+		}
+		return null;
+	}
 }

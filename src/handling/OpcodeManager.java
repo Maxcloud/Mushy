@@ -108,11 +108,12 @@ class OpcodeManager {
         return types.length == 2 && types[0].equals(MapleClient.class) && types[1].equals(LittleEndianAccessor.class);
     }
 
-    public static void handle(MapleClient client, short opcode, LittleEndianAccessor lea) {
+    public static boolean handle(MapleClient client, short opcode, LittleEndianAccessor lea) {
         Method method = handlers.get(opcode);
         try {
             if (method != null) { 
                 method.invoke(null, client, lea);
+                return true;
             } else {
             	System.out.println("[Unhandled] [Recv] (" + HexTool.getOpcodeToString(opcode) + ") " + lea);
             }
@@ -123,6 +124,7 @@ class OpcodeManager {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
 }
