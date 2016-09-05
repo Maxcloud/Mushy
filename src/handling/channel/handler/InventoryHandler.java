@@ -60,6 +60,8 @@ import client.inventory.MaplePet;
 import client.inventory.MaplePet.PetFlag;
 import constants.GameConstants;
 import constants.MapConstants;
+import handling.PacketHandler;
+import handling.RecvPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
@@ -4430,27 +4432,26 @@ case 2431935: {
         c.getPlayer().getMap().broadcastMessage(c.getPlayer(), PetPacket.commandResponse(c.getPlayer().getId(), (byte) 1, petindex, true, true), true);
         return true;
     }
-
-        public static final void Pickup_Player(final LittleEndianAccessor slea, MapleClient c, final MapleCharacter chr) {
+    
+    public static final void Pickup_Player(final LittleEndianAccessor slea, MapleClient c, final MapleCharacter chr) {
         if (c.getPlayer().hasBlockedInventory()) { //hack
             return;
         }
-        slea.skip(4); // update tick
-        c.getPlayer().setScrolledPosition((short) 0);
-        slea.skip(1); // or is this before tick?
+        slea.skip(1);
+        slea.readInt(); // update tick
+        	c.getPlayer().setScrolledPosition((short) 0);
         final Point Client_Reportedpos = slea.readPos();
-        if (chr == null || chr.getMap() == null) {
-            return;
-        }
+        	if (chr == null || chr.getMap() == null) {
+        		return;
+        	}
         final MapleMapObject ob = chr.getMap().getMapObject(slea.readInt(), MapleMapObjectType.ITEM);
-
-        if (ob == null) {
-            c.getSession().write(CWvsContext.enableActions());
-            return;
-        }
-        final MapleMapItem mapitem = (MapleMapItem) ob;
-        final Lock lock = mapitem.getLock();
-        lock.lock();
+        	if (ob == null) {
+        		c.getSession().write(CWvsContext.enableActions());
+        		return;
+        	}
+        	final MapleMapItem mapitem = (MapleMapItem) ob;
+        	final Lock lock = mapitem.getLock();
+        	lock.lock();
         try {
             if (mapitem.isPickedUp()) {
                 c.getSession().write(CWvsContext.enableActions());
@@ -4469,6 +4470,11 @@ case 2431935: {
                 return;
             }
             final double Distance = Client_Reportedpos.distanceSq(mapitem.getPosition());
+            if (Distance > 5000 && (mapitem.getMeso() > 0 || mapitem.getItemId() != 4001025)) {
+                //chr.getCheatTracker().registerOffense(CheatingOffense.ITEMVAC_CLIENT, String.valueOf(Distance));
+            } else if (chr.getPosition().distanceSq(mapitem.getPosition()) > 640000.0) {
+                //chr.getCheatTracker().registerOffense(CheatingOffense.ITEMVAC_SERVER);
+            }
             if (mapitem.getMeso() > 0) {
                 if (chr.getParty() != null && mapitem.getOwner() != chr.getId()) {
                     final List<MapleCharacter> toGive = new LinkedList<>();
@@ -4518,9 +4524,11 @@ case 2431935: {
                     if (mapitem.getItem().getQuantity() >= 50 && mapitem.getItemId() == 2340000) {
                         c.setMonitored(true); //hack check
                     }
-                    if (!GameConstants.isPet(mapitem.getItemId())) {
+                    if (!GameConstants.isPet(mapitem.getItemId())) {	
+                    	////........................................
                         MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true, mapitem.getDropper() instanceof MapleMonster);
                         removeItem(chr, mapitem, ob);
+                        ////........................................
                     } else {
                         MapleInventoryManipulator.addById(c, mapitem.getItemId(), (short) 1, "", MaplePet.createPet(mapitem.getItemId(), MapleItemInformationProvider.getInstance().getName(mapitem.getItemId()), 1, 0, 100, MapleInventoryIdentifier.getInstance(), 0, (short) 0), 90, false, null);
                         removeItem_Pet(chr, mapitem, mapitem.getItemId());

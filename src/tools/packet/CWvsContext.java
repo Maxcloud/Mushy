@@ -3712,28 +3712,27 @@ public class CWvsContext {
 
         public static byte[] addInventorySlot(MapleInventoryType type, Item item, boolean fromDrop) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
             mplew.writeShort(SendPacketOpcode.INVENTORY_OPERATION.getValue());
+            
             mplew.write(fromDrop ? 1 : 0);
             mplew.write(1);
             mplew.write(0);
-
             mplew.write(GameConstants.isInBag(item.getPosition(), type.getType()) ? 9 : 0);
             mplew.write(type.getType());
             mplew.writeShort(item.getPosition());
             PacketHelper.addItemInfo(mplew, item);
+            
             return mplew.getPacket();
         }
 
         public static byte[] updateInventorySlot(MapleInventoryType type, Item item, boolean fromDrop) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
             mplew.writeShort(SendPacketOpcode.INVENTORY_OPERATION.getValue());
+            
             mplew.write(fromDrop ? 1 : 0);
             mplew.write(1);
             mplew.write(0);
-
-            mplew.write(GameConstants.isInBag(item.getPosition(), type.getType()) ? 6 : 1);
+            mplew.write(GameConstants.isInBag(item.getPosition(), type.getType()) ? 9 : 0); //6 : 1
             mplew.write(type.getType());
             mplew.writeShort(item.getPosition());
             mplew.writeShort(item.getQuantity());

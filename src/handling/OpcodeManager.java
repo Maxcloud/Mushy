@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import client.MapleClient;
+import handling.channel.handler.InventoryHandler;
 import handling.handlers.*;
 import handling.handlers.login.*;
 import handling.handlers.npc.NpcTalkHandler;
@@ -60,6 +61,7 @@ class OpcodeManager {
 
 		ItemMoveHandler.class,
 		UseItemHandler.class,
+		ItemPickupHandler.class,
 
 		MesoDropHandler.class,
 		QuestActionHandler.class,
