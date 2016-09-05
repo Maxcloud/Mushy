@@ -190,10 +190,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
         try {
         	System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
         	boolean handled = OpcodeManager.handle(c, opcode, lea);
-        	if (!handled){
-        		RecvPacketOpcode recv = RecvPacketOpcode.getByValue(opcode);
-                handlePacket(recv, lea, c);
+        	if (handled){
+        		return;
         	}
+        	RecvPacketOpcode recv = RecvPacketOpcode.getByValue(opcode);
+        	if (recv == null){
+        		return;
+        	}
+            handlePacket(recv, lea, c);
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
         	System.out.println("ArrayIndexOutOfBoundsException" + e);
         } catch (Exception e) {
