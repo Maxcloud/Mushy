@@ -22,9 +22,9 @@ Should you run into any issues with the source, we **strongly** recommend that y
 ## Contribute
 If you would like to contribute to Mushy, please issue a pull request. Please follow the guidelines below if you do decide to submit a pull request. If you have any concerns with your pull requests, feel free to contact us over Discord.
 
-##Pull Requests Guide
-###Solve ONE problem per pull request.
-If your pull request is addressing three different things, there's a chance that we're okay with the way you handle one or two of those problems, but if we don't like the way you handled the third problem, your entire pull request will have to be denied.
+##Pull Request Guide
+###Solve a single problem per pull request.
+If your pull request is addressing multiple things, you run a higher risk of something you submitted being denied. Since we cannot selectively pick out the parts of the pull request that we want, we have no choice but to deny the entire thing.
 
 ###Don't delete commented code for the sake of cleanliness.
 While there's a great chance that the code actually is useless, you risk getting your pull request denied if you happen to delete commented code that actually is useful, so there's no point in risking it.
@@ -36,7 +36,7 @@ By design, you will get credit for any code you submitted yourself. There is no 
 Unless you have spoken with one of the developers about it beforehand, do not do things like change the rates, the channel number, etc. 
 
 ###Do not leave in debug/print statements unless it is extremely relevant to the issue at hand.
-Debug on your end, but remove it before you submit the pull request
+Debug on your end, but remove it before you submit the pull request please.
 
 ###Don't delete bytes unless you're absolutely sure you know what you're doing.
 Packets rarely become shorter, so if you delete bytes that causes the entire packet to be shorter, we will automatically assume you don't know what you're doing unless you convince us otherwise.
