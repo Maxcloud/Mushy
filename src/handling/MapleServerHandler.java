@@ -605,18 +605,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case MOB_BOMB:
                 MobHandler.MobBomb(lea, c.getPlayer());
                 break;
-            case NPC_SHOP:
-                NPCHandler.NPCShop(lea, c, c.getPlayer());
-                break;
-            case NPC_TALK:
-                // NPCHandler.NPCTalk(slea, c, c.getPlayer());
-                break;
-            case NPC_TALK_MORE:
-                // NPCHandler.NPCMoreTalk(slea, c);
-                break;
-            case NPC_ACTION:
-                // NPCHandler.NPCAnimation(slea, c);
-                break;
             case TOT_GUIDE:
                 break;
             case STORAGE:
