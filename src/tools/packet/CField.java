@@ -2554,35 +2554,36 @@ public class CField {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 		mplew.writeShort(SendPacketOpcode.DROP_ITEM_FROM_MAPOBJECT.getValue());
-		mplew.write(0); // ...
-		mplew.write(mod);
-		mplew.writeInt(drop.getObjectId());
-		mplew.write(drop.getMeso() > 0 ? 1 : 0);
-		mplew.writeInt(0); // ...
-		mplew.writeInt(0); // ...
+		mplew.write(0); // eDropType
+		mplew.write(mod); // nEnterType
+		mplew.writeInt(drop.getObjectId()); // m_mDrop
+		mplew.write(drop.getMeso() > 0 ? 1 : 0); // bIsMoney
+		mplew.writeInt(0); // nDropMotionType
+		mplew.writeInt(0); // nDropSpeed
 		mplew.writeInt(0); // bNoMove
-		mplew.writeInt(drop.getItemId());
-		mplew.writeInt(drop.getOwner());
-		mplew.write(drop.getDropType());
-		mplew.writePos(dropto);
-		mplew.writeInt(0);
+		mplew.writeInt(drop.getItemId()); // fRand
+		mplew.writeInt(drop.getOwner()); // nInfo
+		mplew.write(drop.getDropType()); // dwOwnType
+		mplew.writePos(dropto); //ptDrop x, y
+		mplew.writeInt(0); // dwSourceID
 		if (mod != 2) {
 			mplew.writePos(dropfrom);
 			mplew.writeInt(0); // tDelay
 		}
-		mplew.write(0);
+		mplew.write(0); // bExplosiveDrop
 		
 		if (drop.getMeso() == 0) {
 			PacketHelper.addExpirationTime(mplew, drop.getItem().getExpiration());
 		}
-		mplew.writeShort(drop.isPlayerDrop() ? 0 : 1);
-		mplew.write(0); // ...
-		mplew.write(0); // ...
-		mplew.write(0);
-		mplew.write(0);
-		mplew.writeInt(0);
-		mplew.write(0);
-		mplew.write(0);
+		
+		mplew.write(drop.isPlayerDrop() ? 0 : 1); // bByPet
+		mplew.write(0); // ?
+		mplew.writeShort(0); // nFallingVY
+		mplew.write(0); // nFadeInEffect
+		mplew.write(0); // nMakeType
+		mplew.writeInt(0); // bCollisionPickup
+		mplew.write(0); // nItemGrade
+		mplew.write(0); // bPrepareCollisionPickUp
 		return mplew.getPacket();
 	}
 
