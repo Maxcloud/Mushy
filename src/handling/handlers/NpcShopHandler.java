@@ -11,49 +11,43 @@ public class NpcShopHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.NPC_SHOP)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
-		System.out.println(lea.toString());
-		
-		byte bmode = lea.readByte();
-        if (c.getPlayer() == null) {
-            return;
-        }
 
-        switch (bmode) {
-            case 0: {
-                MapleShop shop = c.getPlayer().getShop();
-                if (shop == null) {
-                    return;
-                }
-                short slot = lea.readShort();
-                slot++;
-                int itemId = lea.readInt();
-                short quantity = lea.readShort();
-                // int unitprice = slea.readInt();
-                shop.buy(c, slot, itemId, quantity);
-                break;
-            }
-            case 1: {
-                MapleShop shop = c.getPlayer().getShop();
-                if (shop == null) {
-                    return;
-                }
-                byte slot = (byte) lea.readShort();
-                int itemId = lea.readInt();
-                short quantity = lea.readShort();
-                shop.sell(c, GameConstants.getInventoryType(itemId), slot, quantity);
-                break;
-            }
-            case 2: {
-                MapleShop shop = c.getPlayer().getShop();
-                if (shop == null) {
-                    return;
-                }
-                byte slot = (byte) lea.readShort();
-                shop.recharge(c, slot);
-                break;
-            }
-            default:
-                c.getPlayer().setConversation(0);
-        }
+		if (c.getPlayer() == null) {
+			return;
+		}
+
+		MapleShop shop = c.getPlayer().getShop();
+
+		if (shop == null) {
+			return;
+		}
+
+		byte bmode = lea.readByte();
+		short slot = lea.readShort();
+
+		switch (bmode) {
+		case 0: {
+			slot++;
+			int itemId = lea.readInt();
+			short quantity = lea.readShort();
+			lea.readInt(); //Nate help here
+			int unitprice = lea.readInt();
+			shop.buy(c, slot, itemId, quantity);
+			break;
+		}
+		case 1: {
+			int itemId = lea.readInt();
+			short quantity = lea.readShort();
+			shop.sell(c, GameConstants.getInventoryType(itemId), (byte) slot, quantity);
+			break;
+		}
+		case 2: {
+			shop.recharge(c, (byte) slot);
+			break;
+		}
+		default:
+			c.getPlayer().setConversation(0);
+			break;
+		}
 	}
 }
