@@ -70,8 +70,8 @@ public class UseMagnifyGlassHandler {
                 }
             }
             c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, equip.getItemId()));
-            c.getPlayer().forceReAddItem_NoUpdate(equip, MapleInventoryType.EQUIP);
             c.getSession().write(CWvsContext.enableActions());
+            c.getPlayer().forceReAddItem(equip, MapleInventoryType.EQUIP);
         }else{ //equipState not 1
             chr.dropMessage(5, "This item has no hidden potential to reveal.");
             c.getSession().write(CWvsContext.enableActions());

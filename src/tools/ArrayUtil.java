@@ -23,4 +23,19 @@ public class ArrayUtil {
         }
         return res;
     }
+
+    /**
+     *
+     * @param intArray
+     * @return
+     */
+    public static int absoluteMax(int[] intArray){
+        int max = Integer.MIN_VALUE;
+        for(int i = 0; i < intArray.length; i++){
+            if(Math.abs(intArray[i]) > max && intArray[i] != 0){
+                max = intArray[i];
+            }
+        }
+        return max == Integer.MIN_VALUE ? 0 : max;
+    }
 }

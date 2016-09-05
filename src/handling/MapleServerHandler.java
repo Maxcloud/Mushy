@@ -192,12 +192,12 @@ public class MapleServerHandler extends IoHandlerAdapter {
         	boolean handled = OpcodeManager.handle(c, opcode, lea);
         	if (!handled){
         		RecvPacketOpcode recv = RecvPacketOpcode.getByValue(opcode);
-                handlePacket(recv, lea, c);
+                handlePacket(recv, lea, c); //be careful, causes strange things to happen with outdated ops.
         	}
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
-        	System.out.println("ArrayIndexOutOfBoundsException" + e);
+        	e.printStackTrace();
         } catch (Exception e) {
-        	System.out.println("Exception" + e);
+        	e.printStackTrace();
         }
 
     }

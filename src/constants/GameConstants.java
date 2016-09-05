@@ -1268,7 +1268,7 @@ public class GameConstants {
 	}
 
 	public static boolean isUniquePotScroll(int scrollId){
-		return scrollId >= 2049740 && scrollId <= 2049749;
+		return scrollId >= 2049740 && scrollId <= 2049769;
 	}
 
 	public static boolean isLegendaryPotScroll(int scrollId){

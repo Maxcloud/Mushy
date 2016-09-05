@@ -6,6 +6,7 @@ import java.util.*;
 import constants.EventConstants;
 import constants.GameConstants;
 import server.MapleItemInformationProvider;
+import tools.ArrayUtil;
 import tools.Randomizer;
 
 public class Equip extends Item implements Serializable {
@@ -65,9 +66,15 @@ public class Equip extends Item implements Serializable {
         ret.itemEXP = itemEXP;
         ret.durability = durability;
         ret.vicioushammer = vicioushammer;
-        ret.mainPotential = mainPotential;
-        ret.bonusPotential = bonusPotential;
-        ret.socket = socket;
+        for(int i = 0; i < mainPotential.length; i++){
+            ret.mainPotential[i] = mainPotential[i];
+        }
+        for(int i = 0; i < bonusPotential.length; i++){
+            ret.bonusPotential[i] = bonusPotential[i];
+        }
+        for(int i = 0; i < socket.length; i++){
+            ret.socket[i] = socket[i];
+        }
         ret.fusionAnvil = fusionAnvil;
         ret.charmExp = charmExp;
         ret.pvpDamage = pvpDamage;
@@ -489,22 +496,14 @@ public class Equip extends Item implements Serializable {
         fusionAnvil = en;
     }
 
-    public int max(int[] intArray){
-        int max = Integer.MIN_VALUE;
-        for(int i = 0; i < intArray.length; i++){
-            if(Math.abs(intArray[i]) > max && intArray[i] != 0){
-                max = intArray[i];
-            }
-        }
-        return max == Integer.MIN_VALUE ? 0 : max;
-    }
-
     /**
      * Uses a potential scroll on this item.
      * @param scrollId
      * @return Whether it failed or not.
      */
     public boolean usePotentialScroll(int scrollId){
+        Equip itemSeeker = (Equip) MapleItemInformationProvider.getInstance().getEquipById(getItemId());
+        System.out.println(itemSeeker.getPotentialByLine(0));
         Map<String, Integer> scrollInfo = MapleItemInformationProvider.getInstance().getEquipStats(scrollId);
         final int chance = scrollInfo.containsKey("success") ? scrollInfo.get("success") : 0;
         if (Randomizer.nextInt(100) > chance) {
@@ -515,7 +514,7 @@ public class Equip extends Item implements Serializable {
     }
 
     public byte getState() {
-        int maxPot = max(getPotential());
+        int maxPot = ArrayUtil.absoluteMax(getPotential());
         byte res = 0;
         if (maxPot < 0) {
             res = HIDDEN; //hidden
@@ -535,7 +534,7 @@ public class Equip extends Item implements Serializable {
         //if (potential4 >= 60000 || potential5 >= 60000) {
         //    return 14; // special
         //}
-        int maxPot = max(getBonusPotential());
+        int maxPot = ArrayUtil.absoluteMax(getBonusPotential());
         byte res = 0;
         if (maxPot < 0) {
             res = HIDDEN; //hidden
@@ -590,6 +589,8 @@ public class Equip extends Item implements Serializable {
     }
 
     public void resetPotentialWithRank(int rank, int chanceOnThirdLine){
+        Equip itemSeeker = (Equip) MapleItemInformationProvider.getInstance().getEquipById(getItemId());
+        System.out.println(itemSeeker.getPotentialByLine(0));
         setPotentialByLine(0, -rank);
         setPotentialByLine(1, -rank);
         setPotentialByLine(2, (Randomizer.nextInt(100) < chanceOnThirdLine) ? -rank : 0);
