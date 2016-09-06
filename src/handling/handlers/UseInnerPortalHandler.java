@@ -13,7 +13,7 @@ public class UseInnerPortalHandler {
 	@PacketHandler(opcode = RecvPacketOpcode.USE_INNER_PORTAL)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		lea.skip(1);
-		if ((c.getPlayer() == null) || (c.getPlayer().getMap() == null)) {
+		if (c.getPlayer() == null || c.getPlayer().getMap() == null) {
 			return;
 		}
 		String portalName = lea.readMapleAsciiString();
@@ -23,7 +23,7 @@ public class UseInnerPortalHandler {
 			return;
 		}
 		//That "22500" should not be hard coded in this manner
-		if ((portal.getPosition().distanceSq(c.getPlayer().getTruePosition()) > 22500.0D) && (!c.getPlayer().isGM())) {
+		if (portal.getPosition().distanceSq(c.getPlayer().getTruePosition()) > 22500.0D && !c.getPlayer().isGM()) {
 			return;
 		}
 		

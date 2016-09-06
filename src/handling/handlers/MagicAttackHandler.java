@@ -28,7 +28,7 @@ public class MagicAttackHandler {
 	@PacketHandler(opcode = RecvPacketOpcode.MAGIC_ATTACK)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 
-		if ((c.getPlayer() == null) || (c.getPlayer().hasBlockedInventory()) || (c.getPlayer().getMap() == null)) {
+		if (c.getPlayer() == null || c.getPlayer().hasBlockedInventory() || c.getPlayer().getMap() == null) {
 			return;
 		}
 		
@@ -40,27 +40,23 @@ public class MagicAttackHandler {
 		
 		Skill skill = SkillFactory.getSkill(GameConstants.getLinkedAttackSkill(attack.skillid));
 		
-		if (skill == null || ((GameConstants.isAngel(attack.skillid)) && (c.getPlayer().getStat().equippedSummon % 10000 != attack.skillid % 10000))) {
+		if (skill == null || (GameConstants.isAngel(attack.skillid) && c.getPlayer().getStat().equippedSummon % 10000 != attack.skillid % 10000)) {
 			c.getSession().write(CWvsContext.enableActions());
 			return;
 		}
 		
-		int level = c.getPlayer().getTotalSkillLevel(skill);
+		int skillLevel = c.getPlayer().getTotalSkillLevel(skill);
 		
-		MapleStatEffect effect = attack.getAttackEffect(c.getPlayer(), level, skill);
+		MapleStatEffect effect = attack.getAttackEffect(c.getPlayer(), skillLevel, skill);
 		if (effect == null) {
 			return;
 		}
 		
 		if (skill.getId() >= 27100000 && skill.getId() < 27120400 && attack.getTargets() > 0 && c.getPlayer().getLuminousState() < 20040000) {
-			// chr.changeSkillLevel(SkillFactory.getSkill(20040216), (byte) 1,
-			// (byte) 1);
-			// chr.changeSkillLevel(SkillFactory.getSkill(20040217), (byte) 1,
-			// (byte) 1);
-			// chr.changeSkillLevel(SkillFactory.getSkill(20040220), (byte) 1,
-			// (byte) 1);
-			// chr.changeSkillLevel(SkillFactory.getSkill(20041239), (byte) 1,
-			// (byte) 1);
+			//chr.changeSkillLevel(SkillFactory.getSkill(20040216), (byte) 1, (byte) 1);
+			//chr.changeSkillLevel(SkillFactory.getSkill(20040217), (byte) 1, (byte) 1);
+			//chr.changeSkillLevel(SkillFactory.getSkill(20040220), (byte) 1, (byte) 1);
+			//chr.changeSkillLevel(SkillFactory.getSkill(20041239), (byte) 1, (byte) 1);
 			c.getPlayer().setLuminousState(GameConstants.getLuminousSkillMode(skill.getId()));
 			c.getSession().write(JobPacket.LuminousPacket.giveLuminousState(GameConstants.getLuminousSkillMode(skill.getId()), c.getPlayer().getLightGauge(), c.getPlayer().getDarkGauge(), 10000));
 			SkillFactory.getSkill(GameConstants.getLuminousSkillMode(skill.getId())).getEffect(1).applyTo(c.getPlayer());
@@ -90,7 +86,7 @@ public class MagicAttackHandler {
 			maxdamage = 40.0D;
 		}
 		
-		if ((effect.getCooldown(c.getPlayer()) > 0) && (!c.getPlayer().isGM())) {
+		if (effect.getCooldown(c.getPlayer()) > 0 && !c.getPlayer().isGM()) {
 			if (c.getPlayer().skillisCooling(attack.skillid)) {
 				c.getSession().write(CWvsContext.enableActions());
 				return;
@@ -101,7 +97,7 @@ public class MagicAttackHandler {
 		
 		c.getPlayer().checkFollow();
 		
-		byte [] packet = CField.magicAttack(c.getPlayer().getId(), attack.nMobCount, attack.skillid, level, attack.display, attack.speed, attack.allDamage, attack.charge, c.getPlayer().getLevel(), attack.unk);
+		byte[] packet = CField.magicAttack(c.getPlayer().getId(), attack.nMobCount, attack.skillid, skillLevel, attack.display, attack.speed, attack.allDamage, attack.charge, c.getPlayer().getLevel(), attack.unk);
 		if (!c.getPlayer().isHidden()) {
 			c.getPlayer().getMap().broadcastMessage(c.getPlayer(), packet, c.getPlayer().getTruePosition());
 		} else {
@@ -117,7 +113,7 @@ public class MagicAttackHandler {
 				final Skill skil2 = skill;
 				final MapleStatEffect eff2 = effect;
 				final double maxd = maxdamage;
-				final int skillLevel2 = level;
+				final int skillLevel2 = skillLevel;
 				final AttackInfo attack2 = DamageParse.DivideAttack(attack, c.getPlayer().isGM() ? 1 : 4);
 				Timer.CloneTimer.getInstance().schedule(new Runnable() {
 					@Override
@@ -155,10 +151,10 @@ public class MagicAttackHandler {
 		case 27121303:
 		case 27111303:
 		case 36121013:
-		// case 36101009:
-		// case 36111010:
+		//case 36101009:
+		//case 36111010:
 			bulletCount = effect.getAttackCount();
-			DamageParse.applyAttack(attack, skill, c.getPlayer(), level, maxdamage, effect, AttackType.RANGED);
+			DamageParse.applyAttack(attack, skill, c.getPlayer(), skillLevel, maxdamage, effect, AttackType.RANGED);
 			break;
 		default:
 			DamageParse.applyAttackMagic(attack, skill, c.getPlayer(), effect, maxdamage);

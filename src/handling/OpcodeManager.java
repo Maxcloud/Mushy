@@ -8,6 +8,8 @@ import java.util.Map;
 import client.MapleClient;
 import handling.handlers.*;
 import handling.handlers.login.*;
+import handling.handlers.npc.NpcActionHandler;
+import handling.handlers.npc.NpcShopHandler;
 import handling.handlers.npc.NpcTalkHandler;
 import handling.handlers.npc.NpcTalkMoreHandler;
 import tools.HexTool;
@@ -69,8 +71,10 @@ class OpcodeManager {
 		
 		MoveLifeHandler.class,
 		NpcActionHandler.class,
+		ItemPickupHandler.class,
 		NpcTalkHandler.class,
 		NpcTalkMoreHandler.class,
+		NpcShopHandler.class,
 		
 		ChangeMapSpecialHandler.class,
 		UseInnerPortalHandler.class,

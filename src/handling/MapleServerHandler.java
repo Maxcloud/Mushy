@@ -190,10 +190,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
         try {
         	System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
         	boolean handled = OpcodeManager.handle(c, opcode, lea);
-        	if (!handled){
-        		RecvPacketOpcode recv = RecvPacketOpcode.getByValue(opcode);
-                handlePacket(recv, lea, c); //be careful, causes strange things to happen with outdated ops.
+        	if (handled){
+        		return;
         	}
+        	RecvPacketOpcode recv = RecvPacketOpcode.getByValue(opcode);
+        	if (recv == null){
+        		return;
+        	}
+            handlePacket(recv, lea, c);
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
         	e.printStackTrace();
         } catch (Exception e) {
@@ -495,9 +499,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case ITEM_MAKER:
                 ItemMakerHandler.ItemMaker(lea, c);
                 break;
-            case ITEM_PICKUP:
-                InventoryHandler.Pickup_Player(lea, c, c.getPlayer());
-                break;
             case USE_CASH_ITEM:
                 InventoryHandler.UseCashItem(lea, c);
                 break;
@@ -604,18 +605,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 break;
             case MOB_BOMB:
                 MobHandler.MobBomb(lea, c.getPlayer());
-                break;
-            case NPC_SHOP:
-                NPCHandler.NPCShop(lea, c, c.getPlayer());
-                break;
-            case NPC_TALK:
-                // NPCHandler.NPCTalk(slea, c, c.getPlayer());
-                break;
-            case NPC_TALK_MORE:
-                // NPCHandler.NPCMoreTalk(slea, c);
-                break;
-            case NPC_ACTION:
-                // NPCHandler.NPCAnimation(slea, c);
                 break;
             case TOT_GUIDE:
                 break;

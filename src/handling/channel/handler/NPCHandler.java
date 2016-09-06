@@ -80,51 +80,6 @@ public class NPCHandler {
         c.getSession().write(mplew.getPacket());
     }
 
-    public static final void NPCShop(LittleEndianAccessor slea, MapleClient c, MapleCharacter chr) {
-        byte bmode = slea.readByte();
-        if (chr == null) {
-            return;
-        }
-
-        switch (bmode) {
-            case 0: {
-                MapleShop shop = chr.getShop();
-                if (shop == null) {
-                    return;
-                }
-                short slot = slea.readShort();
-                slot++;
-                int itemId = slea.readInt();
-                short quantity = slea.readShort();
-                // int unitprice = slea.readInt();
-                shop.buy(c, slot, itemId, quantity);
-                break;
-            }
-            case 1: {
-                MapleShop shop = chr.getShop();
-                if (shop == null) {
-                    return;
-                }
-                byte slot = (byte) slea.readShort();
-                int itemId = slea.readInt();
-                short quantity = slea.readShort();
-                shop.sell(c, GameConstants.getInventoryType(itemId), slot, quantity);
-                break;
-            }
-            case 2: {
-                MapleShop shop = chr.getShop();
-                if (shop == null) {
-                    return;
-                }
-                byte slot = (byte) slea.readShort();
-                shop.recharge(c, slot);
-                break;
-            }
-            default:
-                chr.setConversation(0);
-        }
-    }
-
     public static final void NPCTalk(final LittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
     	
         if (chr == null || chr.getMap() == null) {

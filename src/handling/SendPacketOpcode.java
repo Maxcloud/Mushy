@@ -366,7 +366,7 @@ public enum SendPacketOpcode {
     DAMAGE_MONSTER(0x396),
     SKILL_EFFECT_MOB(0x397),
     TELE_MONSTER(0x3A8), // needs updating.
-    MONSTER_SKILL(0x3A1), // needs updating.
+    MONSTER_SKILL(0x39A), // needs updating.
     SHOW_MONSTER_HP(0x39B),
     SHOW_MAGNET(0x39C),
     ITEM_EFFECT_MOB(0x39D),
