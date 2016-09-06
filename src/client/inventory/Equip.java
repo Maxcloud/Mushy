@@ -502,8 +502,6 @@ public class Equip extends Item implements Serializable {
      * @return Whether it failed or not.
      */
     public boolean usePotentialScroll(int scrollId){
-        Equip itemSeeker = (Equip) MapleItemInformationProvider.getInstance().getEquipById(getItemId());
-        System.out.println(itemSeeker.getPotentialByLine(0));
         Map<String, Integer> scrollInfo = MapleItemInformationProvider.getInstance().getEquipStats(scrollId);
         final int chance = scrollInfo.containsKey("success") ? scrollInfo.get("success") : 0;
         if (Randomizer.nextInt(100) > chance) {
@@ -582,28 +580,27 @@ public class Equip extends Item implements Serializable {
     }
 
     public void resetPotential() {
-        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -19 : -18) : -17;
+        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
         setPotentialByLine(0, rank);
         setPotentialByLine(1, rank);
         setPotentialByLine(2, (Randomizer.nextInt(10) == 0 ? rank : 0));
     }
 
     public void resetPotentialWithRank(int rank, int chanceOnThirdLine){
-        Equip itemSeeker = (Equip) MapleItemInformationProvider.getInstance().getEquipById(getItemId());
-        System.out.println(itemSeeker.getPotentialByLine(0));
         setPotentialByLine(0, -rank);
         setPotentialByLine(1, -rank);
         setPotentialByLine(2, (Randomizer.nextInt(100) < chanceOnThirdLine) ? -rank : 0);
     }
 
     public void resetBonusPotential() {
-        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -19 : -18) : -17;
+        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
         setBonusPotentialByLine(0, rank); // always only 1 line
         setBonusPotentialByLine(1, 0);
         setBonusPotentialByLine(2, 0);
     }
 
     public void renewPotential(int type, int line, int toLock, boolean bonus) { // 0 = normal miracle cube, 1 = premium, 2 = epic pot scroll, 3 = super, 5 = enlightening
+        //OUTDATED
         int miracleRate = 1;
         if (EventConstants.DoubleMiracleTime) {
             miracleRate *= 2;
@@ -616,7 +613,7 @@ public class Equip extends Item implements Serializable {
             rank = (Randomizer.nextInt(100) < 4 * miracleRate && getBonusState() != 20 ? -(getBonusState() + 1) : -(getBonusState())); // 4 % chance to up 1 tier
             setBonusPotentialByLine(1, rank);
         } else {
-            rank = type == 2 ? -18 : type == 5 ? (Randomizer.nextInt(100) < 3 * miracleRate && getState() != 20 ? -20 : Randomizer.nextInt(100) < 10 * miracleRate && getState() != 20 ? -(getState() + 1) : -(getState())) : (Randomizer.nextInt(100) < 4 * miracleRate && getState() != (type == 3 ? 20 : 19) ? -(getState() + 1) : -(getState())); // 4 % chance to up 1 tier
+            rank = type == 2 ? -EPIC : type == 5 ? (Randomizer.nextInt(100) < 3 * miracleRate && getState() != LEGENDARY ? -LEGENDARY : Randomizer.nextInt(100) < 10 * miracleRate && getState() != LEGENDARY ? -(getState() + 1) : -(getState())) : (Randomizer.nextInt(100) < 4 * miracleRate && getState() != (type == 3 ? LEGENDARY : UNIQUE) ? -(getState() + 1) : -(getState())); // 4 % chance to up 1 tier
             setPotentialByLine(1, rank);
         }
         if (getPotentialByLine(2) > 0 && !bonus) {
