@@ -16,5 +16,6 @@ public class ChangeMapHandler {
         } else {
             PlayerHandler.ChangeMap(lea, c, c.getPlayer());
         }
+		
 	}
 }

@@ -53,6 +53,7 @@ class OpcodeManager {
 		CloseRangeAttackHandler.class,
 		RangedAttackHandler.class,
 		PassiveEnergyAttackHandler.class,
+
 		MagicAttackHandler.class,
 		TakeDamageHandler.class,
 		GeneralChatHandler.class,
@@ -62,6 +63,8 @@ class OpcodeManager {
 
 		ItemMoveHandler.class,
 		UseItemHandler.class,
+		UsePotentialScrollHandler.class,
+		UseMagnifyGlassHandler.class,
 
 		MesoDropHandler.class,
 		QuestActionHandler.class,

@@ -199,9 +199,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
         	}
             handlePacket(recv, lea, c);
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
-        	System.out.println("ArrayIndexOutOfBoundsException" + e);
+        	e.printStackTrace();
         } catch (Exception e) {
-        	System.out.println("Exception" + e);
+        	e.printStackTrace();
         }
 
     }

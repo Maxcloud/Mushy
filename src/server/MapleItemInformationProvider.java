@@ -56,6 +56,7 @@ public class MapleItemInformationProvider {
     protected final Map<Integer, Triple<List<Integer>, List<Integer>, List<Integer>>> androids = new HashMap<>();
     protected final Map<Integer, Triple<Integer, List<Integer>, List<Integer>>> monsterBookSets = new HashMap<>();
     protected final Map<Integer, StructSetItem> setItems = new HashMap<>();
+    protected final Map<Integer, Pair<Integer, Boolean>> scrollInfo = new HashMap<>();
 
     public void runEtc() {
         if (!setItems.isEmpty() || !potentialCache.isEmpty() || !socketCache.isEmpty()) {

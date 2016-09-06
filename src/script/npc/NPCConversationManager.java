@@ -1402,19 +1402,19 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			sel.setEnhance((byte) amount);
 			break;
 		case 19:
-			sel.setPotential1(amount);
+			sel.setPotentialByLine(0, amount);
 			break;
 		case 20:
-			sel.setPotential2(amount);
+			sel.setPotentialByLine(1, amount);
 			break;
 		case 21:
-			sel.setPotential3(amount);
+			sel.setPotentialByLine(2, amount);
 			break;
 		case 22:
-			sel.setBonusPotential1(amount);
+			sel.setBonusPotentialByLine(0, amount);
 			break;
 		case 23:
-			sel.setBonusPotential2(amount);
+			sel.setBonusPotentialByLine(1, amount);
 			break;
 		case 24:
 			sel.setOwner(getText());
@@ -2451,9 +2451,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		List<String> stra = new LinkedList<>();
 		for (Item item : equip.list()) {
 			Equip eq = (Equip) item;
-			if (eq.getBonusPotential1() != 0) {
+			if (eq.getBonusPotentialByLine(0) != 0) {
 				stra.add("\r\n#L" + item.getPosition() + "##v" + item.getItemId() + "# - "
-						+ (eq.getBonusPotential2() != 0 ? 2 : 1) + " additional potential lines #l");
+						+ (eq.getBonusPotentialByLine(1) != 0 ? 2 : 1) + " additional potential lines #l");
 			}
 		}
 		for (String strb : stra) {
@@ -2466,9 +2466,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		Equip equip = (Equip) getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(slot);
 		StringBuilder sb = new StringBuilder();
 		int[] potentials;
-		potentials = new int[] { equip.getPotential1(), equip.getPotential2(), equip.getPotential3() };
+		potentials = new int[] { equip.getPotentialByLine(0), equip.getPotentialByLine(1), equip.getPotentialByLine(2) };
 		for (int i : potentials) {
-			StructItemOption op = MapleItemInformationProvider.getInstance().getPotentialInfo(equip.getPotential1())
+			StructItemOption op = MapleItemInformationProvider.getInstance().getPotentialInfo(equip.getPotentialByLine(0))
 					.get(MapleItemInformationProvider.getInstance().getReqLevel(equip.getItemId()) / 10);
 			sb.append("\r\nPotential ").append(i).append(" - ").append(op.toString());
 		}
@@ -2694,15 +2694,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			final Equip item = (Equip) (ii.getEquipById(itemid));
 			switch (reward) {
 			case 0: // 9% ATT, 9% MAGIC, 30% Boss Damage
-				item.setPotential1(40051); // 9% Att
-				item.setPotential2(40052); // 9% Magic
-				item.setPotential3(40601); // 30% Boss Damage
+				item.setPotentialByLine(0, 40051); // 9% Att
+				item.setPotentialByLine(1, 40052); // 9% Magic
+				item.setPotentialByLine(2, 40601); // 30% Boss Damage
 				break;
 			case 1: // 30% All Stat
-				item.setPotential1(40086); // 9% All Stat
-				item.setPotential2(40086); // 9% All Stat
-				item.setPotential3(40086); // 9% All Stat
-				item.setSocket1(ii.getSocketInfo(3063280).opID); // 3% All Stat
+				item.setPotentialByLine(0, 40086); // 9% All Stat
+				item.setPotentialByLine(1, 40086); // 9% All Stat
+				item.setPotentialByLine(2, 40086); // 9% All Stat
+				item.setSocketByNmb(0, ii.getSocketInfo(3063280).opID); // 3% All Stat
 				break;
 			}
 			item.setOwner("Hyperious");

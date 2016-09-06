@@ -302,7 +302,7 @@ public class PlayerStats implements Serializable {
                 localmaxmp_ += ix.getRight();
             }
             if (equip.getState() >= 17) {
-                final int[] potentials = {equip.getPotential1(), equip.getPotential2(), equip.getPotential3(), equip.getBonusPotential1(), equip.getBonusPotential2()};
+                final int[] potentials = {equip.getPotentialByLine(0), equip.getPotentialByLine(1), equip.getPotentialByLine(2), equip.getBonusPotentialByLine(0), equip.getBonusPotentialByLine(1)};
                 for (final int i : potentials) {
                     if (i > 0) {
                         soc = ii.getPotentialInfo(i).get(ii.getReqLevel(equip.getItemId()) / 10);
@@ -315,7 +315,7 @@ public class PlayerStats implements Serializable {
                 }
             }
             if (equip.getSocketState() > 15) {
-                final int[] sockets = {equip.getSocket1(), equip.getSocket2(), equip.getSocket3()};
+                final int[] sockets = {equip.getSocketByNmb(0), equip.getSocketByNmb(1), equip.getSocketByNmb(2)};
                 for (final int i : sockets) {
                     if (i > 0) {
                         soc = ii.getSocketInfo(i);

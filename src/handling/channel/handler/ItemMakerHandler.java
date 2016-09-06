@@ -674,7 +674,7 @@ public class ItemMakerHandler {
                 cr = CraftRanking.SOSO;
             }
             if (Randomizer.nextInt(100) < (newEquip.getUpgradeSlots() > 0 || potentialChance >= 100 ? potentialChance : (potentialChance / 2))) {
-                newEquip.resetPotential_Fuse(theLevl > 5, potentialState);
+                newEquip.resetPotential_Fuse(theLevl > 5);//, potentialState);
             }
             newEquip.setFlag((short) ItemFlag.CRAFTED.getValue());
             newEquip.setOwner(chr.getName());
