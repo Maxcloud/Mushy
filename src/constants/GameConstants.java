@@ -88,6 +88,7 @@ public class GameConstants {
 	public static final int[] blockedSkills = {4341003, 36120045};
 	public static final String[] RESERVED = {"Alpha", "Aristocat", "Donor", "MapleNews", "Hack"};
 	public static final String[] stats = {"tuc", "reqLevel", "reqJob", "reqSTR", "reqDEX", "reqINT", "reqLUK", "reqPOP", "cash", "cursed", "success", "setItemID", "equipTradeBlock", "durability", "randOption", "randStat", "masterLevel", "reqSkillLevel", "elemDefault", "incRMAS", "incRMAF", "incRMAI", "incRMAL", "canLevel", "skill", "charmEXP"};
+	public static final int CHANCE_ON_3RD_LINE_WITH_POT_SCROLL = 25;
 	public static int[] noSpawnNPC = {9201030, 9010037, 9010038};
 
 	public static final int[] unusedNpcs = {9201142, 9201254, 9201030, 9010037, 9010038, 9010039, 9010040, 9300010, 9070004, 9070006, 9000017, 2041017, 9270075, 9000069, 9201029, 9130024, 9330072, 9133080, 9201152, 9330189};
@@ -4860,4 +4861,43 @@ public class GameConstants {
 		return skins.toArray(list);
 	}
 
+	/**
+	 * Checks if a certain potential fits the current equipment.
+	 * @param equip
+	 * @param opID
+     * @return
+     */
+	public static boolean isAllowedPotentialStat(Equip equip, int opID) {
+		//TODO make this real, not important at this moment though
+		return true;
+	}
+
+	/**
+	 * Returns the state a potential scroll can give an equip.
+	 * @param scrollId
+	 * @return RARE, EPIC, UNIQUE, LEGENDARY
+     */
+	public static int getStateOfPotScroll(int scrollId){
+		int resultState = Equip.RARE;
+		if(isEpicPotScroll(scrollId)){
+			resultState = Equip.EPIC;
+		}else if(isUniquePotScroll(scrollId)){
+			resultState = Equip.UNIQUE;
+		}else if(isLegendaryPotScroll(scrollId)){
+			resultState = Equip.LEGENDARY;
+		}
+		return resultState;
+	}
+
+	public static boolean isEpicPotScroll(int scrollId){
+		return scrollId >= 2049700 && scrollId <= 2049716;
+	}
+
+	public static boolean isUniquePotScroll(int scrollId){
+		return scrollId >= 2049740 && scrollId <= 2049769;
+	}
+
+	public static boolean isLegendaryPotScroll(int scrollId){
+		return scrollId == 2049780;
+	}
 }
