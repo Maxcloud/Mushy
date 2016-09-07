@@ -2351,7 +2351,15 @@ public class CField {
 
 		mplew.writeShort(SendPacketOpcode.CURRENT_MAP_WARP.getValue());
 		mplew.write(0);
-		mplew.write(portal);
+		mplew.write(portal); // nUserCallingType
+		
+		if (portal <= 0) {
+			mplew.writeInt(0); // nIdx
+		} else {
+			mplew.writeInt(0); // dwCallerID
+			mplew.writeShort(0); // x
+			mplew.writeShort(0); // y
+		}
 
 		return mplew.getPacket();
 	}
@@ -4161,7 +4169,7 @@ public class CField {
 				mplew.write(wtf);
 				mplew.write(0);
 			}
-			// mplew.write(0);
+			mplew.write(0);
 			return mplew.getPacket();
 		}
 

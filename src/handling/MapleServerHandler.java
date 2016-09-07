@@ -36,7 +36,6 @@ import handling.channel.handler.BuddyListHandler;
 import handling.channel.handler.ChatHandler;
 import handling.channel.handler.GuildHandler;
 import handling.channel.handler.HiredMerchantHandler;
-import handling.channel.handler.InterServerHandler;
 import handling.channel.handler.InventoryHandler;
 import handling.channel.handler.ItemMakerHandler;
 import handling.channel.handler.MobHandler;
@@ -290,10 +289,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 c.getSession().write(LoginPacket.enableSpecialCreation(c.getAccID(), true));
                 break;
             // END OF LOGIN SERVER
-            case CHANGE_CHANNEL:
-            case CHANGE_ROOM_CHANNEL:
-                InterServerHandler.ChangeChannel(lea, c, c.getPlayer(), header == RecvPacketOpcode.CHANGE_ROOM_CHANNEL);
-                break;
             case ENTER_PVP:
             case ENTER_PVP_PARTY:
                 PlayersHandler.EnterPVP(lea, c);
