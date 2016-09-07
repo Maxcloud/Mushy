@@ -1,5 +1,5 @@
 # Mushy
-A community-developed open-source v175 emulator for MapleStory.
+A community-developed open-source v176 emulator for MapleStory.
 
 ## Installation
  * Clone this repository.
