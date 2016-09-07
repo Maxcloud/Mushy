@@ -1,31 +1,33 @@
 package client.inventory;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import constants.EventConstants;
 import constants.GameConstants;
+import server.MapleItemInformationProvider;
+import tools.ArrayUtil;
 import tools.Randomizer;
 
 public class Equip extends Item implements Serializable {
 
     public static enum ScrollResult {
-
         SUCCESS,
         FAIL,
         CURSE
     }
+    public static final int HIDDEN = 1, RARE = 17, EPIC = 18, UNIQUE = 19, LEGENDARY = 20;
     public static final long ARMOR_RATIO = 350000L;
     public static final long WEAPON_RATIO = 700000L;
     //charm: -1 = has not been initialized yet, 0 = already been worn, >0 = has teh charm exp
     private byte upgradeSlots = 0, level = 0, vicioushammer = 0, enhance = 0, enhanctBuff = 0, reqLevel = 0, yggdrasilWisdom = 0, bossDamage = 0, ignorePDR = 0, totalDamage = 0, allStat = 0, karmaCount = -1;
     private short str = 0, dex = 0, _int = 0, luk = 0, hp = 0, mp = 0, watk = 0, matk = 0, wdef = 0, mdef = 0, acc = 0, avoid = 0, hands = 0, speed = 0, jump = 0, charmExp = 0, pvpDamage = 0;
-    private int durability = -1, incSkill = -1, potential1 = 0, potential2 = 0, potential3 = 0, potential4 = 0, potential5 = 0, potential6 = 0, potential7 = 0, potential8 = 0, bonuspotential1 = 0, bonuspotential2 = 0, bonuspotential3 = 0, fusionAnvil = 0, socket1 = 0, socket2 = 0, socket3 = 0;
+    private int durability = -1, incSkill = -1, fusionAnvil = 0;
     private long itemEXP = 0;
     private boolean finalStrike = false;
+    private int[] mainPotential = new int[3]; // max 8?
+    private int[] bonusPotential = new int[3]; // max 3?
+    private int[] socket = new int[3]; // max 3?
     private MapleRing ring = null;
     private MapleAndroid android = null;
     private List<EquipStat> stats = new LinkedList();
@@ -64,18 +66,16 @@ public class Equip extends Item implements Serializable {
         ret.itemEXP = itemEXP;
         ret.durability = durability;
         ret.vicioushammer = vicioushammer;
-        ret.potential1 = potential1;
-        ret.potential2 = potential2;
-        ret.potential3 = potential3;
-        ret.potential4 = potential4;
-        ret.potential5 = potential5;
-        ret.bonuspotential1 = bonuspotential1;
-        ret.bonuspotential2 = bonuspotential2;
-        ret.bonuspotential3 = bonuspotential3;
+        for(int i = 0; i < mainPotential.length; i++){
+            ret.mainPotential[i] = mainPotential[i];
+        }
+        for(int i = 0; i < bonusPotential.length; i++){
+            ret.bonusPotential[i] = bonusPotential[i];
+        }
+        for(int i = 0; i < socket.length; i++){
+            ret.socket[i] = socket[i];
+        }
         ret.fusionAnvil = fusionAnvil;
-        ret.socket1 = socket1;
-        ret.socket2 = socket2;
-        ret.socket3 = socket3;
         ret.charmExp = charmExp;
         ret.pvpDamage = pvpDamage;
         ret.incSkill = incSkill;
@@ -456,92 +456,36 @@ public class Equip extends Item implements Serializable {
         enhance = en;
     }
 
-    public int getPotential1() {
-        return potential1;
+    public int getPotentialByLine(int line){
+        return mainPotential[line];
     }
 
-    public void setPotential1(final int en) {
-        potential1 = en;
+    public void setPotentialByLine(int line, int potential){
+        mainPotential[line] = potential;
     }
 
-    public int getPotential2() {
-        return potential2;
+    public int[] getPotential(){
+        return mainPotential;
     }
 
-    public void setPotential2(final int en) {
-        potential2 = en;
+    public void setPotential(int[] newMainPotential){
+        mainPotential = newMainPotential;
     }
 
-    public int getPotential3() {
-        return potential3;
+    public int getBonusPotentialByLine(int line){
+        return bonusPotential[line];
     }
 
-    public void setPotential3(final int en) {
-        potential3 = en;
+    public void setBonusPotentialByLine(int line, int potential){
+        bonusPotential[line] = potential;
     }
 
-    public int getPotential4() {
-        return potential4;
+    public int[] getBonusPotential(){
+        return bonusPotential;
     }
 
-    public void setPotential4(int en) {
-        potential4 = en;
-    }
-
-    public int getPotential5() {
-        return potential5;
-    }
-
-    public void setPotential5(int en) {
-        potential5 = en;
-    }
-
-    public int getPotential6() {
-        return potential6;
-    }
-
-    public void setPotential6(int en) {
-        potential6 = en;
-    }
-
-    public int getPotential7() {
-        return potential7;
-    }
-
-    public void setPotential7(int en) {
-        potential7 = en;
-    }
-
-    public int getPotential8() {
-        return potential8;
-    }
-
-    public void setPotential8(int en) {
-        potential8 = en;
-    }
-
-    public int getBonusPotential1() {
-        return bonuspotential1;
-    }
-
-    public void setBonusPotential1(final int en) {
-        bonuspotential1 = en;
-    }
-
-    public int getBonusPotential2() {
-        return bonuspotential2;
-    }
-
-    public void setBonusPotential2(final int en) {
-        bonuspotential2 = en;
-    }
-
-    public int getBonusPotential3() {
-        return bonuspotential3;
-    }
-
-    public void setBonusPotential3(final int en) {
-        bonuspotential3 = en;
+    public void setBonusPotential(int[] newBonusPotential){
+        bonusPotential = newBonusPotential;
     }
 
     public int getFusionAnvil() {
@@ -552,59 +496,69 @@ public class Equip extends Item implements Serializable {
         fusionAnvil = en;
     }
 
-    public byte getState() {
-        int pots = potential1 + potential2 + potential3 + potential4 + potential5;
-        if (potential1 < 0) {
-            return 1;
+    /**
+     * Uses a potential scroll on this item.
+     * @param scrollId
+     * @return Whether it failed or not.
+     */
+    public boolean usePotentialScroll(int scrollId){
+        Map<String, Integer> scrollInfo = MapleItemInformationProvider.getInstance().getEquipStats(scrollId);
+        final int chance = scrollInfo.containsKey("success") ? scrollInfo.get("success") : 0;
+        if (Randomizer.nextInt(100) > chance) {
+            return true; //fail
         }
-        if ((potential1 >= 40000) || (potential2 >= 40000) || (potential3 >= 40000) || (potential4 >= 40000) || (potential5 >= 40000)) {
-            return 20;
-        }
-        if ((potential1 >= 30000) || (potential2 >= 30000) || (potential3 >= 30000) || (potential4 >= 30000) || (potential5 >= 30000)) {
-            return 19;
-        }
-        if ((potential1 >= 20000) || (potential2 >= 20000) || (potential3 >= 20000) || (potential4 >= 20000) || (potential5 >= 20000)) {
-            return 18;
-        }
-        if (pots >= 1) {
-            return 17;
-        }
-        if (pots < 0) {
-            return 1;
-        }
-        return 0;
+        resetPotentialWithRank(GameConstants.getStateOfPotScroll(scrollId), GameConstants.CHANCE_ON_3RD_LINE_WITH_POT_SCROLL);
+        return false;
     }
 
-    public byte getBonusState() {
-        final int pots = bonuspotential1 + bonuspotential2 + bonuspotential3;
-        //if (potential4 >= 60000 || potential5 >= 60000) {
-        //    return 14; // special
-        //} else 
-        if (bonuspotential1 >= 40000 || bonuspotential2 >= 40000 || bonuspotential3 >= 40000) {
-            return 20; // legendary
-        } else if (bonuspotential1 >= 30000 || bonuspotential2 >= 30000 || bonuspotential3 >= 30000) {
-            return 19; // unique
-        } else if (bonuspotential1 >= 20000 || bonuspotential2 >= 20000 || bonuspotential3 >= 20000) {
-            return 18; // epic
-        } else if (pots >= 1) {
-            return 17; // rare
-        } else if (pots < 0) {
-            return 1; // hidden
+    public byte getState(){
+        int maxPot = ArrayUtil.absoluteMax(ArrayUtil.concat(getPotential(), getBonusPotential()));
+        byte res = 0;
+        if (maxPot < 0) {
+            res = HIDDEN; //hidden
+        }else if (maxPot >= 40000) {
+            res = LEGENDARY; //legendary
+        }else if (maxPot >= 30000) {
+            res = UNIQUE; //unique
+        }else if (maxPot >= 20000) {
+            res = EPIC; //epic
+        }else if (maxPot >= 1) {
+            res = RARE; //rare
         }
-        return 0;
+        return res;
     }
 
-    public void resetPotential_Fuse(boolean half, int potentialState) { //maker skill - equip first receive
+    public byte getStateByPotential(int[] potential){
+        int maxPot = ArrayUtil.absoluteMax(potential);
+        byte res = 0;
+        if (maxPot < 0) {
+            res = HIDDEN; //hidden
+        }else if (maxPot >= 40000) {
+            res = LEGENDARY; //legendary
+        }else if (maxPot >= 30000) {
+            res = UNIQUE; //unique
+        }else if (maxPot >= 20000) {
+            res = EPIC; //epic
+        }else if (maxPot >= 1) {
+            res = RARE; //rare
+        }
+        return res;
+    }
+
+    public void resetPotential_Fuse(boolean half) { //maker skill - equip first receive
         //no legendary, 0.16% chance unique, 4% chance epic, else rare
-        potentialState = -potentialState;
+        int potentialState = -RARE;
         if (Randomizer.nextInt(100) < 4) {
             potentialState -= Randomizer.nextInt(100) < 4 ? 2 : 1;
         }
-        setPotential1(potentialState);
-        setPotential2((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //1/10 chance of 3 line
-        setPotential3((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //just set it theoretically
-        setPotential4((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
-        setPotential5((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
+        setPotentialByLine(0, potentialState);
+        setPotentialByLine(1, potentialState);
+        setPotentialByLine(2, (Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
+//        setPotential1(potentialState); // leaving this here commented to maybe look at later
+//        setPotential2((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //1/10 chance of 3 line
+//        setPotential3((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //just set it theoretically
+//        setPotential4((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
+//        setPotential5((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
     }
 
     public void resetBonusPotential_Fuse(boolean half, int potentialState) { //maker skill - equip first receive
@@ -613,32 +567,37 @@ public class Equip extends Item implements Serializable {
         if (Randomizer.nextInt(100) < 4) {
             potentialState -= Randomizer.nextInt(100) < 4 ? 2 : 1;
         }
-        setBonusPotential1(potentialState);
-        setBonusPotential2((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //1/10 chance of 3 line
-        setBonusPotential3(0); //just set it theoretically
-        setPotential4(0);
-        setPotential5(0);
+        setBonusPotentialByLine(0, potentialState);
+        setBonusPotentialByLine(1, (Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
+        setBonusPotentialByLine(2, (Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0));
+//        setBonusPotential2((Randomizer.nextInt(half ? 5 : 10) == 0 ? potentialState : 0)); //1/10 chance of 3 line
+//        setBonusPotential3(0); //just set it theoretically
+//        setPotential4(0);
+//        setPotential5(0);
     }
 
     public void resetPotential() {
-        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -19 : -18) : -17;
-        setPotential1(rank);
-        setPotential2((Randomizer.nextInt(10) == 0 ? rank : 0)); //1/10 chance of 3 line
-        setPotential3((Randomizer.nextInt(10) == 0 ? rank : 0)); //just set it theoretically
-        setPotential4((Randomizer.nextInt(10) == 0 ? rank : 0));
-        setPotential5((Randomizer.nextInt(10) == 0 ? rank : 0));
-        setPotential6((Randomizer.nextInt(10) == 0 ? rank : 0));
+        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
+        setPotentialByLine(0, rank);
+        setPotentialByLine(1, rank);
+        setPotentialByLine(2, (Randomizer.nextInt(10) == 0 ? rank : 0));
+    }
+
+    public void resetPotentialWithRank(int rank, int chanceOnThirdLine){
+        setPotentialByLine(0, -rank);
+        setPotentialByLine(1, -rank);
+        setPotentialByLine(2, (Randomizer.nextInt(100) < chanceOnThirdLine) ? -rank : 0);
     }
 
     public void resetBonusPotential() {
-        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -19 : -18) : -17;
-        setBonusPotential1(rank);
-        setBonusPotential2((Randomizer.nextInt(10) == 0 ? rank : 0)); //1/10 chance of 3 line
-        setBonusPotential3(0); //just set it theoretically
+        final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
+        setBonusPotentialByLine(0, rank); // always only 1 line
+        setBonusPotentialByLine(1, 0);
+        setBonusPotentialByLine(2, 0);
     }
-    
 
     public void renewPotential(int type, int line, int toLock, boolean bonus) { // 0 = normal miracle cube, 1 = premium, 2 = epic pot scroll, 3 = super, 5 = enlightening
+        //OUTDATED
         int miracleRate = 1;
         if (EventConstants.DoubleMiracleTime) {
             miracleRate *= 2;
@@ -648,89 +607,94 @@ public class Equip extends Item implements Serializable {
             if (type != 6) {
                 return;
             }
-            rank = (Randomizer.nextInt(100) < 4 * miracleRate && getBonusState() != 20 ? -(getBonusState() + 1) : -(getBonusState())); // 4 % chance to up 1 tier
-            setBonusPotential1(rank);
+            rank = (Randomizer.nextInt(100) < 4 * miracleRate && getStateByPotential(getBonusPotential()) != LEGENDARY ?
+                    -(getStateByPotential(getBonusPotential()) + 1) : -(getStateByPotential(getBonusPotential()))); // 4 % chance to up 1 tier
+            setBonusPotentialByLine(1, rank);
         } else {
-            rank = type == 2 ? -18 : type == 5 ? (Randomizer.nextInt(100) < 3 * miracleRate && getState() != 20 ? -20 : Randomizer.nextInt(100) < 10 * miracleRate && getState() != 20 ? -(getState() + 1) : -(getState())) : (Randomizer.nextInt(100) < 4 * miracleRate && getState() != (type == 3 ? 20 : 19) ? -(getState() + 1) : -(getState())); // 4 % chance to up 1 tier
-            setPotential1(rank);
+            rank = type == 2 ? -EPIC : type == 5 ? (Randomizer.nextInt(100) < 3 * miracleRate && getState() != LEGENDARY ? -LEGENDARY : Randomizer.nextInt(100) < 10 * miracleRate && getState() != LEGENDARY ? -(getState() + 1) : -(getState())) : (Randomizer.nextInt(100) < 4 * miracleRate && getState() != (type == 3 ? LEGENDARY : UNIQUE) ? -(getState() + 1) : -(getState())); // 4 % chance to up 1 tier
+            setPotentialByLine(1, rank);
         }
-        if (getPotential3() > 0 && !bonus) {
-            setPotential2(rank); // put back old 3rd line
-            setPotential3(0);
+        if (getPotentialByLine(2) > 0 && !bonus) {
+            setPotentialByLine(1, rank); // put back old 3rd line
+            setPotentialByLine(2, 0);
         } else {
             switch (type) {
                 case 1: // premium-> suppose to be 25%
-                    setPotential2(Randomizer.nextInt(10) == 0 ? rank : 0); //1/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //1/10 chance of 3 line
                     break;
                 case 2: // epic pot
-                    setPotential2(Randomizer.nextInt(10) <= 1 ? rank : 0); //2/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //2/10 chance of 3 line
                     break;
                 case 3: // super
-                    setPotential2(Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //3/10 chance of 3 line
                     break;
                 case 4: // revolutionary
-                    setPotential2(Randomizer.nextInt(10) <= 3 ? rank : 0); //4/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //4/10 chance of 3 line
                     break;
                 case 5: // enlightening
-                    setPotential4(Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
+                    setPotentialByLine(1, Randomizer.nextInt(10) == 0 ? rank : 0); //3/10 chance of 3 line
                //     setBonusPotential2(Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
                     break;
                 case 6: // master
                     if (!bonus) {
                         return;
                     }
-                    setBonusPotential2(Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
-                    setPotential2(Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
+                    setBonusPotentialByLine(2, Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
+                    setPotentialByLine(2, Randomizer.nextInt(10) <= 2 ? rank : 0); //3/10 chance of 3 line
                     break;
                 default:
-                    setPotential2(0);
+                    setPotentialByLine(2, 0);
                     break;
             }
         }
 
-        if (getPotential4() > 0) {
-            setPotential3(rank);
-        } else if (type == 3) {
-            setPotential3(Randomizer.nextInt(100) <= 2 ? rank : 0);
-        } else {
-            setPotential3(0);
-        }
-        if (getPotential5() > 0) {
-            setPotential4(rank);
-        } else if (type == 3) {
-            setPotential4(Randomizer.nextInt(100) <= 1 ? rank : 0);
-        } else {
-            setPotential4(0);
-        }
-        setPotential5(0);
+        //bunch of stuff that shouldn't be here
+//        if (type == 3) {
+//            setPotentialByLine(3, Randomizer.nextInt(100) <= 2 ? rank : 0);
+//        } else {
+//            setPotentialByLine(3, 0);
+//        }
+//        if (getPotentialByLine(5) > 0) {
+//            setPotentialByLine(4, rank);
+//        } else if (type == 3) {
+//            setPotentialByLine(4, Randomizer.nextInt(100) <= 1 ? rank : 0);
+//        } else {
+//            setPotentialByLine(4, 0);
+//        }
+//        setPotentialByLine(5, 0);
 
         if (bonus) {
-            if (getBonusPotential2() > 0) {
-                setBonusPotential1(rank); // put back old 5th line
+            if (getBonusPotentialByLine(2) > 0) {
+                setBonusPotentialByLine(1, rank); // put back old 5th line
             } else if (type == 6) { // super, revolutionary and enlightening
-                setBonusPotential1(Randomizer.nextInt(100) <= 1 ? rank : 0); // 2/100 to get 5 lines
+                setBonusPotentialByLine(1, Randomizer.nextInt(100) <= 1 ? rank : 0); // 2/100 to get 5 lines
             } else {
-                setBonusPotential1(0); //just set it theoretically
+                setBonusPotentialByLine(1, 0); //just set it theoretically
             }
-            setBonusPotential2(0); //just set it theoretically
+            setBonusPotentialByLine(2, 0); //just set it theoretically
         }
 
-        switch (line) {
-            case 0:
-                //Don't lock
-                break;
-            case 1:
-                setPotential1(-(toLock + line * 100000 + (rank > getState() ? 10000 : 0)));
-                break;
-            case 2:
-                setPotential2(-(toLock + line * 100000));
-                break;
-            case 3:
-                setPotential3(-(toLock + line * 100000));
-                break;
-            default:
-                System.out.println("[Hacking Attempt] Try to lock potential line which does not exists.");
-                break;
+//        switch (line) {
+//            case 0:
+//                //Don't lock
+//                break;
+//            case 1:
+//                setPotentialByLine(1, -(toLock + line * 100000 + (rank > getState() ? 10000 : 0)));
+//                break;
+//            case 2:
+//                setPotentialByLine(2, -(toLock + line * 100000));
+//                break;
+//            case 3:
+//                setPotential3(-(toLock + line * 100000));
+//                break;
+//            default:
+//                System.out.println("[Hacking Attempt] Try to lock potential line which does not exists.");
+//                break;
+//        }
+
+        // potential locking exists?
+        if(line > 0 && line <= 3){
+            setPotentialByLine(line, -(toLock + line * 100000));
         }
     }
 
@@ -788,52 +752,44 @@ public class Equip extends Item implements Serializable {
 
     public short getSocketState() {
         int flag = 0;
-        if (socket1 > 0 || socket2 > 0 || socket3 > 0) { // Got empty sockets show msg 
+        if (socket[0] > 0 || socket[0] > 0 || socket[0] > 0) { // Got empty sockets show msg
             flag |= SocketFlag.DEFAULT.getValue();
         }
-        if (socket1 > 0) {
+        if (socket[0] > 0) {
             flag |= SocketFlag.SOCKET_BOX_1.getValue();
         }
-        if (socket1 > 1) {
+        if (socket[0] > 1) {
             flag |= SocketFlag.USED_SOCKET_1.getValue();
         }
-        if (socket2 > 0) {
+        if (socket[1] > 0) {
             flag |= SocketFlag.SOCKET_BOX_2.getValue();
         }
-        if (socket2 > 1) {
+        if (socket[1] > 1) {
             flag |= SocketFlag.USED_SOCKET_2.getValue();
         }
-        if (socket3 > 0) {
+        if (socket[2] > 0) {
             flag |= SocketFlag.SOCKET_BOX_3.getValue();
         }
-        if (socket3 > 1) {
+        if (socket[2] > 1) {
             flag |= SocketFlag.USED_SOCKET_3.getValue();
         }
         return (short) flag;
     }
 
-    public int getSocket1() {
-        return socket1;
+    public int getSocketByNmb(int nmb){
+        return socket[nmb];
     }
 
-    public void setSocket1(int socket1) {
-        this.socket1 = socket1;
+    public void setSocketByNmb(int nmb, int newSocket){
+        socket[nmb] = newSocket;
     }
 
-    public int getSocket2() {
-        return socket2;
+    public int[] getSockets(){
+        return socket;
     }
 
-    public void setSocket2(int socket2) {
-        this.socket2 = socket2;
-    }
-
-    public int getSocket3() {
-        return socket3;
-    }
-
-    public void setSocket3(int socket3) {
-        this.socket3 = socket3;
+    public void setSocket(int[] newSocket){
+        socket = newSocket;
     }
 
     public List<EquipStat> getStats() {

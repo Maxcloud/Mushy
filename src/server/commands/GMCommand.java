@@ -767,12 +767,12 @@ public class GMCommand {
             } else {
                 Equip equip;
                 equip = ii.randomizeStats((Equip) ii.getEquipById(itemId));
-                equip.setPotential1(Integer.parseInt(splitted[2]));
-                equip.setPotential2(Integer.parseInt(splitted[3]));
-                equip.setPotential3(Integer.parseInt(splitted[4]));
-                equip.setBonusPotential1(Integer.parseInt(splitted[5]));
-                equip.setBonusPotential2(Integer.parseInt(splitted[6]));
-                equip.setBonusPotential3(Integer.parseInt(splitted[7]));
+                equip.setPotentialByLine(0, Integer.parseInt(splitted[2]));
+                equip.setPotentialByLine(1, Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(2, Integer.parseInt(splitted[4]));
+                equip.setBonusPotentialByLine(0, Integer.parseInt(splitted[5]));
+                equip.setBonusPotentialByLine(1, Integer.parseInt(splitted[6]));
+                equip.setBonusPotentialByLine(2, Integer.parseInt(splitted[7]));
                 equip.setOwner(c.getPlayer().getName());
                 MapleInventoryManipulator.addbyItem(c, equip);
             }
@@ -806,9 +806,9 @@ public class GMCommand {
                 equip.setLuk(Short.parseShort(splitted[2]));
                 equip.setWatk(Short.parseShort(splitted[2]));
                 equip.setMatk(Short.parseShort(splitted[2]));
-                equip.setPotential1(Integer.parseInt(splitted[3]));
-                equip.setPotential2(Integer.parseInt(splitted[3]));
-                equip.setPotential3(Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(0, Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(1, Integer.parseInt(splitted[3]));
+                equip.setPotentialByLine(2, Integer.parseInt(splitted[3]));
                 equip.setOwner(c.getPlayer().getName());
                 MapleInventoryManipulator.addbyItem(c, equip);
             }

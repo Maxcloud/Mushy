@@ -27,6 +27,7 @@ import server.StructItemOption;
 import server.StructSetItem;
 import server.StructSetItem.SetItem;
 import server.life.Element;
+import tools.ArrayUtil;
 import tools.Pair;
 import tools.Triple;
 import tools.data.MaplePacketLittleEndianWriter;
@@ -302,7 +303,7 @@ public class PlayerStats implements Serializable {
                 localmaxmp_ += ix.getRight();
             }
             if (equip.getState() >= 17) {
-                final int[] potentials = {equip.getPotential1(), equip.getPotential2(), equip.getPotential3(), equip.getBonusPotential1(), equip.getBonusPotential2()};
+                final int[] potentials = ArrayUtil.concat(equip.getPotential(), equip.getBonusPotential());
                 for (final int i : potentials) {
                     if (i > 0) {
                         soc = ii.getPotentialInfo(i).get(ii.getReqLevel(equip.getItemId()) / 10);
@@ -315,7 +316,7 @@ public class PlayerStats implements Serializable {
                 }
             }
             if (equip.getSocketState() > 15) {
-                final int[] sockets = {equip.getSocket1(), equip.getSocket2(), equip.getSocket3()};
+                final int[] sockets = equip.getSockets();
                 for (final int i : sockets) {
                     if (i > 0) {
                         soc = ii.getSocketInfo(i);
