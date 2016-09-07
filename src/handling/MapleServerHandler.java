@@ -36,7 +36,6 @@ import handling.channel.handler.BuddyListHandler;
 import handling.channel.handler.ChatHandler;
 import handling.channel.handler.GuildHandler;
 import handling.channel.handler.HiredMerchantHandler;
-import handling.channel.handler.InterServerHandler;
 import handling.channel.handler.InventoryHandler;
 import handling.channel.handler.ItemMakerHandler;
 import handling.channel.handler.MobHandler;
@@ -190,10 +189,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
         try {
         	System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
         	boolean handled = OpcodeManager.handle(c, opcode, lea);
-        	if (!handled){
-        		RecvPacketOpcode recv = RecvPacketOpcode.getByValue(opcode);
-                handlePacket(recv, lea, c);
+        	if (handled){
+        		return;
         	}
+        	RecvPacketOpcode recv = RecvPacketOpcode.getByValue(opcode);
+        	if (recv == null){
+        		return;
+        	}
+            handlePacket(recv, lea, c);
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
         	System.out.println("ArrayIndexOutOfBoundsException" + e);
         } catch (Exception e) {
@@ -286,10 +289,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 c.getSession().write(LoginPacket.enableSpecialCreation(c.getAccID(), true));
                 break;
             // END OF LOGIN SERVER
-            case CHANGE_CHANNEL:
-            case CHANGE_ROOM_CHANNEL:
-                InterServerHandler.ChangeChannel(lea, c, c.getPlayer(), header == RecvPacketOpcode.CHANGE_ROOM_CHANNEL);
-                break;
             case ENTER_PVP:
             case ENTER_PVP_PARTY:
                 PlayersHandler.EnterPVP(lea, c);

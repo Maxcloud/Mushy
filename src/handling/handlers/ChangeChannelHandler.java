@@ -2,7 +2,6 @@ package handling.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import constants.MapConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.world.World;
@@ -16,7 +15,7 @@ public class ChangeChannelHandler {
 	public static void handle(MapleClient c, LittleEndianAccessor lea){
 		MapleCharacter chr = c.getPlayer();
 		int toChannel = lea.readByte() + 1;
-		if (chr == null || chr.hasBlockedInventory() || chr.getEventInstance() != null || chr.getMap() == null || chr.isInBlockedMap() || FieldLimitType.ChannelSwitch.check(chr.getMap().getFieldLimit()) || MapConstants.isFmMap(chr.getMapId()) || c.getChannel() == toChannel) {
+		if (chr == null || chr.hasBlockedInventory() || chr.getEventInstance() != null || chr.getMap() == null || chr.isInBlockedMap() || FieldLimitType.ChannelSwitch.check(chr.getMap().getFieldLimit()) || c.getChannel() == toChannel) {
 			c.getSession().write(CWvsContext.enableActions());
 			return;
 		}

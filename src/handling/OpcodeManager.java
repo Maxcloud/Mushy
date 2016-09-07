@@ -7,11 +7,9 @@ import java.util.Map;
 
 import client.MapleClient;
 import handling.handlers.*;
+import handling.handlers.cashshop.*;
 import handling.handlers.login.*;
-import handling.handlers.npc.NpcActionHandler;
-import handling.handlers.npc.NpcShopHandler;
-import handling.handlers.npc.NpcTalkHandler;
-import handling.handlers.npc.NpcTalkMoreHandler;
+import handling.handlers.npc.*;
 import tools.HexTool;
 import tools.data.LittleEndianAccessor;
 

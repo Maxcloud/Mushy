@@ -1343,11 +1343,11 @@ public class DamageParse {
 		lea.skip(1);
 		
 		if (Skill.isEvanForceSkill(skillid))
-			lea.skip(1);
+			lea.skip(1); // bEvanForceAction
 		
 		ai.speed = lea.readByte();
-		// ai.lastAttackTickCount = lea.readInt();
-		lea.skip(4);
+		ai.lastAttackTickCount = lea.readInt();
+		// lea.skip(4);
 		lea.skip(4); // final attack
 		// lea.skip(2); // slot
 		// lea.skip(2); // csstar
@@ -1415,6 +1415,7 @@ public class DamageParse {
 			lea.skip(2); // x
 			lea.skip(2); // y
 		}	
+		
 		if (ai.skillid > 27111303) {
 	        if (ai.skillid == 80001837 || ai.skillid == 27121052) {
 	        	lea.readShort(); //x
@@ -1500,6 +1501,12 @@ public class DamageParse {
 		lea.skip(4);
 		lea.skip(1);
 		
+		if (ai.skillid == 3111013) {
+			lea.skip(4);
+			lea.skip(2); // x
+			lea.skip(2); // y
+		}
+		
 		ai.display = lea.readShort();
 		lea.skip(4);
 		lea.skip(1);
@@ -1513,12 +1520,13 @@ public class DamageParse {
 		ai.speed = lea.readByte();
 		ai.lastAttackTickCount = lea.readInt();
 		lea.skip(4);
+		int finalAttack = lea.readInt();
 		ai.slot = ((byte) lea.readShort());
 		ai.csstar = ((byte) lea.readShort());
 		ai.AOE = lea.readByte(); // nShootRange
-		
+
 		// !is_shoot_skill_not_consuming_bullet
-		lea.skip(4);
+		// lea.skip(4);
 		
 		lea.skip(2);
 		lea.skip(2);
