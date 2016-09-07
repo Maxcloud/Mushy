@@ -3,12 +3,15 @@ package handling.handlers.login;
 import client.MapleClient;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
+import handling.SendPacketOpcode;
+import tools.HexTool;
 import tools.data.LittleEndianAccessor;
 
 public class ClientErrorHandler {
 	
 	@PacketHandler(opcode = RecvPacketOpcode.CLIENT_ERROR)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
+        c.disconnect(true, false);
 		if (lea.available() < 8) {
             System.out.println(lea.toString());
             return;
@@ -30,7 +33,11 @@ public class ClientErrorHandler {
         
         lea.skip(4);
         
-        short opcode = lea.readShort();
+        short code = lea.readShort();
+        
+        String opcode = SendPacketOpcode.getNameByValue(code);
+        
+        System.out.printf("[Error %s] (%s) Data: %s%n", errortype, opcode, lea);
 	}
 
 }

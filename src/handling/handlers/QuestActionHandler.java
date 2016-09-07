@@ -22,8 +22,9 @@ public class QuestActionHandler {
             return;
         }
         
-        if (c.getPlayer() == null)
+        if (c.getPlayer() == null){
             return;
+        }
         
         MapleQuest q = MapleQuest.getInstance(quest);
         switch (action) {
@@ -69,8 +70,9 @@ public class QuestActionHandler {
             case 4: { // scripted start quest
                 int npc = lea.readInt();
                 
-                if (c.getPlayer().hasBlockedInventory())
+                if (c.getPlayer().hasBlockedInventory()){
                     return;
+                }
                 
                 NPCScriptManager.getInstance().startQuest(c, npc, quest);
                 break;

@@ -51,6 +51,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleRing;
 import constants.GameConstants;
+import constants.MapConstants;
 import handling.world.MaplePartyCharacter;
 import lib.data.MapleData;
 import lib.data.MapleDataProvider;
@@ -1069,7 +1070,7 @@ public class PlayersHandler {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
-        if (!GameConstants.isAzwanMap(c.getPlayer().getMapId())) {
+        if (!MapConstants.isAzwanMap(c.getPlayer().getMapId())) {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }

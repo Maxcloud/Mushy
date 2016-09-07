@@ -10,6 +10,6 @@ public class CloseRangeAttackHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CLOSE_RANGE_ATTACK)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
-		PlayerHandler.closeRangeAttack(lea, c, c.getPlayer(), false);
+		PlayerHandler.closeRangeAttack(lea, c, false);
 	}
 }

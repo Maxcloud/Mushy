@@ -773,6 +773,121 @@ public class Skill implements Comparator<Skill> {
     public boolean isPull() {
         return pullTarget;
     }
+    
+    public static boolean isKeyDownSkill(int skillid) {
+    	switch(skillid) {
+	    	case 1311011: // la mancha spear
+			case 2221011: // freezing breath
+			case 2221052: // lightning orb
+			case 2321001: // big bang
+			case 3101008: // covering fire
+			case 3111013: // arrow blaster
+			case 3121020: // hurricane
+			case 4341002: // final cut
+			case 5221004: // rapid fire
+			case 5221022: // broadside
+			case 5311002: // monkey wave
+			case 60011216: // soul buster
+			case 65121003: // soul resonance
+			case 80001587: // airship lv. 1
+			case 80001389: // ?
+			case 80001390: // ?
+			case 80001391: // ?
+			case 80001392: // ?
+			case 80001629: // ?
+			case 80001836: // vanquisher's charm
+			case 80001880: // liberate the rune of barrage
+			case 80001887: // mille aiguilles
+			case 95001001: // flying battle chair mount
+			case 101110100: // wheel wind
+			case 131001004: // let's roll!
+			case 131001008: // sky jump
+			case 142111010: // kinetic jaunt
+				return true;
+			default:
+				return false;
+    	}
+    }
+    
+    public static boolean isSuperNovaSkill(int skillid) {
+	    switch(skillid) {
+		    case 4221052: // shadow veil
+			case 65121052: // supreme supernova
+				return true;
+			default:
+				return false;
+	    }
+    }
+    
+    public static boolean isRushBombSkill(int skillid) {
+    	switch(skillid) {
+	    	case 2221012: // frozen orb
+			case 5101012: // tornado uppercut
+			case 12121001: // blazing extinction
+			case 61111218: // wing beat
+			case 101120200: // wind cutter
+			case 101120203: // storm break
+			case 101120205: // severe storm break
+				return true;
+			default:
+				return false;
+    	}
+    }
+    
+    public static boolean isScreenCenterAttackSkill(int skillid) {
+    	switch(skillid) {
+			case 13121052: // monsoon 
+			case 80001431: // liberate the destructive rune
+			case 100001283: // shadow rain
+				return true;
+			default:
+				return false;
+    	}
+    }
+    
+    public static boolean isAranFallingStopSkill(int skillid) {
+    	switch(skillid) {
+	    	case 80001925: // smash swing
+		    case 80001926: // bomb punch
+		    case 80001927: // bomb punch
+		    case 80001936: // ?
+		    case 80001937: // ?
+		    case 80001938: // ?
+		    	return true;
+	    	default:
+	    		return false;
+    	}
+    }
+    
+    public static boolean isUseBulletMeleeAttack(int skillid) {
+    	return (skillid == 14121052 || (skillid >= 14111022 && skillid <= 14121003) || (skillid >= 14001027 && skillid <= 14000029));
+    }
+    
+    public static boolean isNonConsumingBulletMeleeAttack(int skillid) {
+    	switch(skillid) {
+			case 14000028: // shadow bat
+			case 14000029: // shadow bat
+			case 14121003: // dark omen
+			case 14121052: // dominion
+				return true;
+			default: 
+				return false;
+    	}
+    }
+    
+    public static boolean isEvanForceSkill(int skillid) {
+    	switch(skillid) {
+    		case 22110022: // dragon flash
+    		case 22110023: // dragon flash
+    		case 22141011: // thunder circle
+    		case 22171062: // earth circle
+    		case 22140022: // dragon dive
+    		case 80001894: // dragon flash
+    			return true;
+    		default:
+    			return false;
+    	}
+    }
 
     public boolean isSpecialSkill() {
         int jobId = id / 10000;

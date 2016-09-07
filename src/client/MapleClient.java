@@ -27,6 +27,7 @@ import javax.script.ScriptEngine;
 import org.apache.mina.common.IoSession;
 
 import constants.GameConstants;
+import constants.MapConstants;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
@@ -819,7 +820,7 @@ public class MapleClient implements Serializable {
 					stat1.setCustomData("3");
 				}
 			}
-			if (player.getMapId() == GameConstants.JAIL) {
+			if (player.getMapId() == MapConstants.JAIL) {
 				final MapleQuestStatus stat1 = player.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_TIME));
 				final MapleQuestStatus stat2 = player.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST));
 				if (stat1.getCustomData() == null) {

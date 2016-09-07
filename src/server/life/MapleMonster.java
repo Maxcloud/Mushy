@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import constants.GameConstants;
+import constants.MapConstants;
 import client.Skill;
 import client.inventory.Item;
 import client.MapleBuffStat;
@@ -411,14 +412,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
             exp *= attacker.getEXPMod();
             exp *= attacker.getStat().expBuff / 100.0;
-            if (GameConstants.isTutorialMap(attacker.getMapId())) {
+            if (MapConstants.isTutorialMap(attacker.getMapId())) {
                 exp *= 1;
             } else {
                 int ch_exp = ChannelServer.getInstance(map.getChannel()).getExpRate(attacker.getWorld());
                 exp *= GameConstants.getExpRate(attacker.getJob(), ch_exp);
             }
 
-            exp = (int) Math.min(Integer.MAX_VALUE, exp * attacker.getEXPMod() * attacker.getStat().expBuff / 100.0 * (GameConstants.isTutorialMap(attacker.getMapId()) ? 1 : GameConstants.getExpRate(attacker.getJob(), ChannelServer.getInstance(map.getChannel()).getExpRate(attacker.getWorld()))));
+            exp = (int) Math.min(Integer.MAX_VALUE, exp * attacker.getEXPMod() * attacker.getStat().expBuff / 100.0 * (MapConstants.isTutorialMap(attacker.getMapId()) ? 1 : GameConstants.getExpRate(attacker.getJob(), ChannelServer.getInstance(map.getChannel()).getExpRate(attacker.getWorld()))));
             //do this last just incase someone has a 2x exp card and its set to max value
             int Class_Bonus_EXP = 0;
             if (Class_Bonus_EXP_PERCENT > 0) {
@@ -478,7 +479,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         final MapleCharacter controll = controller.get();
         if (controll != null) { // this can/should only happen when a hidden gm attacks the monster
-            if (GameConstants.isAzwanMap(killer.getMapId())) {
+            if (MapConstants.isAzwanMap(killer.getMapId())) {
                 controll.getClient().getSession().write(MobPacket.stopControllingMonster(this, true));
             } else {
                 controll.getClient().getSession().write(MobPacket.stopControllingMonster(this, false));
@@ -700,7 +701,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             return;
         } else if (controllers != null) {
             controllers.stopControllingMonster(this);
-            if (GameConstants.isAzwanMap(newController.getMapId())) {
+            if (MapConstants.isAzwanMap(newController.getMapId())) {
                 controllers.getClient().getSession().write(MobPacket.stopControllingMonster(this, true));
             } else {
                 controllers.getClient().getSession().write(MobPacket.stopControllingMonster(this, false));
@@ -777,7 +778,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         if (!isAlive()) {
             return;
         }
-        if (GameConstants.isAzwanMap(client.getPlayer().getMapId())) {
+        if (MapConstants.isAzwanMap(client.getPlayer().getMapId())) {
             client.getSession().write(MobPacket.spawnMonster(this, fake && linkCID <= 0 ? -4 : -1, 0, true));
         } else {
             client.getSession().write(MobPacket.spawnMonster(this, fake && linkCID <= 0 ? -4 : -1, 0, false));
@@ -793,7 +794,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         if (stats.isEscort() && getEventInstance() != null && lastNode >= 0) { //shammos
             map.resetShammos(client);
         } else {
-            if (GameConstants.isAzwanMap(client.getPlayer().getMapId())) {
+            if (MapConstants.isAzwanMap(client.getPlayer().getMapId())) {
                 client.getSession().write(MobPacket.killMonster(getObjectId(), 0, true));
             } else {
                 client.getSession().write(MobPacket.killMonster(getObjectId(), 0, false));

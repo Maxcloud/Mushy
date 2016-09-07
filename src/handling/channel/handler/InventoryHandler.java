@@ -59,6 +59,7 @@ import client.inventory.MapleMount;
 import client.inventory.MaplePet;
 import client.inventory.MaplePet.PetFlag;
 import constants.GameConstants;
+import constants.MapConstants;
 import handling.channel.ChannelServer;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
@@ -103,29 +104,6 @@ import tools.packet.PetPacket;
 import tools.packet.PlayerShopPacket;
 
 public class InventoryHandler {
-
-    public static final void ItemMove(final LittleEndianAccessor slea, final MapleClient c) {
-        if (c.getPlayer().hasBlockedInventory()) { //hack
-            return;
-        }
-        c.getPlayer().setScrolledPosition((short) 0);
-        slea.skip(4); // update tick
-        final MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
-        final short src = slea.readShort();
-        final short dst = slea.readShort();
-        final short quantity = slea.readShort();
-        //System.out.println("item move " + type.name() + " " + src + " " + dst + " " + quantity);
-
-        if (src < 0 && dst > 0) {
-            MapleInventoryManipulator.unequip(c, src, dst);
-        } else if (dst < 0) {
-            MapleInventoryManipulator.equip(c, src, dst);
-        } else if (dst == 0) {
-            MapleInventoryManipulator.drop(c, type, src, quantity);
-        } else {
-            MapleInventoryManipulator.move(c, type, src, dst);
-        }
-    }
 
     public static final void SwitchBag(final LittleEndianAccessor slea, final MapleClient c) {
         if (c.getPlayer().hasBlockedInventory()) { //hack
@@ -3741,7 +3719,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3769,7 +3747,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3797,7 +3775,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3829,7 +3807,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3851,7 +3829,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3880,7 +3858,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3910,7 +3888,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3940,7 +3918,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -3983,7 +3961,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -4021,7 +3999,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
@@ -4274,7 +4252,7 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == GameConstants.JAIL) {
+                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
                     c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }

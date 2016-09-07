@@ -19,38 +19,79 @@ package server.movement;
 
 import java.awt.Point;
 
+import tools.data.MaplePacketLittleEndianWriter;
+
+/**
+ * 
+ * @author Maxcloud
+ */
 public abstract class AbstractLifeMovement implements LifeMovement {
 
-    private final Point position;
-    private final int duration;
-    private final int newstate;
-    private final int type;
-
-    public AbstractLifeMovement(int type, Point position, int duration, int newstate) {
-        super();
-        this.type = type;
-        this.position = position;
-        this.duration = duration;
-        this.newstate = newstate;
+	protected byte command;
+	protected byte bMoveAction;
+	protected byte bForcedStop;
+	protected byte bStat;
+	
+	protected short fh;
+	protected short fhFootStart;
+	protected short tElapse;   
+    
+	protected Point position;
+	protected Point vposition;
+	protected Point offset;
+    
+    @Override
+    public byte getCommand() {
+    	return command;
+    }
+    
+    public void setCommand(byte command) {
+    	this.command = command;
+    }
+    
+    @Override
+    public byte getMoveAction() {
+    	return bMoveAction;
     }
 
     @Override
-    public int getType() {
-        return this.type;
+    public byte getForcedStop() {
+    	return bForcedStop;
     }
 
     @Override
-    public int getDuration() {
-        return duration;
+    public byte getBStat() {
+    	return bStat;
+    }
+    
+    @Override
+    public short getFh() {
+    	return fh;
+    }
+    
+    @Override
+    public short getFhFootStart() {
+    	return fhFootStart;
     }
 
     @Override
-    public int getNewstate() {
-        return newstate;
+    public short getDuration() {
+    	return tElapse;
     }
 
     @Override
     public Point getPosition() {
-        return position;
+    	return position;
     }
+    
+    @Override
+    public Point getVPosition() {
+    	return vposition;
+    }
+
+    @Override
+    public Point getOffset() {
+    	return offset;
+    }
+    
 }

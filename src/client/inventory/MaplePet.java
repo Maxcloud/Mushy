@@ -35,7 +35,6 @@ import net.DatabaseConnection;
 import server.MapleItemInformationProvider;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
-import server.movement.StaticLifeMovement;
 
 public class MaplePet implements Serializable {
 
@@ -300,10 +299,10 @@ public class MaplePet implements Serializable {
     public final void updatePosition(final List<LifeMovementFragment> movement) {
         for (final LifeMovementFragment move : movement) {
             if (move instanceof LifeMovement) {
-                if (move instanceof StaticLifeMovement) {
+                // if (move instanceof StaticLifeMovement) {
                     setPos(((LifeMovement) move).getPosition());
-                }
-                setStance(((LifeMovement) move).getNewstate());
+                // }
+                setStance(((LifeMovement) move).getMoveAction()); // .getNewstate());
             }
         }
     }

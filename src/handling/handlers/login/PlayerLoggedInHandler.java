@@ -24,6 +24,7 @@ import server.quest.MapleQuestStatus;
 import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
+import tools.packet.CWvsContext;
 
 public class PlayerLoggedInHandler {
 
@@ -108,13 +109,12 @@ public class PlayerLoggedInHandler {
 
 		// c.getSession().write(HexTool.getByteArrayFromHexString("18 01 00 00 FF 00 00 FF 00 00 FF 00 00 FF 00 00 FF"));
 		
-		// c.getSession().write(CWvsContext.updateCrowns(new int[] { -1, -1, -1, -1, -1 }));
+		c.getSession().write(CWvsContext.updateCrowns(new int[] { -1, -1, -1, -1, -1 }));
 		c.getSession().write(CField.getWarpToMap(player, null, 0, true));
 		
 		// PlayersHandler.calcHyperSkillPointCount(c);
 		// c.getSession().write(CSPacket.enableCSUse());
-		// c.getSession().write(CWvsContext.updateSkills(c.getPlayer().getSkills(),
-		// false));//skill to 0 "fix"
+		c.getSession().write(CWvsContext.updateSkills(c.getPlayer().getSkills(), false));//skill to 0 "fix"
 		// player.getStolenSkills();
 		// c.getSession().write(JobPacket.addStolenSkill());
 
@@ -177,7 +177,7 @@ public class PlayerLoggedInHandler {
 		} catch (Exception e) {
 			FileoutputUtil.outputFileError(FileoutputUtil.Login_Error, e);
 		}*/
-		// player.getClient().getSession().write(CWvsContext.broadcastMsg(channelServer.getServerMessage()));
+		player.getClient().getSession().write(CWvsContext.broadcastMsg(channelServer.getServerMessage()));
 		// player.sendMacros();
 		// player.showNote();
 		// player.sendImp();
@@ -185,9 +185,9 @@ public class PlayerLoggedInHandler {
 		// player.startFairySchedule(false);
 		// player.baseSkills(); // fix people who've lost skills.
 		if (GameConstants.isZero(player.getJob())) {
-			// c.getSession().write(CWvsContext.updateSkills(player.getSkills(), false));
+			c.getSession().write(CWvsContext.updateSkills(player.getSkills(), false));
 		}
-		// c.getSession().write(CField.getKeymap(player.getKeyLayout()));
+		c.getSession().write(CField.getKeymap(player.getKeyLayout()));
 		// player.updatePetAuto();
 		// player.expirationTask(true, transfer == null);
 		// c.getSession().write(CWvsContext.updateMaplePoint(player.getCSPoints(2)));

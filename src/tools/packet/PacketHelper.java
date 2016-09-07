@@ -1432,39 +1432,43 @@ public class PacketHelper {
      * 83 - Ika
      */
     public static void addShopItemInfo(MaplePacketLittleEndianWriter mplew, MapleShopItem item, MapleShop shop, MapleItemInformationProvider ii, Item i, MapleCharacter chr) {
-        mplew.writeInt(item.getItemId());
-        mplew.writeInt(item.getPrice());
-        mplew.write(0); //Discount
-        mplew.writeInt(item.getReqItem());
-        mplew.writeInt(item.getReqItemQ());
-        mplew.writeInt(1440 * item.getExpiration());
-        mplew.writeInt(item.getMinLevel());
-        mplew.writeInt(0);
-        mplew.writeLong(getTime(-2L)); //new v140 1900
-        mplew.writeLong(getTime(-1L)); //new v140 2079
-        mplew.writeInt(item.getCategory());
-        if (GameConstants.isEquip(item.getItemId())) {
+        mplew.writeInt(item.getItemId()); // nItemID
+        mplew.writeInt(item.getPrice());  // nPrice
+        mplew.writeInt(0); // nTokenItemID
+        mplew.writeInt(0); // nTokenPrice
+        mplew.writeInt(0); // nPointQuestID
+        mplew.writeInt(0); // nPointPrice
+        mplew.writeInt(0); // nStarCoin
+        mplew.writeInt(0); // nQuestExID 
+        mplew.writeMapleAsciiString(""); // sQuestExKey
+        mplew.writeInt(0); // nQuestExValue
+        mplew.writeInt(1440 * item.getExpiration()); // nItemPeriod
+        mplew.writeInt(item.getMinLevel()); // nLevelLimited
+        mplew.writeShort(0); // nShowLevMin
+        mplew.writeShort(0); // nShowLevMax
+        mplew.writeInt(0); // nQuestID
+        mplew.write(0);
+        mplew.writeLong(getTime(-2L)); // ftSellStart
+        mplew.writeLong(getTime(-1L)); // ftSellEnd
+        mplew.writeInt(item.getCategory()); // nTabIndex
+        
+        mplew.write(0); // bWorldBlock
+        /*if (GameConstants.isEquip(item.getItemId())) { // // bWorldBlock
             mplew.write(item.hasPotential() ? 1 : 0);
         } else {
             mplew.write(0);
-        }
+        }*/
+        
+        mplew.writeInt(0); // nPotentialGrade
         mplew.writeInt(item.getExpiration() > 0 ? 1 : 0);
-        mplew.write(0);//new 144
+        mplew.write(0);
         if ((!GameConstants.isThrowingStar(item.getItemId())) && (!GameConstants.isBullet(item.getItemId()))) {
-            mplew.writeShort(item.getQuantity()); //quantity of item to buy
-            mplew.writeShort(item.getBuyable()); //buyable
+            mplew.writeShort(item.getQuantity()); // nQuantity
+            mplew.writeShort(item.getBuyable()); // nMaxPerSlot
         } else {
             mplew.writeAsciiString("333333");
             mplew.writeShort(BitTools.doubleToShortBits(ii.getPrice(item.getItemId())));
-//            mplew.writeShort(ItemInformation.getInstance().getSlotMax(c, item.getItemId()));
             mplew.writeShort(ii.getSlotMax(item.getItemId()));
-            /*
-             mplew.writeInt(0);
-             mplew.writeShort(0);
-             mplew.writeShort(BitTools.doubleToShortBits(ii.getPrice(item.getItemId())));
-             */
-//            mplew.writeZeroBytes(8);
-//            mplew.writeShort(ii.getSlotMax(item.getItemId()));
         }
 
         mplew.write(i == null ? 0 : 1);
@@ -1478,7 +1482,7 @@ public class PacketHelper {
             }
         }
         for (int j = 0; j < 4; j++) {
-            mplew.writeInt(0); //red leaf high price probably
+            mplew.writeInt(0); // red leaf high price probably
         }
         addRedLeafInfo(mplew, chr);
     }

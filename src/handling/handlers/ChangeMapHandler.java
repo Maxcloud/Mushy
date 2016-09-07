@@ -10,12 +10,11 @@ import tools.data.LittleEndianAccessor;
 public class ChangeMapHandler {
 
 	@PacketHandler(opcode = RecvPacketOpcode.CHANGE_MAP)
-	public static void handle(MapleClient c, LittleEndianAccessor slea) {
+	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		if (c.getPlayer().getMap() == null) {
-            CashShopOperation.LeaveCS(slea, c, c.getPlayer());
+            CashShopOperation.LeaveCS(lea, c, c.getPlayer());
         } else {
-            PlayerHandler.ChangeMap(slea, c, c.getPlayer());
+            PlayerHandler.ChangeMap(lea, c, c.getPlayer());
         }
-		
 	}
 }
