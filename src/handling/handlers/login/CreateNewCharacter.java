@@ -219,7 +219,7 @@ public class CreateNewCharacter {
 			newchar.changeSkillLevel_Skip(ss, false);
 		}*/
 		
-		newchar.changeSkillData(SkillFactory.getSkill(80001770), 1, (byte) 1, -1);
+		newchar.changeSingleSkillLevel(SkillFactory.getSkill(80001770), 1, (byte) 1, -1);
 
 		int[][] guidebooks = new int[][] { { 4161001, 0 }, { 4161047, 1 }, { 4161048, 2000 }, { 4161052, 2001 },
 				{ 4161054, 3 }, { 4161079, 2002 } };
