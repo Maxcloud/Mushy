@@ -193,36 +193,6 @@ public class PlayerHandler {
 		}
 	}
 
-	public static void UseChair(final int itemId, final MapleClient c, final MapleCharacter chr) {
-		if (chr == null || chr.getMap() == null) {
-			return;
-		}
-		final Item toUse = chr.getInventory(MapleInventoryType.SETUP).findById(itemId);
-		if (toUse == null) {
-			return;
-		}
-		if (MapConstants.isFishingMap(chr.getMapId()) && itemId == 3011000) {
-			chr.startFishingTask();
-		}
-		chr.setChair(itemId);
-		chr.getMap().broadcastMessage(chr, CField.showChair(chr.getId(), itemId), false);
-		c.getSession().write(CWvsContext.enableActions());
-	}
-
-	public static void CancelChair(short id, MapleClient c, MapleCharacter chr) {
-		if (id == -1) {
-			chr.cancelFishingTask();
-			chr.setChair(0);
-			c.getSession().write(CField.cancelChair(-1));
-			if (chr.getMap() != null) {
-				chr.getMap().broadcastMessage(chr, CField.showChair(chr.getId(), 0), false);
-			}
-		} else {
-			chr.setChair(id);
-			c.getSession().write(CField.cancelChair(id));
-		}
-	}
-
 	public static void TrockAddMap(LittleEndianAccessor slea, MapleClient c, MapleCharacter chr) {
 		byte addrem = slea.readByte();
 		byte vip = slea.readByte();

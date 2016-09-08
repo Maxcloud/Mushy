@@ -8958,33 +8958,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         updateReward();
     }
 
-    public void removeBGLayers() {
-        for (byte i = 0; i < 127; i++) {
-            client.getSession().write(CField.removeBGLayer(true, 0, i, 0));
-            //duration 0 = forever map 0 = current map
-        }
-    }
-
-    public void showBGLayers() {
-        for (byte i = 0; i < 127; i++) {
-            client.getSession().write(CField.removeBGLayer(false, 0, i, 0));
-            //duration 0 = forever map 0 = current map
-        }
-    }
-    public static final int CUSTOM_BG = 61000000;
-
-    public int getCustomBGState() {
-        return getIntNoRecord(CUSTOM_BG);
-    }
-
-    public void toggleCustomBGState() {
-        getQuestNAdd(MapleQuest.getInstance(CUSTOM_BG)).setCustomData(String.valueOf(getCustomBGState() == 1 ? 0 : 1));
-        for (byte i = 0; i < 127; i++) {
-            WriteFuture write = client.getSession().write(CField.removeBGLayer((getCustomBGState() == 1), 0, i, 0));
-            //duration 0 = forever map 0 = current map
-        }
-    }
-
     public static void addLinkSkill(int cid, int skill) {
         Connection con = DatabaseConnection.getConnection();
         try {

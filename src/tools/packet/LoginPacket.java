@@ -281,27 +281,6 @@ public class LoginPacket {
         return mplew.getPacket();
     }
 
-    public static byte[] changeBackground(List<Triple<String, Integer, Boolean>> backgrounds) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-        mplew.writeShort(SendPacketOpcode.CHANGE_BACKGROUND.getValue());
-        mplew.write(0); // backgrounds.size() (number of bgs)
-        for (Triple<String, Integer, Boolean> background : backgrounds) {
-            mplew.writeMapleAsciiString(background.getLeft());
-            mplew.write(background.getRight() ? Randomizer.nextInt(2) : background.getMid());
-            mplew.write(0); // 174.1
-            mplew.write(0); // 174.1
-        }
-        /* Map.wz/Obj/login.img/WorldSelect/background/background number
-         Backgrounds ids sometime have more than one background anumation */
-        /* Background are like layers, backgrounds in the packets are
-         removed, so the background which was hiden by the last one
-         is shown.
-         */
-
-        return mplew.getPacket();
-    }
-
     public static byte[] getCharList(String secondpw, List<MapleCharacter> chars, int charslots) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
