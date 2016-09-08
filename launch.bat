@@ -1,5 +1,5 @@
 @echo off
-@title MapleStory Server - v175.1
+@title MapleStory Server - v176.1
 set CLASSPATH=.;bin\*
 java -client server.Start
 pause
