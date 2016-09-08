@@ -119,7 +119,7 @@ public class CField {
 			int lvl) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_TYPE.getValue());
+		mplew.writeShort(SendPacketOpcode.ENTER_PVP.getValue());
 		mplew.write(type);
 		mplew.write(lvl);
 		mplew.write(enabled ? 1 : 0);
@@ -140,7 +140,7 @@ public class CField {
 	public static byte[] getPVPTransform(int type) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_TRANSFORM.getValue());
+		mplew.writeShort(SendPacketOpcode.CHANGE_TEAM.getValue());
 		mplew.write(type);
 
 		return mplew.getPacket();
@@ -149,7 +149,7 @@ public class CField {
 	public static byte[] getPVPDetails(List<Pair<Integer, Integer>> players) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_DETAILS.getValue());
+		mplew.writeShort(SendPacketOpcode.CHANGE_MODE.getValue());
 		mplew.write(1);
 		mplew.write(0);
 		mplew.writeInt(players.size());
@@ -164,7 +164,7 @@ public class CField {
 	public static byte[] enablePVP(boolean enabled) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_ENABLED.getValue());
+		mplew.writeShort(SendPacketOpcode.CHANGE_STATE.getValue());
 		mplew.write(enabled ? 1 : 2);
 
 		return mplew.getPacket();
@@ -173,7 +173,7 @@ public class CField {
 	public static byte[] getPVPScore(int score, boolean kill) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_SCORE.getValue());
+		mplew.writeShort(SendPacketOpcode.UPDATE_COUNT.getValue());
 		mplew.writeInt(score);
 		mplew.write(kill ? 1 : 0);
 
@@ -184,13 +184,13 @@ public class CField {
 			int playerTeam) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_RESULT.getValue());
+		mplew.writeShort(SendPacketOpcode.SHOW_MODE_RESULT.getValue());
 		mplew.writeInt(flags.size());
 		for (Pair f : flags) {
 			mplew.writeInt(((MapleCharacter) f.right).getId());
 			mplew.writeMapleAsciiString(((MapleCharacter) f.right).getName());
 			mplew.writeInt(((Integer) f.left).intValue());
-			mplew.writeShort(((MapleCharacter) f.right).getTeam() + 1);
+			mplew.writeShort(((MapleCharacter) f.right).getTeam() + 1); // byte, byte
 			mplew.writeInt(0);
 			mplew.writeInt(0);
 		}
@@ -209,12 +209,12 @@ public class CField {
 	public static byte[] getPVPTeam(List<Pair<Integer, String>> players) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_TEAM.getValue());
+		mplew.writeShort(SendPacketOpcode.UPDATE_TEAM_INFO.getValue());
 		mplew.writeInt(players.size());
 		for (Pair pl : players) {
 			mplew.writeInt(((Integer) pl.left).intValue());
 			mplew.writeMapleAsciiString((String) pl.right);
-			mplew.writeShort(2660);
+			mplew.writeShort(2660); // byte, byte
 		}
 
 		return mplew.getPacket();
@@ -223,7 +223,7 @@ public class CField {
 	public static byte[] getPVPScoreboard(List<Pair<Integer, MapleCharacter>> flags, int type) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_SCOREBOARD.getValue());
+		mplew.writeShort(SendPacketOpcode.UPDATE_RANK_INFO.getValue());
 		mplew.writeShort(flags.size());
 		for (Pair f : flags) {
 			mplew.writeInt(((MapleCharacter) f.right).getId());
@@ -238,7 +238,7 @@ public class CField {
 	public static byte[] getPVPPoints(int p1, int p2) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_POINTS.getValue());
+		mplew.writeShort(SendPacketOpcode.UPDATE_TEAM_SCORE.getValue());
 		mplew.writeInt(p1);
 		mplew.writeInt(p2);
 
@@ -248,7 +248,7 @@ public class CField {
 	public static byte[] getPVPKilled(String lastWords) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_KILLED.getValue());
+		mplew.writeShort(SendPacketOpcode.REVIVE_MESSAGE.getValue());
 		mplew.writeMapleAsciiString(lastWords);
 
 		return mplew.getPacket();
@@ -257,7 +257,7 @@ public class CField {
 	public static byte[] getPVPMode(int mode) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_MODE.getValue());
+		mplew.writeShort(SendPacketOpcode.SCREEN_EFFECT.getValue());
 		mplew.write(mode);
 
 		return mplew.getPacket();
@@ -266,7 +266,7 @@ public class CField {
 	public static byte[] getPVPIceHPBar(int hp, int maxHp) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-		mplew.writeShort(SendPacketOpcode.PVP_ICEKNIGHT.getValue());
+		mplew.writeShort(SendPacketOpcode.ICEKNIGHT_HP_CHANGE.getValue());
 		mplew.writeInt(hp);
 		mplew.writeInt(maxHp);
 
@@ -538,46 +538,6 @@ public class CField {
 		
 		mplew.writeInt(0);
 		
-		return mplew.getPacket();
-	}
-	
-	public static byte[] removeBGLayer(boolean remove, int map, byte layer, int duration) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-		mplew.writeShort(SendPacketOpcode.REMOVE_BG_LAYER.getValue());
-		mplew.write(remove ? 1 : 0); // Boolean show or remove
-		mplew.writeInt(map);
-		mplew.write(layer); // Layer to show/remove
-		mplew.writeInt(duration);
-
-		return mplew.getPacket();
-	}
-
-	public static byte[] setMapObjectVisible(List<Pair<String, Byte>> objects) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-		mplew.writeShort(SendPacketOpcode.SET_MAP_OBJECT_VISIBLE.getValue());
-		mplew.write(objects.size());
-		for (Pair<String, Byte> object : objects) {
-			mplew.writeMapleAsciiString(object.getLeft());
-			mplew.write(object.getRight());
-		}
-
-		return mplew.getPacket();
-	}
-
-	public static byte[] spawnFlags(List<Pair<String, Integer>> flags) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-		mplew.writeShort(SendPacketOpcode.CHANGE_BACKGROUND.getValue());
-		mplew.write(flags == null ? 0 : flags.size());
-		if (flags != null) {
-			for (Pair f : flags) {
-				mplew.writeMapleAsciiString((String) f.left);
-				mplew.write(((Integer) f.right).intValue());
-			}
-		}
-
 		return mplew.getPacket();
 	}
 
@@ -2867,39 +2827,6 @@ public class CField {
 		return mplew.getPacket();
 	}
 
-	public static byte[] updateAriantScore(List<MapleCharacter> players) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-		mplew.writeShort(SendPacketOpcode.ARIANT_SCORE_UPDATE.getValue());
-		mplew.write(players.size());
-		for (MapleCharacter i : players) {
-			mplew.writeMapleAsciiString(i.getName());
-			mplew.writeInt(0);
-		}
-
-		return mplew.getPacket();
-	}
-
-	public static byte[] sheepRanchInfo(byte wolf, byte sheep) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-		mplew.writeShort(SendPacketOpcode.SHEEP_RANCH_INFO.getValue());
-		mplew.write(wolf);
-		mplew.write(sheep);
-
-		return mplew.getPacket();
-	}
-
-	public static byte[] sheepRanchClothes(int cid, byte clothes) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-		mplew.writeShort(SendPacketOpcode.SHEEP_RANCH_CLOTHES.getValue());
-		mplew.writeInt(cid);
-		mplew.write(clothes);
-
-		return mplew.getPacket();
-	}
-
 	public static byte[] updateWitchTowerKeys(int keys) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
@@ -4299,14 +4226,6 @@ public class CField {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 			mplew.writeShort(SendPacketOpcode.MOVE_SCREEN_DOWN.getValue());
-
-			return mplew.getPacket();
-		}
-
-		public static byte[] resetScreen() {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-			mplew.writeShort(SendPacketOpcode.RESET_SCREEN.getValue());
 
 			return mplew.getPacket();
 		}
