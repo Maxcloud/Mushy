@@ -27,6 +27,7 @@ public class CharacterWithSecondPassword {
             c.getSession().close();
             return;
         }
+        lea.skip(1); //idk what this is, but it breaks the next thing as it's not being read properly.
         c.updateMacs(lea.readMapleAsciiString());
         if (c.CheckSecondPassword(password) && password.length() >= 6 && password.length() <= 16 || c.isGm()) {
             if (c.getIdleTask() != null) {

@@ -429,11 +429,11 @@ public class InternCommand {
 								sb.append("\r\nThere were too many results, and could not display all of them.");
 								break;
 							}
-							sb.append(singleRetNpc.toString());
+//							sb.append(singleRetNpc.toString());
 							// c.getSession().write(NPCPacket.getNPCTalk(9010000,
 							// (byte) 0, retNpcs.toString(), "00 00", (byte) 0,
 							// 9010000));
-							// c.getPlayer().dropMessage(6, singleRetNpc);
+							 c.getPlayer().dropMessage(6, singleRetNpc);
 						}
 					} else {
 						c.getPlayer().dropMessage(6, "No NPC's Found");
@@ -461,11 +461,11 @@ public class InternCommand {
 								sb.append("\r\nThere were too many results, and could not display all of them.");
 								break;
 							}
-							sb.append(singleRetMap);
+//							sb.append(singleRetMap);
 							// c.getSession().write(NPCPacket.getNPCTalk(9010000,
 							// (byte) 0, retMaps.toString(), "00 00", (byte) 0,
 							// 9010000));
-							// c.getPlayer().dropMessage(6, singleRetMap);
+							 c.getPlayer().dropMessage(6, singleRetMap);
 						}
 					} else {
 						c.getPlayer().dropMessage(6, "No Maps Found");
@@ -489,11 +489,11 @@ public class InternCommand {
 								sb.append("\r\nThere were too many results, and could not display all of them.");
 								break;
 							}
-							sb.append(singleRetMob);
+//							sb.append(singleRetMob);
 							// c.getSession().write(NPCPacket.getNPCTalk(9010000,
 							// (byte) 0, retMobs.toString(), "00 00", (byte) 0,
 							// 9010000));
-							// c.getPlayer().dropMessage(6, singleRetMob);
+							 c.getPlayer().dropMessage(6, singleRetMob);
 						}
 					} else {
 						c.getPlayer().dropMessage(6, "No Mobs Found");
@@ -513,11 +513,11 @@ public class InternCommand {
 								sb.append("\r\nThere were too many results, and could not display all of them.");
 								break;
 							}
-							sb.append(singleRetItem);
+//							sb.append(singleRetItem);
 							// c.getSession().write(NPCPacket.getNPCTalk(9010000,
 							// (byte) 0, retItems.toString(), "00 00", (byte) 0,
 							// 9010000));
-							// c.getPlayer().dropMessage(6, singleRetItem);
+							 c.getPlayer().dropMessage(6, singleRetItem);
 						}
 					} else {
 						c.getPlayer().dropMessage(6, "No Items Found");
@@ -536,11 +536,11 @@ public class InternCommand {
 								sb.append("\r\nThere were too many results, and could not display all of them.");
 								break;
 							}
-							sb.append(singleRetQuest);
+//							sb.append(singleRetQuest);
 							// c.getSession().write(NPCPacket.getNPCTalk(9010000,
 							// (byte) 0, retQuests.toString(), "00 00", (byte)
 							// 0, 9010000));
-							// c.getPlayer().dropMessage(6, singleRetItem);
+							 c.getPlayer().dropMessage(6, singleRetQuest);
 						}
 					} else {
 						c.getPlayer().dropMessage(6, "No Quests Found");
@@ -558,11 +558,11 @@ public class InternCommand {
 								sb.append("\r\nThere were too many results, and could not display all of them.");
 								break;
 							}
-							sb.append(singleRetSkill);
+//							sb.append(singleRetSkill);
 							// c.getSession().write(NPCPacket.getNPCTalk(9010000,
 							// (byte) 0, retSkills.toString(), "00 00", (byte)
 							// 0, 9010000));
-							// c.getPlayer().dropMessage(6, singleRetSkill);
+							 c.getPlayer().dropMessage(6, singleRetSkill);
 						}
 					} else {
 						c.getPlayer().dropMessage(6, "No Skills Found");
@@ -588,11 +588,11 @@ public class InternCommand {
 							sb.append("\r\nThere were too many results, and could not display all of them.");
 							break;
 						}
-						sb.append(header);
+//						sb.append(header);
 						// c.getSession().write(NPCPacket.getNPCTalk(9010000,
 						// (byte) 0, headers.toString(), "00 00", (byte) 0,
 						// 9010000));
-						// c.getPlayer().dropMessage(6, header);
+						 c.getPlayer().dropMessage(6, header);
 					}
 				} else {
 					c.getPlayer().dropMessage(6, "Sorry, that search call is unavailable");
@@ -601,7 +601,7 @@ public class InternCommand {
 				NPCTalk talk = new NPCTalk((byte) 4, 9010000, (byte) 0);
 				talk.setText(sb.toString());
 				
-				c.getSession().write(NPCPacket.getNPCTalk(talk));
+//				c.getSession().write(NPCPacket.getNPCTalk(talk));
 			}
 			return 0;
 		}

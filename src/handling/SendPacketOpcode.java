@@ -138,6 +138,7 @@ public enum SendPacketOpcode {
     AVATAR_MEGA(0x112),
     AVATAR_MEGA_REMOVE(0x113),
     EVENT_CROWN(0x118),
+    USE_ENHANCEMENT(0x13D),
     UPDATE_GENDER(0x17F),
     BBS_OPERATION(0x180),
     CARD_DROPS(0x187),
@@ -149,6 +150,7 @@ public enum SendPacketOpcode {
     MAGIC_WHEEL(0x1A2),
     REWARD(0x1A3),
     SKILL_MACRO(0x1AB),
+    SEND_RED_CUBE_REQUEST(0x216), //LP_UserItemRedCubeResult
     
     // CStage::OnPacket (this has been updated.)
     WARP_TO_MAP(0x1AC),
@@ -198,7 +200,7 @@ public enum SendPacketOpcode {
     SHOW_CONSUME_EFFECT(0x209),
     SHOW_SCROLL_EFFECT(0x20A),
     SHOW_MAGNIFYING_EFFECT(0x20E),
-    SHOW_POTENTIAL_RESET(0x20F),
+    SHOW_POTENTIAL_RESET(0x20F), // [60 6e 15 00]itemid? [01] [79 3d 4d 00]cubeitemid
     SHOW_FIREWORKS_EFFECT(0x214),
     SHOW_NEBULITE_EFFECT(0x171), // needs updating
     SHOW_FUSION_EFFECT(0x172), // needs updating
