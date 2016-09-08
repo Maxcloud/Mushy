@@ -560,7 +560,7 @@ public enum SendPacketOpcode {
     WORLD_WHISPER_RESULT(0x60E),
     TOTAL_INFO(0x60F),
     
-    // CFarmMonsterPool::OnPacket
+    // CFarmMonsterPool::OnPacket (this has been updated.)
     ON_INSERT(0x612),
     ON_UPDATE(0x613),
     UPDATE_MY(0x614),
