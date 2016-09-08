@@ -1234,7 +1234,7 @@ public class InventoryHandler {
                 if (new_state > 20 || new_state < 17) { // incase overflow
                     new_state = 17;
                 }
-                while (eq.getBonusState() != new_state) {
+                while (eq.getStateByPotential(eq.getBonusPotential()) != new_state) {
                     //31001 = haste, 31002 = door, 31003 = se, 31004 = hb, 41005 = combat orders, 41006 = advanced blessing, 41007 = speed infusion
                     for (int i = 0; i < lines; i++) { // minimum 2 lines, max 3
                         boolean rewarded = false;
