@@ -2,12 +2,14 @@ package handling.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleTrait;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
+import server.MapleItemInformationProvider;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
@@ -52,17 +54,24 @@ public class UseCashItemHandler {
             // Update
             chr.getInventory(GameConstants.getInventoryType(item.getItemId())).removeItem(item.getPosition(), (short) 1, false);
 
-            chr.getMap().broadcastMessage(chr, CField.getScrollEffect(c.getPlayer().getId(), Equip.ScrollResult.SUCCESS, false, equip.getItemId(), item.getItemId()), false);
-            c.getSession().write(CField.enchantResult(1)); //success
             if (dst < 0) {
                 chr.equipChanged();
             }
+
+            final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+            final int reqLevel = ii.getReqLevel(equip.getItemId()) / 10;
+            boolean hasEnoughInsight = chr.getTrait(MapleTrait.MapleTraitType.sense).getLevel() >= GameConstants.getRequiredSense(reqLevel);
+            long price = hasEnoughInsight ? 0 : GameConstants.getMagnifyPrice(equip); // free if above required insight
+
+            chr.gainMeso(-price, false);
             chr.forceReAddItem(equip, mit);
             c.getSession().write(CWvsContext.enableActions());
             c.getSession().write(CField.showPotentialReset(chr.getId(), true, itemId));
-            c.getSession().write(CWvsContext.sendRedCubeRequest(chr.getId(), hasRankedUp, itemId, dst, equip));
+            if(GameConstants.getCashCubeByItemId(itemId) == GameConstants.Cubes.RED) {
+                c.getSession().write(CWvsContext.sendRedCubeRequest(chr.getId(), hasRankedUp, itemId, dst, equip));
+            }
         }else{
-            chr.dropMessage(5, "You have used a cash item currently unknown by the server.");
+            chr.dropMessage(5, "You have used a cash item currently not known by the server.");
             c.getSession().write(CWvsContext.enableActions());
         }
     }

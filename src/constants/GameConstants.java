@@ -48,7 +48,7 @@ public class GameConstants {
 
 	public static boolean isBonusPot(int opID) {
 		//bpots always are x2xxx
-		return (opID / 1000) % 10 == 2;
+		return Math.floor((opID / 1000) % 10) == 2;
 	}
 
 	public static int getRequiredSense(int reqLevel) {

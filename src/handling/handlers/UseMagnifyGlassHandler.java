@@ -44,11 +44,12 @@ public class UseMagnifyGlassHandler {
         //TODO checks for price
         if(equip.getState() == 1 && chr.getMeso() >= price){
             equip.revealHiddenPotential();
-            c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, equip.getItemId()));
+            chr.gainMeso(-price, false);
+            c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(chr.getId(), true, equip.getItemId()));
             c.getSession().write(CWvsContext.enableActions());
             c.getPlayer().forceReAddItem(equip, mit);
         }else{
-            //client blocks revealing >0 state equips.
+            //client blocks revealing >0 state equips, no error messag needed for this.
             chr.dropMessage(5, "You do not have enough mesos to do this.");
             c.getSession().write(CWvsContext.enableActions());
         }

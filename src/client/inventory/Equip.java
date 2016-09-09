@@ -778,7 +778,7 @@ public class Equip extends Item implements Serializable {
             }
         }
         if(getBonusPotentialByLine(0) < 0) { //hidden bonus
-            //TODO make this not as copy-pasty
+            //TODO make this not as copy-pasty (not high prio)
             int newState = -getBonusPotentialByLine(0);
             if (newState > Equip.LEGENDARY) {
                 newState = Equip.LEGENDARY;
@@ -794,11 +794,11 @@ public class Equip extends Item implements Serializable {
                     while (!rewarded) {
                         StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
                         if (pot != null && pot.reqLevel <= reqLevel && GameConstants.optionTypeFits(pot.optionType, getItemId())
-                                && GameConstants.potentialIDFits(pot.opID, newState, i) && !GameConstants.isBonusPot(pot.opID)) { //optionType
+                                && GameConstants.potentialIDFits(pot.opID, newState, i) && GameConstants.isBonusPot(pot.opID)) { //optionType
                             /*only if the potential is correct for it's type (weapon, acc, etc)
                             and if the potential fits the rank (legendary). In potentialIDFits, the chance to
                             get the same rank on the 2nd/3rd line as on the 1st line is taken into account.*/
-                            setPotentialByLine(i, pot.opID);
+                            setBonusPotentialByLine(i, pot.opID);
                             rewarded = true;
                         }
                     }
