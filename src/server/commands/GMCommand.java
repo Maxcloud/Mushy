@@ -46,7 +46,6 @@ import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleReactor;
-import server.quest.MapleQuest;
 import server.shops.MapleShopFactory;
 import tools.Pair;
 import tools.StringUtil;

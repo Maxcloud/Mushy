@@ -21,10 +21,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package server.events;
 
+import java.util.concurrent.ScheduledFuture;
+
 import client.MapleCharacter;
 import client.MapleDisease;
-
-import java.util.concurrent.ScheduledFuture;
 import server.Timer.EventTimer;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;

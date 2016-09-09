@@ -1,14 +1,13 @@
 package tools.packet;
 
+import java.awt.Point;
+import java.util.List;
+
 import client.MapleCharacter;
 import client.MapleStat;
 import client.inventory.Item;
 import client.inventory.MaplePet;
-import constants.GameConstants;
 import handling.SendPacketOpcode;
-
-import java.awt.Point;
-import java.util.List;
 import server.movement.LifeMovementFragment;
 import tools.data.MaplePacketLittleEndianWriter;
 

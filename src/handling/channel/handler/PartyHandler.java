@@ -276,7 +276,7 @@ public class PartyHandler {
             c.getPlayer().dropMessage(5, "You may not do party search here.");
             return;
         }
-        List parties = new ArrayList();
+        List parties = new ArrayList<MapleParty>();
         for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
             if ((chr.getParty() != null)
                     && (chr.getParty().getId() != c.getPlayer().getParty().getId()) && (!parties.contains(chr.getParty()))) {

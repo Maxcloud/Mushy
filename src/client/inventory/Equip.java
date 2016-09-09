@@ -30,8 +30,8 @@ public class Equip extends Item implements Serializable {
     private int[] socket = new int[3]; // max 3?
     private MapleRing ring = null;
     private MapleAndroid android = null;
-    private List<EquipStat> stats = new LinkedList();
-    private List<EquipSpecialStat> specialStats = new LinkedList();
+    private List<EquipStat> stats = new LinkedList<EquipStat>();
+    private List<EquipSpecialStat> specialStats = new LinkedList<EquipSpecialStat>();
     private Map<EquipStat, Long> statsTest = new LinkedHashMap<>();
 
     public Equip(int id, short position, byte flag) {

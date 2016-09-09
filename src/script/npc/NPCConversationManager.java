@@ -58,7 +58,6 @@ import handling.login.LoginInformationProvider;
 import handling.world.MapleParty;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
-import handling.world.exped.ExpeditionType;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
 import lib.data.MapleDataDirectoryEntry;

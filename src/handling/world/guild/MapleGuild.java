@@ -1,14 +1,5 @@
 package handling.world.guild;
 
-import client.MapleCharacter;
-import client.MapleCharacterUtil;
-import client.MapleClient;
-import client.SkillFactory;
-import constants.GameConstants;
-import handling.world.World;
-import handling.world.guild.MapleBBSThread.MapleBBSReply;
-import net.DatabaseConnection;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +17,15 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import client.MapleCharacter;
+import client.MapleCharacterUtil;
+import client.MapleClient;
+import client.SkillFactory;
+import constants.GameConstants;
+import handling.world.World;
+import handling.world.guild.MapleBBSThread.MapleBBSReply;
+import net.DatabaseConnection;
 import server.MapleStatEffect;
 import tools.data.MaplePacketLittleEndianWriter;
 import tools.packet.CField;

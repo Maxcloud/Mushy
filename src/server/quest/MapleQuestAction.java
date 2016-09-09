@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import client.MapleCharacter;
 import client.MapleStat;
@@ -41,9 +39,7 @@ import lib.ReadBin;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.FileoutputUtil;
-import tools.Pair;
 import tools.Randomizer;
-import tools.Triple;
 import tools.packet.CField;
 import tools.packet.CWvsContext.InfoPacket;
 

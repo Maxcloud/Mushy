@@ -1,5 +1,7 @@
 package handling.handlers;
 
+import java.util.Map;
+
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Equip;
@@ -14,8 +16,6 @@ import tools.Randomizer;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
-
-import java.util.Map;
 
 public class UsePotentialScrollHandler {
 

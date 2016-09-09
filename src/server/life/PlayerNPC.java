@@ -1,15 +1,5 @@
 package server.life;
 
-import client.MapleCharacter;
-import client.MapleClient;
-import client.inventory.Item;
-import client.inventory.MapleInventoryType;
-import client.inventory.MaplePet;
-import handling.channel.ChannelServer;
-import handling.world.MapleCharacterLook;
-import handling.world.World;
-import net.DatabaseConnection;
-
 import java.awt.Point;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import server.maps.*;
+
+import client.MapleCharacter;
+import client.MapleClient;
+import client.inventory.Item;
+import client.inventory.MapleInventoryType;
+import client.inventory.MaplePet;
+import handling.channel.ChannelServer;
+import handling.world.MapleCharacterLook;
+import handling.world.World;
+import net.DatabaseConnection;
+import server.maps.MapleMap;
 import tools.packet.CField.NPCPacket;
 import tools.packet.CWvsContext;
 

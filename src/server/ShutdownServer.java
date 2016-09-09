@@ -1,9 +1,8 @@
 package server;
 
-import net.DatabaseConnection;
-
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
+
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.MBeanRegistrationException;
 import javax.management.MBeanServer;
@@ -14,6 +13,7 @@ import javax.management.ObjectName;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.world.World;
+import net.DatabaseConnection;
 import server.Timer.BuffTimer;
 import server.Timer.CloneTimer;
 import server.Timer.EtcTimer;

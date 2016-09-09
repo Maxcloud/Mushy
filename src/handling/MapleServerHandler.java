@@ -158,14 +158,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void messageSent(IoSession session, Object message) throws Exception { 
-    	final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
+    	//final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
     	
-    	short code = lea.readShort();
-    	String opcode = SendPacketOpcode.getNameByValue(code);
+    	//short code = lea.readShort();
+    	//String opcode = SendPacketOpcode.getNameByValue(code);
     	
-    	String bytes = lea.toString(false);
-		byte[] hex = HexTool.getByteArrayFromHexString(bytes);
-		String hexString = new String(hex, "ASCII");
+    	//String bytes = lea.toString(false);
+		//byte[] hex = HexTool.getByteArrayFromHexString(bytes);
+		//String hexString = new String(hex, "ASCII");
 		
     	// System.out.println("[Sent] " + opcode + ": " + bytes);
     	// System.out.println(hexString);

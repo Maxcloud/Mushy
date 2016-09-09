@@ -26,8 +26,6 @@ import javax.script.ScriptEngine;
 
 import org.apache.mina.common.IoSession;
 
-import constants.GameConstants;
-import constants.MapConstants;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginServer;
