@@ -1472,28 +1472,6 @@ public class GMCommand {
         }
     }
 
-    public static class Jail extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "jail [name] [minutes, 0 = forever]");
-                return 0;
-            }
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
-            final int minutes = Math.max(0, Integer.parseInt(splitted[2]));
-            if (victim != null && c.getPlayer().getGMLevel() >= victim.getGMLevel()) {
-                MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(MapConstants.JAIL);
-                victim.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST)).setCustomData(String.valueOf(minutes * 60));
-                victim.changeMap(target, target.getPortal(0));
-            } else {
-                c.getPlayer().dropMessage(6, "Please be on their channel.");
-                return 0;
-            }
-            return 1;
-        }
-    }
-
     public static class LookNPC extends CommandExecute {
 
         @Override

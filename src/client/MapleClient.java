@@ -820,22 +820,6 @@ public class MapleClient implements Serializable {
 					stat1.setCustomData("3");
 				}
 			}
-			if (player.getMapId() == MapConstants.JAIL) {
-				final MapleQuestStatus stat1 = player.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_TIME));
-				final MapleQuestStatus stat2 = player.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST));
-				if (stat1.getCustomData() == null) {
-					stat1.setCustomData(String.valueOf(System.currentTimeMillis()));
-				} else if (stat2.getCustomData() == null) {
-					stat2.setCustomData("0"); // seconds of jail
-				} else { // previous seconds - elapsed seconds
-					int seconds = Integer.parseInt(stat2.getCustomData())
-							- (int) ((System.currentTimeMillis() - Long.parseLong(stat1.getCustomData())) / 1000);
-					if (seconds < 0) {
-						seconds = 0;
-					}
-					stat2.setCustomData(String.valueOf(seconds));
-				}
-			}
 			player.changeRemoval(true);
 			if (player.getEventInstance() != null) {
 				player.getEventInstance().playerDisconnected(player, player.getId());

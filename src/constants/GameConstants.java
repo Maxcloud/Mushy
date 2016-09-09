@@ -4807,8 +4807,6 @@ public class GameConstants {
 	public static final int BUFF_ITEM = 122223;
 	public static final int PART_JOB = 122750;
 	public static final int PART_JOB_REWARD = 122751;
-	public static final int JAIL_TIME = 123455;
-	public static final int JAIL_QUEST = 123456;
 	public static final int REPORT_QUEST = 123457;
 	public static final int PLAYER_INFORMATION = 123568;
 	public static final int ULT_EXPLORER = 111111;

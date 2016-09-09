@@ -329,7 +329,7 @@ public class MapleMapFactory {
                     }
                 }
                 map.setFirstUserEnter(MapleDataTool.getString(mapData.getChildByPath("info/onFirstUserEnter"), ""));
-                map.setUserEnter(mapid == MapConstants.JAIL ? "jail" : MapleDataTool.getString(mapData.getChildByPath("info/onUserEnter"), ""));
+                map.setUserEnter(MapleDataTool.getString(mapData.getChildByPath("info/onUserEnter"), ""));
                 if (reactors && herbRocks.size() > 0 && highestLevel >= 30 && map.getFirstUserEnter().equals("") && map.getUserEnter().equals("")) {
                     final List<Integer> allowedSpawn = new ArrayList<>(24);
                     allowedSpawn.add(100011);

@@ -2106,15 +2106,10 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             time = 1;
         }
         client.getSession().write(CField.getClock(time));
-        final MapleMap ourMap = getMap();
         time *= 1000;
         mapTimeLimitTask = MapTimer.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                if (ourMap.getId() == MapConstants.JAIL) {
-                    getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_TIME)).setCustomData(String.valueOf(System.currentTimeMillis()));
-                    getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST)).setCustomData("0"); //release them!
-                }
                 changeMap(to, to.getPortal(0));
             }
         }, time, time);
@@ -7293,7 +7288,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (!isAlive() || getPyramidSubway() != null || getMap().getSquadByMap() != null || getEventInstance() != null || getMap().getEMByMap() != null) {
             return true;
         }
-        if ((getMapId() >= 680000210 && getMapId() <= 680000502) || (getMapId() / 10000 == 92502 && getMapId() >= 925020100) || (getMapId() / 10000 == 92503) || getMapId() == MapConstants.JAIL) {
+        if ((getMapId() >= 680000210 && getMapId() <= 680000502) || (getMapId() / 10000 == 92502 && getMapId() >= 925020100) || (getMapId() / 10000 == 92503)) {
             return true;
         }
         if (getMapId() >= 689010000 && getMapId() < 689014000) { //Pink Zakum
