@@ -6,6 +6,7 @@ import java.util.*;
 import constants.EventConstants;
 import constants.GameConstants;
 import server.MapleItemInformationProvider;
+import server.StructItemOption;
 import tools.ArrayUtil;
 import tools.Randomizer;
 
@@ -576,27 +577,68 @@ public class Equip extends Item implements Serializable {
 //        setPotential5(0);
     }
 
+    /**
+     * Resets the current potential. 10% chance on 3rd line if equip currently does not have a 3rd line.
+     */
     public void resetPotential() {
         final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
-        setPotentialByLine(0, rank);
-        setPotentialByLine(1, rank);
-        setPotentialByLine(2, (Randomizer.nextInt(10) == 0 ? rank : 0));
+        resetPotentialWithRank(rank, 10);
     }
 
+    /**
+     * Sets the current potential with a given rank and chance on a third line.
+     * @param rank
+     * @param chanceOnThirdLine
+     */
     public void resetPotentialWithRank(int rank, int chanceOnThirdLine){
         setPotentialByLine(0, -rank);
         setPotentialByLine(1, -rank);
-        setPotentialByLine(2, (Randomizer.nextInt(100) < chanceOnThirdLine) ? -rank : 0);
+        if(getPotentialByLine(2) == 0) {
+            setPotentialByLine(2, (Randomizer.nextInt(100) < chanceOnThirdLine) ? -rank : 0);
+        }else{
+            setPotentialByLine(2, -rank);
+        }
     }
 
+    /**
+     * Resets the bonus potential. 0.16% unique, 0.4% epic, else rare. No chance on 2nd/3rd lines.
+     */
     public void resetBonusPotential() {
         final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
-        setBonusPotentialByLine(0, rank); // always only 1 line
-        setBonusPotentialByLine(1, 0);
-        setBonusPotentialByLine(2, 0);
+        resetBonusPotentialWithRank(rank);
     }
 
-    public void renewPotential(int type, int line, int toLock, boolean bonus) { // 0 = normal miracle cube, 1 = premium, 2 = epic pot scroll, 3 = super, 5 = enlightening
+    public void resetBonusPotentialWithRank(int rank){
+        for(int i = 0; i < getBonusPotential().length; i++){
+            if(getBonusPotentialByLine(i) != 0){
+                setBonusPotentialByLine(i, -rank);
+            }else{
+                setBonusPotentialByLine(i, 0);
+            }
+        }
+    }
+
+    public void renewPotential(GameConstants.Cubes cube){
+        int miracleRate = 1;
+        if(EventConstants.DoubleMiracleTime){
+            miracleRate *= 2;
+        }
+        boolean bonus = cube == GameConstants.Cubes.BONUS;
+        int[] pots = bonus ? getBonusPotential() : getPotential();
+        int rank = getStateByPotential(pots);
+        if(rank < RARE){
+            return;
+        }else if(rank != LEGENDARY && Randomizer.nextInt(100) < GameConstants.getRankUpChanceByCube(cube) * miracleRate){
+            rank += 1; //rank up
+        }
+        if(!bonus){
+            resetPotentialWithRank(rank, GameConstants.get3rdLineUpChanceByCube(cube));
+        }else{
+            resetBonusPotentialWithRank(rank);
+        }
+    }
+
+    public void renewPotential_OLD(int type, int line, int toLock, boolean bonus) { // 0 = normal miracle cube, 1 = premium, 2 = epic pot scroll, 3 = super, 5 = enlightening
         //OUTDATED
         int miracleRate = 1;
         if (EventConstants.DoubleMiracleTime) {
@@ -694,7 +736,74 @@ public class Equip extends Item implements Serializable {
 
         // potential locking exists?
         if(line > 0 && line <= 3){
-            setPotentialByLine(line, -(toLock + line * 100000));
+            setPotentialByLine(line - 1, -(toLock + line * 100000));
+        }
+    }
+
+    /**
+     * Reveals hidden potential on items. Can be main, bonus or both.
+     */
+    public void revealHiddenPotential(){
+        final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        final int reqLevel = ii.getReqLevel(getItemId()) / 10;
+        final List<List<StructItemOption>> pots = new LinkedList<>(MapleItemInformationProvider.getInstance().getAllPotentialInfo().values());
+        if(getPotentialByLine(0) < 0){ //hidden main
+            int newState = -getPotentialByLine(0);
+            if(newState > Equip.LEGENDARY){
+                newState = Equip.LEGENDARY;
+            }else if(newState < Equip.RARE){
+                newState = Equip.RARE;
+            }
+
+            while (getStateByPotential(getPotential()) != newState) {
+                //TODO:This is brute forcing, could potentially (haha) last forever. IDs would have to be hardcoded to do this.
+                //31001 = haste, 31002 = door, 31003 = se, 31004 = hb, 41005 = combat orders, 41006 = advanced blessing, 41007 = speed infusion
+                for (int i = 0; i < getPotential().length; i++) {
+                    if (getPotentialByLine(i) == 0) {
+                        break;
+                    }
+                    boolean rewarded = false;
+                    while (!rewarded) {
+                        StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
+                        if (pot != null && pot.reqLevel <= reqLevel && GameConstants.optionTypeFits(pot.optionType, getItemId())
+                                && GameConstants.potentialIDFits(pot.opID, newState, i) && !GameConstants.isBonusPot(pot.opID)) { //optionType
+                            /*only if the potential is correct for it's type (weapon, acc, etc)
+                            and if the potential fits the rank (legendary). In potentialIDFits, the chance to
+                            get the same rank on the 2nd/3rd line as on the 1st line is taken into account.*/
+                            setPotentialByLine(i, pot.opID);
+                            rewarded = true;
+                        }
+                    }
+                }
+            }
+        }
+        if(getBonusPotentialByLine(0) < 0) { //hidden bonus
+            //TODO make this not as copy-pasty
+            int newState = -getBonusPotentialByLine(0);
+            if (newState > Equip.LEGENDARY) {
+                newState = Equip.LEGENDARY;
+            } else if (newState < Equip.RARE) {
+                newState = Equip.RARE;
+            }
+            while (getStateByPotential(getBonusPotential()) != newState) {
+                for (int i = 0; i < getBonusPotential().length; i++) {
+                    if (getBonusPotentialByLine(i) == 0) {
+                        break;
+                    }
+                    boolean rewarded = false;
+                    while (!rewarded) {
+                        StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
+                        if (pot != null && pot.reqLevel <= reqLevel && GameConstants.optionTypeFits(pot.optionType, getItemId())
+                                && GameConstants.potentialIDFits(pot.opID, newState, i) && !GameConstants.isBonusPot(pot.opID)) { //optionType
+                            /*only if the potential is correct for it's type (weapon, acc, etc)
+                            and if the potential fits the rank (legendary). In potentialIDFits, the chance to
+                            get the same rank on the 2nd/3rd line as on the 1st line is taken into account.*/
+                            setPotentialByLine(i, pot.opID);
+                            rewarded = true;
+                        }
+                    }
+                }
+            }
         }
     }
 

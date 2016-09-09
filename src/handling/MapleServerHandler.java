@@ -62,6 +62,9 @@ import tools.packet.CField;
 import tools.packet.CSPacket;
 import tools.packet.LoginPacket;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class MapleServerHandler extends IoHandlerAdapter {
 	
 	private final byte[] skey = new byte[] {
@@ -187,7 +190,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
         
         final short opcode = lea.readShort();
         try {
-        	System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
+            if(!isSpamHeader(opcode)){
+                System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
+            }
         	boolean handled = OpcodeManager.handle(c, opcode, lea);
         	if (handled){
         		return;
@@ -198,11 +203,20 @@ public class MapleServerHandler extends IoHandlerAdapter {
         	}
             handlePacket(recv, lea, c);
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
-        	System.out.println("ArrayIndexOutOfBoundsException" + e);
+        	e.printStackTrace();
         } catch (Exception e) {
-        	System.out.println("Exception" + e);
+        	e.printStackTrace();
         }
 
+    }
+
+    private boolean isSpamHeader(short opCode) {
+        Set<Short> spamHeaders = new HashSet();
+        spamHeaders.add(RecvPacketOpcode.NPC_ACTION.getValue());
+        spamHeaders.add(RecvPacketOpcode.MOVE_LIFE.getValue());
+        spamHeaders.add(RecvPacketOpcode.MOVE_PLAYER.getValue());
+
+        return spamHeaders.contains(opCode);
     }
 
     public static void handlePacket(final RecvPacketOpcode header, final LittleEndianAccessor lea, final MapleClient c) throws Exception {
@@ -415,12 +429,12 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case DRESSUP_TIME:
                 PlayerHandler.DressUpTime(lea, c);
                 break;
-            case USE_CHAIR:
-                PlayerHandler.UseChair(lea.readInt(), c, c.getPlayer());
-                break;
-            case CANCEL_CHAIR:
-                PlayerHandler.CancelChair(lea.readShort(), c, c.getPlayer());
-                break;
+//            case USE_CHAIR:
+//                PlayerHandler.UseChair(lea.readInt(), c, c.getPlayer());
+//                break;
+//            case CANCEL_CHAIR:
+//                PlayerHandler.CancelChair(lea.readShort(), c, c.getPlayer());
+//                break;
             case WHEEL_OF_FORTUNE:
                 break; //whatever
             case USE_ITEMEFFECT:
