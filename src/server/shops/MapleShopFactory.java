@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class MapleShopFactory {
 
-    private final Map<Integer, MapleShop> shops = new HashMap();
-    private final Map<Integer, MapleShop> npcShops = new HashMap();
+    private final Map<Integer, MapleShop> shops = new HashMap<Integer, MapleShop>();
+    private final Map<Integer, MapleShop> npcShops = new HashMap<Integer, MapleShop>();
     private static final MapleShopFactory instance = new MapleShopFactory();
 
     public static MapleShopFactory getInstance() {

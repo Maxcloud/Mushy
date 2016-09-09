@@ -174,7 +174,6 @@ public class HexTool {
                 baos.write(nextb);
             }
         }
-        label161:
         return baos.toByteArray();
     }
 

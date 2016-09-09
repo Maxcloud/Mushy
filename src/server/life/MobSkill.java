@@ -50,8 +50,8 @@ public class MobSkill {
     private boolean summonOnce;
 
     public MobSkill(int skillId, int level) {
-        skillId = skillId;
-        skillLevel = level;
+        this.skillId = skillId;
+        this.skillLevel = level;
     }
 
     public void setOnce(boolean o) {

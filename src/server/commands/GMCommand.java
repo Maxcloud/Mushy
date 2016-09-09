@@ -1095,10 +1095,6 @@ public class GMCommand {
             for (MapleCharacter mch : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                 if (mch.getMapId() == c.getPlayer().getMapId()) {
                     if (splitted.length == 4) {
-                        if (mch == null) {
-                            c.getPlayer().dropMessage(5, "Not found.");
-                            return 0;
-                        }
                         mch.disease(type, CommandProcessorUtil.getOptionalIntArg(splitted, 2, 1));
                     } else {
                         mch.disease(type, CommandProcessorUtil.getOptionalIntArg(splitted, 2, 1));
