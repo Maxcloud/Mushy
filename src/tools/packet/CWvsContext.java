@@ -1682,6 +1682,20 @@ public class CWvsContext {
         return packet.getPacket();
     }
 
+    public static byte[] sendRedCubeRequest(int charId, boolean hasRankedUp, int itemId, short dst, Equip equip) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+        mplew.writeShort(SendPacketOpcode.SEND_RED_CUBE_REQUEST.getValue());
+        mplew.writeInt(charId);
+        mplew.write(hasRankedUp ? 1 : 0);
+        mplew.writeInt(itemId);
+        mplew.writeShort(dst);
+        mplew.writeShort(0); // ?
+        PacketHelper.addItemInfo(mplew, equip);
+
+        return mplew.getPacket();
+    }
+
     public static class AlliancePacket {
 
         public static byte[] getAllianceInfo(MapleGuildAlliance alliance) {

@@ -2,6 +2,7 @@ package handling.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleTrait;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
@@ -36,44 +37,20 @@ public class UseMagnifyGlassHandler {
             return;
         }
         Equip equip = (Equip) item;
-        long price = GameConstants.getMagnifyPrice(equip);
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         final int reqLevel = ii.getReqLevel(equip.getItemId()) / 10;
+        boolean hasEnoughInsight = chr.getTrait(MapleTrait.MapleTraitType.sense).getLevel() >= GameConstants.getRequiredSense(reqLevel);
+        long price = hasEnoughInsight ? 0 : GameConstants.getMagnifyPrice(equip); // free if above required insight
         //TODO checks for price
-        if(equip.getState() == 1){
-            final List<List<StructItemOption>> pots = new LinkedList<>(ii.getAllPotentialInfo().values());
-            int newState = -equip.getPotentialByLine(0);
-            if(newState > Equip.LEGENDARY){
-                newState = Equip.LEGENDARY;
-            }else if(newState < Equip.RARE){
-                newState = Equip.RARE;
-            }
-
-            while (equip.getState() != newState) {
-                //TODO:This is brute forcing, could potentially (haha) last forever.
-                //31001 = haste, 31002 = door, 31003 = se, 31004 = hb, 41005 = combat orders, 41006 = advanced blessing, 41007 = speed infusion
-                for (int i = 0; i < equip.getPotential().length; i++) { // minimum 2 lines, max 5
-                    if(equip.getPotentialByLine(i) == 0){
-                        break;
-                    }
-                    boolean rewarded = false;
-                    while (!rewarded) {
-                        StructItemOption pot = pots.get(Randomizer.nextInt(pots.size())).get(reqLevel);
-                        if (pot != null && pot.reqLevel <= reqLevel && GameConstants.optionTypeFits(pot.optionType, equip.getItemId()) && GameConstants.potentialIDFits(pot.opID, newState, i)) { //optionType
-                            //have to research optionType before making this truely official-like
-                            if (GameConstants.isAllowedPotentialStat(equip, pot.opID)) {
-                                equip.setPotentialByLine(i, pot.opID);
-                                rewarded = true;
-                            }
-                        }
-                    }
-                }
-            }
-            c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, equip.getItemId()));
+        if(equip.getState() == 1 && chr.getMeso() >= price){
+            equip.revealHiddenPotential();
+            chr.gainMeso(-price, false);
+            c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(chr.getId(), true, equip.getItemId()));
             c.getSession().write(CWvsContext.enableActions());
             c.getPlayer().forceReAddItem(equip, mit);
-        }else{ //equipState not 1
-            chr.dropMessage(5, "This item has no hidden potential to reveal.");
+        }else{
+            //client blocks revealing >0 state equips, no error messag needed for this.
+            chr.dropMessage(5, "You do not have enough mesos to do this.");
             c.getSession().write(CWvsContext.enableActions());
         }
 

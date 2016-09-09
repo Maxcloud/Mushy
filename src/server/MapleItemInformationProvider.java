@@ -965,7 +965,7 @@ public class MapleItemInformationProvider {
                                 if (Randomizer.nextInt(100) > chanc) {
                                     return null; //destroyed, nib
                                 }
-                                nEquip.renewPotential(2, 0, (short) 0, false);
+                                nEquip.renewPotential_OLD(2, 0, (short) 0, false);
                             } else if (nEquip.getState() == 0) {
                                 final int chanc = (scrollId.getItemId() == 5534000 || scrollId.getItemId() == 2049402 || scrollId.getItemId() == 2049406 ? 100 : scrollId.getItemId() == 2049701 ? 80 : (scrollId.getItemId() == 2049400 || scrollId.getItemId() == 2049407 || scrollId.getItemId() == 2049413 ? 90 : 70)) + added;
                                 if (Randomizer.nextInt(100) > chanc) {
