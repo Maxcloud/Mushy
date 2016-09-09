@@ -415,12 +415,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case DRESSUP_TIME:
                 PlayerHandler.DressUpTime(lea, c);
                 break;
-            case USE_CHAIR:
-                PlayerHandler.UseChair(lea.readInt(), c, c.getPlayer());
-                break;
-            case CANCEL_CHAIR:
-                PlayerHandler.CancelChair(lea.readShort(), c, c.getPlayer());
-                break;
             case WHEEL_OF_FORTUNE:
                 break; //whatever
             case USE_ITEMEFFECT:

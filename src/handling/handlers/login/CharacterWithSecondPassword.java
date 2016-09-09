@@ -17,6 +17,7 @@ public class CharacterWithSecondPassword {
 		
 		final String password = lea.readMapleAsciiString();
         final int charId = lea.readInt();
+        lea.readByte();
         /*if (view) {
             c.setChannel(1);
             c.setWorld(slea.readInt());
