@@ -151,6 +151,7 @@ public enum SendPacketOpcode {
     REWARD(0x1A3),
     SKILL_MACRO(0x1AB),
     SEND_RED_CUBE_REQUEST(0x216), //LP_UserItemRedCubeResult
+    SEND_BLACK_CUBE_REQUEST(0x211),
     
     // CStage::OnPacket (this has been updated.)
     WARP_TO_MAP(0x1AC),

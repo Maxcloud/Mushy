@@ -67,8 +67,11 @@ public class UseCashItemHandler {
             chr.forceReAddItem(equip, mit);
             c.getSession().write(CWvsContext.enableActions());
             c.getSession().write(CField.showPotentialReset(chr.getId(), true, itemId));
-            if(GameConstants.getCashCubeByItemId(itemId) == GameConstants.Cubes.RED) {
+            GameConstants.Cubes cube = GameConstants.getCashCubeByItemId(itemId);
+            if(cube == GameConstants.Cubes.RED) {
                 c.getSession().write(CWvsContext.sendRedCubeRequest(chr.getId(), hasRankedUp, itemId, dst, equip));
+            } else if(cube == GameConstants.Cubes.BLACK){
+                c.getSession().write(CWvsContext.sendBlackCubeRequest(chr.getId(), hasRankedUp, itemId, dst, equip));
             }
         }else{
             chr.dropMessage(5, "You have used a cash item currently not known by the server.");
