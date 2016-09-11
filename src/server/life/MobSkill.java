@@ -20,20 +20,19 @@
  */
 package server.life;
 
-import constants.GameConstants;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.EnumMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import client.MapleCharacter;
 import client.MapleDisease;
 import client.MonsterStatus;
-
-import java.util.EnumMap;
+import constants.GameConstants;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleMist;
@@ -51,8 +50,8 @@ public class MobSkill {
     private boolean summonOnce;
 
     public MobSkill(int skillId, int level) {
-        skillId = skillId;
-        skillLevel = level;
+        this.skillId = skillId;
+        this.skillLevel = level;
     }
 
     public void setOnce(boolean o) {

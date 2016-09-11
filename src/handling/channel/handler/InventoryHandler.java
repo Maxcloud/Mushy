@@ -3713,10 +3713,6 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
-                    break;
-                }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
                     final String message = slea.readMapleAsciiString();
 
@@ -3741,10 +3737,6 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
-                    break;
-                }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
                     final String message = slea.readMapleAsciiString();
 
@@ -3767,10 +3759,6 @@ case 2431935: {
             case 5077000: { // 3 line Megaphone
                 if (c.getPlayer().getLevel() < 10) {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
-                    break;
-                }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3801,10 +3789,6 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
-                    break;
-                }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
                     final String message = slea.readMapleAsciiString();
 
@@ -3821,10 +3805,6 @@ case 2431935: {
             case 5073000: { // Heart Megaphone
                 if (c.getPlayer().getLevel() < 10) {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
-                    break;
-                }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3850,10 +3830,6 @@ case 2431935: {
             case 5074000: { // Skull Megaphone
                 if (c.getPlayer().getLevel() < 10) {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
-                    break;
-                }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3882,10 +3858,6 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
-                    break;
-                }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
                     final String message = slea.readMapleAsciiString();
 
@@ -3910,10 +3882,6 @@ case 2431935: {
             case 5076000: { // Item Megaphone
                 if (c.getPlayer().getLevel() < 10) {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
-                    break;
-                }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
@@ -3955,10 +3923,6 @@ case 2431935: {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
                     break;
                 }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
-                    break;
-                }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {
                     final String message = slea.readMapleAsciiString();
 
@@ -3991,10 +3955,6 @@ case 2431935: {
             case 5075005: {
                 if (c.getPlayer().getLevel() < 10) {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
-                    break;
-                }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
                 int tvType = itemId % 10;
@@ -4244,10 +4204,6 @@ case 2431935: {
             case 5390009: {
                 if (c.getPlayer().getLevel() < 10) {
                     c.getPlayer().dropMessage(5, "Must be level 10 or higher.");
-                    break;
-                }
-                if (c.getPlayer().getMapId() == MapConstants.JAIL) {
-                    c.getPlayer().dropMessage(5, "Cannot be used here.");
                     break;
                 }
                 if (!c.getChannelServer().getMegaphoneMuteState()) {

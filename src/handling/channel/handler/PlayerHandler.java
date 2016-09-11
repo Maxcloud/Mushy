@@ -35,9 +35,6 @@ import server.events.MapleEventType;
 import server.events.MapleSnowball;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
-import server.life.MobAttackInfo;
-import server.life.MobSkill;
-import server.life.MobSkillFactory;
 import server.maps.FieldLimitType;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
@@ -265,10 +262,9 @@ public class PlayerHandler {
 			MapleInventory in = c.getPlayer().getInventory(MapleInventoryType.getByType(type));
 			for (byte i = 0; i < in.getSlotLimit(); i++) {
 				if (in.getItem(i) != null) {
-					MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.getByType(type), i,
-							in.getItem(i).getQuantity(), false);
+					MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.getByType(type), i, in.getItem(i).getQuantity(), false);
 				}
-				return;
+				return; //why does this return?
 			}
 			break;
 		}

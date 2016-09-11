@@ -194,7 +194,7 @@ public class CSPacket {
 //        }
         mplew.writeInt(0);
         mplew.writeInt(0);
-        List pack = CashItemFactory.getInstance().getPackageItems(item.getSN());
+        List<Integer> pack = CashItemFactory.getInstance().getPackageItems(item.getSN());
         if (pack == null) {
             mplew.writeInt(0);
         } else {

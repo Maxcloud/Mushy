@@ -31,8 +31,8 @@ public class Equip extends Item implements Serializable {
     private int[] socket = new int[3]; // max 3?
     private MapleRing ring = null;
     private MapleAndroid android = null;
-    private List<EquipStat> stats = new LinkedList();
-    private List<EquipSpecialStat> specialStats = new LinkedList();
+    private List<EquipStat> stats = new LinkedList<EquipStat>();
+    private List<EquipSpecialStat> specialStats = new LinkedList<EquipSpecialStat>();
     private Map<EquipStat, Long> statsTest = new LinkedHashMap<>();
 
     public Equip(int id, short position, byte flag) {
@@ -626,9 +626,10 @@ public class Equip extends Item implements Serializable {
         boolean bonus = cube == GameConstants.Cubes.BONUS;
         int[] pots = bonus ? getBonusPotential() : getPotential();
         int rank = getStateByPotential(pots);
-        if(rank < RARE){
+        int maxState = GameConstants.getMaxAvailableState(cube);
+        if(rank < RARE || rank > maxState){
             return;
-        }else if(rank != LEGENDARY && Randomizer.nextInt(100) < GameConstants.getRankUpChanceByCube(cube) * miracleRate){
+        }else if(rank != maxState && Randomizer.nextInt(100) < GameConstants.getRankUpChanceByCube(cube) * miracleRate){
             rank += 1; //rank up
         }
         if(!bonus){

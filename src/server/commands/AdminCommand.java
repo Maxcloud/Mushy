@@ -72,7 +72,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            List<Integer> items = new LinkedList();
+            List<Integer> items = new LinkedList<Integer>();
             for (int i = 1; i <= 10; i++) {
                 try {
                     items.add(Integer.parseInt(splitted[i]));

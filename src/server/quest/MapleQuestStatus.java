@@ -1,10 +1,10 @@
 package server.quest;
 
-import constants.GameConstants;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import server.life.MapleLifeFactory;
 
 public class MapleQuestStatus implements Serializable {

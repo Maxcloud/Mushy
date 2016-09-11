@@ -58,7 +58,6 @@ import handling.login.LoginInformationProvider;
 import handling.world.MapleParty;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
-import handling.world.exped.ExpeditionType;
 import handling.world.guild.MapleGuild;
 import handling.world.guild.MapleGuildAlliance;
 import lib.data.MapleDataDirectoryEntry;
@@ -171,26 +170,24 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	public void ResetInnerPot() {
 		// int itemid = slea.readInt();
 		// short slot = (short) slea.readInt();
-		// Item item =
-		// c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
-		List<InnerSkillValueHolder> newValues = new LinkedList();
-		int i = 0;
+		// Item item = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
+		List<InnerSkillValueHolder> newValues = new LinkedList<InnerSkillValueHolder>();
+
 		for (InnerSkillValueHolder isvh : c.getPlayer().getInnerSkills()) {
 			newValues.add(InnerAbillity.getInstance().renewSkill(isvh.getRank(), 2702000, true));
 		}
 
-		i++;
 		c.getPlayer().getInnerSkills().clear();
 		for (InnerSkillValueHolder isvh : newValues) {
 			c.getPlayer().getInnerSkills().add(isvh);
 		}
 
-		// c.getPlayer().getInventory(MapleInventoryType.USE).removeItem(slot,
-		// (short) 1, false);
+		// c.getPlayer().getInventory(MapleInventoryType.USE).removeItem(slot, (short) 1, false);
 
 		c.getSession().write(CField.getCharInfo(c.getPlayer()));
 		c.getSession().write(CWvsContext.enableActions());
 		c.getPlayer().fakeRelog2();
+		
 		// MapleMap currentMap = c.getPlayer().getMap();
 		// currentMap.removePlayer(c.getPlayer());
 		// currentMap.addPlayer(c.getPlayer());
@@ -2356,7 +2353,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
 	public int getEquipId(byte slot) {
 		MapleInventory equip = getPlayer().getInventory(MapleInventoryType.EQUIP);
-		Equip eu = (Equip) equip.getItem(slot);
 		return equip.getItem(slot).getItemId();
 	}
 
@@ -2639,7 +2635,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
 
 	public List<Triple<Short, String, Integer>> rankList(short[] ranks, String[] names, int[] values) {
-		List<Triple<Short, String, Integer>> list = new LinkedList();
+		List<Triple<Short, String, Integer>> list = new LinkedList<Triple<Short, String, Integer>>();
 		if (ranks.length != names.length || names.length != values.length || values.length != ranks.length) {
 			return null;
 		}

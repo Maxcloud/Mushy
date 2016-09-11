@@ -161,14 +161,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void messageSent(IoSession session, Object message) throws Exception { 
-    	final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
+    	//final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
     	
-    	short code = lea.readShort();
-    	String opcode = SendPacketOpcode.getNameByValue(code);
+    	//short code = lea.readShort();
+    	//String opcode = SendPacketOpcode.getNameByValue(code);
     	
-    	String bytes = lea.toString(false);
-		byte[] hex = HexTool.getByteArrayFromHexString(bytes);
-		String hexString = new String(hex, "ASCII");
+    	//String bytes = lea.toString(false);
+		//byte[] hex = HexTool.getByteArrayFromHexString(bytes);
+		//String hexString = new String(hex, "ASCII");
 		
     	// System.out.println("[Sent] " + opcode + ": " + bytes);
     	// System.out.println(hexString);
@@ -429,12 +429,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             case DRESSUP_TIME:
                 PlayerHandler.DressUpTime(lea, c);
                 break;
-//            case USE_CHAIR:
-//                PlayerHandler.UseChair(lea.readInt(), c, c.getPlayer());
-//                break;
-//            case CANCEL_CHAIR:
-//                PlayerHandler.CancelChair(lea.readShort(), c, c.getPlayer());
-//                break;
             case WHEEL_OF_FORTUNE:
                 break; //whatever
             case USE_ITEMEFFECT:

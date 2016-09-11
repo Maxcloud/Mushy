@@ -64,17 +64,25 @@ public class GameConstants {
 	}
 
 	public enum Cubes {
-		MIRACLE,
-		PREMIUM,
-		SUPER,
-		REVOLUTIONARY,
-		ENLIGHTENING,
-		PLATINUM,
-		RED,
-		BLACK,
-		VIOLET,
-		MEMORY,
-		BONUS
+		MIRACLE(5062000),
+		PREMIUM(5062001),
+		SUPER(5062002),
+		REVOLUTIONARY(5062003),
+		ENLIGHTENING(5062005),
+		PLATINUM(5062006),
+		RED(5062009),
+		BLACK(5062010),
+		VIOLET(5062024),
+		MEMORY(5062090),
+		BONUS(5062500);
+		private int itemId = -1;
+
+		Cubes(int itemId){this.itemId = itemId;}
+
+		public int getItemId(){
+			return itemId;
+		}
+
 	}
 	private static final long[] exp = new long[251];
 	private static final int[] closeness = {0, 1, 3, 6, 14, 31, 60, 108, 181, 287, 434, 632, 891, 1224, 1642, 2161, 2793,
@@ -115,9 +123,9 @@ public class GameConstants {
 	public static final int[] rankA = {70000027, 70000028, 70000029, 70000030, 70000031, 70000032, 70000033, 70000034, 70000035, 70000036, 70000039, 70000040, 70000041, 70000042};
 	public static final int[] rankS = {70000043, 70000044, 70000045, 70000047, 70000048, 70000049, 70000050, 70000051, 70000052, 70000053, 70000054, 70000055, 70000056, 70000057, 70000058, 70000059, 70000060, 70000061, 70000062};
 	public static final int[] circulators = {2702000, 2700000, 2700100, 2700200, 2700300, 2700400, 2700500, 2700600, 2700700, 2700800, 2700900, 2701000};
-	public static final int MAX_BUFFSTAT = 12;
+	public static final int MAX_BUFFSTAT = 17;
 	public static final int[] blockedSkills = {4341003, 36120045};
-	public static final String[] RESERVED = {"Alpha", "Aristocat", "Donor", "MapleNews", "Hack"};
+	public static final String[] RESERVED = {"Maxcloud", "SharpAceX", "Jeff"};
 	public static final String[] stats = {"tuc", "reqLevel", "reqJob", "reqSTR", "reqDEX", "reqINT", "reqLUK", "reqPOP", "cash", "cursed", "success", "setItemID", "equipTradeBlock", "durability", "randOption", "randStat", "masterLevel", "reqSkillLevel", "elemDefault", "incRMAS", "incRMAF", "incRMAI", "incRMAL", "canLevel", "skill", "charmEXP"};
 	public static final int CHANCE_ON_3RD_LINE_WITH_POT_SCROLL = 25;
 	private static final int CHANCE_ON_MAX_RANK_LINE = 33;
@@ -4843,8 +4851,6 @@ public class GameConstants {
 	public static final int BUFF_ITEM = 122223;
 	public static final int PART_JOB = 122750;
 	public static final int PART_JOB_REWARD = 122751;
-	public static final int JAIL_TIME = 123455;
-	public static final int JAIL_QUEST = 123456;
 	public static final int REPORT_QUEST = 123457;
 	public static final int PLAYER_INFORMATION = 123568;
 	public static final int ULT_EXPLORER = 111111;
@@ -4938,32 +4944,12 @@ public class GameConstants {
 	}
 
 	public static Cubes getCashCubeByItemId(int itemId){
-		switch(itemId){
-			case 5062000:
-				return Cubes.MIRACLE;
-			case 5062001:
-				return Cubes.PREMIUM;
-			case 5062002:
-				return Cubes.SUPER;
-			case 5062003:
-				return Cubes.REVOLUTIONARY;
-			case 5062005:
-				return Cubes.ENLIGHTENING;
-			case 5062006:
-				return Cubes.PLATINUM;
-			case 5062009:
-				return Cubes.RED;
-			case 5062010:
-				return Cubes.BLACK;
-			case 5062024:
-				return Cubes.VIOLET;
-			case 5062090:
-				return Cubes.MEMORY;
-			case 5062500:
-				return Cubes.BONUS;
-			default:
-				return null;
+		for(Cubes cube : Cubes.values()){
+			if(cube.getItemId() == itemId){
+				return cube;
+			}
 		}
+		return null;
 	}
 
 	/**
@@ -4997,6 +4983,20 @@ public class GameConstants {
 				return 20;
 			default:
 				return 0;
+		}
+	}
+
+	/**
+	 * Gets the maximum rank an equip can achieve by using a certain cube.
+	 * @param cube
+	 * @return
+     */
+	public static int getMaxAvailableState(Cubes cube){
+		switch (cube) {
+			case MIRACLE:
+				return Equip.UNIQUE;
+			default:
+				return Equip.LEGENDARY;
 		}
 	}
 }

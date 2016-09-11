@@ -22,13 +22,14 @@
 package server.maps;
 
 import java.awt.Point;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import client.MapleCharacter;
 import client.MapleClient;
-import java.lang.ref.WeakReference;
 import server.MaplePortal;
 import tools.packet.CField;
 import tools.packet.CWvsContext;

@@ -19,8 +19,6 @@ package server.movement;
 
 import java.awt.Point;
 
-import tools.data.MaplePacketLittleEndianWriter;
-
 /**
  * 
  * @author Maxcloud

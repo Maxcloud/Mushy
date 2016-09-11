@@ -1,8 +1,9 @@
 package server;
 
-import client.inventory.Equip;
 import java.util.List;
 import java.util.Map;
+
+import client.inventory.Equip;
 import tools.Triple;
 
 public class ItemInformation {

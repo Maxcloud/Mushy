@@ -1727,19 +1727,6 @@ public class MapScriptMethods {
                 c.getPlayer().writeStatus("blueTeamDamage", "0");
                 break;
             }
-            case jail: {
-                if (!c.getPlayer().isIntern()) {
-                    c.getPlayer().getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_TIME)).setCustomData(String.valueOf(System.currentTimeMillis()));
-                    final MapleQuestStatus stat = c.getPlayer().getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST));
-                    if (stat.getCustomData() != null) {
-                        final int seconds = Integer.parseInt(stat.getCustomData());
-                        if (seconds > 0) {
-                            c.getPlayer().startMapTimeLimitTask(seconds, c.getChannelServer().getMapFactory().getMap(950000100));
-                        }
-                    }
-                }
-                break;
-            }
             case TD_neo_BossEnter:
             case findvioleta: {
                 c.getPlayer().getMap().resetFully();

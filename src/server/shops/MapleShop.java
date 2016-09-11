@@ -27,11 +27,11 @@ import tools.packet.CWvsContext;
 
 public class MapleShop {
 
-    private static final Set<Integer> rechargeableItems = new LinkedHashSet();
+    private static final Set<Integer> rechargeableItems = new LinkedHashSet<Integer>();
     private final int id;
     private final int npcId;
-    private final List<MapleShopItem> items = new LinkedList();
-    private final List<Pair<Integer, String>> ranks = new ArrayList();
+    private final List<MapleShopItem> items = new LinkedList<MapleShopItem>();
+    private final List<Pair<Integer, String>> ranks = new ArrayList<Pair<Integer, String>>();
 
     static {
         rechargeableItems.add(Integer.valueOf(2070000));
@@ -119,15 +119,16 @@ public class MapleShop {
         }
         //MapleShopItem item = findById(itemId);
         MapleShopItem item = findBySlot(slot);
-        quantity *= item.getQuantity();
         if (item == null) {
-            System.out.println("error shop");
+            System.out.println("Error with shop " + id);
+            return;
         }
+        quantity *= item.getQuantity();
         if ((item != null) && (item.getPrice() > 0) && (item.getReqItem() == 0)) {
             if (item.getRank() >= 0) {
                 boolean passed = true;
                 int y = 0;
-                for (Pair i : getRanks()) {
+                for (Pair<Integer, String> i : getRanks()) {
                     if ((c.getPlayer().haveItem(((Integer) i.left).intValue(), 1, true, true)) && (item.getRank() >= y)) {
                         passed = true;
                         break;
@@ -312,7 +313,7 @@ public class MapleShop {
             ps = con.prepareStatement("SELECT * FROM shopitems WHERE shopid = ? ORDER BY position ASC");
             ps.setInt(1, shopId);
             rs = ps.executeQuery();
-            List<Integer> recharges = new ArrayList(rechargeableItems);
+            List<Integer> recharges = new ArrayList<Integer>(rechargeableItems);
             while (rs.next()) {
                 if (ii.itemExists(rs.getInt("itemid"))) {
                     if ((GameConstants.isThrowingStar(rs.getInt("itemid"))) || (GameConstants.isBullet(rs.getInt("itemid")))) {
@@ -337,7 +338,7 @@ public class MapleShop {
             rs = ps.executeQuery();
             while (rs.next()) {
                 if (ii.itemExists(rs.getInt("itemid"))) {
-                    ret.ranks.add(new Pair(Integer.valueOf(rs.getInt("itemid")), rs.getString("name")));
+                    ret.ranks.add(new Pair<Integer, String>(Integer.valueOf(rs.getInt("itemid")), rs.getString("name")));
                 }
             }
             rs.close();

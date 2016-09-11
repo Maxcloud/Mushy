@@ -1,8 +1,5 @@
 package client;
 
-import constants.GameConstants;
-import net.DatabaseConnection;
-
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -10,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
+
+import constants.GameConstants;
+import net.DatabaseConnection;
 import tools.Triple;
 
 public class MapleCharacterUtil {

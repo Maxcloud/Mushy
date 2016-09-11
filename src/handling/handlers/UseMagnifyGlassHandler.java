@@ -1,5 +1,8 @@
 package handling.handlers;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleTrait;
@@ -15,9 +18,6 @@ import tools.Randomizer;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class UseMagnifyGlassHandler {
 

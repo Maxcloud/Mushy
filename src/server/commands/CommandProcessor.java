@@ -124,7 +124,7 @@ public class CommandProcessor {
                 return true;
             }
             try {
-                int ret = co.execute(c, splitted); //Don't really care about the return value. ;D
+                co.execute(c, splitted); //Don't really care about the return value. ;D
             } catch (Exception e) {
                 sendDisplayMessage(c, "There was an error.", type);
                 if (c.getPlayer().isGM()) {
@@ -156,9 +156,8 @@ public class CommandProcessor {
                     return true;
                 }
                 if (c.getPlayer().getGMLevel() >= co.getReqGMLevel()) {
-                    int ret = 0;
                     try {
-                        ret = co.execute(c, splitted);
+                        co.execute(c, splitted);
                     } catch (ArrayIndexOutOfBoundsException x) {
                         sendDisplayMessage(c, "The command was not used properly: " + x, type);
                     } catch (Exception e) {

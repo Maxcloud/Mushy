@@ -620,18 +620,14 @@ public class InternCommand {
 
 		@Override
 		public int execute(MapleClient c, String[] splitted) {
-			// probably bad way to do it
-			final long currentTime = System.currentTimeMillis();
 			List<Pair<String, Long>> players = new ArrayList<>();
 			for (MapleCharacter chr : c.getPlayer().getMap().getCharacters()) {
 				if (!chr.isIntern()) {
-					players.add(new Pair<>(
-							MapleCharacterUtil.makeMapleReadable(chr.getName()),
-							chr.getChangeTime()));
+					players.add(new Pair<>(MapleCharacterUtil.makeMapleReadable(chr.getName()), chr.getChangeTime()));
 				}
 			}
 			Collections.sort(players, new WhoComparator());
-			StringBuilder sb = new StringBuilder("List of people in this map in order, counting AFK (10 minutes):  ");
+			StringBuilder sb = new StringBuilder("List of people in this map in order, counting AFK (10 minutes): ");
 			for (Pair<String, Long> z : players) {
 				sb.append(z.left).append(", ");
 			}

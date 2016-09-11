@@ -6,8 +6,6 @@ package server;
 
 import client.MapleCharacter;
 import constants.ServerConstants;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  *

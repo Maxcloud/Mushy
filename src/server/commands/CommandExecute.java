@@ -1,5 +1,7 @@
 package server.commands;
 
+import javax.activation.CommandObject;
+
 import client.MapleClient;
 import constants.ServerConstants.CommandType;
 

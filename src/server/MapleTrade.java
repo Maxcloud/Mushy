@@ -20,7 +20,7 @@ import tools.packet.PlayerShopPacket;
 public class MapleTrade {
 
     private MapleTrade partner = null;
-    private final List<Item> items = new LinkedList();
+    private final List<Item> items = new LinkedList<Item>();
     private List<Item> exchangeItems;
     private int meso = 0;
     private int exchangeMeso = 0;
@@ -36,7 +36,7 @@ public class MapleTrade {
 
     public final void CompleteTrade() {
         if (this.exchangeItems != null) {
-            List<Item> itemz = new LinkedList(this.exchangeItems);
+            List<Item> itemz = new LinkedList<Item>(this.exchangeItems);
             for (Item item : itemz) {
                 short flag = item.getFlag();
 
@@ -256,7 +256,7 @@ public class MapleTrade {
         local.locked = true;
         partner.getChr().getClient().getSession().write(CField.InteractionPacket.getTradeConfirmation());
 
-        partner.exchangeItems = new LinkedList(local.items);
+        partner.exchangeItems = new LinkedList<Item>(local.items);
         partner.exchangeMeso = local.meso;
 
         if (partner.isLocked()) {

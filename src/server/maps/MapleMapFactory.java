@@ -22,7 +22,6 @@ package server.maps;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -97,7 +96,7 @@ public class MapleMapFactory {
     }
 
     public static void loadCustomNPC() {
-        List<Pair<Integer, AbstractLoadedMapleLife>> customNPC = new LinkedList();
+        List<Pair<Integer, AbstractLoadedMapleLife>> customNPC = new LinkedList<Pair<Integer, AbstractLoadedMapleLife>>();
         customNPC.add(new Pair<>(910000000, loadLife(9010038, 0, false, 78, 34, 312, 312, 312, 34, "n", 0)));
         customNPC.add(new Pair<>(910000000, loadLife(9010037, 0, false, 46, -266, 932, 932, 932, -266, "n", 0)));
 //        customNPC.add(new Pair<>(910000000, loadLife(9000019, 0, true, 47, -266, 650, 650, 650, -266, "n", 0)));//cuz RPS no works..
@@ -329,7 +328,7 @@ public class MapleMapFactory {
                     }
                 }
                 map.setFirstUserEnter(MapleDataTool.getString(mapData.getChildByPath("info/onFirstUserEnter"), ""));
-                map.setUserEnter(mapid == MapConstants.JAIL ? "jail" : MapleDataTool.getString(mapData.getChildByPath("info/onUserEnter"), ""));
+                map.setUserEnter(MapleDataTool.getString(mapData.getChildByPath("info/onUserEnter"), ""));
                 if (reactors && herbRocks.size() > 0 && highestLevel >= 30 && map.getFirstUserEnter().equals("") && map.getUserEnter().equals("")) {
                     final List<Integer> allowedSpawn = new ArrayList<>(24);
                     allowedSpawn.add(100011);

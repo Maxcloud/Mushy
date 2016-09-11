@@ -4,22 +4,17 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
 import client.SkillFactory;
 import client.inventory.MapleInventoryIdentifier;
 import constants.GameConstants;
 import constants.ServerConfig;
-import constants.WorldConstants.WorldOption;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginInformationProvider;
 import handling.login.LoginServer;
 import handling.world.World;
-import lib.data.MapleData;
 import net.DatabaseConnection;
 import server.Timer.BuffTimer;
 import server.Timer.CloneTimer;
@@ -35,8 +30,6 @@ import server.life.MobSkillFactory;
 import server.life.PlayerNPC;
 import server.maps.MapleMapFactory;
 import server.quest.MapleQuest;
-import tools.data.MaplePacketLittleEndianWriter;
-import tools.packet.PacketHelper;
 
 public class Start extends Properties {
 
@@ -80,13 +73,6 @@ public class Start extends Properties {
         }
 
         World.init();
-        int servers = 0;
-
-        for (WorldOption server : WorldOption.values()) {
-            if (server.show()) {
-                servers++;
-            }
-        }
         
         System.out.print("Init...\r\n");
         

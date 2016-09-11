@@ -50,7 +50,6 @@ import server.maps.MapleMapFactory;
 import server.maps.MapleMapObject;
 import server.maps.MapleReactor;
 import server.maps.MapleReactorFactory;
-import tools.FileoutputUtil;
 import tools.Randomizer;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
