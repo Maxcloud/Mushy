@@ -1112,24 +1112,19 @@ public class PacketHelper {
         
         // 0x08
         if (GameConstants.isAngelicBuster(chr.getJob())) {
-	        mplew.writeInt(1);
 	        mplew.writeInt(21173); //face
 	        mplew.writeInt(37141); //hair
-	        mplew.write(0);
 	        mplew.writeInt(1051291);
-	        mplew.writeInt(0);
-	        mplew.writeInt(0);
-	        // mplew.write(0);
         } else {
         	mplew.writeInt(0);
         	mplew.writeInt(0);
         	mplew.writeInt(0);
-        	mplew.write(0);
-        	mplew.writeInt(-1);
-        	mplew.writeInt(0);
-        	mplew.writeInt(0);
         }
-        
+    	mplew.write(0);
+    	mplew.writeInt(-1);
+    	mplew.writeInt(0);
+    	mplew.writeInt(0);
+    	
         if ((mask & 0x40000) != 0) {
         	mplew.writeInt(1);
             mplew.writeInt(0);
@@ -1599,7 +1594,7 @@ public class PacketHelper {
    public static <E extends Buffstat> void writeMask(MaplePacketLittleEndianWriter mplew, Collection<E> statups) {
         int[] mask = new int[10];
         if (!statups.contains(MapleBuffStat.MONSTER_RIDING)) {
-            mask = new int[12];
+            mask = new int[17];
         }
         for (Buffstat statup : statups) {
             mask[(statup.getPosition() - 1)] |= statup.getValue();
@@ -1612,7 +1607,7 @@ public class PacketHelper {
     public static <E extends Buffstat> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Collection<Pair<E, Integer>> statups) {
         int[] mask = new int[10];
         if (!statups.contains(MapleBuffStat.MONSTER_RIDING)) {
-            mask = new int[12];
+            mask = new int[17];
         }
         for (Pair statup : statups) {
             mask[(((Buffstat) statup.left).getPosition() - 1)] |= ((Buffstat) statup.left).getValue();
@@ -1625,7 +1620,7 @@ public class PacketHelper {
     public static <E extends Buffstat> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Map<E, Integer> statups) {
         int[] mask = new int[10];
         if (!statups.containsKey(MapleBuffStat.MONSTER_RIDING)) {
-            mask = new int[12];
+            mask = new int[17];
         }
         for (Buffstat statup : statups.keySet()) {
             mask[(statup.getPosition() - 1)] |= statup.getValue();
