@@ -894,7 +894,7 @@ public class PacketHelper {
 //    }
     public static void addEquipBonusStats(MaplePacketLittleEndianWriter mplew, Equip equip, boolean hasUniqueId) {
         mplew.writeMapleAsciiString(equip.getOwner());
-        mplew.write(equip.getState()); // 17 = rare, 18 = epic, 19 = unique, 20 = legendary, potential flags. special grade is 14 but it crashes
+        mplew.write(equip.getStateByPotential(equip.getPotential())); // 17 = rare, 18 = epic, 19 = unique, 20 = legendary, potential flags. special grade is 14 but it crashes
         mplew.write(equip.getEnhance());
         mplew.writeShort(equip.getPotentialByLine(0));
         mplew.writeShort(equip.getPotentialByLine(1));

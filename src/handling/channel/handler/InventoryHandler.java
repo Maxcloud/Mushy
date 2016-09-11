@@ -22,8 +22,6 @@ package handling.channel.handler;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,7 +61,6 @@ import constants.MapConstants;
 import handling.channel.ChannelServer;
 import handling.world.MaplePartyCharacter;
 import handling.world.World;
-import net.DatabaseConnection;
 import script.npc.NPCScriptManager;
 import script.npc.NPCTalk;
 import server.MapleInventoryManipulator;
@@ -1274,7 +1271,7 @@ public class InventoryHandler {
         }
         final Equip eq = (Equip) item;
         if (eq.getState() >= 17 && eq.getState() <= 20) {
-            eq.renewPotential(0, 0, 0, false);
+            eq.renewPotential_OLD(0, 0, 0, false);
             c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, item.getItemId()));
             c.getSession().write(InventoryPacket.scrolledItem(toUse, MapleInventoryType.EQUIP, item, false, true, false));
             c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
@@ -3124,7 +3121,7 @@ case 2431935: {
                         if (potLock) {
                             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, c.getPlayer().getInventory(MapleInventoryType.CASH).findById(5067000).getPosition(), (short) 1, false);
                         }
-                        eq.renewPotential(0, line, toLock, false);
+                        eq.renewPotential_OLD(0, line, toLock, false);
                         c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, itemId));
                         c.getSession().write(InventoryPacket.scrolledItem(toUse, MapleInventoryType.EQUIP, item, false, true, false));
                         c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
@@ -3172,7 +3169,7 @@ case 2431935: {
                     if (item != null && c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1) {
                         final Equip eq = (Equip) item;
                         if (eq.getState() >= 17 && eq.getState() != 20) {
-                            eq.renewPotential(1, 0, (short) 0, false);
+                            eq.renewPotential_OLD(1, 0, (short) 0, false);
                             c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, itemId));
                             c.getSession().write(InventoryPacket.scrolledItem(toUse, MapleInventoryType.EQUIP, item, false, true, false));
                             c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
@@ -3219,7 +3216,7 @@ case 2431935: {
                     if (item != null && c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1) {
                         final Equip eq = (Equip) item;
                         if (eq.getState() >= 17) {
-                            eq.renewPotential(3, 0, (short) 0, false);
+                            eq.renewPotential_OLD(3, 0, (short) 0, false);
                             c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, itemId));
                             c.getSession().write(InventoryPacket.scrolledItem(toUse, MapleInventoryType.EQUIP, item, false, true, false));
                             c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
@@ -3270,7 +3267,7 @@ case 2431935: {
                         if (potLock) {
                             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, c.getPlayer().getInventory(MapleInventoryType.CASH).findById(5067000).getPosition(), (short) 1, false);
                         }
-                        eq.renewPotential(4, line, toLock, false);
+                        eq.renewPotential_OLD(4, line, toLock, false);
                         c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, itemId));
                         c.getSession().write(InventoryPacket.scrolledItem(toUse, MapleInventoryType.EQUIP, item, false, true, false));
                         c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
@@ -3314,7 +3311,7 @@ case 2431935: {
                 if (item != null && c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1) {
                     final Equip eq = (Equip) item;
                     if (eq.getState() >= 17) {
-                        eq.renewPotential(5, 0, (short) 0, false);
+                        eq.renewPotential_OLD(5, 0, (short) 0, false);
                         c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, itemId));
                         c.getSession().write(InventoryPacket.scrolledItem(toUse, MapleInventoryType.EQUIP, item, false, true, false));
                         c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
@@ -3357,7 +3354,7 @@ case 2431935: {
                 if (item != null && c.getPlayer().getInventory(MapleInventoryType.USE).getNumFreeSlot() >= 1) {
                     final Equip eq = (Equip) item;
                     if (eq.getState() >= 17) {
-                        eq.renewPotential(6, 0, (short) 0, false);
+                        eq.renewPotential_OLD(6, 0, (short) 0, false);
                         c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(c.getPlayer().getId(), true, itemId));
                         c.getSession().write(InventoryPacket.scrolledItem(toUse, MapleInventoryType.EQUIP, item, false, true, false));
                         c.getPlayer().forceReAddItem_NoUpdate(item, MapleInventoryType.EQUIP);
