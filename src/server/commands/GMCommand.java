@@ -745,6 +745,22 @@ public class GMCommand {
         }
     }
 
+    public static class EquipInfo extends CommandExecute {
+        @Override
+        public int execute(MapleClient c, String[] splitted) {
+            MapleCharacter chr = c.getPlayer();
+            Equip item = (Equip) chr.getInventory(MapleInventoryType.EQUIP).getItem(Short.parseShort(splitted[1]));
+            chr.dropMessage(6, "Equip " + item.getItemId());
+            for(int i = 0; i < item.getPotential().length; i++){
+                chr.dropMessage(6, "Main[" + i + "] = " + item.getPotentialByLine(i));
+            }
+            for(int i = 0; i < item.getBonusPotential().length; i++){
+                chr.dropMessage(6, "Bonus[" + i + "] = " + item.getBonusPotentialByLine(i));
+            }
+            return 1;
+        }
+    }
+
     public static class PotentialItem extends CommandExecute {
 
         @Override

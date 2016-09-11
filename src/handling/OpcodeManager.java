@@ -64,6 +64,7 @@ class OpcodeManager {
 		UseItemHandler.class,
 		UsePotentialScrollHandler.class,
 		UseMagnifyGlassHandler.class,
+		UseCashItemHandler.class,
 
 		MesoDropHandler.class,
 		QuestActionHandler.class,
