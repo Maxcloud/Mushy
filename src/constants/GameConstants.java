@@ -125,7 +125,7 @@ public class GameConstants {
 	public static final int[] circulators = {2702000, 2700000, 2700100, 2700200, 2700300, 2700400, 2700500, 2700600, 2700700, 2700800, 2700900, 2701000};
 	public static final int MAX_BUFFSTAT = 17;
 	public static final int[] blockedSkills = {4341003, 36120045};
-	public static final String[] RESERVED = {"Maxcloud", "SharpAceX", "Jeff"};
+	public static final String[] RESERVED = {"Maxcloud", "SharpAceX", "Jeff", "Zenn"};
 	public static final String[] stats = {"tuc", "reqLevel", "reqJob", "reqSTR", "reqDEX", "reqINT", "reqLUK", "reqPOP", "cash", "cursed", "success", "setItemID", "equipTradeBlock", "durability", "randOption", "randStat", "masterLevel", "reqSkillLevel", "elemDefault", "incRMAS", "incRMAF", "incRMAI", "incRMAL", "canLevel", "skill", "charmEXP"};
 	public static final int CHANCE_ON_3RD_LINE_WITH_POT_SCROLL = 25;
 	private static final int CHANCE_ON_MAX_RANK_LINE = 33;
