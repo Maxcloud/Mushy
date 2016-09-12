@@ -420,7 +420,7 @@ public enum SendPacketOpcode {
     REACTOR_HIT(0x402),
     REACTOR_MOVE(0x403),
     REACTOR_SPAWN(0x404),
-    REACTOR_DESTROY(0x408),
+    REACTOR_DESTROY(0x406),
     
     // CFishingZonePool::OnPacket (this has been updated.)
     FISHING_INFO(0x409),
