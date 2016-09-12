@@ -10,7 +10,6 @@ import client.SkillFactory;
 import client.inventory.MapleInventoryIdentifier;
 import constants.GameConstants;
 import constants.ServerConfig;
-import constants.WorldConstants.WorldOption;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginInformationProvider;
@@ -74,13 +73,6 @@ public class Start extends Properties {
         }
 
         World.init();
-        int servers = 0;
-
-        for (WorldOption server : WorldOption.values()) {
-            if (server.show()) {
-                servers++;
-            }
-        }
         
         System.out.print("Init...\r\n");
         

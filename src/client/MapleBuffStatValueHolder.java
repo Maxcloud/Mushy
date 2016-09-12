@@ -1,6 +1,7 @@
 package client;
 
 import java.util.concurrent.ScheduledFuture;
+
 import server.MapleStatEffect;
 
 public class MapleBuffStatValueHolder {

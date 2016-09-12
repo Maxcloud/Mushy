@@ -35,8 +35,8 @@ public final class MonsterBook
     private int setScore;
     private int finishedSets;
     private final Map<Integer, Integer> cards;
-    private final List<Integer> cardItems = new ArrayList();
-    private final Map<Integer, Pair<Integer, Boolean>> sets = new HashMap();
+    private final List<Integer> cardItems = new ArrayList<Integer>();
+    private final Map<Integer, Pair<Integer, Boolean>> sets = new HashMap<Integer, Pair<Integer, Boolean>>();
 
     public MonsterBook(Map<Integer, Integer> cards, MapleCharacter chr) {
         this.cards = cards;

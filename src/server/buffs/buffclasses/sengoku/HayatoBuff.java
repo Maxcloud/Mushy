@@ -2,7 +2,6 @@
 package server.buffs.buffclasses.sengoku;
 
 import client.MapleBuffStat;
-import client.MonsterStatus;
 import constants.GameConstants;
 import server.MapleStatEffect;
 import server.MapleStatInfo;

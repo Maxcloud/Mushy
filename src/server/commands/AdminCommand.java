@@ -8,16 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
+import client.inventory.*;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 
 import client.MapleCharacter;
 import client.MapleClient;
 import client.SkillFactory;
-import client.inventory.Item;
-import client.inventory.MapleInventory;
-import client.inventory.MapleInventoryType;
-import client.inventory.MaplePet;
 import constants.EventConstants;
 import constants.GameConstants;
 import constants.ServerConstants.PlayerGMRank;
@@ -75,7 +72,7 @@ public class AdminCommand {
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
-            List<Integer> items = new LinkedList();
+            List<Integer> items = new LinkedList<Integer>();
             for (int i = 1; i <= 10; i++) {
                 try {
                     items.add(Integer.parseInt(splitted[i]));

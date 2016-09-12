@@ -1,26 +1,45 @@
 package tools.packet;
 
-import client.*;
-import client.inventory.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SimpleTimeZone;
+
+import client.InnerSkillValueHolder;
+import client.MapleBuffStat;
+import client.MapleCharacter;
+import client.MapleClient;
+import client.MapleCoolDownValueHolder;
+import client.MapleTrait;
+import client.PartTimeJob;
+import client.inventory.Equip;
+import client.inventory.EquipSpecialStat;
+import client.inventory.EquipStat;
+import client.inventory.Item;
+import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryType;
+import client.inventory.MaplePet;
+import client.inventory.MaplePotionPot;
+import client.inventory.MapleRing;
+import client.inventory.MapleWeaponType;
 import constants.GameConstants;
-import constants.ServerConstants;
 import handling.Buffstat;
 import handling.world.MapleCharacterLook;
-
-import java.util.*;
-import java.util.Map.Entry;
-
 import server.MapleItemInformationProvider;
 import server.cash.CashItem;
-import server.shops.MapleShop;
-import server.shops.MapleShopItem;
 import server.movement.LifeMovementFragment;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
+import server.shops.MapleShop;
+import server.shops.MapleShopItem;
 import server.stores.AbstractPlayerStore;
 import server.stores.IMaplePlayerShop;
 import tools.BitTools;
-import tools.HexTool;
 import tools.KoreanDateUtil;
 import tools.Pair;
 import tools.StringUtil;
@@ -875,7 +894,7 @@ public class PacketHelper {
 //    }
     public static void addEquipBonusStats(MaplePacketLittleEndianWriter mplew, Equip equip, boolean hasUniqueId) {
         mplew.writeMapleAsciiString(equip.getOwner());
-        mplew.write(equip.getState()); // 17 = rare, 18 = epic, 19 = unique, 20 = legendary, potential flags. special grade is 14 but it crashes
+        mplew.write(equip.getStateByPotential(equip.getPotential())); // 17 = rare, 18 = epic, 19 = unique, 20 = legendary, potential flags. special grade is 14 but it crashes
         mplew.write(equip.getEnhance());
         mplew.writeShort(equip.getPotentialByLine(0));
         mplew.writeShort(equip.getPotentialByLine(1));
@@ -1093,24 +1112,19 @@ public class PacketHelper {
         
         // 0x08
         if (GameConstants.isAngelicBuster(chr.getJob())) {
-	        mplew.writeInt(1);
 	        mplew.writeInt(21173); //face
 	        mplew.writeInt(37141); //hair
-	        mplew.write(0);
 	        mplew.writeInt(1051291);
-	        mplew.writeInt(0);
-	        mplew.writeInt(0);
-	        // mplew.write(0);
         } else {
         	mplew.writeInt(0);
         	mplew.writeInt(0);
         	mplew.writeInt(0);
-        	mplew.write(0);
-        	mplew.writeInt(-1);
-        	mplew.writeInt(0);
-        	mplew.writeInt(0);
         }
-        
+    	mplew.write(0);
+    	mplew.writeInt(-1);
+    	mplew.writeInt(0);
+    	mplew.writeInt(0);
+    	
         if ((mask & 0x40000) != 0) {
         	mplew.writeInt(1);
             mplew.writeInt(0);
@@ -1580,7 +1594,7 @@ public class PacketHelper {
    public static <E extends Buffstat> void writeMask(MaplePacketLittleEndianWriter mplew, Collection<E> statups) {
         int[] mask = new int[10];
         if (!statups.contains(MapleBuffStat.MONSTER_RIDING)) {
-            mask = new int[12];
+            mask = new int[17];
         }
         for (Buffstat statup : statups) {
             mask[(statup.getPosition() - 1)] |= statup.getValue();
@@ -1593,7 +1607,7 @@ public class PacketHelper {
     public static <E extends Buffstat> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Collection<Pair<E, Integer>> statups) {
         int[] mask = new int[10];
         if (!statups.contains(MapleBuffStat.MONSTER_RIDING)) {
-            mask = new int[12];
+            mask = new int[17];
         }
         for (Pair statup : statups) {
             mask[(((Buffstat) statup.left).getPosition() - 1)] |= ((Buffstat) statup.left).getValue();
@@ -1606,7 +1620,7 @@ public class PacketHelper {
     public static <E extends Buffstat> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Map<E, Integer> statups) {
         int[] mask = new int[10];
         if (!statups.containsKey(MapleBuffStat.MONSTER_RIDING)) {
-            mask = new int[12];
+            mask = new int[17];
         }
         for (Buffstat statup : statups.keySet()) {
             mask[(statup.getPosition() - 1)] |= statup.getValue();

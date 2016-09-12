@@ -46,7 +46,6 @@ import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleReactor;
-import server.quest.MapleQuest;
 import server.shops.MapleShopFactory;
 import tools.Pair;
 import tools.StringUtil;
@@ -746,6 +745,22 @@ public class GMCommand {
         }
     }
 
+    public static class EquipInfo extends CommandExecute {
+        @Override
+        public int execute(MapleClient c, String[] splitted) {
+            MapleCharacter chr = c.getPlayer();
+            Equip item = (Equip) chr.getInventory(MapleInventoryType.EQUIP).getItem(Short.parseShort(splitted[1]));
+            chr.dropMessage(6, "Equip " + item.getItemId());
+            for(int i = 0; i < item.getPotential().length; i++){
+                chr.dropMessage(6, "Main[" + i + "] = " + item.getPotentialByLine(i));
+            }
+            for(int i = 0; i < item.getBonusPotential().length; i++){
+                chr.dropMessage(6, "Bonus[" + i + "] = " + item.getBonusPotentialByLine(i));
+            }
+            return 1;
+        }
+    }
+
     public static class PotentialItem extends CommandExecute {
 
         @Override
@@ -1096,10 +1111,6 @@ public class GMCommand {
             for (MapleCharacter mch : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
                 if (mch.getMapId() == c.getPlayer().getMapId()) {
                     if (splitted.length == 4) {
-                        if (mch == null) {
-                            c.getPlayer().dropMessage(5, "Not found.");
-                            return 0;
-                        }
                         mch.disease(type, CommandProcessorUtil.getOptionalIntArg(splitted, 2, 1));
                     } else {
                         mch.disease(type, CommandProcessorUtil.getOptionalIntArg(splitted, 2, 1));
@@ -1468,28 +1479,6 @@ public class GMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             c.getPlayer().getMap().toggleDrops();
-            return 1;
-        }
-    }
-
-    public static class Jail extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "jail [name] [minutes, 0 = forever]");
-                return 0;
-            }
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
-            final int minutes = Math.max(0, Integer.parseInt(splitted[2]));
-            if (victim != null && c.getPlayer().getGMLevel() >= victim.getGMLevel()) {
-                MapleMap target = ChannelServer.getInstance(c.getChannel()).getMapFactory().getMap(MapConstants.JAIL);
-                victim.getQuestNAdd(MapleQuest.getInstance(GameConstants.JAIL_QUEST)).setCustomData(String.valueOf(minutes * 60));
-                victim.changeMap(target, target.getPortal(0));
-            } else {
-                c.getPlayer().dropMessage(6, "Please be on their channel.");
-                return 0;
-            }
             return 1;
         }
     }

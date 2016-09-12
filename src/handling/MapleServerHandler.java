@@ -62,6 +62,9 @@ import tools.packet.CField;
 import tools.packet.CSPacket;
 import tools.packet.LoginPacket;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class MapleServerHandler extends IoHandlerAdapter {
 	
 	private final byte[] skey = new byte[] {
@@ -158,14 +161,14 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void messageSent(IoSession session, Object message) throws Exception { 
-    	final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
+    	//final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
     	
-    	short code = lea.readShort();
-    	String opcode = SendPacketOpcode.getNameByValue(code);
+    	//short code = lea.readShort();
+    	//String opcode = SendPacketOpcode.getNameByValue(code);
     	
-    	String bytes = lea.toString(false);
-		byte[] hex = HexTool.getByteArrayFromHexString(bytes);
-		String hexString = new String(hex, "ASCII");
+    	//String bytes = lea.toString(false);
+		//byte[] hex = HexTool.getByteArrayFromHexString(bytes);
+		//String hexString = new String(hex, "ASCII");
 		
     	// System.out.println("[Sent] " + opcode + ": " + bytes);
     	// System.out.println(hexString);
@@ -187,7 +190,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
         
         final short opcode = lea.readShort();
         try {
-        	System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
+            if(!isSpamHeader(opcode)){
+                System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
+            }
         	boolean handled = OpcodeManager.handle(c, opcode, lea);
         	if (handled){
         		return;
@@ -198,11 +203,20 @@ public class MapleServerHandler extends IoHandlerAdapter {
         	}
             handlePacket(recv, lea, c);
         } catch (NegativeArraySizeException | ArrayIndexOutOfBoundsException e) {
-        	System.out.println("ArrayIndexOutOfBoundsException" + e);
+        	e.printStackTrace();
         } catch (Exception e) {
-        	System.out.println("Exception" + e);
+        	e.printStackTrace();
         }
 
+    }
+
+    private boolean isSpamHeader(short opCode) {
+        Set<Short> spamHeaders = new HashSet();
+        spamHeaders.add(RecvPacketOpcode.NPC_ACTION.getValue());
+        spamHeaders.add(RecvPacketOpcode.MOVE_LIFE.getValue());
+        spamHeaders.add(RecvPacketOpcode.MOVE_PLAYER.getValue());
+
+        return spamHeaders.contains(opCode);
     }
 
     public static void handlePacket(final RecvPacketOpcode header, final LittleEndianAccessor lea, final MapleClient c) throws Exception {

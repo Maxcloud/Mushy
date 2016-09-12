@@ -20,8 +20,8 @@
  */
 package client.inventory;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 public enum RingSet {
 

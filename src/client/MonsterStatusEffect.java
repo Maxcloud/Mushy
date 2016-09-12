@@ -157,7 +157,8 @@ public class MonsterStatusEffect {
                 return 4121004;
             case TRIANGULATION:
                 return 36110005;
+		default:
+			return 0;
         }
-        return 0;
     }
 }

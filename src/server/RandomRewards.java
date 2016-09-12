@@ -1,11 +1,11 @@
 package server;
 
-import constants.GameConstants;
-import tools.Randomizer;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import constants.GameConstants;
+import tools.Randomizer;
 
 public class RandomRewards {
 

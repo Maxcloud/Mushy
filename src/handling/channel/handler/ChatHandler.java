@@ -52,11 +52,8 @@ public class ChatHandler {
             case 2:// /alertm /alertmap, /noticem /noticemap, /slidem /slidemap
                 c.getPlayer().getMap().broadcastMessage(packet);
                 break;
-
         }
     }
-
-    
 
     public static void Others(final LittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
         final int type = slea.readByte();

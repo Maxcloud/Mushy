@@ -170,7 +170,7 @@ public abstract class AbstractPlayerStore extends MapleMapObject implements IMap
                 }
                 item = pItems.item.copy();
                 item.setQuantity((short) (item.getQuantity() * pItems.bundles));
-                boolean add = iters.add(new Pair<>(item, GameConstants.getInventoryType(item.getItemId())));
+                iters.add(new Pair<>(item, GameConstants.getInventoryType(item.getItemId())));
             }
             ItemLoader.HIRED_MERCHANT.saveItems(iters, packageid);
             return true;
@@ -283,7 +283,7 @@ public abstract class AbstractPlayerStore extends MapleMapObject implements IMap
         List<Pair<Byte, MapleCharacter>> chrz = new LinkedList<>();
         for (byte i = 0; i < chrs.length; i++) { //include owner or no
             if (chrs[i] != null && chrs[i].get() != null) {
-                boolean add = chrz.add(new Pair<>((byte) (i + 1), chrs[i].get()));
+                chrz.add(new Pair<>((byte) (i + 1), chrs[i].get()));
             }
         }
         return chrz;

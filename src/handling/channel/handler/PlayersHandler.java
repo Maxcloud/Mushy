@@ -22,7 +22,6 @@ package handling.channel.handler;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

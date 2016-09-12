@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
+
 import tools.HexTool;
 
 /**

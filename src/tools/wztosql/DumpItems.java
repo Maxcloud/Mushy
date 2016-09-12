@@ -21,6 +21,17 @@
  */
 package tools.wztosql;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import lib.data.MapleData;
@@ -30,20 +41,6 @@ import lib.data.MapleDataProvider;
 import lib.data.MapleDataProviderFactory;
 import lib.data.MapleDataTool;
 import net.DatabaseConnection;
-
-import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-
-import tools.Pair;
 
 public class DumpItems {
 
@@ -340,7 +337,6 @@ public class DumpItems {
         if (dat != null) {
             psa.setInt(1, id);
             for (MapleData d : dat.getChildren()) {
-                Pair<String, Integer> incs = null;
                 switch (d.getName()) {
                     case "statinc":
                     case "critical":

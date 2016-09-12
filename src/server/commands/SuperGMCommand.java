@@ -5,8 +5,6 @@
 package server.commands;
 
 import java.awt.Point;
-import java.io.File;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
-import java.util.Scanner;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -35,15 +32,11 @@ import client.inventory.MapleInventoryIdentifier;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleRing;
 import constants.GameConstants;
-import constants.ServerConstants;
 import constants.ServerConstants.PlayerGMRank;
 import handling.RecvPacketOpcode;
 import handling.SendPacketOpcode;
 import handling.channel.ChannelServer;
 import handling.world.World;
-import lib.data.MapleData;
-import lib.data.MapleDataProvider;
-import lib.data.MapleDataProviderFactory;
 import net.DatabaseConnection;
 import script.npc.NPCTalk;
 import script.portal.PortalScriptManager;
@@ -97,8 +90,6 @@ public class SuperGMCommand {
         public int execute(MapleClient c, String[] splitted) {
             String search = StringUtil.joinStringFrom(splitted, 1);
             String result = "";
-            MapleData data = null;
-            MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider("String.wz");
             List<String> retItems = new ArrayList<>();
             int selection = 0;
             for (ItemInformation itemPair : MapleItemInformationProvider.getInstance().getAllItems()) {

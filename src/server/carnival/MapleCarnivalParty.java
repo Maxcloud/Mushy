@@ -1,11 +1,11 @@
 package server.carnival;
 
-import client.MapleCharacter;
-import handling.channel.ChannelServer;
-
+import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
-import java.lang.ref.WeakReference;
+
+import client.MapleCharacter;
+import handling.channel.ChannelServer;
 import server.maps.MapleMap;
 import tools.packet.CField;
 

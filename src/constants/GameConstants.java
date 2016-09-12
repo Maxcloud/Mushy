@@ -45,6 +45,45 @@ import tools.Randomizer;
 
 public class GameConstants {
 
+
+	public static boolean isBonusPot(int opID) {
+		//bpots always are x2xxx
+		return Math.floor((opID / 1000) % 10) == 2;
+	}
+
+	public static int getRequiredSense(int reqLevel) {
+		int res = 0;
+		if(reqLevel > 120){
+			res = 90;
+		}else if(reqLevel > 70){
+			res = 60;
+		}else if(reqLevel > 30){
+			res = 30;
+		}
+		return res;
+	}
+
+	public enum Cubes {
+		MIRACLE(5062000),
+		PREMIUM(5062001),
+		SUPER(5062002),
+		REVOLUTIONARY(5062003),
+		ENLIGHTENING(5062005),
+		PLATINUM(5062006),
+		RED(5062009),
+		BLACK(5062010),
+		VIOLET(5062024),
+		MEMORY(5062090),
+		BONUS(5062500);
+		private int itemId = -1;
+
+		Cubes(int itemId){this.itemId = itemId;}
+
+		public int getItemId(){
+			return itemId;
+		}
+
+	}
 	private static final long[] exp = new long[251];
 	private static final int[] closeness = {0, 1, 3, 6, 14, 31, 60, 108, 181, 287, 434, 632, 891, 1224, 1642, 2161, 2793,
 			3557, 4467, 5542, 6801, 8263, 9950, 11882, 14084, 16578, 19391, 22547, 26074,
@@ -84,11 +123,12 @@ public class GameConstants {
 	public static final int[] rankA = {70000027, 70000028, 70000029, 70000030, 70000031, 70000032, 70000033, 70000034, 70000035, 70000036, 70000039, 70000040, 70000041, 70000042};
 	public static final int[] rankS = {70000043, 70000044, 70000045, 70000047, 70000048, 70000049, 70000050, 70000051, 70000052, 70000053, 70000054, 70000055, 70000056, 70000057, 70000058, 70000059, 70000060, 70000061, 70000062};
 	public static final int[] circulators = {2702000, 2700000, 2700100, 2700200, 2700300, 2700400, 2700500, 2700600, 2700700, 2700800, 2700900, 2701000};
-	public static final int MAX_BUFFSTAT = 12;
+	public static final int MAX_BUFFSTAT = 17;
 	public static final int[] blockedSkills = {4341003, 36120045};
-	public static final String[] RESERVED = {"Alpha", "Aristocat", "Donor", "MapleNews", "Hack"};
+	public static final String[] RESERVED = {"Maxcloud", "SharpAceX", "Jeff"};
 	public static final String[] stats = {"tuc", "reqLevel", "reqJob", "reqSTR", "reqDEX", "reqINT", "reqLUK", "reqPOP", "cash", "cursed", "success", "setItemID", "equipTradeBlock", "durability", "randOption", "randStat", "masterLevel", "reqSkillLevel", "elemDefault", "incRMAS", "incRMAF", "incRMAI", "incRMAL", "canLevel", "skill", "charmEXP"};
 	public static final int CHANCE_ON_3RD_LINE_WITH_POT_SCROLL = 25;
+	private static final int CHANCE_ON_MAX_RANK_LINE = 33;
 	public static int[] noSpawnNPC = {9201030, 9010037, 9010038};
 
 	public static final int[] unusedNpcs = {9201142, 9201254, 9201030, 9010037, 9010038, 9010039, 9010040, 9300010, 9070004, 9070006, 9000017, 2041017, 9270075, 9000069, 9201029, 9130024, 9330072, 9133080, 9201152, 9330189};
@@ -952,7 +992,7 @@ public class GameConstants {
 	}
 
 	public static boolean isWeapon(final int itemId) {
-		return itemId >= 1210000 && itemId < 1600000;
+		return itemId >= 1210000 && itemId < 1600000 || isSecondaryWeapon(itemId);
 	}
 
 	public static boolean isSecondaryWeapon(final int itemId) {
@@ -3943,18 +3983,22 @@ public class GameConstants {
 		return itemId / 10000 == 114;
 	}
 
-	public static boolean potentialIDFits(final int potentialID, final int newstate, final int i) {
+	public static boolean potentialIDFits(final int potentialID, final int rank, final int line) {
 		//first line is always the best
 		//but, sometimes it is possible to get second/third line as well
 		//may seem like big chance, but it's not as it grabs random potential ID anyway
-		if (newstate == 20) {
-			return (i == 0 || Randomizer.nextInt(10) == 0 ? potentialID >= 40000 : potentialID >= 30000 && potentialID < 60004); // xml say so
-		} else if (newstate == 19) {
-			return (i == 0 || Randomizer.nextInt(10) == 0 ? potentialID >= 30000 : potentialID >= 20000 && potentialID < 30000);
-		} else if (newstate == 18) {
-			return (i == 0 || Randomizer.nextInt(10) == 0 ? potentialID >= 20000 && potentialID < 30000 : potentialID >= 10000 && potentialID < 20000);
-		} else if (newstate == 17) {
-			return (i == 0 || Randomizer.nextInt(10) == 0 ? potentialID >= 10000 && potentialID < 20000 : potentialID < 10000);
+		if (rank == 20) {
+			return (line == 0 || Randomizer.nextInt(100) < GameConstants.CHANCE_ON_MAX_RANK_LINE ?
+					potentialID >= 40000 && potentialID < 60000 : potentialID >= 30000 && potentialID < 40000); // xml says so
+		} else if (rank == 19) {
+			return (line == 0 || Randomizer.nextInt(100) < GameConstants.CHANCE_ON_MAX_RANK_LINE ?
+					potentialID >= 30000 && potentialID < 40000 : potentialID >= 20000 && potentialID < 30000);
+		} else if (rank == 18) {
+			return (line == 0 || Randomizer.nextInt(100) < GameConstants.CHANCE_ON_MAX_RANK_LINE ?
+					potentialID >= 20000 && potentialID < 30000 : potentialID >= 10000 && potentialID < 20000);
+		} else if (rank == 17) {
+			return (line == 0 || Randomizer.nextInt(100) < GameConstants.CHANCE_ON_MAX_RANK_LINE ?
+					potentialID >= 10000 && potentialID < 20000 : potentialID < 10000);
 		} else {
 			return false;
 		}
@@ -4807,8 +4851,6 @@ public class GameConstants {
 	public static final int BUFF_ITEM = 122223;
 	public static final int PART_JOB = 122750;
 	public static final int PART_JOB_REWARD = 122751;
-	public static final int JAIL_TIME = 123455;
-	public static final int JAIL_QUEST = 123456;
 	public static final int REPORT_QUEST = 123457;
 	public static final int PLAYER_INFORMATION = 123568;
 	public static final int ULT_EXPLORER = 111111;
@@ -4899,5 +4941,62 @@ public class GameConstants {
 
 	public static boolean isLegendaryPotScroll(int scrollId){
 		return scrollId == 2049780;
+	}
+
+	public static Cubes getCashCubeByItemId(int itemId){
+		for(Cubes cube : Cubes.values()){
+			if(cube.getItemId() == itemId){
+				return cube;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns the chance a given cube can increase the rank (state) of an equip.
+	 * @param cube
+	 * @return
+     */
+	public static int getRankUpChanceByCube(Cubes cube){
+		switch(cube) {
+			case RED:
+			case BONUS:
+				return 10;
+			case BLACK:
+				return 20;
+			default:
+				return 0;
+		}
+	}
+
+	/**
+	 * Returns the chance a given cube can give a 3rd main potential line
+	 * to an item that currently has none.
+	 * @param cube
+	 * @return
+     */
+	public static int get3rdLineUpChanceByCube(Cubes cube){
+		switch(cube) {
+			case RED:
+				return 10;
+			case BLACK:
+				return 20;
+			default:
+				return 0;
+		}
+	}
+
+	/**
+	 * Gets the maximum rank an equip can achieve by using a certain cube.
+	 * @param cube
+	 * @return
+     */
+	public static int getMaxAvailableState(Cubes cube){
+		switch (cube) {
+			case MIRACLE:
+				return Equip.UNIQUE;
+			default:
+				return Equip.LEGENDARY;
+		}
 	}
 }

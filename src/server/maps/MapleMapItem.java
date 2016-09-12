@@ -21,11 +21,12 @@
 package server.maps;
 
 import java.awt.Point;
-import client.inventory.Item;
-import client.MapleCharacter;
-import client.MapleClient;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import client.MapleCharacter;
+import client.MapleClient;
+import client.inventory.Item;
 import tools.packet.CField;
 
 public class MapleMapItem extends MapleMapObject {

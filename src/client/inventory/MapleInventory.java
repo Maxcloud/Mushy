@@ -1,6 +1,5 @@
 package client.inventory;
 
-import constants.GameConstants;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import constants.GameConstants;
+
 public class MapleInventory implements Iterable<Item>, Serializable {
 
     private final Map<Short, Item> inventory;
@@ -18,7 +19,7 @@ public class MapleInventory implements Iterable<Item>, Serializable {
     private final MapleInventoryType type;
 
     public MapleInventory(MapleInventoryType type) {
-        this.inventory = new LinkedHashMap();
+        this.inventory = new LinkedHashMap<Short, Item>();
         this.type = type;
     }
 

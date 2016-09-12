@@ -1,6 +1,7 @@
 package tools;
 
 import java.io.ByteArrayOutputStream;
+
 import org.apache.mina.common.ByteBuffer;
 
 /**
@@ -173,7 +174,6 @@ public class HexTool {
                 baos.write(nextb);
             }
         }
-        label161:
         return baos.toByteArray();
     }
 
