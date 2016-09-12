@@ -4087,14 +4087,14 @@ public class CField {
 			return mplew.getPacket();
 		}
 
-		public static byte[] IntroEnableUI(int wtf) {
+		public static byte[] IntroEnableUI(int enable) {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 			mplew.writeShort(SendPacketOpcode.INTRO_ENABLE_UI.getValue());
-			mplew.write(wtf > 0 ? 1 : 0);
-			if (wtf > 0) {
-				mplew.write(wtf);
-				mplew.write(0);
+			mplew.write(enable > 0 ? 1 : 0);
+			if (enable > 0) {
+				mplew.write(enable);
+				mplew.writeShort(0);
 			}
 			mplew.write(0);
 			return mplew.getPacket();
