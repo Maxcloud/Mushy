@@ -1031,6 +1031,7 @@ public class CField {
 		mask[1] |= 0x200;
 		mask[5] |= 0x20000;
 		mask[5] |= 0x8000;
+		
 		if ((chr.getBuffedValue(MapleBuffStat.DARKSIGHT) != null) || (chr.isHidden())) {
 			mask[MapleBuffStat.DARKSIGHT.getPosition(true)] |= MapleBuffStat.DARKSIGHT.getValue();
 		}
@@ -1087,17 +1088,6 @@ public class CField {
 			buffvalue
 					.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.SHADOWPARTNER)), Integer.valueOf(3)));
 		}
-		// if ((chr.getBuffedValue(MapleBuffStat.MORPH) != null) &&
-		// (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {//TODO
-		// mask[MapleBuffStat.MORPH.getPosition(true)] |=
-		// MapleBuffStat.MORPH.getValue();
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getStatForBuff(MapleBuffStat.MORPH).getMorph(chr)),
-		// Integer.valueOf(2)));
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.MORPH)),
-		// Integer.valueOf(3)));
-		// }
 		if (chr.getBuffedValue(MapleBuffStat.BERSERK_FURY) != null) {// works
 			mask[MapleBuffStat.BERSERK_FURY.getPosition(true)] |= MapleBuffStat.BERSERK_FURY.getValue();
 		}
@@ -1123,16 +1113,6 @@ public class CField {
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.SOARING).intValue()),
 					Integer.valueOf(1)));
 		}
-		// if (chr.getBuffedValue(MapleBuffStat.OWL_SPIRIT) != null) {//TODO
-		// mask[MapleBuffStat.OWL_SPIRIT.getPosition(true)] |=
-		// MapleBuffStat.OWL_SPIRIT.getValue();
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.OWL_SPIRIT).intValue()),
-		// Integer.valueOf(2)));
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.OWL_SPIRIT)),
-		// Integer.valueOf(3)));
-		// }
 		if (chr.getBuffedValue(MapleBuffStat.FINAL_CUT) != null) {
 			mask[MapleBuffStat.FINAL_CUT.getPosition(true)] |= MapleBuffStat.FINAL_CUT.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.FINAL_CUT).intValue()),
@@ -1372,7 +1352,6 @@ public class CField {
 		mplew.write(show);
 		mplew.write(0);
 		mplew.write(-1);
-		// mplew.writeMapleAsciiString("[fuck]"); // new
 		return mplew.getPacket();
 	}
 
@@ -1382,8 +1361,7 @@ public class CField {
 
 		mplew.writeShort(SendPacketOpcode.SHOW_SCROLL_EFFECT.getValue());
 		mplew.writeInt(chr);
-		mplew.write(
-				scrollSuccess == Equip.ScrollResult.SUCCESS ? 1 : scrollSuccess == Equip.ScrollResult.CURSE ? 2 : 0);
+		mplew.write(scrollSuccess == Equip.ScrollResult.SUCCESS ? 1 : scrollSuccess == Equip.ScrollResult.CURSE ? 2 : 0);
 		mplew.write(legendarySpirit ? 1 : 0);
 		mplew.writeInt(scroll); // scroll
 		mplew.writeInt(item); // item
@@ -4087,14 +4065,14 @@ public class CField {
 			return mplew.getPacket();
 		}
 
-		public static byte[] IntroEnableUI(int wtf) {
+		public static byte[] IntroEnableUI(int enable) {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 			mplew.writeShort(SendPacketOpcode.INTRO_ENABLE_UI.getValue());
-			mplew.write(wtf > 0 ? 1 : 0);
-			if (wtf > 0) {
-				mplew.write(wtf);
-				mplew.write(0);
+			mplew.write(enable > 0 ? 1 : 0);
+			if (enable > 0) {
+				mplew.write(enable);
+				mplew.writeShort(0);
 			}
 			mplew.write(0);
 			return mplew.getPacket();
@@ -4246,49 +4224,6 @@ public class CField {
 			mplew.writeShort(SendPacketOpcode.PLAY_MOVIE.getValue());
 			mplew.writeMapleAsciiString(data);
 			mplew.write(show ? 1 : 0);
-
-			return mplew.getPacket();
-		}
-
-		public static byte[] setRedLeafStatus(int joejoe, int hermoninny, int littledragon, int ika) {
-			// packet made to set status
-			// should remove it and make a handler for it, it's a recv opcode
-			/*
-			 * slea: E2 9F 72 00 5D 0A 73 01 E2 9F 72 00 04 00 00 00 00 00 00 00
-			 * 75 96 8F 00 55 01 00 00 76 96 8F 00 00 00 00 00 77 96 8F 00 00 00
-			 * 00 00 78 96 8F 00 00 00 00 00
-			 */
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-			// mplew.writeShort();
-			mplew.writeInt(7512034); // no idea
-			mplew.writeInt(24316509); // no idea
-			mplew.writeInt(7512034); // no idea
-			mplew.writeInt(4); // no idea
-			mplew.writeInt(0); // no idea
-			mplew.writeInt(9410165); // joe joe
-			mplew.writeInt(joejoe); // amount points added
-			mplew.writeInt(9410166); // hermoninny
-			mplew.writeInt(hermoninny); // amount points added
-			mplew.writeInt(9410167); // little dragon
-			mplew.writeInt(littledragon); // amount points added
-			mplew.writeInt(9410168); // ika
-			mplew.writeInt(ika); // amount points added
-
-			return mplew.getPacket();
-		}
-
-		public static byte[] sendRedLeaf(int points, boolean viewonly) {
-			/*
-			 * slea: 73 00 00 00 0A 00 00 00 01
-			 */
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(10);
-
-			mplew.writeShort(SendPacketOpcode.OPEN_UI_OPTION.getValue());
-			mplew.writeInt(0x73);
-			mplew.writeInt(points);
-			mplew.write(viewonly ? 1 : 0); // if view only, then complete button
-											// is disabled
 
 			return mplew.getPacket();
 		}

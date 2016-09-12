@@ -1463,14 +1463,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	public void sendJewelCraftWindow() {
 		c.getSession().write(UIPacket.sendJewelCraftWindow(id));
 	}
-
-	public void sendRedLeaf(boolean viewonly, boolean autocheck) {
-		if (autocheck) {
-			viewonly = c.getPlayer().getFriendShipToAdd() == 0;
-		}
-		c.getSession().write(UIPacket.sendRedLeaf(viewonly ? 0 : c.getPlayer().getFriendShipToAdd(), viewonly));
-	}
-
+	
 	public void sendProfessionWindow() {
 		c.getSession().write(UIPacket.openUI(42));
 	}
