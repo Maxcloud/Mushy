@@ -186,6 +186,9 @@ public class MapleMonsterInformationProvider {
         for (Entry<Integer, Integer> i : ii.getMonsterBook().entrySet()) {
             if (!drops.containsKey(i.getKey())) {
                 final MapleMonsterStats mons = MapleLifeFactory.getMonsterStats(i.getKey());
+                
+                if (mons == null) continue;
+                
                 ArrayList<MonsterDropEntry> e = new ArrayList<>();
                 e.add(new MonsterDropEntry(i.getValue().intValue(), mons.isBoss() ? 1000000 : 10000, 1, 1, 0));
                 StructFamiliar f = ii.getFamiliarByMob(i.getKey().intValue());
