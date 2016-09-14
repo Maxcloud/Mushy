@@ -76,6 +76,7 @@ public class Start extends Properties {
         
         System.out.print("Init...\r\n");
         
+        Jeff.Jeff();
         // Timers..
         WorldTimer.getInstance().start();
         EtcTimer.getInstance().start();
