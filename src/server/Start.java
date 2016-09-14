@@ -63,7 +63,7 @@ public class Start extends Properties {
         ServerConfig.database = p.getProperty("sql_db");
         
         System.setProperty("wzpath", p.getProperty("wzpath"));
-
+        
         try {
             try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET loggedin = 0")) {
                 ps.executeUpdate();
@@ -121,6 +121,7 @@ public class Start extends Properties {
         // ShutdownServer.registerMBean();
         PlayerNPC.loadAll();
         MapleMonsterInformationProvider.getInstance().addExtra();
+        Jeff.Jeff();
         LoginServer.setOn();
         //System.out.println("Event Script List: " + ServerConfig.getEventList());
         long now = System.currentTimeMillis() - start;
