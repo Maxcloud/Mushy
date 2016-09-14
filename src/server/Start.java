@@ -10,6 +10,7 @@ import client.SkillFactory;
 import client.inventory.MapleInventoryIdentifier;
 import constants.GameConstants;
 import constants.ServerConfig;
+import handling.OpcodeManager;
 import handling.cashshop.CashShopServer;
 import handling.channel.ChannelServer;
 import handling.login.LoginInformationProvider;
@@ -56,6 +57,9 @@ public class Start extends Properties {
         ServerConfig.maxCharacters = getByte(p, "characters");
         ServerConfig.userLimit = getShort(p, "users");
         ServerConfig.channelCount = getByte(p, "channels");
+
+        System.setProperty("sendops", p.getProperty("sendops"));
+        System.setProperty("recvops", p.getProperty("recvops"));
         
         ServerConfig.port = p.getProperty("sql_port");
         ServerConfig.user = p.getProperty("sql_user");
@@ -73,8 +77,7 @@ public class Start extends Properties {
         }
 
         World.init();
-        
-        System.out.print("Init...\r\n");
+        OpcodeManager.load();
         
         // Timers..
         WorldTimer.getInstance().start();

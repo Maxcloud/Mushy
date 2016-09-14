@@ -1032,20 +1032,20 @@ public class CField {
 		mask[5] |= 0x20000;
 		mask[5] |= 0x8000;
 		if ((chr.getBuffedValue(MapleBuffStat.DARKSIGHT) != null) || (chr.isHidden())) {
-			mask[MapleBuffStat.DARKSIGHT.getPosition(true)] |= MapleBuffStat.DARKSIGHT.getValue();
+		//	mask[MapleBuffStat.DARKSIGHT.getPosition(true)] |= MapleBuffStat.DARKSIGHT.getValue();
 		}
 		if (chr.getBuffedValue(MapleBuffStat.SOULARROW) != null) {
-			mask[MapleBuffStat.SOULARROW.getPosition(true)] |= MapleBuffStat.SOULARROW.getValue();
+		//	mask[MapleBuffStat.SOULARROW.getPosition(true)] |= MapleBuffStat.SOULARROW.getValue();
 		}
 		if (chr.getBuffedValue(MapleBuffStat.DAMAGE_ABSORBED) != null) {
-			mask[MapleBuffStat.DAMAGE_ABSORBED.getPosition(true)] |= MapleBuffStat.DAMAGE_ABSORBED.getValue();
+			// mask[MapleBuffStat.DAMAGE_ABSORBED.getPosition(true)] |= MapleBuffStat.DAMAGE_ABSORBED.getValue();
 			buffvaluenew.add(new Pair(Integer.valueOf(1000), Integer.valueOf(2)));
 			buffvaluenew.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DAMAGE_ABSORBED)),
 					Integer.valueOf(4)));
 			buffvaluenew.add(new Pair(Integer.valueOf(9), Integer.valueOf(0)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) != null) {
-			mask[MapleBuffStat.TEMPEST_BLADES.getPosition(true)] |= MapleBuffStat.TEMPEST_BLADES.getValue();
+			// mask[MapleBuffStat.TEMPEST_BLADES.getPosition(true)] |= MapleBuffStat.TEMPEST_BLADES.getValue();
 			buffvaluenew.add(new Pair(
 					Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.TEMPEST_BLADES))),
 					Integer.valueOf(2)));
@@ -1069,19 +1069,19 @@ public class CField {
 		}
 		if ((chr.getBuffedValue(MapleBuffStat.COMBO) != null)
 				&& (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {
-			mask[MapleBuffStat.COMBO.getPosition(true)] |= MapleBuffStat.COMBO.getValue();
+			// mask[MapleBuffStat.COMBO.getPosition(true)] |= MapleBuffStat.COMBO.getValue();
 			buffvalue.add(
 					new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.COMBO).intValue()), Integer.valueOf(1)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.WK_CHARGE) != null) {
-			mask[MapleBuffStat.WK_CHARGE.getPosition(true)] |= MapleBuffStat.WK_CHARGE.getValue();
+			// mask[MapleBuffStat.WK_CHARGE.getPosition(true)] |= MapleBuffStat.WK_CHARGE.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.WK_CHARGE).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.WK_CHARGE)), Integer.valueOf(3)));
 		}
 		if ((chr.getBuffedValue(MapleBuffStat.SHADOWPARTNER) != null)
 				&& (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {
-			mask[MapleBuffStat.SHADOWPARTNER.getPosition(true)] |= MapleBuffStat.SHADOWPARTNER.getValue();
+			// mask[MapleBuffStat.SHADOWPARTNER.getPosition(true)] |= MapleBuffStat.SHADOWPARTNER.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.SHADOWPARTNER).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
@@ -1099,27 +1099,27 @@ public class CField {
 		// Integer.valueOf(3)));
 		// }
 		if (chr.getBuffedValue(MapleBuffStat.BERSERK_FURY) != null) {// works
-			mask[MapleBuffStat.BERSERK_FURY.getPosition(true)] |= MapleBuffStat.BERSERK_FURY.getValue();
+			// mask[MapleBuffStat.BERSERK_FURY.getPosition(true)] |= MapleBuffStat.BERSERK_FURY.getValue();
 		}
 		if (chr.getBuffedValue(MapleBuffStat.DIVINE_BODY) != null) {
-			mask[MapleBuffStat.DIVINE_BODY.getPosition(true)] |= MapleBuffStat.DIVINE_BODY.getValue();
+			// mask[MapleBuffStat.DIVINE_BODY.getPosition(true)] |= MapleBuffStat.DIVINE_BODY.getValue();
 		}
 		if (chr.getBuffedValue(MapleBuffStat.WIND_WALK) != null) {// TODO better
-			mask[MapleBuffStat.WIND_WALK.getPosition(true)] |= MapleBuffStat.WIND_WALK.getValue();
+			// mask[MapleBuffStat.WIND_WALK.getPosition(true)] |= MapleBuffStat.WIND_WALK.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.WIND_WALK).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
 					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.WIND_WALK)), Integer.valueOf(3)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.PYRAMID_PQ) != null) {// TODO
-			mask[MapleBuffStat.PYRAMID_PQ.getPosition(true)] |= MapleBuffStat.PYRAMID_PQ.getValue();
+			// mask[MapleBuffStat.PYRAMID_PQ.getPosition(true)] |= MapleBuffStat.PYRAMID_PQ.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.PYRAMID_PQ).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(
 					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.PYRAMID_PQ)), Integer.valueOf(3)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.SOARING) != null) {// TODO
-			mask[MapleBuffStat.SOARING.getPosition(true)] |= MapleBuffStat.SOARING.getValue();
+			// mask[MapleBuffStat.SOARING.getPosition(true)] |= MapleBuffStat.SOARING.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.SOARING).intValue()),
 					Integer.valueOf(1)));
 		}
@@ -1134,7 +1134,7 @@ public class CField {
 		// Integer.valueOf(3)));
 		// }
 		if (chr.getBuffedValue(MapleBuffStat.FINAL_CUT) != null) {
-			mask[MapleBuffStat.FINAL_CUT.getPosition(true)] |= MapleBuffStat.FINAL_CUT.getValue();
+			// mask[MapleBuffStat.FINAL_CUT.getPosition(true)] |= MapleBuffStat.FINAL_CUT.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.FINAL_CUT).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
@@ -1142,37 +1142,37 @@ public class CField {
 		}
 
 		if (chr.getBuffedValue(MapleBuffStat.TORNADO) != null) {
-			mask[MapleBuffStat.TORNADO.getPosition(true)] |= MapleBuffStat.TORNADO.getValue();
+			// Smask[MapleBuffStat.TORNADO.getPosition(true)] |= MapleBuffStat.TORNADO.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.TORNADO).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.TORNADO)), Integer.valueOf(3)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.INFILTRATE) != null) {
-			mask[MapleBuffStat.INFILTRATE.getPosition(true)] |= MapleBuffStat.INFILTRATE.getValue();
+			// mask[MapleBuffStat.INFILTRATE.getPosition(true)] |= MapleBuffStat.INFILTRATE.getValue();
 		}
 		if (chr.getBuffedValue(MapleBuffStat.MECH_CHANGE) != null) {
-			mask[MapleBuffStat.MECH_CHANGE.getPosition(true)] |= MapleBuffStat.MECH_CHANGE.getValue();
+			// mask[MapleBuffStat.MECH_CHANGE.getPosition(true)] |= MapleBuffStat.MECH_CHANGE.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.MECH_CHANGE).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(
 					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.MECH_CHANGE)), Integer.valueOf(3)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.DARK_AURA) != null) {
-			mask[MapleBuffStat.DARK_AURA.getPosition(true)] |= MapleBuffStat.DARK_AURA.getValue();
+			// Smask[MapleBuffStat.DARK_AURA.getPosition(true)] |= MapleBuffStat.DARK_AURA.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.DARK_AURA).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
 					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DARK_AURA)), Integer.valueOf(3)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.BLUE_AURA) != null) {
-			mask[MapleBuffStat.BLUE_AURA.getPosition(true)] |= MapleBuffStat.BLUE_AURA.getValue();
+			// mask[MapleBuffStat.BLUE_AURA.getPosition(true)] |= MapleBuffStat.BLUE_AURA.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BLUE_AURA).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
 					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BLUE_AURA)), Integer.valueOf(3)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.YELLOW_AURA) != null) {
-			mask[MapleBuffStat.YELLOW_AURA.getPosition(true)] |= MapleBuffStat.YELLOW_AURA.getValue();
+			// mask[MapleBuffStat.YELLOW_AURA.getPosition(true)] |= MapleBuffStat.YELLOW_AURA.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.YELLOW_AURA).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(
@@ -1180,7 +1180,7 @@ public class CField {
 		}
 		if ((chr.getBuffedValue(MapleBuffStat.WATER_SHIELD) != null)
 				&& (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {
-			mask[MapleBuffStat.WATER_SHIELD.getPosition(true)] |= MapleBuffStat.WATER_SHIELD.getValue();
+			// mask[MapleBuffStat.WATER_SHIELD.getPosition(true)] |= MapleBuffStat.WATER_SHIELD.getValue();
 			buffvaluenew.add(
 					new Pair(Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.WATER_SHIELD))),
 							Integer.valueOf(2)));
@@ -1189,7 +1189,7 @@ public class CField {
 			buffvaluenew.add(new Pair(Integer.valueOf(9), Integer.valueOf(0)));
 		}
 		if (chr.getBuffedValue(MapleBuffStat.GIANT_POTION) != null) {
-			mask[MapleBuffStat.GIANT_POTION.getPosition(true)] |= MapleBuffStat.GIANT_POTION.getValue();
+			// mask[MapleBuffStat.GIANT_POTION.getPosition(true)] |= MapleBuffStat.GIANT_POTION.getValue();
 			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.GIANT_POTION).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(
@@ -3289,26 +3289,70 @@ public class CField {
 			mplew.writeShort(SendPacketOpcode.SPAWN_NPC.getValue());
 			mplew.writeInt(life.getObjectId());
 			mplew.writeInt(life.getId());
+			getNpcInit(mplew, life, show);
 			
+			return mplew.getPacket();
+		}
+		
+		public static byte[] removeNPC(int objectid) {
+			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+			mplew.writeShort(SendPacketOpcode.REMOVE_NPC.getValue());
+			mplew.writeInt(objectid);
+
+			return mplew.getPacket();
+		}
+		
+		public static byte[] spawnNPCRequestController(MapleNPC life, boolean show) {
+			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+			mplew.writeShort(SendPacketOpcode.SPAWN_NPC_REQUEST_CONTROLLER.getValue());
+			mplew.write(1);
+			mplew.writeInt(life.getObjectId());
+			mplew.writeInt(life.getId());
+			getNpcInit(mplew, life, show);
+
+			return mplew.getPacket();
+		}
+		
+		public static byte[] removeNPCController(int objectid) {
+			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+			mplew.writeShort(SendPacketOpcode.SPAWN_NPC_REQUEST_CONTROLLER.getValue());
+			mplew.write(0);
+			mplew.writeInt(objectid);
+
+			return mplew.getPacket();
+		}
+		
+		private static void getNpcInit(MaplePacketLittleEndianWriter mplew, MapleNPC life, boolean show) {
 			mplew.writeShort(life.getPosition().x);
 			mplew.writeShort(life.getCy());
-			mplew.write(0); // new?
-			mplew.write(life.getF() == 1 ? 0 : 1);
+			
+			mplew.write(0); // bMove
+			mplew.write(life.getF() == 1 ? 0 : 1); // nMoveAction
 			mplew.writeShort(life.getFh());
 			mplew.writeShort(life.getRx0());
 			mplew.writeShort(life.getRx1());
-			mplew.write(show ? 1 : 0);
+			mplew.write(show ? 1 : 0); // bEnabled
+			
+			mplew.writeInt(0); // CNpc::SetPresentItem
+			
+			mplew.write(0); // nPresentTimeState
+			mplew.writeInt(-1); // tPresent
+			mplew.writeInt(0); // nNoticeBoardType
+			
+			/*
+			 * if (nNoticeBoardType == 1)		
+			 * 	mplew.writeInt(0); // nNoticeBoardType
+			 *
+			 */
+			
 			mplew.writeInt(0);
+			mplew.writeInt(0);
+			
+			mplew.writeMapleAsciiString("");
 			mplew.write(0);
-			mplew.writeInt(-1);
-			mplew.writeInt(0);
-			mplew.writeInt(0);
-			mplew.writeInt(0);
-			mplew.writeShort(0);
-			mplew.write(0);
-			mplew.write(new byte[15]);
-
-			return mplew.getPacket();
 		}
 
 		public static byte[] getMapSelection(final int npcid, final String sel) {
@@ -3321,44 +3365,6 @@ public class CField {
 			mplew.writeInt(npcid == 2083006 ? 1 : 0); // neo city
 			mplew.writeInt(npcid == 9010022 ? 1 : 0); // dimensional
 			mplew.writeMapleAsciiString(sel);
-
-			return mplew.getPacket();
-		}
-
-		public static byte[] removeNPC(int objectid) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-			mplew.writeShort(SendPacketOpcode.REMOVE_NPC.getValue());
-			mplew.writeInt(objectid);
-
-			return mplew.getPacket();
-		}
-
-		public static byte[] removeNPCController(int objectid) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-			mplew.writeShort(SendPacketOpcode.SPAWN_NPC_REQUEST_CONTROLLER.getValue());
-			mplew.write(0);
-			mplew.writeInt(objectid);
-
-			return mplew.getPacket();
-		}
-
-		public static byte[] spawnNPCRequestController(MapleNPC life, boolean MiniMap) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-			mplew.writeShort(SendPacketOpcode.SPAWN_NPC_REQUEST_CONTROLLER.getValue());
-			mplew.write(1);
-			mplew.writeInt(life.getObjectId());
-			mplew.writeInt(life.getId());
-			mplew.writeShort(life.getPosition().x);
-			mplew.writeShort(life.getCy());
-			mplew.write(life.getF() == 1 ? 0 : 1);
-			mplew.writeShort(life.getFh());
-			mplew.writeShort(life.getRx0());
-			mplew.writeShort(life.getRx1());
-			mplew.write(MiniMap ? 1 : 0);
-			mplew.writeInt(0);// new 143
 
 			return mplew.getPacket();
 		}

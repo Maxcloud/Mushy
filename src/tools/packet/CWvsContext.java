@@ -3316,10 +3316,12 @@ public class CWvsContext {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
-            PacketHelper.writeBuffMask(mplew, statups);//48
+            PacketHelper.writeBuffMask(mplew, statups);
+            
             boolean stacked = false;
             boolean isAura = false;
             boolean iscombo = false;
+            
             for (Map.Entry<MapleBuffStat, Integer> stat : statups.entrySet()) {
                 isAura = GameConstants.isAuraBuff(stat.getKey());
                 if (stat.getKey() == MapleBuffStat.COMBO) {
@@ -3327,16 +3329,20 @@ public class CWvsContext {
                 }
                 if (!stat.getKey().canStack()) {
                     boolean specialBuff = GameConstants.isSpecialBuff(stat.getKey());
+                    
                     if (specialBuff) {
                         mplew.writeInt(stat.getValue());
                     } else {
                         mplew.writeShort(stat.getValue());
                     }
+                    
                     mplew.writeInt(buffid);
                     mplew.writeInt(bufflength);
+                    
                     if (stat.getKey() == MapleBuffStat.HOLY_SHIELD) {
                         mplew.writeInt(0);
                     }
+                    
                     if (stat.getKey() == MapleBuffStat.TEMPEST_BLADES) {
                         mplew.write0(5);
                         mplew.writeInt(buffid == 61101002 ? 1 : 2);
@@ -3347,12 +3353,15 @@ public class CWvsContext {
                             mplew.write0(8);
                         }
                     }
+                    
                 }
             }
 
             for (Map.Entry<MapleBuffStat, Integer> stat : statups.entrySet()) {
-                if (stat.getKey().canStack()) {
-                    if (!stacked) {
+                
+            	if (stat.getKey().canStack()) {
+                    
+            		if (!stacked) {
                         mplew.write0(5);
                         mplew.write0(4); //new v143?
                         if (GameConstants.isSpecialStackBuff(stat.getKey())) {
@@ -3372,19 +3381,25 @@ public class CWvsContext {
                     if (stat.getKey() == MapleBuffStat.DAMAGE_CAP_INCREASE) {
                         mplew.writeInt(1000);
                     }
+                    
                 }
+            	
             }
+            
             if (buffid == 24121004) {// Priere D'Aria
                 mplew.write0(3);
                 mplew.writeShort(0);
                 mplew.write(0);
             }  
+            
            if (buffid == 2321054) {
-            mplew.writeInt(0);
-        }
+		        mplew.writeInt(0);
+		    }
+           
             if (buffid == 32110000 || buffid == 32111012 || buffid == 2221054 || buffid == 11101022 || buffid == 11111022 || buffid == 2311012 || buffid == 32001003 || buffid == 32120013 || buffid == 32101003 || buffid == 32120014 || buffid == 32111012 || buffid == 32120015 || buffid == 2221054 || buffid == 36121003 || buffid == 11101022 || buffid == 11111022 || buffid == 2311012 || buffid == 100001263 || buffid == 100001264) {
-            mplew.write(1);
+            	mplew.write(1);
             }
+            
             if (!isAura) {
                 mplew.writeShort(0);
                 if (effect != null) {
@@ -3397,35 +3412,31 @@ public class CWvsContext {
                     }
                 }
             }
+            
             mplew.writeShort(0);
+            
             if (buffid == 27121005) {
-            mplew.writeInt(effect.getX());
+            	mplew.writeInt(effect.getX());
             }      
+            
             if (buffid == 15001022 && effect.getY() > 0) {
-            mplew.writeInt(effect.getY());
+            	mplew.writeInt(effect.getY());
             }  
-            //mplew.writeZeroBytes((buffid != 36111003 && buffid != 101120109 && buffid != 27121005) ? 3 : 0); // 197
 
-        //       if (buffid == 31011001) {// Overload Release?? idk
-        //          mplew.writeInt(effect.getDuration());
-        //         JobPacket.AvengerPacket.cancelExceed();
-        //        }
             if (buffid == 31211004) {// Recovery
                 mplew.writeInt(effect.getDuration());
                 JobPacket.AvengerPacket.cancelExceed();
             }
-         //   if (buffid == 27111004) {
-         //       mplew.write(0);
-          //      mplew.writeShort(1000);
-          //      mplew.writeShort(0);
-          //  }
+
             if (buffid == 27110007) {
                 mplew.write(0);
                 mplew.writeShort(25);
             }
+            
             if (buffid == 27101202) {
                 mplew.write0(10);
             }
+            
             if (iscombo) {
                 mplew.writeShort(258);
                 mplew.writeShort(600);
@@ -3433,12 +3444,15 @@ public class CWvsContext {
                 mplew.write(0);
                 mplew.write((effect != null) && (effect.isShadow()) ? 1 : 2);
             }
+            
             if (isAura) {
                 mplew.writeInt(0);
             }
+            
             if ((statups.containsKey(MapleBuffStat.JUMP)) || (statups.containsKey(MapleBuffStat.SPEED)) || (statups.containsKey(MapleBuffStat.MORPH)) || (statups.containsKey(MapleBuffStat.GHOST_MORPH)) /*|| (statups.containsKey(MapleBuffStat.MAPLE_WARRIOR)) || (statups.containsKey(MapleBuffStat.MONSTER_RIDING))*/ || (statups.containsKey(MapleBuffStat.DASH_SPEED)) || (statups.containsKey(MapleBuffStat.DASH_JUMP)) || (statups.containsKey(MapleBuffStat.SOARING)) || (statups.containsKey(MapleBuffStat.YELLOW_AURA)) || (statups.containsKey(MapleBuffStat.SNATCH)) || (statups.containsKey(MapleBuffStat.INDIE_SPEED)) || (statups.containsKey(MapleBuffStat.ANGEL_JUMP)) || (statups.containsKey(MapleBuffStat.ENERGY_CHARGE))/* || (statups.containsKey(MapleBuffStat.MECH_CHANGE))*/) {
                 mplew.write(4);
             }
+            
             if (buffid == 23111004) {//ignis roar
                 mplew.write(0);
                 mplew.writeShort(1000);
@@ -3446,20 +3460,23 @@ public class CWvsContext {
                 mplew.writeShort(0);
 
             }
+            
             if (statups.containsKey(MapleBuffStat.MAPLE_WARRIOR)) {
                 mplew.write(HexTool.getByteArrayFromHexString("00 E8 03 00 00 00 13 00 00 00 00"));
                 return mplew.getPacket();
             }
+            
             if (statups.containsKey(MapleBuffStat.KAISER_COMBO)) { //this too
                 mplew.write0(8);
             }
-            mplew.write0(69); //make sure no dc incase not enough length
             
-            //new v142
+            
             mplew.writeShort(1);
             mplew.write(0);
             mplew.write(0);
             mplew.write(0);
+            mplew.write(0);
+            mplew.writeInt(0);
             System.err.println("sent Buff with buffid: " + buffid +"  as packet: "+ mplew.toString());
             return mplew.getPacket();
         }

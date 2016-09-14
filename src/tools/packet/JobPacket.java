@@ -331,14 +331,14 @@ public class JobPacket {
 		public static byte[] showRechargeEffect() {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 			mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-			mplew.write(0x2D);
+			mplew.write(0x31); // 0x2D
 			return mplew.getPacket();
 		}
 
 		public static byte[] RechargeEffect() {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 			mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-			mplew.write(0x2D);
+			mplew.write(0x31); // 0x2D
 			return mplew.getPacket();
 		}
 
@@ -354,7 +354,7 @@ public class JobPacket {
 
 		public static byte[] updateDress(int transform, MapleCharacter chr) {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.ANGELIC_CHANGE.getValue());
+			mplew.writeShort(SendPacketOpcode.ANGELIC_CHANGE.getValue());																																				
 			mplew.writeInt(chr.getId());
 			mplew.writeInt(transform);
 			return mplew.getPacket();

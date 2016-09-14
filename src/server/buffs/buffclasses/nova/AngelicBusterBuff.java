@@ -39,31 +39,29 @@ public class AngelicBusterBuff extends AbstractBuffClass {
     public void handleBuff(MapleStatEffect eff, int skill) {
         switch (skill) {
             case 80001155:
-            case 60011219: // Terms and Conditions
+            case 60011219: // terms and conditions
                 eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
                 break;
-            case 65001002: // Melody Cross
+            case 65001002: // melody cross
                 eff.statups.put(MapleBuffStat.ANGEL_ACC, eff.info.get(MapleStatInfo.x));
                 break;
-            case 65101002: // Power Transfer
+            case 65101002: // power transfer
                 eff.statups.put(MapleBuffStat.DAMAGE_ABSORBED, eff.info.get(MapleStatInfo.x));
                 break;
-            case 65111003: // Dragon Whistle
-                break;
-            case 65111004: // Iron Blossom
+            case 65111004: // iron blossom
                 eff.statups.put(MapleBuffStat.STANCE, eff.info.get(MapleStatInfo.prop));
                 break;
-            case 65121004: //Star Gazer
+            case 65121004: // star gazer
                 eff.statups.put(MapleBuffStat.CRIT_DAMAGE, eff.info.get(MapleStatInfo.x));
                 break;
-            case 65121009: //Nova Warrior
+            case 65121009: // nova warrior
                 eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
                 break;
             case 65121053: // Final Contract - TODO
 //                eff.statups.put(MapleBuffStat.CRITICAL_RATE, eff.info.get(MapleStatInfo.x));
 //                eff.statups.put(MapleBuffStat.STANCE, eff.info.get(MapleStatInfo.y));
 //                eff.statups.put(MapleBuffStat.ABNORMAL_STATUS_R, eff.info.get(MapleStatInfo.asrR));
-//                eff.statups.put(MapleBuffStat.ELEMENTAL_STATUS_R, eff.info.get(MapleStatInfo.terR));
+//                eff.statups.put(MapleBuffStat.ELEMENTAL_STATUS_R, eff.info.get(MapleStatInfo.terR));																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
                     break;
             case 65121054: // Pretty Exaltation - TODO
                 //eff.statups.put(MapleBuffStat.RECHARGE, eff.info.get(MapleStatInfo.x));

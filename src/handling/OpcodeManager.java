@@ -14,9 +14,9 @@ import tools.HexTool;
 import tools.data.LittleEndianAccessor;
 
 
-class OpcodeManager {
+public class OpcodeManager {
 	
-	private static Map<Short, Method> handlers = new HashMap<Short, Method>();
+	private static Map<Integer, Method> handlers = new HashMap<Integer, Method>();
 	
 	private static Class<?>[] packethandlers = new Class<?>[] {
 		
@@ -82,7 +82,7 @@ class OpcodeManager {
 
     };
     
-	static {
+	public static void load() {
 		try {
 			for (Class<?> c : packethandlers) {
 		        for (Method method : c.getMethods()) {
@@ -112,7 +112,7 @@ class OpcodeManager {
         return types.length == 2 && types[0].equals(MapleClient.class) && types[1].equals(LittleEndianAccessor.class);
     }
 
-    public static boolean handle(MapleClient client, short opcode, LittleEndianAccessor lea) {
+    public static boolean handle(MapleClient client, int opcode, LittleEndianAccessor lea) {
         Method method = handlers.get(opcode);
         try {
             if (method != null) { 

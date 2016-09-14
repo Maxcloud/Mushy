@@ -1,12 +1,26 @@
 package client;
 
 import java.io.Serializable;
-
 import handling.Buffstat;
 
 public enum MapleBuffStat implements Serializable, Buffstat {
 
-	// first
+	// 0
+	DAMAGE_PERCENT(6, true),
+	ANGEL_ACC(16),
+	
+    // 2
+	STANCE(67),
+    MAPLE_WARRIOR(68),
+    BOOSTER(91),
+    
+    // 8
+    DAMAGE_ABSORBED(280),
+	
+    // 17
+	INDIE_PAD(558, true),
+	
+	// 1st
     WATK(0x1, 1),
     WDEF(0x2, 1),
     MATK(0x4, 1),
@@ -18,7 +32,6 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     JUMP(0x100, 1),
     MAGIC_GUARD(0x200, 1),
     DARKSIGHT(0x400, 1),
-    BOOSTER(0x800, 1),
     POWERGUARD(0x1000, 1),
     MAXHP(0x2000, 1),
     MAXMP(0x4000, 1),
@@ -34,9 +47,6 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     DRAGONBLOOD(0x800000, 1),
     HOLY_SYMBOL(0x1000000, 1),
     MESOUP(0x2000000, 1),
-    Battoujutsu(0x2000000, 11),
-    Battoujutsu2(0x80000, 11),
-    Battoujutsu3(0x40000, 11),
     CRITICAL_DAMAGE(32768, 6),
     SHADOWPARTNER(0x4000000, 1), // d
     PICKPOCKET(0x8000000, 1),
@@ -46,12 +56,11 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     WEAKEN(0x40000000, 1),
     CURSE(0x80000000, 1),
     
-    // second
+    // 2nd
     SLOW(0x1, 2),
     MORPH(0x2, 2),
     RECOVERY(0x4, 2),
-    MAPLE_WARRIOR(0x8, 2),
-    STANCE(0x10, 2),
+
     STATUS_RESIST(0x10, 2),
     SHARP_EYES(0x20, 2),
     ELEMENT_RESIST(0x20, 2),
@@ -80,7 +89,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     ARIANT_COSS_IMU2(0x40000000, 2),
     FINALATTACK(0x80000000, 2),
 
-    // third
+    // 3rd
     ELEMENT_RESET(0x2, 3),
     WIND_WALK(0x4, 3),
     ARAN_COMBO(0x4, 3),
@@ -113,7 +122,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     ENHANCED_WDEF(0x40000000, 3),
     ENHANCED_MDEF(0x80000000, 3),
     
-    // forth
+    // 4th
     PERFECT_ARMOR(0x1, 4),
     SATELLITESAFE_PROC(0x2, 4),
     SATELLITESAFE_ABSORB(0x4, 4),
@@ -149,7 +158,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     BLESS(0x20000000, 4),
     PIRATES_REVENGE(1048576, 4),
 
-    // fifth
+    // 5th
     THREATEN_PVP(0x4, 5),
     ICE_KNIGHT(0x8, 5),
     STR(0x10, 5),//-2
@@ -157,11 +166,11 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     DEX(0x40, 5),//-2
     LUK(0x80, 5),//-2
     ATTACK(0x100, 5),
-    INDIE_PAD(0x400, 5, true),
+
     INDIE_MAD(0x800, 5, true),
     HP_BOOST(0x1000, 5, true),
     MP_BOOST(0x2000, 5, true),
-    ANGEL_ACC(0x4000, 5, true),
+    
     ANGEL_AVOID(0x8000, 5, true),
     ANGEL_JUMP(0x10000, 5, true),
     INDIE_SPEED(0x20000, 5, true),
@@ -177,7 +186,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     ICE_SKILL(0x20000000, 5),
     BOUNDLESS_RAGE(0x20000000, 5),
     
-    // sixth
+    // 6th
     PVP_FLAG(0x2, 6),
     HOLY_MAGIC_SHELL(0x1, 6),
     MANY_USES(0x4, 6, true),
@@ -200,7 +209,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     DEFENCE_BOOST_R(0x4000000, 6),
     Dusk_Guard(0x2000, 6, true),
 
-    // seventh
+    // 7th
     HP_R(0x8, 7),
     UNKNOWN8(0x20, 7),
     ATTACK_SPEED(0x100, 7),
@@ -213,9 +222,9 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     UNKNOWN9(0x800000, 7),
     KILL_COUNT(0x800000, 7),
     IGNORE_DEF(0x2000000, 7),
-    DAMAGE_PERCENT(0x80000000, 7, true),
     
-    // eighth
+    
+    // 8th
     PHANTOM_MOVE(0x8, 8),
     JUDGMENT_DRAW(0x10, 8),
     HYBRID_DEFENSES(0x400, 8),
@@ -231,7 +240,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     KAISER_MODE_CHANGE(0x20000, 8),
     TEMPEST_BLADES(0x100000, 8),
     CRIT_DAMAGE(0x200000, 8),
-    DAMAGE_ABSORBED(0x800000, 8),
+
     ENERGY_CHARGE(0x2000000, 8),
     DASH_SPEED(0x4000000, 12),
     DASH_JUMP(0x8000000, 12),
@@ -242,7 +251,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     DAMAGE_CAP_INCREASE(0x40000000, 8, true),
     DEFAULT_BUFFSTAT(0x80000000, 8),
     
-    // ninth
+    // 9th
     PRETTY_EXALTATION(0x1, 9),
     KAISER_MAJESTY3(0x2, 9),
     KAISER_MAJESTY4(0x4, 9),
@@ -262,6 +271,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     BOSS_ATTDMG(16777216, 9),
     
     
+    // 10th
     SUPPLY_SURPLUS(0x2, 10),
     XENON_FLY(0x10, 10),
     AMARANTH_GENERATOR(0x20, 10),
@@ -278,6 +288,8 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     SOUL_ELEMENT(0x40000, 10),
     EQUINOX_STANCE(0x80000, 10),
     SOLUNA_EFFECT(0x10000,10),
+    
+    // 12th
     BATTOUJUTSU_STANCE(0x2, 12),//confirm
     HAYATO_ATTACK_SPEED(0x4, 12),//confirm
     HAYATO_STANCE(0x100, 12),//not sure  
@@ -300,65 +312,42 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     BEARASSAULT(0x6000, 1),
     ANIMAL_SELECT(0x100000, 12),
     ASURA(0x10000, 9);
+	
     private static final long serialVersionUID = 0L;
     private final int buffstat;
-    private final int first;
+    private final int pos;
     private boolean stacked = false;
-    // [12] [11] [10] [9] [8] [7] [6] [5] [4] [3] [2] [1]
-    // [0] [1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11]
 
-    private MapleBuffStat(int buffstat, int first) {
+    private MapleBuffStat(int buffstat, int pos) {
         this.buffstat = buffstat;
-        this.first = first;
+        this.pos = pos;
     }
 
     private MapleBuffStat(int buffstat, int first, boolean stacked) {
         this.buffstat = buffstat;
-        this.first = first;
+        this.pos = first;
         this.stacked = stacked;
     }
-
-    @Override
-    public int getPosition() {
-        return getPosition(false);
+    
+    private MapleBuffStat(int flag) {
+    	this.buffstat = (1 << (flag % 32));
+    	this.pos = (byte) Math.floor(flag / 32);
     }
-
-    public final int getPosition(boolean fromZero) {
-        if (!fromZero) {
-            return this.first;
-        }
-        switch (this.first) {
-            case 12:
-                return 0;
-            case 11:
-                return 1;
-            case 10:
-                return 2;
-            case 9:
-                return 3;
-            case 8:
-                return 4;
-            case 7:
-                return 5;
-            case 6:
-                return 6;
-            case 5:
-                return 7;
-            case 4:
-                return 8;
-            case 3:
-                return 9;
-            case 2:
-                return 10;
-            case 1:
-                return 11;
-        }
-        return 0;
+    
+    private MapleBuffStat(int flag, boolean stacked) {
+    	this.buffstat = (1 << (flag % 32));
+    	this.pos = (byte) Math.floor(flag / 32);
+    	this.stacked = stacked;
     }
 
     @Override
     public int getValue() {
         return buffstat;
+    }
+    
+    @Override
+    public int getPosition() {
+        return (17 - pos);
     }
 
     public final boolean canStack() {

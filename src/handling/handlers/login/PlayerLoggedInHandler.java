@@ -62,8 +62,6 @@ public class PlayerLoggedInHandler {
 				c.getSession().close();
 				return;
 			}
-			
-			System.out.println("The IP: " +ss+ " Equals: " + ip.left);
 			LoginServer.putLoginAuth(playerid, ip.left, ip.mid, ip.right);
 
 			c.setTempIP(ip.mid);

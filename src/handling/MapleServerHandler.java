@@ -188,7 +188,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
             return;
         }
         
-        final short opcode = lea.readShort();
+        int opcode = lea.readShort();
         try {
             if(!isSpamHeader(opcode)){
                 System.out.println("[Recv] ("+HexTool.getOpcodeToString(opcode)+") " + lea.toString());
@@ -210,8 +210,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
 
     }
 
-    private boolean isSpamHeader(short opCode) {
-        Set<Short> spamHeaders = new HashSet();
+    private boolean isSpamHeader(int opCode) {
+        Set<Integer> spamHeaders = new HashSet();
         spamHeaders.add(RecvPacketOpcode.NPC_ACTION.getValue());
         spamHeaders.add(RecvPacketOpcode.MOVE_LIFE.getValue());
         spamHeaders.add(RecvPacketOpcode.MOVE_PLAYER.getValue());
