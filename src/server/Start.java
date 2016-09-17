@@ -34,11 +34,11 @@ import server.quest.MapleQuest;
 
 public class Start extends Properties {
 
-	private static final long serialVersionUID = 5172629591649728634L;
-	
-	public static final Start instance = new Start();
+    private static final long serialVersionUID = 5172629591649728634L;
+
+    public static final Start instance = new Start();
     public static long startTime = System.currentTimeMillis();
-    
+
     public void run() throws InterruptedException, IOException {
         long start = System.currentTimeMillis();
 
@@ -49,7 +49,7 @@ public class Start extends Properties {
             System.out.println("Failed to load config.ini");
             System.exit(0);
         }
-        
+
         ServerConfig.interface_ = p.getProperty("ip");
         ServerConfig.serverName = p.getProperty("name");
         ServerConfig.eventMessage = p.getProperty("event");
@@ -60,12 +60,12 @@ public class Start extends Properties {
 
         System.setProperty("sendops", p.getProperty("sendops"));
         System.setProperty("recvops", p.getProperty("recvops"));
-        
+
         ServerConfig.port = p.getProperty("sql_port");
         ServerConfig.user = p.getProperty("sql_user");
         ServerConfig.pass = p.getProperty("sql_password");
         ServerConfig.database = p.getProperty("sql_db");
-        
+
         System.setProperty("wzpath", p.getProperty("wzpath"));
 
         try {
@@ -78,7 +78,7 @@ public class Start extends Properties {
 
         World.init();
         OpcodeManager.load();
-        
+
         // Timers..
         WorldTimer.getInstance().start();
         EtcTimer.getInstance().start();
@@ -87,34 +87,34 @@ public class Start extends Properties {
         EventTimer.getInstance().start();
         BuffTimer.getInstance().start();
         PingTimer.getInstance().start();
-        
+
         GameConstants.LoadEXP();
-        
+
         // MapleDojoRanking.getInstance().load();
         // MapleGuildRanking.getInstance().load();
         // MapleGuild.loadAll();
         // MapleFamily.loadAll();
-        
+
         MapleLifeFactory.loadQuestCounts();
-        
+
         MapleQuest.initQuests();
         MapleItemInformationProvider.getInstance().runEtc();
         MapleMonsterInformationProvider.getInstance().load();
-        
+
         MapleItemInformationProvider.getInstance().runItems();
         SkillFactory.load();
         LoginInformationProvider.getInstance();
         // RandomRewards.load();
-        
+
         // MapleOxQuizFactory.getInstance();
         // MapleCarnivalFactory.getInstance();
         // CharacterCardFactory.getInstance().initialize();
         MobSkillFactory.getInstance();
-        
+
         // SpeedRunner.loadSpeedRuns();
         MapleInventoryIdentifier.getInstance();
         MapleMapFactory.loadCustomLife();
-        
+
         CashItemFactory.getInstance().initialize();
         LoginServer.run_startup_configurations();
         ChannelServer.startChannel_Main();
@@ -144,7 +144,7 @@ public class Start extends Properties {
     public static void main(final String args[]) throws InterruptedException, IOException {
         instance.run();
     }
-    
+
     /**
      * Retrieves an byte value.
      * @param key The key name.
@@ -152,16 +152,16 @@ public class Start extends Properties {
      */
     public Byte getByte(Properties p, String key)
     {
-       Byte value = null;
-       String string = p.getProperty(key);
-       if (string != null) {
-          value = new Byte(string);
-       } else {
-    	   System.out.println("The byte was null.");
-       }
-       return value;
+        Byte value = null;
+        String string = p.getProperty(key);
+        if (string != null) {
+            value = new Byte(string);
+        } else {
+            System.out.println("The byte was null.");
+        }
+        return value;
     }
-    
+
     /**
      * Retrieves an short value.
      * @param key The key name.
@@ -169,10 +169,10 @@ public class Start extends Properties {
      */
     public Short getShort(Properties p, String key)
     {
-       Short value = null;
-       String string = p.getProperty(key);
-       if (string != null)
-          value = new Short(string);
-       return value;
+        Short value = null;
+        String string = p.getProperty(key);
+        if (string != null)
+            value = new Short(string);
+        return value;
     }
 }

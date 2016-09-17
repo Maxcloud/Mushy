@@ -38,4 +38,17 @@ public class ArrayUtil {
         }
         return max == Integer.MIN_VALUE ? 0 : max;
     }
+
+    /**
+     * Returns a copy of a given int array.
+     * @param arr
+     * @return
+     */
+    public static int[] copy(int[] arr){
+        int[] res = new int[arr.length];
+        for(int i = 0; i < arr.length; i++){
+            res[i] = arr[i];
+        }
+        return res;
+    }
 }

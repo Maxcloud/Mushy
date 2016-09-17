@@ -215,7 +215,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
         spamHeaders.add(RecvPacketOpcode.NPC_ACTION.getValue());
         spamHeaders.add(RecvPacketOpcode.MOVE_LIFE.getValue());
         spamHeaders.add(RecvPacketOpcode.MOVE_PLAYER.getValue());
-
+        spamHeaders.add(RecvPacketOpcode.QUEST_ACTION.getValue());
+        spamHeaders.add(RecvPacketOpcode.HEAL_OVER_TIME.getValue());
         return spamHeaders.contains(opCode);
     }
 
