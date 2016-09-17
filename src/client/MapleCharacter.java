@@ -209,7 +209,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private byte[] petStore;
     private transient IMaplePlayerShop playerShop;
     private boolean invincible, canTalk, clone, followinitiator, followon, smega, hasSummon;
-    private boolean hasBlackCubed = false;
     private MapleGuildCharacter mgc;
     private transient EventInstanceManager eventInstance;
     private final List<MapleCharacter> chars = new LinkedList<>(); //this is messy
@@ -219,6 +218,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private MapleInventory[] inventory;
     private SkillMacro[] skillMacros = new SkillMacro[5];
     private final EnumMap<MapleTraitType, MapleTrait> traits;
+    private Equip lastBlackCubedItem;
     private MapleKeyLayout keylayout;
     private transient ScheduledFuture<?> mapTimeLimitTask;
     private transient MaplePyramidSubway pyramidSubway = null;
@@ -9585,11 +9585,11 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         return isAlive() && getMap() != null && !hasDisease(MapleDisease.POTION) && !hasBlockedInventory() && !inPVP();
     }
 
-    public void setHasBlackCubed(boolean b){
-        this.hasBlackCubed = b;
+    public void setLastBlackCubedItem(Equip equip){
+        lastBlackCubedItem = equip;
     }
 
-    public boolean hasBlackCubed(){
-        return hasBlackCubed;
+    public Equip getLastBlackCubedItem(){
+        return lastBlackCubedItem;
     }
 }

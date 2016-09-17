@@ -26,9 +26,10 @@ public class Equip extends Item implements Serializable {
     private int durability = -1, incSkill = -1, fusionAnvil = 0;
     private long itemEXP = 0;
     private boolean finalStrike = false;
-    private int[] mainPotential = new int[3]; // max 8?
-    private int[] bonusPotential = new int[3]; // max 3?
-    private int[] socket = new int[3]; // max 3?
+    private int[] mainPotential = new int[3];
+    private int[] bonusPotential = new int[3];
+    private int[] socket = new int[3];
+    private int[] oldPotential = new int[3]; // main potential
     private MapleRing ring = null;
     private MapleAndroid android = null;
     private List<EquipStat> stats = new LinkedList<EquipStat>();
@@ -1127,5 +1128,13 @@ public class Equip extends Item implements Serializable {
         eq.getSpecialStats().add(EquipSpecialStat.UNK8); // test
         eq.getSpecialStats().add(EquipSpecialStat.UNK10); // test
         return (Equip) eq.copy();
+    }
+
+    public int[] getOldPotential(){
+        return oldPotential;
+    }
+
+    public void setOldPotential(int[] potential){
+        this.oldPotential = potential;
     }
 }

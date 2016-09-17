@@ -47,10 +47,9 @@ public class UseCashItemHandler {
                 return;
             }
 
-            if(!chr.hasBlackCubed() && GameConstants.getCashCubeByItemId(itemId) == GameConstants.Cubes.BLACK){
-                chr.setHasBlackCubed(true);
-                BlackCubeResultHandler.equip = equip;
-                BlackCubeResultHandler.pots = ArrayUtil.copy(equip.getPotential());
+            if(chr.getLastBlackCubedItem() == null && GameConstants.getCashCubeByItemId(itemId) == GameConstants.Cubes.BLACK){
+                chr.setLastBlackCubedItem(equip);
+                equip.setOldPotential(ArrayUtil.copy(equip.getPotential()));
             }
 
             int oldState = equip.getState();
@@ -75,7 +74,6 @@ public class UseCashItemHandler {
             c.getSession().write(CWvsContext.enableActions());
             GameConstants.Cubes cube = GameConstants.getCashCubeByItemId(itemId);
             if(cube == GameConstants.Cubes.BLACK){
-                BlackCubeResultHandler.mit = mit;
                 c.getSession().write(CField.showBlackCubePotentialReset(chr.getId(), true, itemId));
                 c.getSession().write(CWvsContext.onBlackCubeRequest(true, itemId, src, dst, equip));
             } else if(cube == GameConstants.Cubes.RED){
