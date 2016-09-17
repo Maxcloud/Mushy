@@ -10,6 +10,7 @@ import constants.GameConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import server.MapleItemInformationProvider;
+import tools.ArrayUtil;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
@@ -46,6 +47,12 @@ public class UseCashItemHandler {
                 return;
             }
 
+            if(!chr.hasBlackCubed() && GameConstants.getCashCubeByItemId(itemId) == GameConstants.Cubes.BLACK){
+                chr.setHasBlackCubed(true);
+                BlackCubeResultHandler.equip = equip;
+                BlackCubeResultHandler.pots = ArrayUtil.copy(equip.getPotential());
+            }
+
             int oldState = equip.getState();
             equip.renewPotential(GameConstants.getCashCubeByItemId(itemId));
             equip.revealHiddenPotential();
@@ -66,12 +73,16 @@ public class UseCashItemHandler {
             chr.gainMeso(-price, false);
             chr.forceReAddItem(equip, mit);
             c.getSession().write(CWvsContext.enableActions());
-            c.getSession().write(CField.showPotentialReset(chr.getId(), true, itemId));
             GameConstants.Cubes cube = GameConstants.getCashCubeByItemId(itemId);
-            if(cube == GameConstants.Cubes.RED) {
-                c.getSession().write(CWvsContext.sendRedCubeRequest(chr.getId(), hasRankedUp, itemId, dst, equip));
-            } else if(cube == GameConstants.Cubes.BLACK){
-                c.getSession().write(CWvsContext.sendBlackCubeRequest(chr.getId(), hasRankedUp, itemId, dst, equip));
+            if(cube == GameConstants.Cubes.BLACK){
+                BlackCubeResultHandler.mit = mit;
+                c.getSession().write(CField.showBlackCubePotentialReset(chr.getId(), true, itemId));
+                c.getSession().write(CWvsContext.onBlackCubeRequest(true, itemId, src, dst, equip));
+            } else if(cube == GameConstants.Cubes.RED){
+                c.getSession().write(CField.showPotentialReset(chr.getId(), true, itemId));
+                c.getSession().write(CWvsContext.onRedCubeResult(chr.getId(), hasRankedUp, itemId, dst, equip));
+            } else{
+                c.getSession().write(CField.showPotentialReset(chr.getId(), true, itemId));
             }
         }else{
             chr.dropMessage(5, "You have used a cash item currently not known by the server.");

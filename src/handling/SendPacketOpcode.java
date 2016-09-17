@@ -158,8 +158,8 @@ public enum SendPacketOpcode implements IntValueHolder {
 	MAGIC_WHEEL,
 	REWARD,
 	SKILL_MACRO,
-	SEND_RED_CUBE_REQUEST,
-	SEND_BLACK_CUBE_REQUEST,
+	ON_RED_CUBE_RESULT,
+	ON_BLACK_CUBE_RESULT,
 
 	// CStage::OnPacket
 	WARP_TO_MAP,
@@ -197,6 +197,7 @@ public enum SendPacketOpcode implements IntValueHolder {
 	ACHIEVEMENT_RATIO,
 	QUICK_MOVE,
 	INTRUSION,
+	SHOW_POTENTIAL_BLACK_CUBE,
 
 	// CUserPool::OnPacket
 	SPAWN_PLAYER,

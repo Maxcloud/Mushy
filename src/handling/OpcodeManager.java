@@ -65,6 +65,8 @@ public class OpcodeManager {
 		UsePotentialScrollHandler.class,
 		UseMagnifyGlassHandler.class,
 		UseCashItemHandler.class,
+		UseBonusPotentialScrollHandler.class,
+		BlackCubeResultHandler.class,
 
 		MesoDropHandler.class,
 		QuestActionHandler.class,
@@ -119,8 +121,8 @@ public class OpcodeManager {
                 method.invoke(null, client, lea);
                 return true;
             } else {
-            	System.out.println("[Unhandled] [Recv] (" + HexTool.getOpcodeToString(opcode) + ") " + lea);
-            }
+				System.out.println("[Unhandled] [Recv] (" + HexTool.getOpcodeToString(opcode) + ") " + lea);
+			}
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {

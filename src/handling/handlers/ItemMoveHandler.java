@@ -6,6 +6,7 @@ import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import server.MapleInventoryManipulator;
 import tools.data.LittleEndianAccessor;
+import tools.packet.CWvsContext;
 
 public class ItemMoveHandler {
 
@@ -20,7 +21,11 @@ public class ItemMoveHandler {
         short src = lea.readShort();
         short dst = lea.readShort();
         short quantity = lea.readShort();
-
+        if(c.getPlayer().getInventory(type).getItem(src) == null){
+            c.getSession().write(CWvsContext.InventoryPacket.getInventoryFull());
+            c.getSession().write(CWvsContext.enableActions());
+            return;
+        }
         if (src < 0 && dst > 0) {
             MapleInventoryManipulator.unequip(c, src, dst);
         } else if (dst < 0) {

@@ -605,12 +605,13 @@ public class Equip extends Item implements Serializable {
      */
     public void resetBonusPotential() {
         final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
-        resetBonusPotentialWithRank(rank);
+        resetBonusPotentialWithRank(rank, false);
     }
 
-    public void resetBonusPotentialWithRank(int rank){
+    public void resetBonusPotentialWithRank(int rank, boolean threeLines){
         for(int i = 0; i < getBonusPotential().length; i++){
-            if(getBonusPotentialByLine(i) != 0){
+            if(getBonusPotentialByLine(i) != 0 || threeLines || i == 0){
+                //first line is always set
                 setBonusPotentialByLine(i, -rank);
             }else{
                 setBonusPotentialByLine(i, 0);
@@ -635,7 +636,7 @@ public class Equip extends Item implements Serializable {
         if(!bonus){
             resetPotentialWithRank(rank, GameConstants.get3rdLineUpChanceByCube(cube));
         }else{
-            resetBonusPotentialWithRank(rank);
+            resetBonusPotentialWithRank(rank, false);
         }
     }
 
