@@ -1682,32 +1682,30 @@ public class CWvsContext {
         return packet.getPacket();
     }
 
-    public static byte[] sendRedCubeRequest(int charId, boolean hasRankedUp, int itemId, short dst, Equip equip) {
+    public static byte[] onRedCubeResult(int charId, boolean hasRankedUp, int itemId, short dst, Equip equip) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-        mplew.writeShort(SendPacketOpcode.SEND_RED_CUBE_REQUEST.getValue());
+        mplew.writeShort(SendPacketOpcode.ON_RED_CUBE_RESULT.getValue());
         mplew.writeInt(charId);
         mplew.write(hasRankedUp ? 1 : 0);
         mplew.writeInt(itemId);
-        mplew.writeShort(dst);
-        mplew.writeShort(0); // ?
+        mplew.writeInt(dst);
         PacketHelper.addItemInfo(mplew, equip);
 
         return mplew.getPacket();
     }
 
-    public static byte[] sendBlackCubeRequest(int charId, boolean hasRankedUp, int itemId, short dst, Equip equip) {
+    public static byte[] onBlackCubeRequest(boolean bUpgrade, int itemId, short src, short dst, Equip equip) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
-        mplew.writeShort(SendPacketOpcode.SEND_BLACK_CUBE_REQUEST.getValue());
-        mplew.writeInt(charId);
-        mplew.writeInt(hasRankedUp ? 1 : 0); //??
-        mplew.write(1); //tries
-        PacketHelper.addItemInfo(mplew, equip);
-        mplew.writeInt(itemId);
-        mplew.writeInt(0);
-        mplew.writeInt(dst);
-
+        mplew.writeShort(SendPacketOpcode.ON_BLACK_CUBE_RESULT.getValue());
+        mplew.writeLong(equip.getUniqueId()); //liSN
+        mplew.writeBoolean(bUpgrade);
+        if(bUpgrade) {
+            PacketHelper.addItemInfo(mplew, equip);
+            mplew.writeInt(itemId);
+            mplew.writeInt(dst);
+        }
+        mplew.writeInt(src);
         return mplew.getPacket();
     }
 

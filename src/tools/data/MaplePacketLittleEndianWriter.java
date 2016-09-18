@@ -143,8 +143,12 @@ public class MaplePacketLittleEndianWriter {
         writeAsciiString(s);
     }
 
+    /**
+     * Writes a boolean to the packet as a byte.
+     * @param b The boolean to write.
+     */
     public final void writeBoolean(boolean b) {
-        write(b ? 0 : 1);
+        write(b ? 1 : 0);
     }
 
     /**

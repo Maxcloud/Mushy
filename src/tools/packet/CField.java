@@ -1410,19 +1410,21 @@ public class CField {
 
 		mplew.writeShort(SendPacketOpcode.SHOW_POTENTIAL_RESET.getValue());
 		mplew.writeInt(chr);
-		mplew.write(success ? 1 : 0);
+		mplew.writeBoolean(success);
 		mplew.writeInt(itemid);
 
-		/*
-		 * if (!succes) { if (itemid / 100 == 20495 || itemid == 5062301) {//lol
-		 * the itemid doesn't even exists yet. 'Failed to expand Potential
-		 * slots.' } else { 'Resetting Potential has failed due to insufficient
-		 * space in the Use item.' } } else { if (itemid / 100 == 20495 ||
-		 * itemid == 5062301) {//lol the itemid doesn't even exists yet.
-		 * 'Successfully expanded Potential slots.' } else { if (itemid !=
-		 * 2710000) { 'Potential has been reset.\r\nYou've obtained: %s.' (%s is
-		 * item name) } 'Potential has been reset.' } }
-		 */
+		return mplew.getPacket();
+	}
+
+
+	public static byte[] showBlackCubePotentialReset(int chr, boolean success, int itemId) {
+		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+		mplew.writeShort(SendPacketOpcode.SHOW_POTENTIAL_BLACK_CUBE.getValue());
+		mplew.writeInt(chr);
+		mplew.writeBoolean(success);
+		mplew.writeInt(itemId);
+
 		return mplew.getPacket();
 	}
 

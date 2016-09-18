@@ -218,6 +218,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private MapleInventory[] inventory;
     private SkillMacro[] skillMacros = new SkillMacro[5];
     private final EnumMap<MapleTraitType, MapleTrait> traits;
+    private Equip lastBlackCubedItem;
     private MapleKeyLayout keylayout;
     private transient ScheduledFuture<?> mapTimeLimitTask;
     private transient MaplePyramidSubway pyramidSubway = null;
@@ -9582,5 +9583,13 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public boolean canUsePotion(){
         return isAlive() && getMap() != null && !hasDisease(MapleDisease.POTION) && !hasBlockedInventory() && !inPVP();
+    }
+
+    public void setLastBlackCubedItem(Equip equip){
+        lastBlackCubedItem = equip;
+    }
+
+    public Equip getLastBlackCubedItem(){
+        return lastBlackCubedItem;
     }
 }

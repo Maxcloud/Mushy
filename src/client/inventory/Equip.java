@@ -26,9 +26,10 @@ public class Equip extends Item implements Serializable {
     private int durability = -1, incSkill = -1, fusionAnvil = 0;
     private long itemEXP = 0;
     private boolean finalStrike = false;
-    private int[] mainPotential = new int[3]; // max 8?
-    private int[] bonusPotential = new int[3]; // max 3?
-    private int[] socket = new int[3]; // max 3?
+    private int[] mainPotential = new int[3];
+    private int[] bonusPotential = new int[3];
+    private int[] socket = new int[3];
+    private int[] oldPotential = new int[3]; // main potential
     private MapleRing ring = null;
     private MapleAndroid android = null;
     private List<EquipStat> stats = new LinkedList<EquipStat>();
@@ -605,12 +606,13 @@ public class Equip extends Item implements Serializable {
      */
     public void resetBonusPotential() {
         final int rank = Randomizer.nextInt(100) < 4 ? (Randomizer.nextInt(100) < 4 ? -UNIQUE : -EPIC) : -RARE;
-        resetBonusPotentialWithRank(rank);
+        resetBonusPotentialWithRank(rank, false);
     }
 
-    public void resetBonusPotentialWithRank(int rank){
+    public void resetBonusPotentialWithRank(int rank, boolean threeLines){
         for(int i = 0; i < getBonusPotential().length; i++){
-            if(getBonusPotentialByLine(i) != 0){
+            if(getBonusPotentialByLine(i) != 0 || threeLines || i == 0){
+                //first line is always set
                 setBonusPotentialByLine(i, -rank);
             }else{
                 setBonusPotentialByLine(i, 0);
@@ -635,7 +637,7 @@ public class Equip extends Item implements Serializable {
         if(!bonus){
             resetPotentialWithRank(rank, GameConstants.get3rdLineUpChanceByCube(cube));
         }else{
-            resetBonusPotentialWithRank(rank);
+            resetBonusPotentialWithRank(rank, false);
         }
     }
 
@@ -1126,5 +1128,13 @@ public class Equip extends Item implements Serializable {
         eq.getSpecialStats().add(EquipSpecialStat.UNK8); // test
         eq.getSpecialStats().add(EquipSpecialStat.UNK10); // test
         return (Equip) eq.copy();
+    }
+
+    public int[] getOldPotential(){
+        return oldPotential;
+    }
+
+    public void setOldPotential(int[] potential){
+        this.oldPotential = potential;
     }
 }

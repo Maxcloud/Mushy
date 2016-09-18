@@ -176,6 +176,7 @@ public enum RecvPacketOpcode implements IntValueHolder {
 	INNER_CIRCULATOR,
 	PVP_RESPAWN,
 	GAIN_FORCE,
+	BLACK_CUBE_RESULT,
 	ADMIN_CHAT,
 	PARTYCHAT,
 	COMMAND,
