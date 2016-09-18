@@ -4,6 +4,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleTrait;
 import client.inventory.Equip;
+import client.inventory.Equip.ScrollResult;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
@@ -20,18 +21,25 @@ public class UseBonusPotentialScrollHandler {
     @PacketHandler(opcode = RecvPacketOpcode.USE_BONUS_POTENTIAL)
     public static void handle(MapleClient c, LittleEndianAccessor lea){
         MapleCharacter chr = c.getPlayer();
+        if (chr == null){
+        	return;
+        }
         lea.skip(4); //update tick
         short src = lea.readShort();
         short dst = lea.readShort();
         MapleInventoryType mit = dst < 0 ? MapleInventoryType.EQUIPPED : MapleInventoryType.EQUIP;
         Item item = chr.getInventory(MapleInventoryType.USE).getItem(src);
-        Equip equip;
-        equip = (Equip) chr.getInventory(mit).getItem(dst);
+        Equip equip = (Equip) chr.getInventory(mit).getItem(dst);
         if (item == null || equip == null) {
             c.getSession().write(CWvsContext.InventoryPacket.getInventoryFull());
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
+        
+        //IMPORTANT
+        //There needs to be a meso check added right here
+        //Otherwise 0 mesos in inventory = free scrolling
+        
         int itemId = item.getItemId();
         boolean threeLines = itemId == 2048306;
         // ghetto way of getting the scroll chance, as it's not currently stored in the data cache.
@@ -43,9 +51,9 @@ public class UseBonusPotentialScrollHandler {
         if(lastSplit.equalsIgnoreCase("scroll")){
             successChance = 100;
         }else {
-            successChance = Integer.parseInt(split[split.length - 1].replace("%", ""));
+            successChance = Integer.parseInt(lastSplit.replace("%", ""));
         }
-        Equip.ScrollResult success = Equip.ScrollResult.FAIL;
+        ScrollResult success = ScrollResult.FAIL;
         if(Randomizer.nextInt(100) < successChance){
             success = Equip.ScrollResult.SUCCESS;
             equip.resetBonusPotentialWithRank(Equip.RARE, threeLines);
