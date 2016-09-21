@@ -859,7 +859,7 @@ public class Skill implements Comparator<Skill> {
     }
     
     public static boolean isUseBulletMeleeAttack(int skillid) {
-    	return (skillid == 14121052 || (skillid >= 14111022 && skillid <= 14121003) || (skillid >= 14001027 && skillid <= 14000029));
+    	return (skillid == 14121052 || (skillid >= 14111022 && skillid <= 14121003) || (skillid <= 14001027 && skillid >= 14000029));
     }
     
     public static boolean isNonConsumingBulletMeleeAttack(int skillid) {
