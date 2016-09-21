@@ -41,47 +41,47 @@ public class XenonBuff extends AbstractBuffClass {
     public void handleBuff(MapleStatEffect eff, int skill) {
         switch (skill) {
             case 30021237:
-               eff.statups.put(MapleBuffStat.XENON_FLY, Integer.valueOf(1));
+               eff.statups.put(MapleBuffStat.NaviFlying, Integer.valueOf(1));
                 eff.info.put(MapleStatInfo.time, Integer.valueOf(180000));
                 break;
             case 36001002: // Circuit Surge
-                eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indiePad));
+                eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
                 break;
             case 36101002: // Perspective Shift - dc temp to remove dc
                 eff.info.put(MapleStatInfo.powerCon, Integer.valueOf(6));
-                eff.statups.put(MapleBuffStat.CRITICAL_DAMAGE, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.CriticalBuff, eff.info.get(MapleStatInfo.x));
                 break;
             case 36101003: // Efficiency Streamline
-               eff.statups.put(MapleBuffStat.MP_R, eff.info.get(MapleStatInfo.indieMmpR));
+               eff.statups.put(MapleBuffStat.IndieMMPR, eff.info.get(MapleStatInfo.indieMmpR));
                eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
                      eff.info.put(MapleStatInfo.time, Integer.valueOf(180000));
                      break; 
             case 36101004: // Xenon Booster
-                eff.statups.put(MapleBuffStat.BOOSTER, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x));
                 break;
             case 36111006: // Manifest Projector
-                eff.statups.put(MapleBuffStat.SHADOWPARTNER, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.ShadowPartner, eff.info.get(MapleStatInfo.x));
                 break;
             case 36111008: // Emergency Resupply
-                eff.statups.put(MapleBuffStat.SUPPLY_SURPLUS, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.SurplusSupply, eff.info.get(MapleStatInfo.x));
                 break;
        //    case 36121054:
-       //      eff.statups.put(MapleBuffStat.SUPPLY_SURPLUS, Integer.valueOf(16));
+       //      eff.statups.put(MapleBuffStat.SurplusSupply, Integer.valueOf(16));
         //     break;
             case 36111003: // Hybrid Defenses
                 eff.statups.put(MapleBuffStat.HYBRID_DEFENSES, eff.info.get(MapleStatInfo.prop));
-                eff.statups.put(MapleBuffStat.WATER_SHIELD, eff.info.get(MapleStatInfo.z));
+                eff.statups.put(MapleBuffStat.DamAbsorbShield, eff.info.get(MapleStatInfo.z));
                 break;
-            case 36121003: // OOPArts Code DAMAGE_PERCENT
-                eff.statups.put(MapleBuffStat.BOSS_DAMAGE, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
+            case 36121003: // OOPArts Code IndieDamR
+                eff.statups.put(MapleBuffStat.BDR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
                 break; 
             case 36121004: // Offensive Matrix
-                eff.statups.put(MapleBuffStat.STANCE, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.IGNORE_DEF, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.Stance, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IgnoreTargetDEF, eff.info.get(MapleStatInfo.y));
                 break;
             case 36121008: // Maple Warrior
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             default:
                 // System.out.println("Unhandled Xenon Buff: " + skill);

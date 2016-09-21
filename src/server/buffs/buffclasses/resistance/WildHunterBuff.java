@@ -42,43 +42,43 @@ public class WildHunterBuff extends AbstractBuffClass {
     public void handleBuff(MapleStatEffect eff, int skill) {
         switch (skill) {
             case 33101003:
-                 eff.statups.put(MapleBuffStat.SOULARROW, eff.info.get(MapleStatInfo.x));
+                 eff.statups.put(MapleBuffStat.SoulArrow, eff.info.get(MapleStatInfo.x));
                  break;
             case 33101005:// Call of the Wild
-                eff.statups.put(MapleBuffStat.MP_BUFF, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.CRITICAL_RATE_BUFF, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.HowlingMaxMP, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.HowlingCritical, eff.info.get(MapleStatInfo.y));
                 eff.statups.put(MapleBuffStat.TORNADO, eff.info.get(MapleStatInfo.z));
 //                eff.statups.put(MapleBuffStat.SATELLITESAFE_ABSORB, eff.info.get(MapleStatInfo.lt));
-//                eff.statups.put(MapleBuffStat.SOULARROW, eff.info.get(MapleStatInfo.rb));                
+//                eff.statups.put(MapleBuffStat.SoulArrow, eff.info.get(MapleStatInfo.rb));                
                 break;
             case 33101012:// Crossbow Booster
-                eff.statups.put(MapleBuffStat.BOOSTER, eff.info.get(MapleStatInfo.x) * 2);
+                eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x) * 2);
                 break;
             case 33111007: // Feline Berserk
-                eff.statups.put(MapleBuffStat.SPEED, eff.info.get(MapleStatInfo.z));
-                eff.statups.put(MapleBuffStat.ATTACK_BUFF, eff.info.get(MapleStatInfo.y));
-                eff.statups.put(MapleBuffStat.FELINE_BERSERK, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Speed, eff.info.get(MapleStatInfo.z));
+                eff.statups.put(MapleBuffStat.BeastFormDamageUp, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.IndieBooster, eff.info.get(MapleStatInfo.x));
                 eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));
                 break;
             case 33111009: // Concentrate
-                eff.statups.put(MapleBuffStat.ENHANCED_WATK, eff.info.get(MapleStatInfo.epad));
-                eff.statups.put(MapleBuffStat.CONCENTRATE, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.EPAD, eff.info.get(MapleStatInfo.epad));
+                eff.statups.put(MapleBuffStat.Concentration, eff.info.get(MapleStatInfo.x));
                 break;
             case 33121004: // Sharp Eyes
-                 eff.statups.put(MapleBuffStat.SHARP_EYES, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));
+                 eff.statups.put(MapleBuffStat.SharpEyes, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));
                 break;
             case 33121007: // Maple Warrior
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             case 33121013: // Extended Magazine
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
-                eff.statups.put(MapleBuffStat.ANGEL_STAT, eff.info.get(MapleStatInfo.indieAllStat));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IndieAllStat, eff.info.get(MapleStatInfo.indieAllStat));
                 break;
             case 33121054:// Silent Rampage
                 break;
             case 33121053:// For Liberty
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
-                eff.statups.put(MapleBuffStat.DAMAGE_CAP_INCREASE, eff.info.get(MapleStatInfo.indieMaxDamageOver));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IncMaxDamage, eff.info.get(MapleStatInfo.indieMaxDamageOver));
                 break;
             default:
                 // System.out.println("Unhandled WildHunter Buff: " + skill);

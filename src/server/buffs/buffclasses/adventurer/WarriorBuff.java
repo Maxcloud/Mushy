@@ -74,14 +74,14 @@ public class WarriorBuff extends AbstractBuffClass {
             case 1101004: //Weapon Booster
             case 1201004: //Weapon Booster
             case 1301004: //Weapon Booster
-                eff.statups.put(MapleBuffStat.BOOSTER, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x));
                 break;
             case 1101006: //Rage 
-                eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indiePad));
-                eff.statups.put(MapleBuffStat.POWERGUARD, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
+                eff.statups.put(MapleBuffStat.PowerGuard, eff.info.get(MapleStatInfo.x));
                 break;
             case 1101013: //Combo
-                eff.statups.put(MapleBuffStat.COMBO, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.ComboCounter, eff.info.get(MapleStatInfo.x));
                 eff.info.put(MapleStatInfo.time, 2100000000);
                 //System.out.println("Combo from Warrior Buff");
                 break;
@@ -98,31 +98,31 @@ public class WarriorBuff extends AbstractBuffClass {
             case 1211014: //Parashock Guard
                 eff.statups.put(MapleBuffStat.PARASHOCK_GUARD, eff.info.get(MapleStatInfo.x));
                 eff.statups.put(MapleBuffStat.PARASHOCK_GUARD, eff.info.get(MapleStatInfo.y));
-                eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indiePad));
+                eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
                 //TODO
                 break;
             case 1211011: //Combat Orders
-                eff.statups.put(MapleBuffStat.COMBAT_ORDERS, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.CombatOrders, eff.info.get(MapleStatInfo.x));
                 break;
             case 1221015: //Void Elemental
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
-                eff.statups.put(MapleBuffStat.ELEMENT_RESET, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.ElementalReset, eff.info.get(MapleStatInfo.x));
                 break;
             case 1221054: //Sacrosanctity
                 eff.statups.put(MapleBuffStat.KAISER_MAJESTY3, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.ENRAGE, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Enrage, eff.info.get(MapleStatInfo.x));
                 //TODO
                 break;
             case 1301006: //Iron Will
-                eff.statups.put(MapleBuffStat.MDEF, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.MDEF, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.MDD, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.MDD, eff.info.get(MapleStatInfo.y));
                 break;
             case 1301007: //Hyper Body
-                eff.statups.put(MapleBuffStat.MAXHP, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.MAXMP, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.MaxHP, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.MaxMP, eff.info.get(MapleStatInfo.y));
                 break;
             case 1301013: //Evil Eye
-               eff.statups.put(MapleBuffStat.BEHOLDER, 1);
+               eff.statups.put(MapleBuffStat.Beholder, 1);
                 break;
             case 1311015: //Cross Surge
                 eff.statups.put(MapleBuffStat.CROSS_SURGE, eff.info.get(MapleStatInfo.x));
@@ -130,13 +130,13 @@ public class WarriorBuff extends AbstractBuffClass {
             case 1121000: //Maple Warrior
             case 1221000: //Maple Warrior
             case 1321000: //Maple Warrior
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             case 1121053: //Epic Adventure
             case 1221053: //Epic Adventure
             case 1321053: //Epic Adventure
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
-                eff.statups.put(MapleBuffStat.DAMAGE_CAP_INCREASE, eff.info.get(MapleStatInfo.indieMaxDamageOver));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IncMaxDamage, eff.info.get(MapleStatInfo.indieMaxDamageOver));
                 break;
             default:
                 //System.out.println("Warrior skill not coded: " + skill);

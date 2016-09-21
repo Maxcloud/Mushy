@@ -330,7 +330,7 @@ public class GMCommand {
     public static class TempBan extends CommandExecute {
 
         protected boolean ipBan = false;
-        private final String[] types = {"HACK", "BOT", "AD", "HARASS", "CURSE", "SCAM", "MISCONDUCT", "SELL", "ICASH", "TEMP", "GM", "IPROGRAM", "MEGAPHONE"};
+        private final String[] types = {"HACK", "BOT", "AD", "HARASS", "Curse", "SCAM", "MISCONDUCT", "SELL", "ICASH", "TEMP", "GM", "IPROGRAM", "MEGAPHONE"};
 
         @Override
         public int execute(MapleClient c, String[] splitted) {
@@ -1064,37 +1064,37 @@ public class GMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "!disease <type> <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE/POTENTIAL");
+                c.getPlayer().dropMessage(6, "!disease <type> <level> where type = Seal/Darkness/Weakness/Stun/Curse/Poison/Slow/Attract/REVERSE/Undead/POTION/SHADOW/Blind/Frozen/POTENTIAL");
                 return 0;
             }
             int type;
-            if (splitted[1].equalsIgnoreCase("SEAL")) {
+            if (splitted[1].equalsIgnoreCase("Seal")) {
                 type = 120;
-            } else if (splitted[1].equalsIgnoreCase("DARKNESS")) {
+            } else if (splitted[1].equalsIgnoreCase("Darkness")) {
                 type = 121;
-            } else if (splitted[1].equalsIgnoreCase("WEAKEN")) {
+            } else if (splitted[1].equalsIgnoreCase("Weakness")) {
                 type = 122;
-            } else if (splitted[1].equalsIgnoreCase("STUN")) {
+            } else if (splitted[1].equalsIgnoreCase("Stun")) {
                 type = 123;
-            } else if (splitted[1].equalsIgnoreCase("CURSE")) {
+            } else if (splitted[1].equalsIgnoreCase("Curse")) {
                 type = 124;
-            } else if (splitted[1].equalsIgnoreCase("POISON")) {
+            } else if (splitted[1].equalsIgnoreCase("Poison")) {
                 type = 125;
-            } else if (splitted[1].equalsIgnoreCase("SLOW")) {
+            } else if (splitted[1].equalsIgnoreCase("Slow")) {
                 type = 126;
-            } else if (splitted[1].equalsIgnoreCase("SEDUCE")) { //24, 289 and 29 are cool.
+            } else if (splitted[1].equalsIgnoreCase("Attract")) { //24, 289 and 29 are cool.
                 type = 128;
             } else if (splitted[1].equalsIgnoreCase("REVERSE")) {
                 type = 132;
-            } else if (splitted[1].equalsIgnoreCase("ZOMBIFY")) {
+            } else if (splitted[1].equalsIgnoreCase("Undead")) {
                 type = 133;
             } else if (splitted[1].equalsIgnoreCase("POTION")) {
                 type = 134;
             } else if (splitted[1].equalsIgnoreCase("SHADOW")) {
                 type = 135;
-            } else if (splitted[1].equalsIgnoreCase("BLIND")) {
+            } else if (splitted[1].equalsIgnoreCase("Blind")) {
                 type = 136;
-            } else if (splitted[1].equalsIgnoreCase("FREEZE")) {
+            } else if (splitted[1].equalsIgnoreCase("Frozen")) {
                 type = 137;
             } else if (splitted[1].equalsIgnoreCase("POTENTIAL")) {
                 type = 138;
@@ -1105,7 +1105,7 @@ public class GMCommand {
             } else if (splitted[1].equalsIgnoreCase("FLAG")) {
                 type = 799;
             } else {
-                c.getPlayer().dropMessage(6, "!disease <type> <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE/POTENTIAL/SLOW2/TORNADO/FLAG");
+                c.getPlayer().dropMessage(6, "!disease <type> <level> where type = Seal/Darkness/Weakness/Stun/Curse/Poison/Slow/Attract/REVERSE/Undead/POTION/SHADOW/Blind/Frozen/POTENTIAL/SLOW2/TORNADO/FLAG");
                 return 0;
             }
             for (MapleCharacter mch : c.getChannelServer().getPlayerStorage().getAllCharacters()) {
@@ -1126,37 +1126,37 @@ public class GMCommand {
         @Override
         public int execute(MapleClient c, String[] splitted) {
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(6, "!disease <type> [charname] <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE/POTENTIAL");
+                c.getPlayer().dropMessage(6, "!disease <type> [charname] <level> where type = Seal/Darkness/Weakness/Stun/Curse/Poison/Slow/Attract/REVERSE/Undead/POTION/SHADOW/Blind/Frozen/POTENTIAL");
                 return 0;
             }
             int type;
-            if (splitted[1].equalsIgnoreCase("SEAL")) {
+            if (splitted[1].equalsIgnoreCase("Seal")) {
                 type = 120;
-            } else if (splitted[1].equalsIgnoreCase("DARKNESS")) {
+            } else if (splitted[1].equalsIgnoreCase("Darkness")) {
                 type = 121;
-            } else if (splitted[1].equalsIgnoreCase("WEAKEN")) {
+            } else if (splitted[1].equalsIgnoreCase("Weakness")) {
                 type = 122;
-            } else if (splitted[1].equalsIgnoreCase("STUN")) {
+            } else if (splitted[1].equalsIgnoreCase("Stun")) {
                 type = 123;
-            } else if (splitted[1].equalsIgnoreCase("CURSE")) {
+            } else if (splitted[1].equalsIgnoreCase("Curse")) {
                 type = 124;
-            } else if (splitted[1].equalsIgnoreCase("POISON")) {
+            } else if (splitted[1].equalsIgnoreCase("Poison")) {
                 type = 125;
-            } else if (splitted[1].equalsIgnoreCase("SLOW")) {
+            } else if (splitted[1].equalsIgnoreCase("Slow")) {
                 type = 126;
-            } else if (splitted[1].equalsIgnoreCase("SEDUCE")) {
+            } else if (splitted[1].equalsIgnoreCase("Attract")) {
                 type = 128;
             } else if (splitted[1].equalsIgnoreCase("REVERSE")) {
                 type = 132;
-            } else if (splitted[1].equalsIgnoreCase("ZOMBIFY")) {
+            } else if (splitted[1].equalsIgnoreCase("Undead")) {
                 type = 133;
             } else if (splitted[1].equalsIgnoreCase("POTION")) {
                 type = 134;
             } else if (splitted[1].equalsIgnoreCase("SHADOW")) {
                 type = 135;
-            } else if (splitted[1].equalsIgnoreCase("BLIND")) {
+            } else if (splitted[1].equalsIgnoreCase("Blind")) {
                 type = 136;
-            } else if (splitted[1].equalsIgnoreCase("FREEZE")) {
+            } else if (splitted[1].equalsIgnoreCase("Frozen")) {
                 type = 137;
             } else if (splitted[1].equalsIgnoreCase("POTENTIAL")) {
                 type = 138;
@@ -1167,7 +1167,7 @@ public class GMCommand {
             } else if (splitted[1].equalsIgnoreCase("FLAG")) {
                 type = 799;
             } else {
-                c.getPlayer().dropMessage(6, "!disease <type> [charname] <level> where type = SEAL/DARKNESS/WEAKEN/STUN/CURSE/POISON/SLOW/SEDUCE/REVERSE/ZOMBIFY/POTION/SHADOW/BLIND/FREEZE/POTENTIAL/SLOW2/TORNADO/FLAG");
+                c.getPlayer().dropMessage(6, "!disease <type> [charname] <level> where type = Seal/Darkness/Weakness/Stun/Curse/Poison/Slow/Attract/REVERSE/Undead/POTION/SHADOW/Blind/Frozen/POTENTIAL/SLOW2/TORNADO/FLAG");
                 return 0;
             }
             if (splitted.length == 4) {

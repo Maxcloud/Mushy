@@ -1675,7 +1675,7 @@ public class World {
                 if (chr.getMapId() == 749040100 && chr.getInventory(MapleInventoryType.CASH).findById(5451000) == null) { //minidungeon
                     chr.addHP(-chr.getMap().getHPDec());
                 } else if (chr.getMapId() != 749040100) {
-                    chr.addHP(-(chr.getMap().getHPDec() - (chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD) == null ? 0 : chr.getBuffedValue(MapleBuffStat.HP_LOSS_GUARD).intValue())));
+                    chr.addHP(-(chr.getMap().getHPDec() - (chr.getBuffedValue(MapleBuffStat.Thaw) == null ? 0 : chr.getBuffedValue(MapleBuffStat.Thaw).intValue())));
                 }
             }
         }

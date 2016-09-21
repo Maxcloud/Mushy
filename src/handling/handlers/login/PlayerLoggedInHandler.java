@@ -15,6 +15,7 @@ import handling.RecvPacketOpcode;
 import handling.cashshop.CashShopServer;
 import handling.cashshop.handler.CashShopOperation;
 import handling.channel.ChannelServer;
+import handling.channel.handler.PlayersHandler;
 import handling.login.LoginServer;
 import handling.world.CharacterTransfer;
 import handling.world.World;
@@ -25,6 +26,7 @@ import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
+import tools.packet.JobPacket.AvengerPacket;
 
 public class PlayerLoggedInHandler {
 
@@ -110,7 +112,7 @@ public class PlayerLoggedInHandler {
 		c.getSession().write(CWvsContext.updateCrowns(new int[] { -1, -1, -1, -1, -1 }));
 		c.getSession().write(CField.getWarpToMap(player, null, 0, true));
 		
-		// PlayersHandler.calcHyperSkillPointCount(c);
+		PlayersHandler.calcHyperSkillPointCount(c);
 		// c.getSession().write(CSPacket.enableCSUse());
 		c.getSession().write(CWvsContext.updateSkills(c.getPlayer().getSkills(), false));//skill to 0 "fix"
 		// player.getStolenSkills();
@@ -176,7 +178,7 @@ public class PlayerLoggedInHandler {
 			FileoutputUtil.outputFileError(FileoutputUtil.Login_Error, e);
 		}*/
 		player.getClient().getSession().write(CWvsContext.broadcastMsg(channelServer.getServerMessage()));
-		// player.sendMacros();
+		player.sendMacros();
 		// player.showNote();
 		// player.sendImp();
 		// player.updatePartyMemberHP();
@@ -197,7 +199,7 @@ public class PlayerLoggedInHandler {
 			player.startXenonSupply();
 		}
 		if (GameConstants.isDemonAvenger(player.getJob())) {
-			// c.getSession().write(AvengerPacket.giveAvengerHpBuff(player.getStat().getHp()));
+			c.getSession().write(AvengerPacket.giveAvengerHpBuff(player.getStat().getHp()));
 		}
 		// player.spawnClones();
 		// player.spawnSavedPets();

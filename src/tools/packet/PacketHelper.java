@@ -1133,34 +1133,41 @@ public class PacketHelper {
             mplew.writeInt(0);
         }
 
+        // ? Core?
         if ((mask & 0x10) != 0) {
         	mplew.writeShort(0);
             mplew.writeShort(0);
         }
         
+        // FARM_POTENTIAL::Decode
         if ((mask & 0x20) != 0) {
         	mplew.writeInt(0); // farm monsters length (if length > 1 for each monster int id and long expire)
         }
 
+        // FarmUserInfo::Decode
+        // FarmSubInfo::Decode
         if ((mask & 0x40) != 0) {
         	addFarmInfo(mplew, chr.getClient(), (byte) 2);
             mplew.writeInt(0);
             mplew.writeInt(0);
         }
 
+        // MemorialCubeInfo::Decode
         if ((mask & 0x80) != 0) {
         	mplew.write(0);
         }
 
+        // GW_LikePoint::Decode
         if ((mask & 0x400) != 0) {
         	mplew.writeInt(0);
             mplew.writeLong(getTime(-2));
             mplew.writeInt(0);
         }
 
+        // RunnerGameRecord::Decode
         if ((mask & 0x20000) != 0) {
         	mplew.writeInt(chr.getId());
-            mplew.writeInt(0);
+            mplew.writeInt(0); 
             mplew.writeInt(0);
             mplew.writeInt(0);
             mplew.writeLong(getTime(-2));
@@ -1169,12 +1176,13 @@ public class PacketHelper {
         
         // ...
         mplew.writeShort(0);
+        
+        // Monster Collection (int -> string)
         mplew.writeShort(0);
         
-        // ...
-        mplew.write(0);
+        mplew.write(0); // m_bFarmOnline
         
-        // DecodeTextEquipInfo
+        // DecodeTextEquipInfo													
         mplew.writeInt(0);
         
         if ((mask & 0x8000000) != 0) {
@@ -1593,7 +1601,7 @@ public class PacketHelper {
 
    public static <E extends Buffstat> void writeMask(MaplePacketLittleEndianWriter mplew, Collection<E> statups) {
         int[] mask = new int[10];
-        if (!statups.contains(MapleBuffStat.MONSTER_RIDING)) {
+        if (!statups.contains(MapleBuffStat.RideVehicle)) {
             mask = new int[17];
         }
         for (Buffstat statup : statups) {
@@ -1606,7 +1614,7 @@ public class PacketHelper {
 
     public static <E extends Buffstat> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Collection<Pair<E, Integer>> statups) {
         int[] mask = new int[10];
-        if (!statups.contains(MapleBuffStat.MONSTER_RIDING)) {
+        if (!statups.contains(MapleBuffStat.RideVehicle)) {
             mask = new int[17];
         }
         for (Pair statup : statups) {
@@ -1619,7 +1627,7 @@ public class PacketHelper {
 
     public static <E extends Buffstat> void writeBuffMask(MaplePacketLittleEndianWriter mplew, Map<E, Integer> statups) {
         int[] mask = new int[10];
-        if (!statups.containsKey(MapleBuffStat.MONSTER_RIDING)) {
+        if (!statups.containsKey(MapleBuffStat.RideVehicle)) {
             mask = new int[17];
         }
         for (Buffstat statup : statups.keySet()) {

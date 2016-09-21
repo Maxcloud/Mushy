@@ -392,7 +392,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (ms != null) {
                 exp += (int) (exp * (ms.getX() / 100.0));
             }
-            final Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HOLY_SYMBOL);
+            final Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HolySymbol);
             if (holySymbol != null) {
                 exp *= 1.0 + (holySymbol.doubleValue() / 100.0);
             }
@@ -1028,7 +1028,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
-    public void applyStatus(MonsterStatusEffect status) { //ONLY USED FOR POKEMONN, ONLY WAY POISON CAN FORCE ITSELF INTO STATI.
+    public void applyStatus(MonsterStatusEffect status) { //ONLY USED FOR POKEMONN, ONLY WAY Poison CAN FORCE ITSELF INTO STATI.
         if (stati.containsKey(status.getStati())) {
             cancelStatus(status.getStati());
         }

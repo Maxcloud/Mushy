@@ -7,22 +7,22 @@ import tools.Randomizer;
 
 public enum MapleDisease implements Serializable, Buffstat {
 
-    SEAL(MapleBuffStat.SEAL, 120),
-    DARKNESS(MapleBuffStat.DARKNESS, 121),
-    WEAKEN(MapleBuffStat.WEAKEN, 122),
-    STUN(MapleBuffStat.STUN, 123),
-    CURSE(MapleBuffStat.CURSE, 124),
-    POISON(MapleBuffStat.POISON, 125),
+    SEAL(MapleBuffStat.Seal, 120),
+    DARKNESS(MapleBuffStat.Darkness, 121),
+    WEAKEN(MapleBuffStat.Weakness, 122),
+    STUN(MapleBuffStat.Stun, 123),
+    CURSE(MapleBuffStat.Curse, 124),
+    POISON(MapleBuffStat.Poison, 125),
     SLOW(MapleBuffStat.SLOWNESS, 126),
-    SEDUCE(MapleBuffStat.SEDUCE, 128),
-    REVERSE_DIRECTION(MapleBuffStat.REVERSE_DIRECTION, 132),
-    ZOMBIFY(MapleBuffStat.ZOMBIFY, 133),
+    SEDUCE(MapleBuffStat.Attract, 128),
+    REVERSE_DIRECTION(MapleBuffStat.ReverseInput, 132),
+    ZOMBIFY(MapleBuffStat.Undead, 133),
     POTION(MapleBuffStat.POTION_CURSE, 134),
     SHADOW(MapleBuffStat.SHADOW, 135), //receiving damage/moving
     BLIND(MapleBuffStat.BLINDNESS, 136),
-    FREEZE(MapleBuffStat.FREEZE, 137),
-    DISABLE_POTENTIAL(MapleBuffStat.DISABLE_POTENTIAL, 138),
-    MORPH(MapleBuffStat.MORPH, 172),
+    FREEZE(MapleBuffStat.Frozen, 137),
+    DISABLE_POTENTIAL(MapleBuffStat.DispelItemOption, 138),
+    MORPH(MapleBuffStat.Morph, 172),
     TORNADO(MapleBuffStat.TORNADO_CURSE, 173),
     FLAG(MapleBuffStat.PVP_FLAG, 799); // PVP - Capture the Flag
     // 127 = 1 snow?

@@ -160,7 +160,7 @@ public class InternCommand {
 
 			builder.append("\r\nWATK : ");
 			builder.append(other.getStat().getTotalWatk());
-			builder.append(" || MATK : ");
+			builder.append(" || MAD : ");
 			builder.append(other.getStat().getTotalMagic());
 			builder.append(" || MAXDAMAGE : ");
 			builder.append(other.getStat().getCurrentMaxBaseDamage());

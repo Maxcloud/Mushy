@@ -45,7 +45,7 @@ public class ZeroBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.ATTACK, eff.info.get(MapleStatInfo.x));
                 break;
             case 100001268: // Rhinne's Protection
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             case 100001263: // Divine Force
                 eff.statups.put(MapleBuffStat.DIVINE_FORCE_AURA, 1);
@@ -53,16 +53,16 @@ public class ZeroBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.PARTY_STANCE, eff.info.get(MapleStatInfo.indieAsrR));
                 eff.statups.put(MapleBuffStat.MDEF_BOOST, eff.info.get(MapleStatInfo.indieMdd));
                 eff.statups.put(MapleBuffStat.WDEF_BOOST, eff.info.get(MapleStatInfo.indiePdd));
-                eff.statups.put(MapleBuffStat.INDIE_MAD, eff.info.get(MapleStatInfo.indiePad));
-                eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indieMad));
+                eff.statups.put(MapleBuffStat.IndieMAD, eff.info.get(MapleStatInfo.indiePad));
+                eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indieMad));
                 break;
             case 100001264: // Divine Speed
                 eff.statups.put(MapleBuffStat.DIVINE_SPEED_AURA, 1);
                 eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));
-                eff.statups.put(MapleBuffStat.ANGEL_ACC, eff.info.get(MapleStatInfo.indieAcc));
-                eff.statups.put(MapleBuffStat.ANGEL_AVOID, eff.info.get(MapleStatInfo.indieEva));
-                eff.statups.put(MapleBuffStat.ANGEL_JUMP, eff.info.get(MapleStatInfo.indieJump));
-                eff.statups.put(MapleBuffStat.INDIE_SPEED, eff.info.get(MapleStatInfo.indieSpeed));
+                eff.statups.put(MapleBuffStat.IndieACC, eff.info.get(MapleStatInfo.indieAcc));
+                eff.statups.put(MapleBuffStat.IndieEVA, eff.info.get(MapleStatInfo.indieEva));
+                eff.statups.put(MapleBuffStat.IndieJump, eff.info.get(MapleStatInfo.indieJump));
+                eff.statups.put(MapleBuffStat.IndieSpeed, eff.info.get(MapleStatInfo.indieSpeed));
                 break;
             default:
                 //System.out.println("Unhandled Buff: " + skill);

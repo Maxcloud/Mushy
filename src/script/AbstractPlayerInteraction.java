@@ -297,9 +297,9 @@ public abstract class AbstractPlayerInteraction {
                 return c.getPlayer().getStat().getHp();
             case "MP":
                 return c.getPlayer().getStat().getMp();
-            case "MAXHP":
+            case "MaxHP":
                 return c.getPlayer().getStat().getMaxHp();
-            case "MAXMP":
+            case "MaxMP":
                 return c.getPlayer().getStat().getMaxMp();
             case "RAP":
                 return c.getPlayer().getRemainingAp();

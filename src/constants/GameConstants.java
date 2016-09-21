@@ -3806,7 +3806,7 @@ public class GameConstants {
 				return 1932080;
 			case 1139:
 				return 1932081;
-				//FLYING
+				//Flying
 			case 1143:
 			case 1144:
 			case 1145:
@@ -4496,33 +4496,6 @@ public class GameConstants {
 			return 30;
 		}
 		return 0;
-	}
-
-	public static boolean isAuraBuff(MapleBuffStat stat) {
-		switch (stat) {
-		case DARK_AURA:
-		case BLUE_AURA:
-		case YELLOW_AURA:
-			return true;
-		default:
-			break;
-		}
-		return false;
-	}
-
-	public static boolean isSpecialBuff(MapleBuffStat stat) {
-		switch (stat) {
-		case CRITICAL_RATE:
-		case KAISER_COMBO:
-		case DAMAGE_ABSORBED:
-		case CRIT_DAMAGE:
-		case SHADOWPARTNER:
-		case DAMAGE_R:
-			return true;
-		default:
-			break;
-		}
-		return false;
 	}
 
 	public static boolean isSpecialStackBuff(MapleBuffStat stat) {

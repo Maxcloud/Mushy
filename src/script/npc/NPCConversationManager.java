@@ -1888,13 +1888,13 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 				eq.setHp((short) (eq.getHp() + offset));
 			} else if (type.equalsIgnoreCase("MP")) {
 				eq.setMp((short) (eq.getMp() + offset));
-			} else if (type.equalsIgnoreCase("WATK")) {
+			} else if (type.equalsIgnoreCase("PAD")) {
 				eq.setWatk((short) (eq.getWatk() + offset));
-			} else if (type.equalsIgnoreCase("MATK")) {
+			} else if (type.equalsIgnoreCase("MAD")) {
 				eq.setMatk((short) (eq.getMatk() + offset));
-			} else if (type.equalsIgnoreCase("WDEF")) {
+			} else if (type.equalsIgnoreCase("PDD")) {
 				eq.setWdef((short) (eq.getWdef() + offset));
-			} else if (type.equalsIgnoreCase("MDEF")) {
+			} else if (type.equalsIgnoreCase("MDD")) {
 				eq.setMdef((short) (eq.getMdef() + offset));
 			} else if (type.equalsIgnoreCase("ACC")) {
 				eq.setAcc((short) (eq.getAcc() + offset));

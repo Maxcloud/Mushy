@@ -45,8 +45,8 @@ public class KannaBuff extends AbstractBuffClass  {
     public void handleBuff(MapleStatEffect eff, int skill) {
         switch (skill) {
             case 42101023: // Breath of the Unseen - HiddenBuff?
-                eff.statups.put(MapleBuffStat.IGNORE_DEF, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.STANCE, eff.info.get(MapleStatInfo.prop));
+                eff.statups.put(MapleBuffStat.IgnoreTargetDEF, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Stance, eff.info.get(MapleStatInfo.prop));
                 break;
             case 42101021: // Foxfire -HiddenBuff
                 eff.statups.put(MapleBuffStat.FOX_FIRE, eff.info.get(MapleStatInfo.x));
@@ -64,18 +64,18 @@ public class KannaBuff extends AbstractBuffClass  {
                 eff.statups.put(MapleBuffStat.HAKU_REBORN, Integer.valueOf(1));
                 break;
             case 42101003: // Radiant Peacock
-                eff.statups.put(MapleBuffStat.BOOSTER, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x));
                 break;
             
             case 42121006: // Maple Warrior
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             case 42121054: // Blackhearted Curse
                 //TODO
                 break;
             case 42121053: // Princess's Vow
-                eff.statups.put(MapleBuffStat.DAMAGE_CAP_INCREASE, eff.info.get(MapleStatInfo.indieMaxDamageOver));
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IncMaxDamage, eff.info.get(MapleStatInfo.indieMaxDamageOver));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
                 break;
             case 42101004: // Burning Shikigami Haunting
             case 42111006: // Frozen Shikigami Haunting

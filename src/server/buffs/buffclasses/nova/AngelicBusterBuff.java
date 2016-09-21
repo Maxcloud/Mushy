@@ -40,26 +40,26 @@ public class AngelicBusterBuff extends AbstractBuffClass {
         switch (skill) {
             case 80001155:
             case 60011219: // terms and conditions
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
                 break;
             case 65001002: // melody cross
-                eff.statups.put(MapleBuffStat.ANGEL_ACC, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IndieACC, eff.info.get(MapleStatInfo.x));
                 break;
             case 65101002: // power transfer
-                eff.statups.put(MapleBuffStat.DAMAGE_ABSORBED, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.DamAbsorbShield, eff.info.get(MapleStatInfo.x));
                 break;
             case 65111004: // iron blossom
-                eff.statups.put(MapleBuffStat.STANCE, eff.info.get(MapleStatInfo.prop));
+                eff.statups.put(MapleBuffStat.Stance, eff.info.get(MapleStatInfo.prop));
                 break;
             case 65121004: // star gazer
                 eff.statups.put(MapleBuffStat.CRIT_DAMAGE, eff.info.get(MapleStatInfo.x));
                 break;
             case 65121009: // nova warrior
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             case 65121053: // Final Contract - TODO
-//                eff.statups.put(MapleBuffStat.CRITICAL_RATE, eff.info.get(MapleStatInfo.x));
-//                eff.statups.put(MapleBuffStat.STANCE, eff.info.get(MapleStatInfo.y));
+//                eff.statups.put(MapleBuffStat.CriticalBuff, eff.info.get(MapleStatInfo.x));
+//                eff.statups.put(MapleBuffStat.Stance, eff.info.get(MapleStatInfo.y));
 //                eff.statups.put(MapleBuffStat.ABNORMAL_STATUS_R, eff.info.get(MapleStatInfo.asrR));
 //                eff.statups.put(MapleBuffStat.ELEMENTAL_STATUS_R, eff.info.get(MapleStatInfo.terR));																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							
                     break;

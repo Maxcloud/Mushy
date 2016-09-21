@@ -112,7 +112,7 @@ public class MapleMount implements Serializable {
         changed = true;
         this.fatigue++;
         if (fatigue > 100 && owner.get() != null) {
-            owner.get().cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
+            owner.get().cancelEffectFromBuffStat(MapleBuffStat.RideVehicle);
         }
         update();
     }

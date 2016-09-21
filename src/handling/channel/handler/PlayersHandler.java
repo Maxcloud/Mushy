@@ -1345,7 +1345,7 @@ public class PlayersHandler {
                     c.getSession().close();
                     return;
                 }
-                if (GameConstants.isIceKnightSkill(skillid) && chr.getBuffSource(MapleBuffStat.MORPH) % 10000 != 1105) {
+                if (GameConstants.isIceKnightSkill(skillid) && chr.getBuffSource(MapleBuffStat.Morph) % 10000 != 1105) {
                     return;
                 }
             }
@@ -1394,7 +1394,7 @@ public class PlayersHandler {
                     c.getSession().write(CWvsContext.enableActions());
                     return;
                 }
-                if ((skillid != 35111004 && skillid != 35121013) || chr.getBuffSource(MapleBuffStat.MECH_CHANGE) != skillid) { // Battleship
+                if ((skillid != 35111004 && skillid != 35121013) || chr.getBuffSource(MapleBuffStat.Mechanic) != skillid) { // Battleship
                     c.getSession().write(CField.skillCooldown(skillid, effect.getCooldown(chr)));
                     chr.addCooldown(skillid, System.currentTimeMillis(), effect.getCooldown(chr) * 1000);
                 }     
@@ -1405,10 +1405,10 @@ public class PlayersHandler {
                 case 1111:
                 case 1112:
                     if (PlayerHandler.isFinisher(skillid) > 0) { // finisher
-                        if (chr.getBuffedValue(MapleBuffStat.COMBO) == null || chr.getBuffedValue(MapleBuffStat.COMBO) <= 2) {
+                        if (chr.getBuffedValue(MapleBuffStat.ComboCounter) == null || chr.getBuffedValue(MapleBuffStat.ComboCounter) <= 2) {
                             return;
                         }
-                        skillDamage *= (chr.getBuffedValue(MapleBuffStat.COMBO) - 1) / 2;
+                        skillDamage *= (chr.getBuffedValue(MapleBuffStat.ComboCounter) - 1) / 2;
                         chr.handleOrbconsume(PlayerHandler.isFinisher(skillid));
                     }
                     break;
@@ -1442,7 +1442,7 @@ public class PlayersHandler {
             }
             box = MapleStatEffect.calculateBoundingBox(chr.getTruePosition(), facingLeft, lt, rb, chr.getStat().defRange);
         }
-        final MapleStatEffect shad = chr.getStatForBuff(MapleBuffStat.SHADOWPARTNER);
+        final MapleStatEffect shad = chr.getStatForBuff(MapleBuffStat.ShadowPartner);
         final int originalAttackCount = attackCount;
         attackCount *= (shad != null ? 2 : 1);
 
@@ -1455,7 +1455,7 @@ public class PlayersHandler {
             visProjectile = 2333000;
         } else if (GameConstants.isCannon(chr.getJob())) {
             visProjectile = 2333001;
-        } else if (!GameConstants.isMercedes(chr.getJob()) && chr.getBuffedValue(MapleBuffStat.SOULARROW) == null && slot > 0) {
+        } else if (!GameConstants.isMercedes(chr.getJob()) && chr.getBuffedValue(MapleBuffStat.SoulArrow) == null && slot > 0) {
             Item ipp = chr.getInventory(MapleInventoryType.USE).getItem((short) slot);
             if (ipp == null) {
                 return;
@@ -1522,11 +1522,11 @@ public class PlayersHandler {
                                 ourDamage *= (100.0 + (Randomizer.nextInt(Math.max(2, chr.getStat().passive_sharpeye_percent() - chr.getStat().passive_sharpeye_min_percent())) + chr.getStat().passive_sharpeye_min_percent())) / 100.0;
                                 critical_ = true;
                             }
-                            if (attacked.getBuffedValue(MapleBuffStat.MAGIC_GUARD) != null) {
-                                mploss = (int) Math.min(attacked.getStat().getMp(), (ourDamage * attacked.getBuffedValue(MapleBuffStat.MAGIC_GUARD).doubleValue() / 100.0));
+                            if (attacked.getBuffedValue(MapleBuffStat.MagicGuard) != null) {
+                                mploss = (int) Math.min(attacked.getStat().getMp(), (ourDamage * attacked.getBuffedValue(MapleBuffStat.MagicGuard).doubleValue() / 100.0));
                             }
                             ourDamage -= mploss;
-                            if (attacked.getBuffedValue(MapleBuffStat.INFINITY) != null) {
+                            if (attacked.getBuffedValue(MapleBuffStat.Infinity) != null) {
                                 mploss = 0;
                             }
                             attacks.add(new Pair<>((int) Math.floor(ourDamage), critical_));
@@ -1567,19 +1567,19 @@ public class PlayersHandler {
                         effect.handleExtraPVP(chr, attacked);
                     }
                     if (chr.getJob() == 121 || chr.getJob() == 122 || chr.getJob() == 2110 || chr.getJob() == 2111 || chr.getJob() == 2112) { // WHITEKNIGHT
-                        if (chr.getBuffSource(MapleBuffStat.WK_CHARGE) == 1211006 || chr.getBuffSource(MapleBuffStat.WK_CHARGE) == 21101006) {
-                            final MapleStatEffect eff = chr.getStatForBuff(MapleBuffStat.WK_CHARGE);
+                        if (chr.getBuffSource(MapleBuffStat.WeaponCharge) == 1211006 || chr.getBuffSource(MapleBuffStat.WeaponCharge) == 21101006) {
+                            final MapleStatEffect eff = chr.getStatForBuff(MapleBuffStat.WeaponCharge);
                             if (eff.makeChanceResult()) {
                                 attacked.giveDebuff(MapleDisease.FREEZE, 1, eff.getDuration(), MapleDisease.FREEZE.getDisease(), 1);
                             }
                         }
-                    } else if (chr.getBuffedValue(MapleBuffStat.HAMSTRING) != null) {
-                        final MapleStatEffect eff = chr.getStatForBuff(MapleBuffStat.HAMSTRING);
+                    } else if (chr.getBuffedValue(MapleBuffStat.IllusionStep) != null) {
+                        final MapleStatEffect eff = chr.getStatForBuff(MapleBuffStat.IllusionStep);
                         if (eff != null && eff.makeChanceResult()) {
                             attacked.giveDebuff(MapleDisease.SLOW, 100 - Math.abs(eff.getX()), eff.getDuration(), MapleDisease.SLOW.getDisease(), 1);
                         }
-                    } else if (chr.getBuffedValue(MapleBuffStat.SLOW) != null) {
-                        final MapleStatEffect eff = chr.getStatForBuff(MapleBuffStat.SLOW);
+                    } else if (chr.getBuffedValue(MapleBuffStat.Slow) != null) {
+                        final MapleStatEffect eff = chr.getStatForBuff(MapleBuffStat.Slow);
                         if (eff != null && eff.makeChanceResult()) {
                             attacked.giveDebuff(MapleDisease.SLOW, 100 - Math.abs(eff.getX()), eff.getDuration(), MapleDisease.SLOW.getDisease(), 1);
                         }

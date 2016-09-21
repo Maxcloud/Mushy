@@ -1714,7 +1714,6 @@ public final class MapleMap {
                 }
             }
         });
-//	broadcastMessage(CField.dropItemFromMapObject(mdrop, mob.getTruePosition(), dropPos, (byte) 0));
 
         mdrop.registerExpire(120000);
         if (droptype == 0 || droptype == 1) {

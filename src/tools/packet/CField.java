@@ -1031,71 +1031,71 @@ public class CField {
 		mask[1] |= 0x200;
 		mask[5] |= 0x20000;
 		mask[5] |= 0x8000;
-		if ((chr.getBuffedValue(MapleBuffStat.DARKSIGHT) != null) || (chr.isHidden())) {
-		//	mask[MapleBuffStat.DARKSIGHT.getPosition(true)] |= MapleBuffStat.DARKSIGHT.getValue();
+		if ((chr.getBuffedValue(MapleBuffStat.DarkSight) != null) || (chr.isHidden())) {
+		//	mask[MapleBuffStat.DarkSight.getPosition(true)] |= MapleBuffStat.DarkSight.getValue();
 		}
-		if (chr.getBuffedValue(MapleBuffStat.SOULARROW) != null) {
-		//	mask[MapleBuffStat.SOULARROW.getPosition(true)] |= MapleBuffStat.SOULARROW.getValue();
+		if (chr.getBuffedValue(MapleBuffStat.SoulArrow) != null) {
+		//	mask[MapleBuffStat.SoulArrow.getPosition(true)] |= MapleBuffStat.SoulArrow.getValue();
 		}
-		if (chr.getBuffedValue(MapleBuffStat.DAMAGE_ABSORBED) != null) {
-			// mask[MapleBuffStat.DAMAGE_ABSORBED.getPosition(true)] |= MapleBuffStat.DAMAGE_ABSORBED.getValue();
+		if (chr.getBuffedValue(MapleBuffStat.DamAbsorbShield) != null) {
+			// mask[MapleBuffStat.DamAbsorbShield.getPosition(true)] |= MapleBuffStat.DamAbsorbShield.getValue();
 			buffvaluenew.add(new Pair(Integer.valueOf(1000), Integer.valueOf(2)));
-			buffvaluenew.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DAMAGE_ABSORBED)),
+			buffvaluenew.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DamAbsorbShield)),
 					Integer.valueOf(4)));
 			buffvaluenew.add(new Pair(Integer.valueOf(9), Integer.valueOf(0)));
 		}
-		if (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) != null) {
-			// mask[MapleBuffStat.TEMPEST_BLADES.getPosition(true)] |= MapleBuffStat.TEMPEST_BLADES.getValue();
+		if (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) != null) {
+			// mask[MapleBuffStat.StopForceAtomInfo.getPosition(true)] |= MapleBuffStat.StopForceAtomInfo.getValue();
 			buffvaluenew.add(new Pair(
-					Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.TEMPEST_BLADES))),
+					Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo))),
 					Integer.valueOf(2)));
 			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.TEMPEST_BLADES)), Integer.valueOf(4)));
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo)), Integer.valueOf(4)));
 			buffvaluenew.add(new Pair(Integer.valueOf(5), Integer.valueOf(0)));
 			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.TEMPEST_BLADES) == 61101002 ? 1 : 2),
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) == 61101002 ? 1 : 2),
 							Integer.valueOf(4)));
 			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.TEMPEST_BLADES) == 61101002 ? 3 : 5),
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) == 61101002 ? 3 : 5),
 							Integer.valueOf(4)));
-			buffvaluenew.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES).intValue()),
+			buffvaluenew.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo).intValue()),
 					Integer.valueOf(4)));
 			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.TEMPEST_BLADES) == 61101002 ? 3 : 5),
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) == 61101002 ? 3 : 5),
 							Integer.valueOf(4)));
-			if (chr.getTrueBuffSource(MapleBuffStat.TEMPEST_BLADES) != 61101002) {
+			if (chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) != 61101002) {
 				buffvaluenew.add(new Pair(Integer.valueOf(8), Integer.valueOf(0)));
 			}
 		}
-		if ((chr.getBuffedValue(MapleBuffStat.COMBO) != null)
-				&& (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {
-			// mask[MapleBuffStat.COMBO.getPosition(true)] |= MapleBuffStat.COMBO.getValue();
+		if ((chr.getBuffedValue(MapleBuffStat.ComboCounter) != null)
+				&& (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {
+			// mask[MapleBuffStat.ComboCounter.getPosition(true)] |= MapleBuffStat.ComboCounter.getValue();
 			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.COMBO).intValue()), Integer.valueOf(1)));
+					new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.ComboCounter).intValue()), Integer.valueOf(1)));
 		}
-		if (chr.getBuffedValue(MapleBuffStat.WK_CHARGE) != null) {
-			// mask[MapleBuffStat.WK_CHARGE.getPosition(true)] |= MapleBuffStat.WK_CHARGE.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.WK_CHARGE).intValue()),
+		if (chr.getBuffedValue(MapleBuffStat.WeaponCharge) != null) {
+			// mask[MapleBuffStat.WeaponCharge.getPosition(true)] |= MapleBuffStat.WeaponCharge.getValue();
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.WeaponCharge).intValue()),
 					Integer.valueOf(2)));
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.WK_CHARGE)), Integer.valueOf(3)));
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.WeaponCharge)), Integer.valueOf(3)));
 		}
-		if ((chr.getBuffedValue(MapleBuffStat.SHADOWPARTNER) != null)
-				&& (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {
-			// mask[MapleBuffStat.SHADOWPARTNER.getPosition(true)] |= MapleBuffStat.SHADOWPARTNER.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.SHADOWPARTNER).intValue()),
+		if ((chr.getBuffedValue(MapleBuffStat.ShadowPartner) != null)
+				&& (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {
+			// mask[MapleBuffStat.ShadowPartner.getPosition(true)] |= MapleBuffStat.ShadowPartner.getValue();
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.ShadowPartner).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.SHADOWPARTNER)), Integer.valueOf(3)));
+					.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.ShadowPartner)), Integer.valueOf(3)));
 		}
-		// if ((chr.getBuffedValue(MapleBuffStat.MORPH) != null) &&
-		// (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {//TODO
-		// mask[MapleBuffStat.MORPH.getPosition(true)] |=
-		// MapleBuffStat.MORPH.getValue();
+		// if ((chr.getBuffedValue(MapleBuffStat.Morph) != null) &&
+		// (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {//TODO
+		// mask[MapleBuffStat.Morph.getPosition(true)] |=
+		// MapleBuffStat.Morph.getValue();
 		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getStatForBuff(MapleBuffStat.MORPH).getMorph(chr)),
+		// Pair(Integer.valueOf(chr.getStatForBuff(MapleBuffStat.Morph).getMorph(chr)),
 		// Integer.valueOf(2)));
 		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.MORPH)),
+		// Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.Morph)),
 		// Integer.valueOf(3)));
 		// }
 		if (chr.getBuffedValue(MapleBuffStat.BERSERK_FURY) != null) {// works
@@ -1118,9 +1118,9 @@ public class CField {
 			buffvalue.add(
 					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.PYRAMID_PQ)), Integer.valueOf(3)));
 		}
-		if (chr.getBuffedValue(MapleBuffStat.SOARING) != null) {// TODO
-			// mask[MapleBuffStat.SOARING.getPosition(true)] |= MapleBuffStat.SOARING.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.SOARING).intValue()),
+		if (chr.getBuffedValue(MapleBuffStat.Flying) != null) {// TODO
+			// mask[MapleBuffStat.Flying.getPosition(true)] |= MapleBuffStat.Flying.getValue();
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.Flying).intValue()),
 					Integer.valueOf(1)));
 		}
 		// if (chr.getBuffedValue(MapleBuffStat.OWL_SPIRIT) != null) {//TODO
@@ -1133,12 +1133,12 @@ public class CField {
 		// Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.OWL_SPIRIT)),
 		// Integer.valueOf(3)));
 		// }
-		if (chr.getBuffedValue(MapleBuffStat.FINAL_CUT) != null) {
-			// mask[MapleBuffStat.FINAL_CUT.getPosition(true)] |= MapleBuffStat.FINAL_CUT.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.FINAL_CUT).intValue()),
+		if (chr.getBuffedValue(MapleBuffStat.FinalCut) != null) {
+			// mask[MapleBuffStat.FinalCut.getPosition(true)] |= MapleBuffStat.FinalCut.getValue();
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.FinalCut).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.FINAL_CUT)), Integer.valueOf(3)));
+					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.FinalCut)), Integer.valueOf(3)));
 		}
 
 		if (chr.getBuffedValue(MapleBuffStat.TORNADO) != null) {
@@ -1150,50 +1150,50 @@ public class CField {
 		if (chr.getBuffedValue(MapleBuffStat.INFILTRATE) != null) {
 			// mask[MapleBuffStat.INFILTRATE.getPosition(true)] |= MapleBuffStat.INFILTRATE.getValue();
 		}
-		if (chr.getBuffedValue(MapleBuffStat.MECH_CHANGE) != null) {
-			// mask[MapleBuffStat.MECH_CHANGE.getPosition(true)] |= MapleBuffStat.MECH_CHANGE.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.MECH_CHANGE).intValue()),
+		if (chr.getBuffedValue(MapleBuffStat.Mechanic) != null) {
+			// mask[MapleBuffStat.Mechanic.getPosition(true)] |= MapleBuffStat.Mechanic.getValue();
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.Mechanic).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.MECH_CHANGE)), Integer.valueOf(3)));
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.Mechanic)), Integer.valueOf(3)));
 		}
-		if (chr.getBuffedValue(MapleBuffStat.DARK_AURA) != null) {
-			// Smask[MapleBuffStat.DARK_AURA.getPosition(true)] |= MapleBuffStat.DARK_AURA.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.DARK_AURA).intValue()),
+		if (chr.getBuffedValue(MapleBuffStat.BMageAura) != null) {
+			// Smask[MapleBuffStat.BMageAura.getPosition(true)] |= MapleBuffStat.BMageAura.getValue();
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BMageAura).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DARK_AURA)), Integer.valueOf(3)));
+					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BMageAura)), Integer.valueOf(3)));
 		}
-		if (chr.getBuffedValue(MapleBuffStat.BLUE_AURA) != null) {
+		if (chr.getBuffedValue(MapleBuffStat.BMageAura) != null) {
 			// mask[MapleBuffStat.BLUE_AURA.getPosition(true)] |= MapleBuffStat.BLUE_AURA.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BLUE_AURA).intValue()),
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BMageAura).intValue()),
 					Integer.valueOf(2)));
 			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BLUE_AURA)), Integer.valueOf(3)));
+					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BMageAura)), Integer.valueOf(3)));
 		}
-		if (chr.getBuffedValue(MapleBuffStat.YELLOW_AURA) != null) {
+		if (chr.getBuffedValue(MapleBuffStat.BMageAura) != null) {
 			// mask[MapleBuffStat.YELLOW_AURA.getPosition(true)] |= MapleBuffStat.YELLOW_AURA.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.YELLOW_AURA).intValue()),
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BMageAura).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.YELLOW_AURA)), Integer.valueOf(3)));
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BMageAura)), Integer.valueOf(3)));
 		}
-		if ((chr.getBuffedValue(MapleBuffStat.WATER_SHIELD) != null)
-				&& (chr.getBuffedValue(MapleBuffStat.TEMPEST_BLADES) == null)) {
+		if ((chr.getBuffedValue(MapleBuffStat.DamAbsorbShield) != null)
+				&& (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {
 			// mask[MapleBuffStat.WATER_SHIELD.getPosition(true)] |= MapleBuffStat.WATER_SHIELD.getValue();
 			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.WATER_SHIELD))),
+					new Pair(Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.DamAbsorbShield))),
 							Integer.valueOf(2)));
 			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.WATER_SHIELD)), Integer.valueOf(4)));
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DamAbsorbShield)), Integer.valueOf(4)));
 			buffvaluenew.add(new Pair(Integer.valueOf(9), Integer.valueOf(0)));
 		}
-		if (chr.getBuffedValue(MapleBuffStat.GIANT_POTION) != null) {
-			// mask[MapleBuffStat.GIANT_POTION.getPosition(true)] |= MapleBuffStat.GIANT_POTION.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.GIANT_POTION).intValue()),
+		if (chr.getBuffedValue(MapleBuffStat.Inflation) != null) {
+			// mask[MapleBuffStat.Inflation.getPosition(true)] |= MapleBuffStat.Inflation.getValue();
+			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.Inflation).intValue()),
 					Integer.valueOf(2)));
 			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.GIANT_POTION)), Integer.valueOf(3)));
+					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.Inflation)), Integer.valueOf(3)));
 		}
 
 		for (int i = 0; i < mask.length; i++) {
@@ -1237,7 +1237,7 @@ public class CField {
 		mplew.write(1);
 		mplew.writeInt(CHAR_MAGIC_SPAWN);
 		mplew.writeShort(0);
-		int buffSrc = chr.getBuffSource(MapleBuffStat.MONSTER_RIDING);
+		int buffSrc = chr.getBuffSource(MapleBuffStat.RideVehicle);
 		if (buffSrc > 0) {
 			Item c_mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -118);
 			Item mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18);
@@ -2199,6 +2199,7 @@ public class CField {
 		addRingInfo(mplew, rings.getMid());
 		addMRingInfo(mplew, rings.getRight(), chr);
 		mplew.writeInt(0); // -> charid to follow (4)
+		mplew.writeInt(0);
 		return mplew.getPacket();
 	}
 
@@ -3140,12 +3141,12 @@ public class CField {
 	}
 
 	static {
-		DEFAULT_BUFFMASK |= MapleBuffStat.ENERGY_CHARGE.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.DASH_SPEED.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.DASH_JUMP.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.MONSTER_RIDING.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.SPEED_INFUSION.getValue();
-		DEFAULT_BUFFMASK |= MapleBuffStat.HOMING_BEACON.getValue();
+		DEFAULT_BUFFMASK |= MapleBuffStat.EnergyCharged.getValue();
+		DEFAULT_BUFFMASK |= MapleBuffStat.Dash_Speed.getValue();
+		DEFAULT_BUFFMASK |= MapleBuffStat.Dash_Jump.getValue();
+		DEFAULT_BUFFMASK |= MapleBuffStat.RideVehicle.getValue();
+		DEFAULT_BUFFMASK |= MapleBuffStat.Speed.getValue();
+		DEFAULT_BUFFMASK |= MapleBuffStat.StopForceAtomInfo.getValue();
 		DEFAULT_BUFFMASK |= MapleBuffStat.DEFAULT_BUFFSTAT.getValue();
 	}
 
@@ -4505,8 +4506,11 @@ public class CField {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 			mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-			mplew.write(21);
+			mplew.write(0x26); // updated.
 			mplew.writeMapleAsciiString(data);
+			mplew.write(0); // bool
+			mplew.writeInt(0); // bUpgrade
+			mplew.writeInt(4); // nRet
 
 			return mplew.getPacket();
 		}

@@ -36,41 +36,41 @@ public class WindArcherBuff extends AbstractBuffClass {
         switch (skill) {
             case 13001022:// Storm Elemental
                 eff.statups.put(MapleBuffStat.STORM_ELEMENTAL, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
                 break;
             case 13101023:// Bow Booster
-                eff.statups.put(MapleBuffStat.BOOSTER, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x));
                 break;
             case 13111024:// Emerald Flower
                 //spawn
                 break;
             case 13101024:// Sylvan Aid
-                eff.statups.put(MapleBuffStat.CRITICAL_PERCENT_UP, eff.info.get(MapleStatInfo.x));    
-                eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indiePad));
-                eff.statups.put(MapleBuffStat.SOULARROW, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IndieCr, eff.info.get(MapleStatInfo.x));    
+                eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
+                eff.statups.put(MapleBuffStat.SoulArrow, eff.info.get(MapleStatInfo.x));
                  break;
                case 13111023:// Albatross
-                eff.statups.put(MapleBuffStat.ALBATROSS, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indiePad));
-                eff.statups.put(MapleBuffStat.HP_BOOST, eff.info.get(MapleStatInfo.indieMhp));
+                eff.statups.put(MapleBuffStat.Albatross, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
+                eff.statups.put(MapleBuffStat.IncMaxHP, eff.info.get(MapleStatInfo.indieMhp));
                 eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));//true?
-                eff.statups.put(MapleBuffStat.CRITICAL_PERCENT_UP, eff.info.get(MapleStatInfo.indieCr));
+                eff.statups.put(MapleBuffStat.IndieCr, eff.info.get(MapleStatInfo.indieCr));
                 break;
             case 13121004:// Touch of the Wind
                 eff.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND2, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.HAMSTRING, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.IllusionStep, eff.info.get(MapleStatInfo.y));
                 eff.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND1, eff.info.get(MapleStatInfo.prop));
                 eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
                 break;
             case 13121005:// Sharp Eyes
-                eff.statups.put(MapleBuffStat.SHARP_EYES, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));
+                eff.statups.put(MapleBuffStat.SharpEyes, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));
                 break;
             case 13121053:// Glory of the Guardians
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
-                eff.statups.put(MapleBuffStat.DAMAGE_CAP_INCREASE, eff.info.get(MapleStatInfo.indieMaxDamageOver));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IncMaxDamage, eff.info.get(MapleStatInfo.indieMaxDamageOver));
                 break;
             case 13121054:// Storm Bringer
-                eff.statups.put(MapleBuffStat.STORM_BRINGER, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.StormBringer, eff.info.get(MapleStatInfo.x));
                 break;
             default:
                 System.out.println("Unhandled Buff: " + skill);

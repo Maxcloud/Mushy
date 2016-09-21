@@ -424,11 +424,11 @@ public static final void MoveDragon(final LittleEndianAccessor slea, final Maple
                         //} else if (attacked.getLevel() > chr.getLevel() && Randomizer.nextInt(100) < (attacked.getLevel() - chr.getLevel())) {
                         //	ourDamage = 0;
                     }
-                    if (attacked.getBuffedValue(MapleBuffStat.MAGIC_GUARD) != null) {
-                        mploss = (int) Math.min(attacked.getStat().getMp(), (ourDamage * attacked.getBuffedValue(MapleBuffStat.MAGIC_GUARD).doubleValue() / 100.0));
+                    if (attacked.getBuffedValue(MapleBuffStat.MagicGuard) != null) {
+                        mploss = (int) Math.min(attacked.getStat().getMp(), (ourDamage * attacked.getBuffedValue(MapleBuffStat.MagicGuard).doubleValue() / 100.0));
                     }
                     ourDamage -= mploss;
-                    if (attacked.getBuffedValue(MapleBuffStat.INFINITY) != null) {
+                    if (attacked.getBuffedValue(MapleBuffStat.Infinity) != null) {
                         mploss = 0;
                     }
                     attacks.add(new Pair<>((int) Math.floor(ourDamage), false));

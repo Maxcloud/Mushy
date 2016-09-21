@@ -47,24 +47,24 @@ public class BowmanBuff extends AbstractBuffClass {
         switch (skill) {
             case 3101002: //Bow Booster
             case 3201002: //Bow Booster
-                eff.statups.put(MapleBuffStat.BOOSTER, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x));
                 break;
             case 3101004: //SoulArrow bow
             case 3201004: //SoulArrow xbow
-                //eff.statups.put(MapleBuffStat.CONCENTRATE, eff.info.get(MapleStatInfo.epad));
-                eff.statups.put(MapleBuffStat.SOULARROW, eff.info.get(MapleStatInfo.x));
+                //eff.statups.put(MapleBuffStat.Concentration, eff.info.get(MapleStatInfo.epad));
+                eff.statups.put(MapleBuffStat.SoulArrow, eff.info.get(MapleStatInfo.x));
                 break;
             case 3211011: //PainKiller
-                eff.statups.put(MapleBuffStat.PRESSURE_VOID, eff.info.get(MapleStatInfo.asrR));
-                eff.statups.put(MapleBuffStat.PRESSURE_VOID, eff.info.get(MapleStatInfo.terR));
+                eff.statups.put(MapleBuffStat.KeyDownAreaMoving, eff.info.get(MapleStatInfo.asrR));
+                eff.statups.put(MapleBuffStat.KeyDownAreaMoving, eff.info.get(MapleStatInfo.terR));
                 break;
             case 3121000: //Maple Warrior
             case 3221000: //Maple Warrior
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             case 3121002: //Sharp Eyes
             case 3221002: //Sharp Eye
-                eff.statups.put(MapleBuffStat.SHARP_EYES, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));
+                eff.statups.put(MapleBuffStat.SharpEyes, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));
                 break;
             case 3121007: //Illusion Step
             case 3221006: //Illusion Step
@@ -73,12 +73,12 @@ public class BowmanBuff extends AbstractBuffClass {
                 break;
             case 3121053: //Epic Adventure
             case 3221053: //Epic Adventure
-                eff.statups.put(MapleBuffStat.DAMAGE_PERCENT, eff.info.get(MapleStatInfo.indieDamR));
-                eff.statups.put(MapleBuffStat.DAMAGE_CAP_INCREASE, eff.info.get(MapleStatInfo.indieMaxDamageOver));
+                eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
+                eff.statups.put(MapleBuffStat.IncMaxDamage, eff.info.get(MapleStatInfo.indieMaxDamageOver));
                 break;
             case 3121054: //Consentration
                 eff.statups.put(MapleBuffStat.BOWMASTERHYPER, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.INDIE_PAD, eff.info.get(MapleStatInfo.indiePad));
+                eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
                 break;
             case 3221054: //BullsEye Shot
                 break;

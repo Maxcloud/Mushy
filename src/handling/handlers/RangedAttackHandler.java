@@ -222,7 +222,7 @@ public class RangedAttackHandler {
 			}
 			if ((effect.getCooldown(c.getPlayer()) > 0) && (!c.getPlayer().isGM())
 					&& (((attack.skillid != 35111004) && (attack.skillid != 35121013))
-							|| (c.getPlayer().getBuffSource(MapleBuffStat.MECH_CHANGE) != attack.skillid))) {
+							|| (c.getPlayer().getBuffSource(MapleBuffStat.Mechanic) != attack.skillid))) {
 				if (c.getPlayer().skillisCooling(attack.skillid)) {
 					c.getSession().write(CWvsContext.enableActions());
 					return;
@@ -232,13 +232,13 @@ public class RangedAttackHandler {
 			}
 		}
 		attack = DamageParse.ModifyAttackCrit(attack, c.getPlayer(), 2, effect);
-		Integer ShadowPartner = c.getPlayer().getBuffedValue(MapleBuffStat.SHADOWPARTNER);
+		Integer ShadowPartner = c.getPlayer().getBuffedValue(MapleBuffStat.ShadowPartner);
 		if (ShadowPartner != null) {
 			bulletCount *= 2;
 		}
 		int projectile = 0;
 		int visProjectile = 0;
-		if ((!AOE) && (c.getPlayer().getBuffedValue(MapleBuffStat.SOULARROW) == null) && (!noBullet)) {
+		if ((!AOE) && (c.getPlayer().getBuffedValue(MapleBuffStat.SoulArrow) == null) && (!noBullet)) {
 			Item ipp = c.getPlayer().getInventory(MapleInventoryType.USE).getItem((short) attack.slot);
 			if (ipp == null) {
 				return;
@@ -254,7 +254,7 @@ public class RangedAttackHandler {
 				visProjectile = projectile;
 			}
 
-			if (c.getPlayer().getBuffedValue(MapleBuffStat.SPIRIT_CLAW) == null) {
+			if (c.getPlayer().getBuffedValue(MapleBuffStat.NoBulletConsume) == null) {
 				int bulletConsume = bulletCount;
 				if ((effect != null) && (effect.getBulletConsume() != 0)) {
 					bulletConsume = effect.getBulletConsume() * (ShadowPartner != null ? 2 : 1);

@@ -107,10 +107,10 @@ public class MovePlayerHandler {
                 c.getPlayer().setFallCounter(0);
             }
             c.getPlayer().setOldPosition(pos);
-            if ((!samepos) && (c.getPlayer().getBuffSource(MapleBuffStat.DARK_AURA) == 32120000)) {
-                c.getPlayer().getStatForBuff(MapleBuffStat.DARK_AURA).applyMonsterBuff(c.getPlayer());
-            } else if ((!samepos) && (c.getPlayer().getBuffSource(MapleBuffStat.YELLOW_AURA) == 32120001)) {
-                c.getPlayer().getStatForBuff(MapleBuffStat.YELLOW_AURA).applyMonsterBuff(c.getPlayer());
+            if ((!samepos) && (c.getPlayer().getBuffSource(MapleBuffStat.BMageAura) == 32120000)) {
+                c.getPlayer().getStatForBuff(MapleBuffStat.BMageAura).applyMonsterBuff(c.getPlayer());
+            } else if ((!samepos) && (c.getPlayer().getBuffSource(MapleBuffStat.BMageAura) == 32120001)) {
+                c.getPlayer().getStatForBuff(MapleBuffStat.BMageAura).applyMonsterBuff(c.getPlayer());
             }
         }
 	}

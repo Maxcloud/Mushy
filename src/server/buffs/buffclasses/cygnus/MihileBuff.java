@@ -42,29 +42,29 @@ public class MihileBuff extends AbstractBuffClass {
        
         switch (skill) {
             case 51101003: // booster
-                eff.statups.put(MapleBuffStat.BOOSTER, eff.info.get(MapleStatInfo.x) * 2);
+                eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x) * 2);
                 break;
             case 51101004: // rage, not special
                 break;
             case 51111003: // rad charge
-                eff.statups.put(MapleBuffStat.WK_CHARGE, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.DAMAGE_BUFF, eff.info.get(MapleStatInfo.z));
+                eff.statups.put(MapleBuffStat.WeaponCharge, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.DamR, eff.info.get(MapleStatInfo.z));
                 break;
             case 51111004: // end spirit
-                eff.statups.put(MapleBuffStat.ABNORMAL_STATUS_R, eff.info.get(MapleStatInfo.y));
-                eff.statups.put(MapleBuffStat.ELEMENTAL_STATUS_R, eff.info.get(MapleStatInfo.z));
+                eff.statups.put(MapleBuffStat.AsrR, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.TerR, eff.info.get(MapleStatInfo.z));
                 eff.statups.put(MapleBuffStat.DEFENCE_BOOST_R, eff.info.get(MapleStatInfo.x));
                 break;
             case 51121004: // stance
-                eff.statups.put(MapleBuffStat.STANCE, (int) eff.info.get(MapleStatInfo.prop));
+                eff.statups.put(MapleBuffStat.Stance, (int) eff.info.get(MapleStatInfo.prop));
                 break;
             case 51121005: // mw
-                eff.statups.put(MapleBuffStat.MAPLE_WARRIOR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.BasicStatUp, eff.info.get(MapleStatInfo.x));
                 break;
             case 51121006: // roiling soul
-                eff.statups.put(MapleBuffStat.DAMAGE_BUFF, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.CRITICAL_RATE_BUFF, eff.info.get(MapleStatInfo.y));
-                eff.statups.put(MapleBuffStat.CRITICAL_RATE_BUFF, eff.info.get(MapleStatInfo.z));
+                eff.statups.put(MapleBuffStat.DamR, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.HowlingCritical, eff.info.get(MapleStatInfo.y));
+                eff.statups.put(MapleBuffStat.HowlingCritical, eff.info.get(MapleStatInfo.z));
                 break;
             default:
                 //System.out.println("Unhandled Buff: " + skill);

@@ -23,6 +23,29 @@ package server;
  */
 public enum MapleStatInfo {
 
+	indiePad(0),
+	indieMad(0),
+	indiePdd(0),
+    indieMdd(0),
+    indieMhp(0),
+    indieMhpR(0),
+    indieMmp(0),
+    indieMmpR(0),
+    indieAcc(0),
+    indieEva(0),
+    indieJump(0),
+    indieSpeed(0),
+    indieAllStat(0),
+    indieBooster(0),
+    indieDamR(0),
+    indieMaxDamageOver(0),
+    indieAsrR(0),
+    indieTerR(0),
+    indieCr(0),
+	indieBDR(0),
+	indieStance(0),
+	indiePadR(0),
+    
     PVPdamage(0), //Battle Mode ATT Increase
     abnormalDamR(0), //Additional Damage on Targets with Abnormal Status
     acc(0), //Increase Accuracy +
@@ -80,27 +103,6 @@ public enum MapleStatInfo {
     iceGageCon(0), //Ice Gauge Cost
     ignoreMobDamR(0), //Ignore Mob Damage to Player %
     ignoreMobpdpR(0), //Ignore Mob DEF % -> Attack higher
-    indieBDR(0),
-    indieAcc(0), //Accuracy +
-    indieAllStat(0), //All Stats +
-    indieDamR(0), //Damage Increase %
-    indieEva(0), //Avoidability +
-    indieJump(0), //Jump Increase +
-    indieMad(0), //Magic Damage Increase
-    indieMhp(0), //Max HP Increase +
-    indiePdd(0),// ??
-    indieMdd(0),//MDEF?
-    indieTerR(0),
-    indieAsrR(0),
-    indieMhpR(0), //Max HP Increase %
-    indieMmp(0), //Max MP Increase +
-    indieMmpR(0), //Max MP Increase %
-    indiePad(0), //Damage Increase
-    indieSpeed(0), //Speed +
-    indieBooster(0), //Attack Speed
-    indieCr(0), //Critical?
-    indieStance(0), // ?
-    indieMaxDamageOver(0), //MaxDmg Inc over x
     int2luk(0), //Convert INT to LUK
     intFX(0), //Increase INT
     intX(0), //Increase INT
@@ -136,7 +138,7 @@ public enum MapleStatInfo {
     mmpX(0), //Max MP +
     onActive(0), //Chance to recharge skill
     mobCount(1), //Max Enemies hit
-    morph(0), //MORPH ID
+    morph(0), //Morph ID
     mp(0), //Restore MP/Heal
     mpCon(0), //MP Cost
     mpConEff(0), //MP Potion effect increase %

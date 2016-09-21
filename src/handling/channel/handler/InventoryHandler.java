@@ -2434,7 +2434,7 @@ case 2431935: {
         if (mountid > 0) {
             mountid = PlayerStats.getSkillByJob(mountid, c.getPlayer().getJob());
             final int fk = GameConstants.getMountItem(mountid, c.getPlayer());
-            if (fk > 0 && mountid < 80001000) { //TODO JUMP
+            if (fk > 0 && mountid < 80001000) { //TODO Jump
                 for (int i = 80001001; i < 80001999; i++) {
                     final Skill skill = SkillFactory.getSkill(i);
                     if (skill != null && GameConstants.getMountItem(skill.getId(), c.getPlayer()) == fk) {
