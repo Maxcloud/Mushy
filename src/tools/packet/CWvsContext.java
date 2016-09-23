@@ -3154,36 +3154,6 @@ public class CWvsContext {
 
     public static class BuffPacket {
 
-        public static byte[] giveDice(int buffid, int skillid, int duration, Map<MapleBuffStat, Integer> statups) {
-            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-            mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
-            PacketHelper.writeBuffMask(mplew, statups);
-
-            mplew.writeShort(Math.max(buffid / 100, Math.max(buffid / 10, buffid % 10))); // 1-6
-
-            mplew.writeInt(skillid); // skillid
-            mplew.writeInt(duration);
-            mplew.writeShort(0);
-            mplew.write(0);
-            mplew.writeInt(GameConstants.getDiceStat(buffid, 3));
-            mplew.writeInt(GameConstants.getDiceStat(buffid, 3));
-            mplew.writeInt(GameConstants.getDiceStat(buffid, 4));
-            mplew.write0(20); //idk
-            mplew.writeInt(GameConstants.getDiceStat(buffid, 2));
-            mplew.write0(12); //idk
-            mplew.writeInt(GameConstants.getDiceStat(buffid, 5));
-            mplew.write0(16); //idk
-            mplew.writeInt(GameConstants.getDiceStat(buffid, 6));
-            mplew.write0(16);
-            mplew.write0(6);//new 143
-            mplew.writeInt(1000);//new 143
-            mplew.write(1);
-            mplew.writeInt(0);//new143
-//            mplew.write(4); // Total buffed times
-//            mplew.write(0);//v112
-            return mplew.getPacket();
-        }
-
         public static byte[] giveHoming(int skillid, int mobid, int x) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
@@ -3320,6 +3290,29 @@ public class CWvsContext {
             return mplew.getPacket();
         }
         
+        public static byte[] giveDice(int buffid, int bufflength, int roll) {
+        	EnumMap<MapleBuffStat, Integer> statups = new EnumMap<MapleBuffStat, Integer>(MapleBuffStat.class);
+            statups.put(MapleBuffStat.Dice, roll);
+            
+            int[] dice = new int[22];
+    		int num = ((roll & 1) > 0 ? 5 : 15);
+    		
+    		if (roll == 2) {
+    			dice[8] = num << 1;
+    		} else if (roll == 3) {
+    			dice[0] = num << 2;
+    			dice[1] = num << 2;
+    		} else if (roll == 4) {
+    			dice[2] = num << 0;
+        	} else if (roll == 5) {
+    			dice[12] = num << 2;
+		    } else if (roll == 6) {
+    			dice[17] = num << 1;
+		    }
+        	
+        	return giveBuff(buffid, bufflength, statups, null, dice);
+        }
+        
         
         /**
          * This handles the morph gauge for the kaiser class. Using basic attacks will fill the morph gauge.
@@ -3331,10 +3324,14 @@ public class CWvsContext {
         	EnumMap<MapleBuffStat, Integer> statups = new EnumMap<MapleBuffStat, Integer>(MapleBuffStat.class);
             statups.put(MapleBuffStat.SmashStack, amount);
             
-        	return giveBuff(0, 0, statups, effect);
+        	return giveBuff(0, 0, statups, effect, null);
         }
         
         public static byte[] giveBuff(int buffid, int bufflength, Map<MapleBuffStat, Integer> statups, MapleStatEffect effect) {
+        	return giveBuff(buffid, bufflength, statups, effect, null);
+        }
+        
+        public static byte[] giveBuff(int buffid, int bufflength, Map<MapleBuffStat, Integer> statups, MapleStatEffect effect, int[] dice) {
             MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
             mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
@@ -3374,8 +3371,9 @@ public class CWvsContext {
             for (Map.Entry<MapleBuffStat, Integer> stat : statups.entrySet()) {
                 
             	if (stat.getKey() == MapleBuffStat.Dice) {
-                	// for ( j = 0; j < 22; ++j )
-                	//	 v3648->aDiceInfo[j] = CInPacket::Decode4(iPacket);
+            		for(int i = 0; i < dice.length; i++) {
+            			mplew.writeInt(dice[i]);
+            		}
                 }
             	
             	if (stat.getKey() == MapleBuffStat.KillingPoint) {

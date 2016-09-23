@@ -2681,15 +2681,13 @@ public class MapleStatEffect implements Serializable {
             case 5311005:
             case 5711011:
             case 5211007: {//dice
-                final int zz = Randomizer.nextInt(6) + 1;
-                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto.getId(), sourceid, zz, -1, level), false);
-                applyto.getClient().getSession().write(EffectPacket.showOwnDiceEffect(sourceid, zz, -1, level));
-                if (zz <= 1) {
+                final int roll = Randomizer.nextInt(6) + 1;
+                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto.getId(), sourceid, roll, -1, level), false);
+                applyto.getClient().getSession().write(EffectPacket.showOwnDiceEffect(sourceid, roll, -1, level));
+                if (roll <= 1) {
                     return;
                 }
-                localstatups = new EnumMap<>(MapleBuffStat.class);
-                localstatups.put(MapleBuffStat.Dice, zz);
-                applyto.getClient().getSession().write(BuffPacket.giveDice(zz, sourceid, localDuration, localstatups));
+                applyto.getClient().getSession().write(BuffPacket.giveDice(sourceid, localDuration, roll));
                 normal = false;
                 showEffect = false;
                 break;
@@ -2698,29 +2696,27 @@ public class MapleStatEffect implements Serializable {
             case 5120012:
             case 5220014:
             case 5320007: {//dice
-                final int zz = Randomizer.nextInt(6) + 1;
+                final int roll = Randomizer.nextInt(6) + 1;
                 final int zz2 = makeChanceResult() ? (Randomizer.nextInt(6) + 1) : 0;
-                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto.getId(), sourceid, zz, zz2 > 0 ? -1 : 0, level), false);
-                applyto.getClient().getSession().write(EffectPacket.showOwnDiceEffect(sourceid, zz, zz2 > 0 ? -1 : 0, level));
-                if (zz <= 1 && zz2 <= 1) {
+                applyto.getMap().broadcastMessage(applyto, EffectPacket.showDiceEffect(applyto.getId(), sourceid, roll, zz2 > 0 ? -1 : 0, level), false);
+                applyto.getClient().getSession().write(EffectPacket.showOwnDiceEffect(sourceid, roll, zz2 > 0 ? -1 : 0, level));
+                if (roll <= 1 && zz2 <= 1) {
                     return;
                 }
-                final int buffid = zz == zz2 ? (zz * 100) : (zz <= 1 ? zz2 : (zz2 <= 1 ? zz : (zz * 10 + zz2)));
+                final int buffid = roll == zz2 ? (roll * 100) : (roll <= 1 ? zz2 : (zz2 <= 1 ? roll : (roll * 10 + zz2)));
                 if (buffid >= 100) { //just because of animation lol
                     applyto.dropMessage(-6, "[Double Lucky Dice] You have rolled a Double Down! (" + (buffid / 100) + ")");
                 } else if (buffid >= 10) {
                     applyto.dropMessage(-6, "[Double Lucky Dice] You have rolled two dice. (" + (buffid / 10) + " and " + (buffid % 10) + ")");
                 }
-                localstatups = new EnumMap<>(MapleBuffStat.class);
-                localstatups.put(MapleBuffStat.Dice, buffid);
-                applyto.getClient().getSession().write(BuffPacket.giveDice(zz, sourceid, localDuration, localstatups));
+                applyto.getClient().getSession().write(BuffPacket.giveDice(sourceid, localDuration, roll));
                 normal = false;
                 showEffect = false;
                 break;
             }
             case 20031209:
             case 20031210:
-                int zz = Randomizer.nextInt(this.sourceid == 20031209 ? 2 : 5) + 1;
+                int roll = Randomizer.nextInt(this.sourceid == 20031209 ? 2 : 5) + 1;
                 int skillid = 24100003;
                 if (applyto.getSkillLevel(24120002) > 0) {
                     skillid = 24120002;
@@ -2729,11 +2725,11 @@ public class MapleStatEffect implements Serializable {
                 applyto.resetRunningStack();
                 applyto.addRunningStack(skillid == 24100003 ? 5 : 10);
                 applyto.getMap().broadcastMessage(applyto, PhantomPacket.gainCardStack(applyto.getId(), applyto.getRunningStack(), skillid == 24120002 ? 2 : 1, skillid, 0, skillid == 24100003 ? 5 : 10), true);
-                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), this.sourceid, zz, -1, this.level), false);
-                applyto.getClient().getSession().write(CField.EffectPacket.showOwnDiceEffect(this.sourceid, zz, -1, this.level));
+                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), this.sourceid, roll, -1, this.level), false);
+                applyto.getClient().getSession().write(CField.EffectPacket.showOwnDiceEffect(this.sourceid, roll, -1, this.level));
                 localstatups = new EnumMap(MapleBuffStat.class);
-                localstatups.put(MapleBuffStat.Judgement, zz);
-                if (zz == 5) {
+                localstatups.put(MapleBuffStat.Judgement, roll);
+                if (roll == 5) {
                     localstatups.put(MapleBuffStat.ABSORB_DAMAGE_HP, this.info.get(MapleStatInfo.z));
                 }
                 applyto.getClient().getSession().write(CWvsContext.BuffPacket.giveBuff(this.sourceid, localDuration, localstatups, this));
@@ -3259,22 +3255,20 @@ public class MapleStatEffect implements Serializable {
                 if (applyto.getStatForBuff(MapleBuffStat.Dice) != null) {
                     applyto.cancelEffectFromBuffStat(MapleBuffStat.Dice);
                 }
-                zz = Randomizer.nextInt(6) + 1;
+                roll = Randomizer.nextInt(6) + 1;
                 int zz2 = makeChanceResult() ? Randomizer.nextInt(6) + 1 : 0;
-                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), this.sourceid, zz, zz2 > 0 ? -1 : 0, this.level), false);
-                applyto.getClient().getSession().write(CField.EffectPacket.showOwnDiceEffect(this.sourceid, zz, zz2 > 0 ? -1 : 0, this.level));
-                if ((zz <= 1) && (zz2 <= 1)) {
+                applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), this.sourceid, roll, zz2 > 0 ? -1 : 0, this.level), false);
+                applyto.getClient().getSession().write(CField.EffectPacket.showOwnDiceEffect(this.sourceid, roll, zz2 > 0 ? -1 : 0, this.level));
+                if ((roll <= 1) && (zz2 <= 1)) {
                     return;
                 }
-                int buffid = zz2 <= 1 ? zz : zz <= 1 ? zz2 : zz == zz2 ? zz * 100 : zz * 10 + zz2;
+                int buffid = zz2 <= 1 ? roll : roll <= 1 ? zz2 : roll == zz2 ? roll * 100 : roll * 10 + zz2;
                 if (buffid >= 100) {
                     applyto.dropMessage(-6, "[Double Lucky Dice] You have rolled a Double Down! (" + buffid / 100 + ")");
                 } else if (buffid >= 10) {
                     applyto.dropMessage(-6, "[Double Lucky Dice] You have rolled two dice. (" + buffid / 10 + " and " + buffid % 10 + ")");
                 }
-                localstatups = new EnumMap(MapleBuffStat.class);
-                localstatups.put(MapleBuffStat.Dice, Integer.valueOf(buffid));
-                applyto.getClient().getSession().write(CWvsContext.BuffPacket.giveDice(zz, this.sourceid, localDuration, localstatups));
+                applyto.getClient().getSession().write(CWvsContext.BuffPacket.giveDice(sourceid, localDuration, roll));
                 normal = false;
                 showEffect = false;
                 break;
