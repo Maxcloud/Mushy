@@ -3815,46 +3815,51 @@ public class CField {
 
 		public static byte[] spawnSummon(MapleSummon summon, boolean animated) {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			MapleCharacter chr = summon.getOwner();
 
 			mplew.writeShort(SendPacketOpcode.SPAWN_SUMMON.getValue());
 			mplew.writeInt(summon.getOwnerId());
+			
 			mplew.writeInt(summon.getObjectId());
-			mplew.writeInt(summon.getSkill());
-			mplew.write(summon.getOwnerLevel() - 1);
-			mplew.write(summon.getSkillLevel());
-			mplew.writePos(summon.getPosition());
-			mplew.write((summon.getSkill() == 32111006) || (summon.getSkill() == 33101005) ? 5 : 4);// Summon
-																									// Reaper
-																									// Buff
-																									// -
-																									// Call
-																									// of
-																									// the
-																									// Wild
-			if ((summon.getSkill() == 35121003) && (summon.getOwner().getMap() != null)) {// Giant
-																							// Robot
-																							// SG-88
+			mplew.writeInt(summon.getSkill()); // nSkillID
+			mplew.write(summon.getOwnerLevel() - 1); // nCharLevel
+			mplew.write(summon.getSkillLevel()); // nSLV (skill level)
+			mplew.writePos(summon.getPosition()); // nX, nY
+			mplew.write((summon.getSkill() == 32111006) || (summon.getSkill() == 33101005) ? 5 : 4); // nMoveAction
+			
+			if ((summon.getSkill() == 35121003) && (summon.getOwner().getMap() != null)) { // Giant Robot SG-88
 				mplew.writeShort(summon.getOwner().getMap().getFootholds().findBelow(summon.getPosition()).getId());
 			} else {
-				mplew.writeShort(0);
+				mplew.writeShort(0); // nCurFoothold
 			}
-			mplew.write(summon.getMovementType().getValue());
-			mplew.write(summon.getSummonType());
-			mplew.write(animated ? 1 : 0);
-			mplew.write(1);
-			MapleCharacter chr = summon.getOwner();
-			mplew.write((summon.getSkill() == 4341006) && (chr != null) ? 1 : 0); // Mirrored
-																					// Target
-			if ((summon.getSkill() == 4341006) && (chr != null)) { // Mirrored
-																	// Target
+			
+			mplew.write(summon.getMovementType().getValue()); // nMoveAbility
+			mplew.write(summon.getSummonType()); // nAssistType
+			mplew.write(animated ? 1 : 0); // nEnterType
+			mplew.writeInt(0); // dwMobID
+			mplew.write(1); // bFlyMob
+			mplew.write(0); // bBeforeFirstAttack
+			mplew.writeInt(0); // nLookID
+			mplew.writeInt(0); // nBulletID
+			
+			mplew.write((summon.getSkill() == 4341006) && (chr != null) ? 1 : 0); // Mirrored Target
+			if ((summon.getSkill() == 4341006) && (chr != null)) { // Mirrored Target
 				PacketHelper.addCharLook(mplew, chr, true, false);
 			}
-			if (summon.getSkill() == 35111002) {// Rock 'n Shock
+			if (summon.getSkill() == 35111002) { // Rock 'n Shock
 				mplew.write(0);
 			}
-			if (summon.getSkill() == 42111003) {
-				mplew.write0(8);
+			
+			if (summon.getSkill() == 42111003) { // Kishin Shoukan
+				mplew.writeShort(0);
+				mplew.writeShort(0);
+				mplew.writeShort(0);
+				mplew.writeShort(0);
 			}
+			
+			mplew.write(0); // bJaguarActive
+			mplew.writeInt(0); // tSummonTerm
+			mplew.write(0); // bAttackActive
 
 			return mplew.getPacket();
 		}
@@ -3864,8 +3869,9 @@ public class CField {
 
 			mplew.writeShort(SendPacketOpcode.REMOVE_SUMMON.getValue());
 			mplew.writeInt(ownerId);
-			mplew.writeInt(objId);
-			mplew.write(10);
+			
+			mplew.writeInt(objId); // dwSummonedID
+			mplew.write(10); // nLeaveType
 
 			return mplew.getPacket();
 		}
@@ -3903,7 +3909,7 @@ public class CField {
 
 			return mplew.getPacket();
 		}
-
+		
 		public static byte[] moveSummon(int cid, int oid, Point startPos, List<LifeMovementFragment> moves) {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
@@ -3924,16 +3930,20 @@ public class CField {
 
 			mplew.writeShort(SendPacketOpcode.SUMMON_ATTACK.getValue());
 			mplew.writeInt(cid);
-			mplew.writeInt(summonSkillId);
-			mplew.write(level - 1);
-			mplew.write(animation);
-			mplew.write(allDamage.size());
+			
+			mplew.writeInt(summonSkillId); // pSummoned
+			mplew.write(level - 1); // nCharLevel
+			mplew.write(animation); // bLeft
+			mplew.write(allDamage.size()); // nMobCount
 			for (Pair attackEntry : allDamage) {
 				mplew.writeInt(((Integer) attackEntry.left).intValue());
-				mplew.write(7);
+				mplew.write(7); // nAttackCount
 				mplew.writeInt(((Integer) attackEntry.right).intValue());
 			}
-			mplew.write(darkFlare ? 1 : 0);
+			mplew.write(darkFlare ? 1 : 0); // bCounterAttack
+			mplew.write(0); // bNoAction
+			mplew.writeShort(0); // pMob
+			mplew.writeShort(0); // (tCur + this) delay per attack?
 
 			return mplew.getPacket();
 		}
@@ -3979,11 +3989,12 @@ public class CField {
 
 			mplew.writeShort(SendPacketOpcode.DAMAGE_SUMMON.getValue());
 			mplew.writeInt(cid);
+			
 			mplew.writeInt(summonSkillId);
-			mplew.write(unkByte);
-			mplew.writeInt(damage);
-			mplew.writeInt(monsterIdFrom);
-			mplew.write(0);
+			mplew.write(unkByte); // nAttackIdx
+			mplew.writeInt(damage); // nDamage
+			mplew.writeInt(monsterIdFrom); // dwMobTemplateID
+			mplew.write(0); // bLeft
 
 			return mplew.getPacket();
 		}
