@@ -3815,11 +3815,9 @@ public class CField {
 
 		public static byte[] spawnSummon(MapleSummon summon, boolean animated) {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			MapleCharacter chr = summon.getOwner();
 
 			mplew.writeShort(SendPacketOpcode.SPAWN_SUMMON.getValue());
 			mplew.writeInt(summon.getOwnerId());
-			
 			mplew.writeInt(summon.getObjectId());
 			mplew.writeInt(summon.getSkill()); // nSkillID
 			mplew.write(summon.getOwnerLevel() - 1); // nCharLevel
@@ -3842,15 +3840,13 @@ public class CField {
 			mplew.writeInt(0); // nLookID
 			mplew.writeInt(0); // nBulletID
 			
-			mplew.write((summon.getSkill() == 4341006) && (chr != null) ? 1 : 0); // Mirrored Target
-			if ((summon.getSkill() == 4341006) && (chr != null)) { // Mirrored Target
-				PacketHelper.addCharLook(mplew, chr, true, false);
-			}
-			if (summon.getSkill() == 35111002) { // Rock 'n Shock
-				mplew.write(0);
-			}
-			
-			if (summon.getSkill() == 42111003) { // Kishin Shoukan
+			boolean mirroredTarget = summon.getSkill() == 4341006 && summon.getOwner() != null;
+			mplew.write(mirroredTarget);
+			if (mirroredTarget) {
+				PacketHelper.addCharLook(mplew, summon.getOwner(), true, false);
+			} else if (summon.getSkill() == 35111002) { // Rock 'n Shock
+				mplew.write(0); // boolean for TeslaCoilState
+			} else if (summon.getSkill() == 42111003) { // Kishin Shoukan
 				mplew.writeShort(0);
 				mplew.writeShort(0);
 				mplew.writeShort(0);
