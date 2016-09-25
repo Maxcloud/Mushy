@@ -68,7 +68,7 @@ public class DemonBuff extends AbstractBuffClass {
                 break;
            case 31221004:
                     eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
-                    eff.statups.put(MapleBuffStat.ATTACK_SPEED, +2);
+                    eff.statups.put(MapleBuffStat.IndieBooster, +2);
           //          eff.statups.put(MapleBuffStat.Booster, 2);
                     break;
            case 31111004: // Black-Hearted Strength

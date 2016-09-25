@@ -138,7 +138,7 @@ public class MagicianBuff extends AbstractBuffClass {
             case 2321054: //Righteously Indignant
                 eff.statups.put(MapleBuffStat.ANGEL, 1);
                 eff.statups.put(MapleBuffStat.IgnoreTargetDEF, eff.info.get(MapleStatInfo.ignoreMobpdpR));
-                eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));
+                eff.statups.put(MapleBuffStat.IndieBooster, eff.info.get(MapleStatInfo.indieBooster));
                 eff.statups.put(MapleBuffStat.IndieMAD, eff.info.get(MapleStatInfo.indieMad));
                 eff.statups.put(MapleBuffStat.IncMaxDamage, eff.info.get(MapleStatInfo.indieMaxDamageOver));
                 break;

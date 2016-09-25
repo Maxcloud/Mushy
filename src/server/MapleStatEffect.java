@@ -410,7 +410,7 @@ public class MapleStatEffect implements Serializable {
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieEVA, ret.info.get(MapleStatInfo.indieEva));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieAllStat, ret.info.get(MapleStatInfo.indieAllStat));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndiePADR, ret.info.get(MapleStatInfo.indiePadR));
-            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.ATTACK_SPEED, ret.info.get(MapleStatInfo.indieBooster));
+            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.PVP_ATTACK, ret.info.get(MapleStatInfo.PVPdamage));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.INVINCIBILITY, Integer.valueOf(ret.immortal));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.NO_SLIP, Integer.valueOf(ret.preventslip));
@@ -1259,7 +1259,7 @@ public class MapleStatEffect implements Serializable {
             case 2321054:
             ret.statups.put(MapleBuffStat.ANGEL, 1);
             ret.statups.put(MapleBuffStat.IgnoreTargetDEF, ret.info.get(MapleStatInfo.ignoreMobpdpR));
-            ret.statups.put(MapleBuffStat.ATTACK_SPEED, ret.info.get(MapleStatInfo.indieBooster));
+            ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));
             ret.statups.put(MapleBuffStat.IndieMAD, ret.info.get(MapleStatInfo.indieMad));
             ret.statups.put(MapleBuffStat.IncMaxDamage, ret.info.get(MapleStatInfo.indieMaxDamageOver));
                 break;
@@ -1271,14 +1271,14 @@ public class MapleStatEffect implements Serializable {
             ret.statups.put(MapleBuffStat.Albatross, ret.info.get(MapleStatInfo.x));
             ret.statups.put(MapleBuffStat.IndiePAD, ret.info.get(MapleStatInfo.indiePad));
             ret.statups.put(MapleBuffStat.IncMaxHP, ret.info.get(MapleStatInfo.indieMhp));
-            ret.statups.put(MapleBuffStat.ATTACK_SPEED, ret.info.get(MapleStatInfo.indieBooster));//true?
+            ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));//true?
             ret.statups.put(MapleBuffStat.IndieCr, ret.info.get(MapleStatInfo.indieCr));
                 break;
             case 13120008:
             ret.statups.put(MapleBuffStat.Albatross, ret.info.get(MapleStatInfo.x));
             ret.statups.put(MapleBuffStat.IndiePAD, ret.info.get(MapleStatInfo.indiePad));
             ret.statups.put(MapleBuffStat.IncMaxHP, ret.info.get(MapleStatInfo.indieMhp));
-            ret.statups.put(MapleBuffStat.ATTACK_SPEED, ret.info.get(MapleStatInfo.indieBooster));//true?
+            ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));//true?
             ret.statups.put(MapleBuffStat.IndieCr, ret.info.get(MapleStatInfo.indieCr));
                 break;
             case 4311009:
@@ -1415,53 +1415,50 @@ public class MapleStatEffect implements Serializable {
             case 61111004:
              ret.statups.put(MapleBuffStat.IndieDamR, ret.info.get(MapleStatInfo.indieDamR));
              break;
-            case 61111008: //Kaiser morph
-            case 61120008: //Kaiser morph
-            case 61121053: //Kaiser morph no gauge
+            case 61111008: // final form
+            case 61120008: // final form
+            case 61121053: // final trance
                 ret.statups.put(MapleBuffStat.Speed, -(ret.info.get(MapleStatInfo.speed)));
                 ret.statups.put(MapleBuffStat.Morph, -(ret.info.get(MapleStatInfo.morph)));
                 ret.statups.put(MapleBuffStat.CriticalBuff, -(ret.info.get(MapleStatInfo.cr)));
                 ret.statups.put(MapleBuffStat.IndieDamR, ret.info.get(MapleStatInfo.indieDamR));
-                ret.statups.put(MapleBuffStat.ATTACK_SPEED, ret.info.get(MapleStatInfo.indieBooster));
+                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));
                 break;
-            case 61121054: //Kaiser's Majesty, #Novak ftw
+            case 61121054: // kaiser's majesty
                 ret.statups.clear();
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY3, ret.info.get(MapleStatInfo.x)); 
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY4, ret.info.get(MapleStatInfo.x));
                 ret.statups.put(MapleBuffStat.IndiePAD, Integer.MAX_VALUE);
-                ret.statups.put(MapleBuffStat.ATTACK_SPEED, ret.info.get(MapleStatInfo.indieBooster));
+                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));
                 break;
-            case 4341054:
+            case 4341054: // blade clone
                 ret.statups.put(MapleBuffStat.ARIANT_COSS_IMU2, Integer.valueOf(1));
                 ret.overTime = true;
                 break;
-             case 4341052:
+             case 4341052: // asura's anger
                 ret.statups.put(MapleBuffStat.Asura, ret.info.get(MapleStatInfo.x));
                 break;
-            case 35120014:
+            case 35120014: // double down
                 ret.statups.put(MapleBuffStat.Dice, Integer.valueOf(0));
                 break;
-            case 80001264:
+            case 80001264: // warring states manifesto
                  ret.info.put(MapleStatInfo.cooltime, Integer.valueOf(180000));
                 break;
-            case 4121054:
+            case 4121054: // bleed dart
                 ret.statups.put(MapleBuffStat.Speed, Integer.valueOf(1));
                 break;
-            case 31211004: // Diabolic Recovery
-            ret.info.put(MapleStatInfo.time, Integer.valueOf(180000));    
-            ret.statups.put(MapleBuffStat.IndieMHPR, ret.info.get(MapleStatInfo.indieMhpR));
-            ret.statups.put(MapleBuffStat.DiabolikRecovery, ret.info.get(MapleStatInfo.x));
-        //    ret.statups.put(MapleBuffStat.Regen, ret.info.get(MapleStatInfo.x));
-            break;
-            case 31221004:
+            case 31211004: // diabolic recovery
+	            ret.info.put(MapleStatInfo.time, Integer.valueOf(180000));    
+	            ret.statups.put(MapleBuffStat.IndieMHPR, ret.info.get(MapleStatInfo.indieMhpR));
+	            ret.statups.put(MapleBuffStat.DiabolikRecovery, ret.info.get(MapleStatInfo.x));
+	            break;
+            case 31221004: // overwhelming power
                 ret.statups.put(MapleBuffStat.IndieDamR, ret.info.get(MapleStatInfo.indieDamR));
-                ret.statups.put(MapleBuffStat.ATTACK_SPEED, 2);
-              //  ret.statups.put(MapleBuffStat.Booster, 2);
+                ret.statups.put(MapleBuffStat.IndieBooster, 2);
                 break;
-                
              case 36101003:
                  ret.statups.put(MapleBuffStat.IndieMMPR, ret.info.get(MapleStatInfo.indieMmpR));
-                 ret.statups.put(MapleBuffStat.HP_R, ret.info.get(MapleStatInfo.indieMhpR));
+                 ret.statups.put(MapleBuffStat.IndieMHPR, ret.info.get(MapleStatInfo.indieMhpR));
                  ret.info.put(MapleStatInfo.time, Integer.valueOf(180000));
                  break;
             case 4341000:
@@ -1524,7 +1521,7 @@ public class MapleStatEffect implements Serializable {
                 ret.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND2, ret.info.get(MapleStatInfo.x));
                 ret.statups.put(MapleBuffStat.IllusionStep, ret.info.get(MapleStatInfo.y));
                 ret.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND1, ret.info.get(MapleStatInfo.prop));
-                ret.statups.put(MapleBuffStat.HP_R, ret.info.get(MapleStatInfo.indieMhpR));
+                ret.statups.put(MapleBuffStat.IndieMHPR, ret.info.get(MapleStatInfo.indieMhpR));
                          break;
                 case 31101003:
                     ret.statups.put(MapleBuffStat.GUARD, ret.info.get(MapleStatInfo.y));
