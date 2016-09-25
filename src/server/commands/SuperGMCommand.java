@@ -599,25 +599,7 @@ public class SuperGMCommand {
             return 1;
         }
     }
-
-    public static class Vac extends CommandExecute {
-
-        @Override
-        public int execute(MapleClient c, String[] splitted) {
-            if (!c.getPlayer().isHidden()) {
-                c.getPlayer().dropMessage(6, "You can only vac monsters while in hide.");
-                return 0;
-            } else {
-                for (final MapleMapObject mmo : c.getPlayer().getMap().getAllMonster()) {
-                    final MapleMonster monster = (MapleMonster) mmo;
-                    c.getPlayer().getMap().broadcastMessage(MobPacket.moveMonster(false, -1, 0, monster.getObjectId(), monster.getTruePosition(), c.getPlayer().getLastRes()));
-                    monster.setPosition(c.getPlayer().getPosition());
-                }
-            }
-            return 1;
-        }
-    }
-
+    
     public static class GiveEP extends CommandExecute {
 
         @Override
