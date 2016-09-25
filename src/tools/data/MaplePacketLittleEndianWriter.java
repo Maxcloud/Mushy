@@ -40,21 +40,6 @@ public class MaplePacketLittleEndianWriter {
      * @return A <code>MaplePacket</code> with the bytes in this stream.
      */
     public final byte[] getPacket() {
-        /*Adding a hook here to allow us to see which packets are being sent to the client from the server.
-        * We already have the functionality for Receive, just need this for send. This will alleviate the need for MapleShark to see packtes going in/out.
-        */
-        LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream(baos.toByteArray().clone()));
-        if(lea.available() >= 2){
-            short opNum = lea.readShort();
-            SendPacketOpcode op = SendPacketOpcode.getByValue(opNum);
-            if(op != SendPacketOpcode.NPC_ACTION && op != SendPacketOpcode.MOVE_MONSTER_RESPONSE && op != SendPacketOpcode.MOVE_MONSTER && op != SendPacketOpcode.UPDATE_STATS && op != SendPacketOpcode.AUTH_RESPONSE){
-                System.out.println(" [S]Header: " + (op == null ? "[NULL] " + opNum : op.toString()) + " " + lea.toString(false));
-            }
-            //System.out.println(" [S]Header: " + (op == null ? "[NULL] " + opNum : op.toString()) + " " + lea.toString(false));
-        } else {
-            //System.out.println("[S]Headerless: " + lea.toString(false));
-        }
-        
         return baos.toByteArray();
     }
 
