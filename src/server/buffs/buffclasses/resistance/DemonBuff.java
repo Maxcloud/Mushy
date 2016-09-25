@@ -49,7 +49,7 @@ public class DemonBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x) * 2);
                 break;
            case 31011001: // Overload Release
-                eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
+                eff.statups.put(MapleBuffStat.IndieMHPR, eff.info.get(MapleStatInfo.indieMhpR));
                 break;
            case 31101003: // Vengeance
                 eff.statups.put(MapleBuffStat.PowerGuard, eff.info.get(MapleStatInfo.y));
@@ -64,7 +64,7 @@ public class DemonBuff extends AbstractBuffClass {
                 break;
            case 31211004: // Diabolic Recovery
                 eff.statups.put(MapleBuffStat.DiabolikRecovery, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
+                eff.statups.put(MapleBuffStat.IndieMHPR, eff.info.get(MapleStatInfo.indieMhpR));
                 break;
            case 31221004:
                     eff.statups.put(MapleBuffStat.IndieDamR, eff.info.get(MapleStatInfo.indieDamR));
@@ -90,7 +90,7 @@ public class DemonBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.ShadowPartner, eff.info.get(MapleStatInfo.x));
                 break;
            case 31221054:
-               eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
+               eff.statups.put(MapleBuffStat.IndieMHPR, eff.info.get(MapleStatInfo.indieMhpR));
             default:
            //     System.out.println("Unhandled Demon Buff: " + skill);
                 break;

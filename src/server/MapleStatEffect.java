@@ -1449,7 +1449,7 @@ public class MapleStatEffect implements Serializable {
                 break;
             case 31211004: // Diabolic Recovery
             ret.info.put(MapleStatInfo.time, Integer.valueOf(180000));    
-            ret.statups.put(MapleBuffStat.HP_R, ret.info.get(MapleStatInfo.indieMhpR));
+            ret.statups.put(MapleBuffStat.IndieMHPR, ret.info.get(MapleStatInfo.indieMhpR));
             ret.statups.put(MapleBuffStat.DiabolikRecovery, ret.info.get(MapleStatInfo.x));
         //    ret.statups.put(MapleBuffStat.Regen, ret.info.get(MapleStatInfo.x));
             break;

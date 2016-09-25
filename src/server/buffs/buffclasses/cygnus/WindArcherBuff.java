@@ -60,7 +60,7 @@ public class WindArcherBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND2, eff.info.get(MapleStatInfo.x));
                 eff.statups.put(MapleBuffStat.IllusionStep, eff.info.get(MapleStatInfo.y));
                 eff.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND1, eff.info.get(MapleStatInfo.prop));
-                eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
+                eff.statups.put(MapleBuffStat.IndieMHPR, eff.info.get(MapleStatInfo.indieMhpR));
                 break;
             case 13121005:// Sharp Eyes
                 eff.statups.put(MapleBuffStat.SharpEyes, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));
