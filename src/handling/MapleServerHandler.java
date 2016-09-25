@@ -230,15 +230,6 @@ public class MapleServerHandler extends IoHandlerAdapter {
             System.out.println("[Recv]\t" + header.name() + tab + "|\t" + header.getValue() + "\t|\t" + HexTool.getOpcodeToString(header.getValue()));
             FileoutputUtil.log("PacketLog.txt", "\r\n\r\n[Recv]\t" + header.name() + tab + "|\t" + header.getValue() + "\t|\t" + HexTool.getOpcodeToString(header.getValue()) + "\r\n\r\n");
         }*/	
-	    
-	/*The below snippet allows us to print any receive packets, either to ensure they are correct, or to see if the data has changed. 
-	 * We can filter any spamheaders as needed. It's a little clunky, but this will alleviate the need for MapleShark, etc. */
-	if (!header.toString().contains("NPC_ACTION") && !header.toString().contains("CANCEL_DEBUFF") && !header.toString().contains("MOB_DISTANCE") && !header.toString().contains("MOVE_PLAYER") && 
-                !header.toString().contains("HEAL_OVER_TIME") && !header.toString().contains("AUTH_REQUEST") && !header.toString().contains("MOVE_LIFE")) {
-            if(c.getPlayer() != null /*&& (c.getPlayer().getName().contains("CHARNAME"))*/){
-                System.out.println(c.getPlayer().getName() + "->" + "[R]Header: " + header.toString() + " " + ( " + header.getValue() + " ) + lea.toString());
-            }
-        }	
         switch (header) {
           /*case LOGIN_REDIRECTOR:
                     client_username = slea.readMapleAsciiString();
