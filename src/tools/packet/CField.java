@@ -2589,30 +2589,35 @@ public class CField {
 	}
 
 	public static byte[] spawnMist(MapleMist mist) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        mplew.writeShort(SendPacketOpcode.SPAWN_MIST.getValue());
+        mplew.writeInt(mist.getObjectId());
 
-		mplew.writeShort(SendPacketOpcode.SPAWN_MIST.getValue());
-		mplew.writeInt(mist.getObjectId());
-
-		// mplew.write(mist.isMobMist() ? 0 : mist.isPoisonMist());
-		mplew.write(0);
-		mplew.writeInt(mist.getOwnerId());
-		if (mist.getMobSkill() == null) {
-			mplew.writeInt(mist.getSourceSkill().getId());
-		} else {
-			mplew.writeInt(mist.getMobSkill().getSkillId());
-		}
-		mplew.write(mist.getSkillLevel());
-		mplew.writeShort(mist.getSkillDelay());
-		mplew.writeRect(mist.getBox());
-		mplew.writeInt(mist.isShelter() ? 1 : 0);
-		mplew.writeInt(0);
-		mplew.writePos(mist.getPosition());
-		mplew.writeInt(0);
-		mplew.writeInt(0);
-
-		return mplew.getPacket();
-	}
+        //mplew.write(mist.isMobMist() ? 0 : mist.isPoisonMist());
+        mplew.write(0);
+        mplew.writeInt(mist.getOwnerId());
+        if (mist.getMobSkill() == null) {
+            mplew.writeInt(mist.getSourceSkill().getId());
+        } else {
+            mplew.writeInt(mist.getMobSkill().getSkillId());
+        }
+        mplew.write(mist.getSkillLevel());
+        mplew.writeShort(mist.getSkillDelay());
+        mplew.writeRect(mist.getBox());
+        mplew.writeInt(0); 
+        mplew.writeInt(mist.isShelter() ? 1 : 0);
+        mplew.writePos(mist.getPosition());
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        mplew.write(0);
+        mplew.writeInt(0);
+        if (Skill.isFlipAffectedAreaSkill(mist.getSourceSkill().getId()))
+            mplew.write(0);
+        mplew.writeInt(0);
+        
+        return mplew.getPacket();
+    }
 
 	public static byte[] removeMist(int oid, boolean eruption) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -4658,4 +4663,66 @@ public class CField {
 
 		return mplew.getPacket();
 	}
+	
+	public static byte[] finalAttack(int skill, int finalattack, int wepType, int oid) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        mplew.writeShort(SendPacketOpcode.FINAL_ATTACK.getValue()); 
+        mplew.writeInt(skill);
+        mplew.writeInt(finalattack);
+        mplew.writeInt(wepType); 
+        mplew.writeInt(0); //delay
+        mplew.writeInt(oid);
+        mplew.writeInt(0); 
+        if (finalattack == 101000102) {
+            mplew.write(0); //bLeft
+            mplew.writeShort(0);
+            mplew.writeShort(0);
+        }
+        return mplew.getPacket();
+    }
+    
+    public static byte[] swordEnergy(short energy) {
+        
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        mplew.writeShort(SendPacketOpcode.SWORD_ENERGY.getValue());
+        mplew.writeShort(energy);
+        
+        return mplew.getPacket();
+    }
+    
+    public static byte[] ignition(int skillid, int mobid, Point pos) {
+        
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        mplew.writeShort(SendPacketOpcode.IGNITION.getValue());
+        mplew.writeInt(skillid);
+        mplew.writeInt(pos.x);
+        mplew.writeInt(pos.y);
+        mplew.writeInt(mobid);
+        mplew.writeInt(5);// unk
+        
+        return mplew.getPacket();
+    }
+    
+    public static byte[] openURL(String url) {
+        
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        mplew.writeShort(SendPacketOpcode.OPEN_URL.getValue());
+        mplew.write(1); // if 0, open set nexon url
+        mplew.writeMapleAsciiString(url);
+        
+        return mplew.getPacket();
+    }
+    
+    public static byte[] elementFlame() {
+        
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        mplew.writeShort(SendPacketOpcode.ELEMENT_FLAME.getValue());
+        
+        return mplew.getPacket();
+    }
 }
