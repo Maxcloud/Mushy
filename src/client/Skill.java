@@ -892,7 +892,38 @@ public class Skill implements Comparator<Skill> {
         int jobId = id / 10000;
         return jobId == 900 || jobId == 800 || jobId == 9000 || jobId == 9200 || jobId == 9201 || jobId == 9202 || jobId == 9203 || jobId == 9204;
     }
+	
+    public static boolean isUserCloneSummonableSkill(int nSkillID) {
+        switch (nSkillID) {
+            case 14121002:
+            case 14121001:
+            case 14111020:
+            case 14111021:
+            case 14101021:
+            case 14101020:
+            case 14001020:
+            case 14111023:
+            case 14111022:
+                return true;
+            default:
+                return false;
 
+        }
+    }
+	
+    public static boolean isFlipAffectedAreaSkill(int nSkillID) {
+        switch (nSkillID) {
+            case 131001207:
+            case 131001107:
+            case 4121015:
+            case 51120057:
+            case 33111013:
+                return true;
+            default:
+                return false;
+        }
+    }
+	
     @Override
     public int compare(Skill o1, Skill o2) {
         return (Integer.valueOf(o1.getId()).compareTo(Integer.valueOf(o2.getId())));
