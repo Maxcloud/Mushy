@@ -53,7 +53,7 @@ public class WindArcherBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.Albatross, eff.info.get(MapleStatInfo.x));
                 eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
                 eff.statups.put(MapleBuffStat.IncMaxHP, eff.info.get(MapleStatInfo.indieMhp));
-                eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));//true?
+                eff.statups.put(MapleBuffStat.IndieBooster, eff.info.get(MapleStatInfo.indieBooster));
                 eff.statups.put(MapleBuffStat.IndieCr, eff.info.get(MapleStatInfo.indieCr));
                 break;
             case 13121004:// Touch of the Wind

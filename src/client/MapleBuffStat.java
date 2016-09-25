@@ -542,8 +542,6 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     Dusk_Guard(0x2000, 6),
     
     // 7th
-    HP_R(0x8, 7),
-    ATTACK_SPEED(0x100, 7),
     KILL_COUNT(0x800000, 7),
     
     // 8th

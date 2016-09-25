@@ -58,7 +58,7 @@ public class ZeroBuff extends AbstractBuffClass {
                 break;
             case 100001264: // Divine Speed
                 eff.statups.put(MapleBuffStat.DIVINE_SPEED_AURA, 1);
-                eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));
+                eff.statups.put(MapleBuffStat.IndieBooster, eff.info.get(MapleStatInfo.indieBooster));
                 eff.statups.put(MapleBuffStat.IndieACC, eff.info.get(MapleStatInfo.indieAcc));
                 eff.statups.put(MapleBuffStat.IndieEVA, eff.info.get(MapleStatInfo.indieEva));
                 eff.statups.put(MapleBuffStat.IndieJump, eff.info.get(MapleStatInfo.indieJump));
