@@ -643,4 +643,14 @@ public enum SendPacketOpcode implements IntValueHolder {
 		}
 		return "UNKNOWN";
 	}
+	
+	//getByValue allows us to retrieve a SendPacketOpcode object with nothing but a header. 
+	public static SendPacketOpcode getByValue(int v){
+        for(SendPacketOpcode op : SendPacketOpcode.values()){
+            if(op.getValue() == v){
+                return op;
+            }
+        }
+        return null;
+    }
 }
