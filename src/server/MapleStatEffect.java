@@ -1788,6 +1788,11 @@ public class MapleStatEffect implements Serializable {
             }
             applyto.gainXenonSurplus((short) -powerchange);
         }
+	if (getPPChange() != 0) {
+            if (applyfrom.getPsychicPoint() < -getPPChange())
+                return false;
+            applyfrom.gainPsychicPoint(getPPChange());
+        }
         if (expinc != 0) {
             applyto.gainExp(expinc, true, true, false);
             applyto.getClient().getSession().write(EffectPacket.showForeignEffect(20));
@@ -4574,5 +4579,9 @@ private boolean isSpiritClaw() {
             }
         }
         return sourceid == 4221013;
+    }
+	
+    public final int getPPChange() {
+        return info.get(MapleStatInfo.ppRecovery) - info.get(MapleStatInfo.ppCon);
     }
 }
