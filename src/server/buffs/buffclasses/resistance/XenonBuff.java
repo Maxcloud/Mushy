@@ -53,9 +53,9 @@ public class XenonBuff extends AbstractBuffClass {
                 break;
             case 36101003: // Efficiency Streamline
                eff.statups.put(MapleBuffStat.IndieMMPR, eff.info.get(MapleStatInfo.indieMmpR));
-               eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
-                     eff.info.put(MapleStatInfo.time, Integer.valueOf(180000));
-                     break; 
+               eff.statups.put(MapleBuffStat.IndieMHPR, eff.info.get(MapleStatInfo.indieMhpR));
+               eff.info.put(MapleStatInfo.time, Integer.valueOf(180000));
+                break; 
             case 36101004: // Xenon Booster
                 eff.statups.put(MapleBuffStat.Booster, eff.info.get(MapleStatInfo.x));
                 break;
@@ -65,9 +65,6 @@ public class XenonBuff extends AbstractBuffClass {
             case 36111008: // Emergency Resupply
                 eff.statups.put(MapleBuffStat.SurplusSupply, eff.info.get(MapleStatInfo.x));
                 break;
-       //    case 36121054:
-       //      eff.statups.put(MapleBuffStat.SurplusSupply, Integer.valueOf(16));
-        //     break;
             case 36111003: // Hybrid Defenses
                 eff.statups.put(MapleBuffStat.HYBRID_DEFENSES, eff.info.get(MapleStatInfo.prop));
                 eff.statups.put(MapleBuffStat.DamAbsorbShield, eff.info.get(MapleStatInfo.z));

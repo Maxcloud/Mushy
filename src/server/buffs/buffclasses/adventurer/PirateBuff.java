@@ -135,7 +135,7 @@ public class PirateBuff extends AbstractBuffClass {
                 //TODO
                 break;
             case 5721054: //Bionic Maximizer
-                eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.x));
+                eff.statups.put(MapleBuffStat.IndieMHPR, eff.info.get(MapleStatInfo.x));
                 eff.statups.put(MapleBuffStat.STATUS_RESIST_TWO, eff.info.get(MapleStatInfo.v));
                 eff.statups.put(MapleBuffStat.ELEMENT_RESIST_TWO, eff.info.get(MapleStatInfo.w));
                 eff.statups.put(MapleBuffStat.DAMAGE_RESIST, eff.info.get(MapleStatInfo.y));

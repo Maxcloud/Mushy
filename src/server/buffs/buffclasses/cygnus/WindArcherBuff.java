@@ -53,14 +53,14 @@ public class WindArcherBuff extends AbstractBuffClass {
                 eff.statups.put(MapleBuffStat.Albatross, eff.info.get(MapleStatInfo.x));
                 eff.statups.put(MapleBuffStat.IndiePAD, eff.info.get(MapleStatInfo.indiePad));
                 eff.statups.put(MapleBuffStat.IncMaxHP, eff.info.get(MapleStatInfo.indieMhp));
-                eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));//true?
+                eff.statups.put(MapleBuffStat.IndieBooster, eff.info.get(MapleStatInfo.indieBooster));
                 eff.statups.put(MapleBuffStat.IndieCr, eff.info.get(MapleStatInfo.indieCr));
                 break;
             case 13121004:// Touch of the Wind
                 eff.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND2, eff.info.get(MapleStatInfo.x));
                 eff.statups.put(MapleBuffStat.IllusionStep, eff.info.get(MapleStatInfo.y));
                 eff.statups.put(MapleBuffStat.TOUCH_OF_THE_WIND1, eff.info.get(MapleStatInfo.prop));
-                eff.statups.put(MapleBuffStat.HP_R, eff.info.get(MapleStatInfo.indieMhpR));
+                eff.statups.put(MapleBuffStat.IndieMHPR, eff.info.get(MapleStatInfo.indieMhpR));
                 break;
             case 13121005:// Sharp Eyes
                 eff.statups.put(MapleBuffStat.SharpEyes, (eff.info.get(MapleStatInfo.x) << 8) + eff.info.get(MapleStatInfo.criticaldamageMax));

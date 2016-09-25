@@ -57,8 +57,7 @@ public class WildHunterBuff extends AbstractBuffClass {
             case 33111007: // Feline Berserk
                 eff.statups.put(MapleBuffStat.Speed, eff.info.get(MapleStatInfo.z));
                 eff.statups.put(MapleBuffStat.BeastFormDamageUp, eff.info.get(MapleStatInfo.y));
-                eff.statups.put(MapleBuffStat.IndieBooster, eff.info.get(MapleStatInfo.x));
-                eff.statups.put(MapleBuffStat.ATTACK_SPEED, eff.info.get(MapleStatInfo.indieBooster));
+                eff.statups.put(MapleBuffStat.IndieBooster, eff.info.get(MapleStatInfo.indieBooster));
                 break;
             case 33111009: // Concentrate
                 eff.statups.put(MapleBuffStat.EPAD, eff.info.get(MapleStatInfo.epad));
