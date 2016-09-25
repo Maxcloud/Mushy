@@ -1429,7 +1429,7 @@ public class MapleStatEffect implements Serializable {
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY3, ret.info.get(MapleStatInfo.x)); 
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY4, ret.info.get(MapleStatInfo.x));
                 ret.statups.put(MapleBuffStat.IndiePAD, Integer.MAX_VALUE);
-                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));
+                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));	
                 break;
             case 4341054: // blade clone
                 ret.statups.put(MapleBuffStat.ARIANT_COSS_IMU2, Integer.valueOf(1));
@@ -1789,9 +1789,10 @@ public class MapleStatEffect implements Serializable {
             applyto.gainXenonSurplus((short) -powerchange);
         }
 	if (getPPChange() != 0) {
-            if (applyfrom.getPsychicPoint() < -getPPChange())
+			// TODO: Neptune forgot to add these functions.
+            /*if (applyfrom.getPsychicPoint() < -getPPChange())
                 return false;
-            applyfrom.gainPsychicPoint(getPPChange());
+            applyfrom.gainPsychicPoint(getPPChange());*/
         }
         if (expinc != 0) {
             applyto.gainExp(expinc, true, true, false);

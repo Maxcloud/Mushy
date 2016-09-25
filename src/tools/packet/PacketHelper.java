@@ -149,7 +149,7 @@ public class PacketHelper {
             mplew.writeInt(KoreanDateUtil.getQuestTimestamp(q.getCompletionTime()));
         }
     }
-
+ 
     public static void addSkillInfo(MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
         mplew.write(1);
         mplew.writeShort(0);
@@ -1064,9 +1064,7 @@ public class PacketHelper {
         }
         
         if ((mask & 0x200000) != 0) {
-            if ((chr.getJob() >= 3300) && (chr.getJob() <= 3312)) {
-                addJaguarInfo(mplew, chr);
-            }
+            addJaguarInfo(mplew, chr);
         }
         
         // 0x800
@@ -1511,6 +1509,9 @@ public class PacketHelper {
     }
 
     public static void addJaguarInfo(MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
+    	if (!(chr.getJob() >= 3300 && chr.getJob() <= 3312))
+    		return;
+    	
         mplew.write(chr.getIntNoRecord(GameConstants.JAGUAR));
         for (int i = 0; i < 5; i++) {
             mplew.writeInt(0);

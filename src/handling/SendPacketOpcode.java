@@ -325,6 +325,7 @@ public enum SendPacketOpcode implements IntValueHolder {
 	GAME_MESSAGE,
 	BUFF_ZONE_EFFECT,
 	TIME_BOMB_ATTACK,
+	IGNITION,
 	FOLLOW_MOVE,
 	FOLLOW_MSG,
 	HARVEST_MESSAGE,
@@ -336,9 +337,12 @@ public enum SendPacketOpcode implements IntValueHolder {
 	PLAY_MOVIE,
 	PHANTOM_CARD,
 	LUMINOUS_COMBO,
+	FINAL_ATTACK,
 	MOVE_SCREEN_X,
 	MOVE_SCREEN_DOWN,
 	SEALED_BOX,
+	OPEN_URL,
+	ELEMENT_FLAME,
 	COOLDOWN,
 	R_MESOBAG_SUCCESS,
 	R_MESOBAG_FAILURE,
@@ -347,6 +351,7 @@ public enum SendPacketOpcode implements IntValueHolder {
 	REGISTER_FAMILIAR,
 	FAMILIAR_MESSAGE,
 	CREATE_ULTIMATE,
+	SWORD_ENERGY,
 
 	// CSummonedPool::OnPacket
 	SPAWN_SUMMON,
