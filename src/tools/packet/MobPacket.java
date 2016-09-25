@@ -232,13 +232,13 @@ public class MobPacket {
 		return mplew.getPacket();
 	}
 
-	public static byte[] moveMonster(boolean useskill, int skill, int unk, int oid, Point xy, List<LifeMovementFragment> moves) {
+	public static byte[] moveMonster(byte useskill, int skill, int unk, int oid, Point xy, List<LifeMovementFragment> moves) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 		mplew.writeShort(SendPacketOpcode.MOVE_MONSTER.getValue());
 		mplew.writeInt(oid);
 		
-		mplew.write(useskill ? 1 : 0);
+		mplew.write(useskill);
 		mplew.write(skill);
 		mplew.writeInt(unk);
 		
@@ -487,19 +487,14 @@ public class MobPacket {
 		return spawnMonster(life, effect, 0, azwan);
 	}
 
-	public static byte[] moveMonsterResponse(int objectid, short moveid, int currentMp, boolean useSkills, int skillId,
-			int skillLevel) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
 		mplew.writeShort(SendPacketOpcode.MOVE_MONSTER_RESPONSE.getValue());
 		mplew.writeInt(objectid);
-		
 		mplew.writeShort(moveid);
 		mplew.write(useSkills ? 1 : 0);
-		mplew.writeInt(currentMp); // ...
-		mplew.writeInt(skillId); // ...
+		mplew.writeInt(currentMp); 
+		mplew.writeInt(skillId);
 		mplew.write(skillLevel);
-		mplew.writeInt(0); // // attack id
 		return mplew.getPacket();
 	}
 
