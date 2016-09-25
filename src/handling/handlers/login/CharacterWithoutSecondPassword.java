@@ -28,7 +28,7 @@ public class CharacterWithoutSecondPassword {
             c.getSession().close();
             return;
         }
-        lea.skip(1); //prevents the ArrayIndexArrayOutOfBounds exception. Don't know what it is yet.
+        //lea.skip(1); //prevents the ArrayIndexArrayOutOfBounds exception. Don't know what it is yet.
         c.updateMacs(lea.readMapleAsciiString());
         
         lea.readMapleAsciiString();
