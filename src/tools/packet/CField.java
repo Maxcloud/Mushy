@@ -3734,12 +3734,8 @@ public class CField {
 			mplew.writeShort(0);
 			mplew.writeInt(0);
 			mplew.writeLong(meso);
-			mplew.writeShort(0);
-			mplew.write((byte) items.size());
-			for (Item item : items) {
-				PacketHelper.addItemInfo(mplew, item);
-			}
-			mplew.write0(2);// 4
+			PacketHelper.addStorageItems(mplew, items);
+			mplew.write0(4);// Might be too much
 
 			return mplew.getPacket();
 		}

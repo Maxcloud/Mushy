@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SimpleTimeZone;
+import com.google.common.collect.ArrayListMultimap;
 
 import client.InnerSkillValueHolder;
 import client.MapleBuffStat;
@@ -1636,5 +1637,18 @@ public class PacketHelper {
         for (int i = mask.length; i >= 1; i--) {
             mplew.writeInt(mask[(i - 1)]);
         }
+    }
+	
+    public static void addStorageItems(MaplePacketLittleEndianWriter mplew, Collection<Item> items) {
+            ArrayListMultimap<Byte, Item> itemmap = ArrayListMultimap.create();
+            for (Item item : items) {
+                itemmap.put((byte) Math.floor(item.getItemId() / 1000000), item);
+            }
+            for (byte i = 1; i <= 5; i++) {
+                mplew.write(itemmap.get(i).size());
+                if (!itemmap.get(i).isEmpty()) 
+                    for (Item item : itemmap.get(i))
+                        addItemInfo(mplew, item);
+            }
     }
 }
