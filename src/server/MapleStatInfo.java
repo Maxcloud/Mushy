@@ -193,6 +193,8 @@ public enum MapleStatInfo {
 //    rb2(0), //Tempest has this..
     int_(0, true),
     luk(0);
+    ppRecovery(0),
+    ppCon(0),
     private final int def;
     private final boolean special;
    
