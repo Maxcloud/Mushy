@@ -744,7 +744,23 @@ public class GMCommand {
             return 1;
         }
     }
-
+    
+    public static class Invincible extends CommandExecute {
+        
+        @Override
+        public int execute(MapleClient c, String[] splitted) {
+            MapleCharacter player = c.getPlayer();
+            if (player.isInvincible()) {
+                player.setInvincible(false);
+                player.dropMessage(6, "Invincibility deactivated.");
+            } else {
+                player.setInvincible(true);
+                player.dropMessage(6, "Invincibility activated.");
+            }
+            return 1;
+        }
+    }
+    
     public static class EquipInfo extends CommandExecute {
         @Override
         public int execute(MapleClient c, String[] splitted) {
