@@ -169,14 +169,14 @@ public class MapleReactor extends MapleMapObject {
                     if ((stats.getType(state) < 100 || stats.getType(state) == 999) && delay > 0) { //reactor broken
                         map.destroyReactor(getObjectId());
                     } else { //item-triggered on final step
-                        map.broadcastMessage(CField.triggerReactor(this, stance));
+                        map.broadcastMessage(CField.triggerReactor(this, stance, c.getPlayer().getId()));
                     }
                     //if (rid > 200011) {
                     ReactorScriptManager.getInstance().act(c, this);
                     //}
                 } else { //reactor not broken yet
                     boolean done = false;
-                    map.broadcastMessage(CField.triggerReactor(this, stance)); //magatia is weird cause full beaker can be activated by gm hat o.o
+                    map.broadcastMessage(CField.triggerReactor(this, stance, c.getPlayer().getId())); //magatia is weird cause full beaker can be activated by gm hat o.o
                     if (state == stats.getNextState(state) || rid == 2618000 || rid == 2309000) { //current state = next state, looping reactor
                         if (rid > 200011) {
                             ReactorScriptManager.getInstance().act(c, this);

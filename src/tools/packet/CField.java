@@ -2702,16 +2702,17 @@ public class CField {
 		return mplew.getPacket();
 	}
 
-	public static byte[] triggerReactor(MapleReactor reactor, int stance) {
+	public static byte[] triggerReactor(MapleReactor reactor, short stance, int dwOwnerID) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 		mplew.writeShort(SendPacketOpcode.REACTOR_HIT.getValue());
-		mplew.writeInt(reactor.getObjectId());
-		mplew.write(reactor.getState());
-		mplew.writePos(reactor.getTruePosition());
-		mplew.writeInt(stance);
-		mplew.write(0);
-		mplew.write(4);
+                mplew.writeInt(reactor.getObjectId()); //m_mReactor
+                mplew.write(reactor.getState()); //nState
+                mplew.writePos(reactor.getTruePosition()); //ptPos.x, ptPos.y
+                mplew.writeShort(stance); //Should be short, KMST IDA && 176.1 IDA
+                mplew.write(0); //nProperEventIdx
+                mplew.write(4); //tStateEnd (time + 100 * value)
+                mplew.writeInt(dwOwnerID); //KMST && 176.1 IDA stated another Int here, dwOwnerID. 
 		return mplew.getPacket();
 	}
 
