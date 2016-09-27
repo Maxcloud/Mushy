@@ -3599,19 +3599,17 @@ public class CField {
 		public static byte[] getSelfTalkText(String text) {
 			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 			mplew.writeShort(SendPacketOpcode.NPC_TALK.getValue());
-			mplew.write(3);
-			mplew.writeInt(0);
-			mplew.write(1);
-			mplew.write(0);
-			mplew.write(0);
-			
-			mplew.write(0);
-			mplew.writeShort(0);
-			
-			mplew.write(17);
+			mplew.write(3); // nSpeakerTypeID
+			mplew.writeInt(0); //nSpeakerTemplateID
+			mplew.write(1); 
+                        mplew.writeInt(0);
+			mplew.write(0);//nMsgType
+			mplew.write(0x11); //bParam (0x11 is NO_ESC [0x1] and SMP_NPC_REPLACED_BY_USER_LEFT [0x10])
+			mplew.write(0); //eColor
 			mplew.writeMapleAsciiString(text);
-			mplew.write(0);
-			mplew.write(1);
+			mplew.write(0);//bPrev
+			mplew.write(1); //bNext
+                        mplew.writeInt(0); //tWait
 			return mplew.getPacket();
 		}
 
