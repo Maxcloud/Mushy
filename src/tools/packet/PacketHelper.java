@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SimpleTimeZone;
+
 import com.google.common.collect.ArrayListMultimap;
 
 import client.InnerSkillValueHolder;
@@ -66,6 +67,8 @@ import tools.Pair;
 import tools.StringUtil;
 import tools.Triple;
 import tools.data.PacketWriter;
+import tools.packet.provider.CharacterInfo;
+
 
 public class PacketHelper {
 
@@ -974,8 +977,8 @@ public class PacketHelper {
     }
 
     public static void addCharacterInfo(PacketWriter pw, MapleCharacter chr) {
-        long mask = 0xFF_FF_FF_FF_FF_FF_FF_FFL;
-        pw.writeLong(mask);
+        long pMask = 0xFF_FF_FF_FF_FF_FF_FF_FFL;
+        pw.writeLong(pMask);
 
         // combat orders
         pw.write(0);
@@ -994,7 +997,7 @@ public class PacketHelper {
         // ?
         pw.write(0);
         
-        if ((mask & 1) != 0) {
+        if ((pMask & CharacterInfo.STATS.getValue()) != 0) {
             addCharStats(pw, chr);
 
             pw.write(chr.getBuddylist().getCapacity());
@@ -1016,47 +1019,47 @@ public class PacketHelper {
             }
         }
         
-        if ((mask & 2) != 0) {
+        if ((pMask & CharacterInfo.MESOS.getValue()) != 0) {
         	pw.writeLong(chr.getMeso());
         }
         
-        if ((mask & 8) != 0) {
+        if ((pMask & CharacterInfo.INVENTORY.getValue()) != 0) {
             addInventoryInfo(pw, chr);
         }
         
-        if ((mask & 0x100) != 0) {
+        if ((pMask & CharacterInfo.SKILL.getValue()) != 0) {
             addSkillInfo(pw, chr);
         }
         
-        if ((mask & 0x8000) != 0) {
+        if ((pMask & CharacterInfo.COOLDOWN.getValue()) != 0) {
             addCoolDownInfo(pw, chr);
         }
         
-        if ((mask & 0x200) != 0) {
+        if ((pMask & CharacterInfo.STARTED_QUESTS.getValue()) != 0) {
             addStartedQuestInfo(pw, chr);
         }
         
-        if ((mask & 0x4000) != 0) {
+        if ((pMask & CharacterInfo.COMPLETED_QUESTS.getValue()) != 0) {
             addCompletedQuestInfo(pw, chr);
         }
         
-        if ((mask & 0x400) != 0) {
+        if ((pMask & 0x400) != 0) {
             pw.writeShort(0);
         }
         
-        if ((mask & 0x800) != 0) {
+        if ((pMask & CharacterInfo.RING.getValue()) != 0) {
             addRingInfo(pw, chr);
         }
         
-        if ((mask & 0x1000) != 0) {
+        if ((pMask & CharacterInfo.TELEPORT.getValue()) != 0) {
             addRocksInfo(pw, chr);
         }
         
-        if ((mask & 0x20000) != 0) {
+        if ((pMask & 0x20000) != 0) {
             pw.writeInt(0);
         }
         
-        if ((mask & 0x10000) != 0) {
+        if ((pMask & CharacterInfo.MONSTER_BOOK.getValue()) != 0) {
             addMonsterBookInfo(pw, chr);
         }
 
@@ -1067,23 +1070,23 @@ public class PacketHelper {
         pw.writeInt(0);
         
         
-        if ((mask & 0x80000) != 0) {
+        if ((pMask & 0x80000) != 0) {
         	pw.writeShort(0);
         }
         
-        if ((mask & 0x40000) != 0) {
+        if ((pMask & CharacterInfo.QUEST_INFO.getValue()) != 0) {
             chr.QuestInfoPacket(pw);
         }
         
-        if ((mask & 0x2000) != 0) {
+        if ((pMask & 0x2000) != 0) {
         	pw.writeShort(0);
         }
 
-        if ((mask & 0x1000) != 0) {
+        if ((pMask & 0x1000) != 0) {
         	pw.writeInt(0);
         }
         
-        if ((mask & 0x200000) != 0) {
+        if ((pMask & CharacterInfo.JAGUAR.getValue()) != 0) {
             addJaguarInfo(pw, chr);
         }
         
@@ -1093,19 +1096,19 @@ public class PacketHelper {
             //chr.getStat().zeroData(pw, chr);
         }
 
-        if ((mask & 0x4000000) != 0) {
+        if ((pMask & 0x4000000) != 0) {
         	pw.writeShort(0);
         }
 
-        if ((mask & 0x10000000) != 0) {
+        if ((pMask & 0x10000000) != 0) {
             addStealSkills(pw, chr);
         }
         
-        if ((mask & 0x80000000) != 0) {
+        if ((pMask & 0x80000000) != 0) {
             addAbilityInfo(pw, chr);
         }
         
-        if ((mask & 0x10000) != 0) {
+        if ((pMask & 0x10000) != 0) {
         	pw.writeShort(0);
         }
 
@@ -1115,17 +1118,17 @@ public class PacketHelper {
         // ...
         pw.write(0);
 
-        if ((mask & 0x1) != 0) {
+        if ((pMask & 0x1) != 0) {
         	pw.writeInt(chr.getHonorLevel()); // honor level
             pw.writeInt(chr.getHonourExp()); // honor xp
         }
         
-        if ((mask & 0x2) != 0) {
+        if ((pMask & 0x2) != 0) {
         	pw.write(1);
         	pw.writeShort(0);
         }
         
-        if ((mask & 0x4) != 0) {
+        if ((pMask & 0x4) != 0) {
         	pw.write(0);
         }
         
@@ -1144,7 +1147,7 @@ public class PacketHelper {
     	pw.writeInt(0);
     	pw.writeInt(0);
     	
-        if ((mask & 0x40000) != 0) {
+        if ((pMask & 0x40000) != 0) {
         	pw.writeInt(1);
             pw.writeInt(0);
             pw.writeLong(0);
@@ -1153,38 +1156,38 @@ public class PacketHelper {
         }
 
         // ? Core?
-        if ((mask & 0x10) != 0) {
+        if ((pMask & 0x10) != 0) {
         	pw.writeShort(0);
             pw.writeShort(0);
         }
         
         // FARM_POTENTIAL::Decode
-        if ((mask & 0x20) != 0) {
+        if ((pMask & 0x20) != 0) {
         	pw.writeInt(0); // farm monsters length (if length > 1 for each monster int id and long expire)
         }
 
         // FarmUserInfo::Decode
         // FarmSubInfo::Decode
-        if ((mask & 0x40) != 0) {
+        if ((pMask & 0x40) != 0) {
         	addFarmInfo(pw, chr.getClient(), (byte) 2);
             pw.writeInt(0);
             pw.writeInt(0);
         }
 
         // MemorialCubeInfo::Decode
-        if ((mask & 0x80) != 0) {
+        if ((pMask & 0x80) != 0) {
         	pw.write(0);
         }
 
         // GW_LikePoint::Decode
-        if ((mask & 0x400) != 0) {
+        if ((pMask & 0x400) != 0) {
         	pw.writeInt(0);
             pw.writeLong(getTime(-2));
             pw.writeInt(0);
         }
 
         // RunnerGameRecord::Decode
-        if ((mask & 0x20000) != 0) {
+        if ((pMask & 0x20000) != 0) {
         	pw.writeInt(chr.getId());
             pw.writeInt(0); 
             pw.writeInt(0);
@@ -1204,7 +1207,7 @@ public class PacketHelper {
         // DecodeTextEquipInfo													
         pw.writeInt(0);
         
-        if ((mask & 0x8000000) != 0) {
+        if ((pMask & 0x8000000) != 0) {
         	pw.write(1);
         	pw.write(0);
         	pw.writeInt(1);
@@ -1215,21 +1218,21 @@ public class PacketHelper {
             pw.writeShort(0);
         }
         
-        if ((mask & 0x10000000) != 0) {
+        if ((pMask & 0x10000000) != 0) {
         	pw.write(0);
         }
         
-        if ((mask & 0x20000000) != 0) {
+        if ((pMask & 0x20000000) != 0) {
         	pw.writeInt(0);
         	pw.writeInt(0);
         }
 
-        if ((mask & 0x2000) != 0) {
+        if ((pMask & 0x2000) != 0) {
             addCoreAura(pw, chr); //84 bytes + boolean (85 total)
             pw.write(1);
         }
         
-        if ((mask & 0x100000) != 0) {
+        if ((pMask & 0x100000) != 0) {
         	pw.writeShort(0); //for <short> length write 2 shorts
         }
 

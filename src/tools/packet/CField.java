@@ -434,14 +434,11 @@ public class CField {
 		
 		if(bCharacterData) {
 			mc.CRand().connectData(pw);
-			
 			PacketHelper.addCharacterInfo(pw, mc);
 			pw.writeInt(0); // log out event
 		} else {
-			
 			// bUsingBuffProtector (this will call the revive function, upon death.)
 			pw.write(0);
-			
 			pw.writeInt(to.getId());
 			pw.write(spawnPoint);
 			pw.writeInt(mc.getStat().getHp());
@@ -486,14 +483,14 @@ public class CField {
 			// the size, cannot exceed the count of 10
 			pw.write(0); 
 			
-				// anPoint
-				pw.writeInt(0);
+			// anPoint
+			pw.writeInt(0);
 				
-				// anRanking
-				pw.writeInt(0);
+			// anRanking
+			pw.writeInt(0);
 				
-				// atLastCheckRank (timeGetTime - 300000)
-				pw.writeInt(0);
+			// atLastCheckRank (timeGetTime - 300000)
+			pw.writeInt(0);
 				
 			// ftShiningStarExpiredTime
 			pw.writeLong(0);

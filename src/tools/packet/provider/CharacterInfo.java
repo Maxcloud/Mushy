@@ -32,8 +32,4 @@ public enum CharacterInfo {
     public long getValue() {
         return value;
     }
-
-    public boolean check(int flag) {
-        return (flag & value) != 0;
-    }
 }
