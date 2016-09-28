@@ -1666,9 +1666,9 @@ public class DamageParse {
 
 			lea.skip(12);
 			byte bullets = lea.readByte();
-			List allDamageNumbers = new ArrayList();
+			List<Pair<Integer, Boolean>> allDamageNumbers = new ArrayList<Pair<Integer, Boolean>>();
 			for (int j = 0; j < bullets; j++) {
-				allDamageNumbers.add(new Pair(Integer.valueOf(lea.readInt()), Boolean.valueOf(false)));
+				allDamageNumbers.add(new Pair<Integer, Boolean>(Integer.valueOf(lea.readInt()), Boolean.valueOf(false)));
 			}
 			ret.allDamage.add(new AttackPair(Integer.valueOf(oid).intValue(), allDamageNumbers));
 			lea.skip(4);

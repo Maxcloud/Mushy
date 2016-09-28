@@ -11,7 +11,7 @@ import server.maps.MapleMapObjectType;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
 import tools.Randomizer;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 import tools.packet.CField;
 import tools.packet.PacketHelper;
 
@@ -145,7 +145,7 @@ public final class MonsterFamiliar extends AnimatedMapleMapObject
         }
     }
 
-    public void writeRegisterPacket(MaplePacketLittleEndianWriter mplew, boolean chr) {
+    public void writeRegisterPacket(PacketWriter mplew, boolean chr) {
         mplew.writeInt(getCharacterId());
         mplew.writeInt(getFamiliar());
         mplew.writeAsciiString(getName(), 13);

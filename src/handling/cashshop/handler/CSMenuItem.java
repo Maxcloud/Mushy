@@ -8,7 +8,7 @@ import java.util.List;
 
 import net.DatabaseConnection;
 import tools.HexTool;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 import tools.packet.PacketHelper;
 
 public class CSMenuItem {
@@ -57,7 +57,7 @@ public class CSMenuItem {
         this.likes = likes;
     }
 
-    public static void writeData(CSMenuItem csmi, MaplePacketLittleEndianWriter mplew) {
+    public static void writeData(CSMenuItem csmi, PacketWriter mplew) {
         mplew.writeInt(csmi.c);
         mplew.writeInt(csmi.sc);
         mplew.writeInt(csmi.p);
@@ -79,6 +79,6 @@ public class CSMenuItem {
         mplew.writeInt(csmi.dur);
         mplew.write(HexTool.getByteArrayFromHexString("01 00 01 00 01 00 00 00 01 00 02 00 00 00")); // flags maybe
         mplew.writeInt(csmi.likes);
-        mplew.write0(20);
+        mplew.write(new byte[20]);
     }
 }

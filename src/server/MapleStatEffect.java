@@ -2123,13 +2123,14 @@ public class MapleStatEffect implements Serializable {
             }
         }
                if (applyto.getJob() == 132) {       
-               if (applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
-                applyto.cancelBuffStats(MapleBuffStat.Beholder);
-                applyfrom.getClient().getSession().write(CField.skillCooldown(1321013, getCooldown(applyfrom) * 0));
-                applyto.addCooldown(1321013, System.currentTimeMillis(), getCooldown(applyfrom));
-                applyto.removeCooldown(1321013);
-            } 
-            }
+            	   System.out.println(applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF));
+	               if (applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != null && applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
+		                applyto.cancelBuffStats(MapleBuffStat.Beholder);
+		                applyfrom.getClient().getSession().write(CField.skillCooldown(1321013, getCooldown(applyfrom) * 0));
+		                applyto.addCooldown(1321013, System.currentTimeMillis(), getCooldown(applyfrom));
+		                applyto.removeCooldown(1321013);
+	               } 
+               }
                
                if (GameConstants.isLuminous(applyto.getJob())) {       
                if (applyto.getBuffedValue(MapleBuffStat.LUMINOUS_GAUGE) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works

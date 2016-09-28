@@ -12,7 +12,7 @@ import tools.HexTool;
  *
  * @author Frz
  */
-public class MaplePacketLittleEndianWriter {
+public class PacketWriter {
 
     private final ByteArrayOutputStream baos;
     private static final Charset ASCII = Charset.forName("US-ASCII"); // US-ASCII, ISO-8859-1, UTF-8, MS949
@@ -20,7 +20,7 @@ public class MaplePacketLittleEndianWriter {
     /**
      * Constructor - initializes this stream with a default size.
      */
-    public MaplePacketLittleEndianWriter() {
+    public PacketWriter() {
         this(32);
     }
 
@@ -29,7 +29,7 @@ public class MaplePacketLittleEndianWriter {
      *
      * @param size The size of the underlying stream.
      */
-    public MaplePacketLittleEndianWriter(final int size) {
+    public PacketWriter(final int size) {
         this.baos = new ByteArrayOutputStream(size);
     }
 
@@ -51,17 +51,6 @@ public class MaplePacketLittleEndianWriter {
     @Override
     public final String toString() {
         return HexTool.toString(baos.toByteArray());
-    }
-
-    /**
-     * Write the number of zero bytes
-     *
-     * @param i
-     */
-    public final void write0(final int i) {
-        for (int x = 0; x < i; x++) {
-            baos.write((byte) 0);
-        }
     }
 
     /**

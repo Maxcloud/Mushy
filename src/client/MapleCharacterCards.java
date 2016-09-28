@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import server.CharacterCardFactory;
 import tools.Pair;
 import tools.Triple;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 
 /**
  *
@@ -104,9 +104,9 @@ public class MapleCharacterCards {
         }
     }
 
-    public final void connectData(final MaplePacketLittleEndianWriter mplew) {
+    public final void connectData(final PacketWriter mplew) {
         if (cards.isEmpty()) { // we don't show for new characters 
-            mplew.write0(54); // 9 x 6
+            mplew.write(new byte[54]); // 9 x 6
             return;
         }
         int poss = 0;

@@ -15,92 +15,91 @@ import constants.WorldConstants.WorldOption;
 import handling.SendPacketOpcode;
 import handling.login.LoginServer;
 import tools.Randomizer;
-import tools.Triple;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 
 public class LoginPacket {
 
     public static byte[] getHello(short mapleVersion, byte[] sendIv, byte[] recvIv) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(15);
-        mplew.writeShort(mapleVersion);
-        mplew.writeMapleAsciiString(ServerConstants.MAPLE_PATCH);
-        mplew.write(recvIv);
-        mplew.write(sendIv);
-        mplew.write(8);
-        mplew.write(0);
-        return mplew.getPacket();
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(15);
+        pw.writeShort(mapleVersion);
+        pw.writeMapleAsciiString(ServerConstants.MAPLE_PATCH);
+        pw.write(recvIv);
+        pw.write(sendIv);
+        pw.write(8);
+        pw.write(0);
+        return pw.getPacket();
     }
 
     public static final byte[] getPing() {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(2);
-        mplew.writeShort(SendPacketOpcode.PING.getValue());
-        return mplew.getPacket();
+        PacketWriter pw = new PacketWriter(2);
+        pw.writeShort(SendPacketOpcode.PING.getValue());
+        return pw.getPacket();
     }
     
     public static final byte[] getStart() {
-    	MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(2);
-    	mplew.writeShort(0x24);
-    	mplew.write(1);
-    	return mplew.getPacket();
+    	PacketWriter pw = new PacketWriter(2);
+    	pw.writeShort(0x24);
+    	pw.write(1);
+    	return pw.getPacket();
     }
     
     public static byte[] useAuthSever() {
-    	MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-    	mplew.writeShort(SendPacketOpcode.AUTHSERVER.getValue());
-    	mplew.write(0); // disable the auth server check
-    	return mplew.getPacket();
+    	PacketWriter pw = new PacketWriter();
+    	pw.writeShort(SendPacketOpcode.AUTHSERVER.getValue());
+    	pw.write(0); // disable the auth server check
+    	return pw.getPacket();
     }
 
     public static byte[] getAuthSuccessRequest(MapleClient client) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
-        mplew.write(0);
-        mplew.write(0);
-        mplew.writeInt(0);
-        mplew.writeMapleAsciiString(client.getAccountName()); // 174.1
-        mplew.writeInt(client.getAccID());
-        mplew.write(0);
-        mplew.write(0);
-        mplew.writeInt(2);
-        mplew.writeInt(0);
-        mplew.write(1); // if 0, writeMapleAsciiString(CensoredNxLoginID)
-        // mplew.write0(7); //gm stuff and new int
-        mplew.writeMapleAsciiString(client.getAccountName());
-        mplew.write(3);
-        mplew.write(0);
-        mplew.writeLong(0);
-        mplew.writeLong(0);
+        pw.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
+        pw.write(0);
+        pw.write(0);
+        pw.writeInt(0);
+        pw.writeMapleAsciiString(client.getAccountName()); // 174.1
+        pw.writeInt(client.getAccID());
+        pw.write(0);
+        pw.write(0);
+        pw.writeInt(2);
+        pw.writeInt(0);
+        pw.write(1); // if 0, writeMapleAsciiString(CensoredNxLoginID)
+        // pw.write0(7); //gm stuff and new int
+        pw.writeMapleAsciiString(client.getAccountName());
+        pw.write(3);
+        pw.write(0);
+        pw.writeLong(0);
+        pw.writeLong(0);
 
-        mplew.writeInt(0x1A); // The amount of characters available in total - 3?
+        pw.writeInt(0x1A); // The amount of characters available in total - 3?
 
-        getAvailableJobs(mplew);
+        getAvailableJobs(pw);
         
-        mplew.write(0); // 174.1
-        mplew.writeInt(-1); // 174.1
-        mplew.write(1);
-        mplew.write(1);
+        pw.write(0); // 174.1
+        pw.writeInt(-1); // 174.1
+        pw.write(1);
+        pw.write(1);
 
         // The date the account was created.
-        mplew.writeLong(0);
+        pw.writeLong(0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
     
     public static final byte[] sendAllowedCreation() {
-    	MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-    	mplew.writeShort(0x2D);
-    	getAvailableJobs(mplew);
-    	return mplew.getPacket();
+    	PacketWriter pw = new PacketWriter();
+    	pw.writeShort(0x2D);
+    	getAvailableJobs(pw);
+    	return pw.getPacket();
     }
     
-    private static void getAvailableJobs(MaplePacketLittleEndianWriter mplew) {
-    	mplew.write(JobConstants.enableJobs ? 1 : 0); //toggle
-        mplew.write(JobConstants.jobOrder); // Job Order (orders are located in lib)
+    private static void getAvailableJobs(PacketWriter pw) {
+    	pw.write(JobConstants.enableJobs ? 1 : 0); //toggle
+        pw.write(JobConstants.jobOrder); // Job Order (orders are located in lib)
         for (LoginJob j : LoginJob.values()) {
-            mplew.write(j.getFlag());
-            mplew.writeShort(j.getFlag());
+            pw.write(j.getFlag());
+            pw.writeShort(j.getFlag());
         }
     }
     
@@ -110,44 +109,44 @@ public class LoginPacket {
      * @return
      */
     public static final byte[] getSecondAuthSuccess(MapleClient c) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.LOGIN_SECOND.getValue());
-        mplew.write(0); // request
-        mplew.writeInt(c.getAccID());
-        mplew.write(0);
-        mplew.write(0);
-        mplew.writeInt(0);
-        mplew.writeInt(0);
-        mplew.write(0);
-        mplew.writeMapleAsciiString(c.getAccountName());
-        mplew.write(0);
-        mplew.write(0);
-        mplew.writeLong(0);
-        mplew.writeMapleAsciiString(c.getAccountName());
-        mplew.writeLong(Randomizer.nextLong());
-        mplew.writeInt(28);
-        mplew.writeLong(Randomizer.nextLong());
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(SendPacketOpcode.LOGIN_SECOND.getValue());
+        pw.write(0); // request
+        pw.writeInt(c.getAccID());
+        pw.write(0);
+        pw.write(0);
+        pw.writeInt(0);
+        pw.writeInt(0);
+        pw.write(0);
+        pw.writeMapleAsciiString(c.getAccountName());
+        pw.write(0);
+        pw.write(0);
+        pw.writeLong(0);
+        pw.writeMapleAsciiString(c.getAccountName());
+        pw.writeLong(Randomizer.nextLong());
+        pw.writeInt(28);
+        pw.writeLong(Randomizer.nextLong());
         /*for(byte b = 0; b < 3; b++) {
         	if(b == 1)
-        		mplew.writeInt(28);
-        	mplew.writeLong(Randomizer.nextLong());
+        		pw.writeInt(28);
+        	pw.writeLong(Randomizer.nextLong());
         }*/
-        mplew.writeMapleAsciiString("");
-        getAvailableJobs(mplew); 
-        mplew.write(0);
-        mplew.writeInt(-1);
-        return mplew.getPacket();
+        pw.writeMapleAsciiString("");
+        getAvailableJobs(pw); 
+        pw.write(0);
+        pw.writeInt(-1);
+        return pw.getPacket();
     }
 
     public static final byte[] getLoginFailed(int reason) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(16);
+        PacketWriter pw = new PacketWriter(16);
 
-        mplew.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
-        mplew.write(reason);
-        mplew.write(0);
-        mplew.writeInt(0);
+        pw.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
+        pw.write(reason);
+        pw.write(0);
+        pw.writeInt(0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
     /*
      * location: UI.wz/Login.img/Notice/text
@@ -162,74 +161,74 @@ public class LoginPacket {
      */
 
     public static byte[] getTempBan(long timestampTill, byte reason) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(17);
+        PacketWriter pw = new PacketWriter(17);
 
-        mplew.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
-        mplew.write(2);
-        mplew.write(0);
-        mplew.writeInt(0);
-        mplew.write(reason);
-        mplew.writeLong(timestampTill);
+        pw.writeShort(SendPacketOpcode.LOGIN_STATUS.getValue());
+        pw.write(2);
+        pw.write(0);
+        pw.writeInt(0);
+        pw.write(reason);
+        pw.writeLong(timestampTill);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static final byte[] deleteCharResponse(int cid, int state) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.DELETE_CHAR_RESPONSE.getValue());
-        mplew.writeInt(cid);
-        mplew.write(state);
+        pw.writeShort(SendPacketOpcode.DELETE_CHAR_RESPONSE.getValue());
+        pw.writeInt(cid);
+        pw.write(state);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] secondPwError(byte mode) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(3);
+        PacketWriter pw = new PacketWriter(3);
 
-        mplew.writeShort(SendPacketOpcode.SECONDPW_ERROR.getValue());
-        mplew.write(0);
+        pw.writeShort(SendPacketOpcode.SECONDPW_ERROR.getValue());
+        pw.write(0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] sendAuthResponse(int response) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.AUTH_RESPONSE.getValue());
-        mplew.writeInt(response);
-        return mplew.getPacket();
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(SendPacketOpcode.AUTH_RESPONSE.getValue());
+        pw.writeInt(response);
+        return pw.getPacket();
     }
 
     public static byte[] enableRecommended(int world) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.ENABLE_RECOMMENDED.getValue());
-        mplew.writeInt(world);
-        return mplew.getPacket();
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(SendPacketOpcode.ENABLE_RECOMMENDED.getValue());
+        pw.writeInt(world);
+        return pw.getPacket();
     }
 
     public static byte[] sendRecommended(int world, String message) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.SEND_RECOMMENDED.getValue());
-        mplew.write(message != null ? 1 : 0);
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(SendPacketOpcode.SEND_RECOMMENDED.getValue());
+        pw.write(message != null ? 1 : 0);
         if (message != null) {
-            mplew.writeInt(world);
-            mplew.writeMapleAsciiString(message);
+            pw.writeInt(world);
+            pw.writeMapleAsciiString(message);
         }
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] getServerList(int serverId, Map<Integer, Integer> channelLoad) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.SERVERLIST.getValue());
-        mplew.write(serverId);
+        pw.writeShort(SendPacketOpcode.SERVERLIST.getValue());
+        pw.write(serverId);
         String worldName = LoginServer.getTrueServerName();
-        mplew.writeMapleAsciiString(worldName);
-        mplew.write(WorldOption.getById(serverId).getFlag());
-        mplew.writeMapleAsciiString(LoginServer.getEventMessage());
-        mplew.writeShort(100);
-        mplew.writeShort(100);
-        mplew.write(0);
+        pw.writeMapleAsciiString(worldName);
+        pw.write(WorldOption.getById(serverId).getFlag());
+        pw.writeMapleAsciiString(LoginServer.getEventMessage());
+        pw.writeShort(100);
+        pw.writeShort(100);
+        pw.write(0);
         int lastChannel = 1;
         Set<Integer> channels = channelLoad.keySet();
         for (int i = 30; i > 0; i--) {
@@ -238,7 +237,7 @@ public class LoginPacket {
                 break;
             }
         }
-        mplew.write(lastChannel);
+        pw.write(lastChannel);
 
         for (int i = 1; i <= lastChannel; i++) {
             int load;
@@ -248,169 +247,169 @@ public class LoginPacket {
             } else {
                 load = 1200;
             }
-            mplew.writeMapleAsciiString(worldName + "-" + i);
+            pw.writeMapleAsciiString(worldName + "-" + i);
             
             load = (int) Math.round(((load/12) + 10) * 0.60);
-            mplew.writeInt(load); // load -60 = 100%
-            mplew.write(serverId);
-            mplew.writeShort(i - 1);
+            pw.writeInt(load); // load -60 = 100%
+            pw.write(serverId);
+            pw.writeShort(i - 1);
         }
-        mplew.writeShort(0);
-        mplew.writeInt(0);
-        mplew.write(0);
-        return mplew.getPacket();
+        pw.writeShort(0);
+        pw.writeInt(0);
+        pw.write(0);
+        return pw.getPacket();
     }
 
     public static byte[] getEndOfServerList() {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.SERVERLIST.getValue());
-        mplew.write(0xFF);
-        mplew.write(0); // boolean disable cash shop and trade msg
-        mplew.write(0); // 174.1
-        mplew.write(0); // 174.1
+        pw.writeShort(SendPacketOpcode.SERVERLIST.getValue());
+        pw.write(0xFF);
+        pw.write(0); // boolean disable cash shop and trade msg
+        pw.write(0); // 174.1
+        pw.write(0); // 174.1
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] getServerStatus(int status) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendPacketOpcode.SERVERSTATUS.getValue());
-        mplew.write(status);
-        mplew.write(0);
-        return mplew.getPacket();
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(SendPacketOpcode.SERVERSTATUS.getValue());
+        pw.write(status);
+        pw.write(0);
+        return pw.getPacket();
     }
 
     public static byte[] getCharList(String secondpw, List<MapleCharacter> chars, int charslots) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.CHARLIST.getValue());
-        mplew.write(0); // nDay
-        mplew.writeMapleAsciiString("normal"); // 174.1
-        mplew.writeInt(0); // 174.1 ref count?
+        pw.writeShort(SendPacketOpcode.CHARLIST.getValue());
+        pw.write(0); // nDay
+        pw.writeMapleAsciiString("normal"); // 174.1
+        pw.writeInt(0); // 174.1 ref count?
        
-        mplew.write(1); // burning event block?
+        pw.write(1); // burning event block?
         
         // character locations
-        mplew.writeInt(0); // ?
+        pw.writeInt(0); // ?
         
         // timestamp?
-        mplew.writeLong(0); // 174.1
+        pw.writeLong(0); // 174.1
         
         // has the list of characters been edited
-        mplew.write(0);
+        pw.write(0);
         
-        mplew.writeInt(0); // ? (nSecond)
+        pw.writeInt(0); // ? (nSecond)
         
-        mplew.write(chars.size());
+        pw.write(chars.size());
         for (MapleCharacter chr : chars) {
-            addCharEntry(mplew, chr, (!chr.isGM()) && (chr.getLevel() >= 30), false);
+            addCharEntry(pw, chr, (!chr.isGM()) && (chr.getLevel() >= 30), false);
         }
-        mplew.write((secondpw != null) && (secondpw.length() <= 0) ? 2 : (secondpw != null) && (secondpw.length() > 0) ? 1 : 0); 
-        mplew.write(0);
-        mplew.writeInt(charslots);
+        pw.write((secondpw != null) && (secondpw.length() <= 0) ? 2 : (secondpw != null) && (secondpw.length() > 0) ? 1 : 0); 
+        pw.write(0);
+        pw.writeInt(charslots);
         
-        mplew.writeInt(0); // buy character count?
-        mplew.writeInt(-1); // event new char job
+        pw.writeInt(0); // buy character count?
+        pw.writeInt(-1); // event new char job
         
         /*
-        mplew.writeInt(6111);
+        pw.writeInt(6111);
         
         // Something to do with time.
-        mplew.writeInt(0); // hidword
-        mplew.writeInt(0); // lodword
+        pw.writeInt(0); // hidword
+        pw.writeInt(0); // lodword
         
-        mplew.write(0); // rename count?
+        pw.write(0); // rename count?
         
-        mplew.write(0); // ?
+        pw.write(0); // ?
         */
         
-        mplew.writeReversedLong(PacketHelper.getTime(System.currentTimeMillis()));
-        mplew.write(0); // the amount of allowed name changes
-        mplew.write0(5);
-        return mplew.getPacket();
+        pw.writeReversedLong(PacketHelper.getTime(System.currentTimeMillis()));
+        pw.write(0); // the amount of allowed name changes
+        pw.write(new byte[5]);
+        return pw.getPacket();
     }
     
     public static byte[] getAccountName(String name) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(0x10F);
-        mplew.writeLong(0);
-        mplew.writeMapleAsciiString(name);
-        return mplew.getPacket();
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(0x10F);
+        pw.writeLong(0);
+        pw.writeMapleAsciiString(name);
+        return pw.getPacket();
     }
 
     public static byte[] addNewCharEntry(MapleCharacter chr, boolean worked) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.ADD_NEW_CHAR_ENTRY.getValue());
-        mplew.write(worked ? 0 : 1);
-        addCharEntry(mplew, chr, false, false);
+        pw.writeShort(SendPacketOpcode.ADD_NEW_CHAR_ENTRY.getValue());
+        pw.write(worked ? 0 : 1);
+        addCharEntry(pw, chr, false, false);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] charNameResponse(String charname, boolean nameUsed) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.CHAR_NAME_RESPONSE.getValue());
-        mplew.writeMapleAsciiString(charname);
-        mplew.write(nameUsed ? 1 : 0);
+        pw.writeShort(SendPacketOpcode.CHAR_NAME_RESPONSE.getValue());
+        pw.writeMapleAsciiString(charname);
+        pw.write(nameUsed ? 1 : 0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
-    private static void addCharEntry(MaplePacketLittleEndianWriter mplew, MapleCharacter chr, boolean ranking, boolean viewAll) {
-        PacketHelper.addCharStats(mplew, chr);
-        PacketHelper.addCharLook(mplew, chr, true, false);
+    private static void addCharEntry(PacketWriter pw, MapleCharacter chr, boolean ranking, boolean viewAll) {
+        PacketHelper.addCharStats(pw, chr);
+        PacketHelper.addCharLook(pw, chr, true, false);
         if (GameConstants.isZero(chr.getJob())) {
-            PacketHelper.addCharLook(mplew, chr, true, true);
+            PacketHelper.addCharLook(pw, chr, true, true);
         }
         if (!viewAll) {
-            mplew.write(0);
+            pw.write(0);
         }
         
-        mplew.write(ranking ? 1 : 0);
+        pw.write(ranking ? 1 : 0);
         if (ranking) {
-            mplew.writeInt(chr.getRank());
-            mplew.writeInt(chr.getRankMove());
-            mplew.writeInt(chr.getJobRank());
-            mplew.writeInt(chr.getJobRankMove());
+            pw.writeInt(chr.getRank());
+            pw.writeInt(chr.getRankMove());
+            pw.writeInt(chr.getJobRank());
+            pw.writeInt(chr.getJobRankMove());
         }
     }
 
     public static byte[] enableSpecialCreation(int accid, boolean enable) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.SPECIAL_CREATION.getValue());
-        mplew.writeInt(accid);
-        mplew.write(enable ? 0 : 1);
-        mplew.write(0);
+        pw.writeShort(SendPacketOpcode.SPECIAL_CREATION.getValue());
+        pw.writeInt(accid);
+        pw.write(enable ? 0 : 1);
+        pw.write(0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] partTimeJob(int cid, short type, long time) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.PART_TIME.getValue());
-        mplew.writeInt(cid);
-        mplew.write(0);
-        mplew.write(type);
+        pw.writeShort(SendPacketOpcode.PART_TIME.getValue());
+        pw.writeInt(cid);
+        pw.write(0);
+        pw.write(type);
         //1) 0A D2 CD 01 70 59 9F EA
         //2) 0B D2 CD 01 B0 6B 9C 18
-        mplew.writeReversedLong(PacketHelper.getTime(time));
-        mplew.writeInt(0);
-        mplew.write(0);
+        pw.writeReversedLong(PacketHelper.getTime(time));
+        pw.writeInt(0);
+        pw.write(0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] updatePartTimeJob(PartTimeJob partTime) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(21);
-        mplew.writeShort(SendPacketOpcode.PART_TIME.getValue());
-        mplew.writeInt(partTime.getCharacterId());
-        mplew.write(0);
-        PacketHelper.addPartTimeJob(mplew, partTime);
-        return mplew.getPacket();
+        PacketWriter pw = new PacketWriter(21);
+        pw.writeShort(SendPacketOpcode.PART_TIME.getValue());
+        pw.writeInt(partTime.getCharacterId());
+        pw.write(0);
+        PacketHelper.addPartTimeJob(pw, partTime);
+        return pw.getPacket();
     }
 }
