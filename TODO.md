@@ -5,23 +5,28 @@
 
 ### Packet
 - [ ] SPMO
+- [ ] Violet Cubes
 
 ### Item
-- [ ] Enchantment
+- [ ] Enchantment system
+- [ ] Recode magnifying system
 
 ### Map
-- [ ] Runes
+- [ ] Runes (Alan)
+- [ ] AutoPilot (Savion)
 
 ### Social
 - [ ] Parties
 - [ ] Guilds 
 - [ ] Buddies
+- [ ] Messenger
 
 ### Monster
 - [ ] Monster status
 - [ ] Monster skills
+- [ ] Spine mobs
 
 ### Other
 - [ ] Cash shop item searching
-- [ ] recode packet handling system
-- [ ] AutoPilot (Savion)
+- [ ] Cash shop purchasing item
+- [ ] Recode packet handling system
