@@ -530,7 +530,7 @@ public enum MapleBuffStat implements Serializable, Buffstat {
     PVP_FLAG(0x2, 6),
 
     DARK_METAMORPHOSIS(0x80, 6),
-    BARREL_ROLL(0x1000, 6),
+
     MDEF_BOOST(0x2000, 6),
     WDEF_BOOST(0x4000, 6),
     VIRTUE_EFFECT(0x10000, 6),
