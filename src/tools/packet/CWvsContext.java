@@ -3681,11 +3681,10 @@ public class CWvsContext {
 
             PacketHelper.writeMask(pw, statups);
 
-            List<MapleBuffStat> stats = statups.stream()
-            		.filter(stat -> stat.isIndie())
-            		.collect(Collectors.toList());
-            
-            stats.forEach(s -> pw.writeInt(0));
+            statups.stream()
+            	.filter(stat -> stat.isIndie())
+            	.collect(Collectors.toList())
+            	.forEach(stat -> pw.writeInt(0));
 
             pw.writeShort(0);
             pw.write(0);
