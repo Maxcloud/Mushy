@@ -22,13 +22,13 @@ public enum MapleStat {
     MESO(0x40000), // int
     PET(0x180008), // Pets: 0x8 + 0x80000 + 0x100000  [3 longs]
     GACHAPONEXP(0x200000), // int
-    FATIGUE(0x400000), // byte
-    CHARISMA(0x800000), // ambition int
-    INSIGHT(0x1000000),
-    WILL(0x2000000), // int
-    CRAFT(0x4000000), // dilligence, int
-    SENSE(0x8000000), // empathy, int
-    CHARM(0x10000000), // int
+    FATIGUE(0x80000), // byte
+    CHARISMA(0x100000), // ambition int
+    INSIGHT(0x200000),
+    WILL(0x400000), // int
+    CRAFT(0x800000), // dilligence, int
+    SENSE(0x1000000), // empathy, int
+    CHARM(0x2000000), // int
     TRAIT_LIMIT(0x20000000), // 12 bytes
     BATTLE_EXP(0x40000000), // byte, int, int
     BATTLE_RANK(0x80000000L), // byte

@@ -1878,7 +1878,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         return stats;
     }
 
-    public final void QuestInfoPacket(final tools.data.MaplePacketLittleEndianWriter mplew) {
+    public final void QuestInfoPacket(final tools.data.PacketWriter mplew) {
         mplew.writeShort(questinfo.size()); // // Party Quest data (quest needs to be added in the quests list)
 
         for (final Entry<Integer, String> q : questinfo.entrySet()) {
@@ -3546,7 +3546,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (list.isEmpty()) { // nothing is changed
             return;
         }
-        client.getSession().write(CWvsContext.updateSkills(list, false));
+        client.getSession().write(CWvsContext.updateLinkSkill(list, true, false, false));
         reUpdateStat(hasRecovery, recalculate);
     }
 
@@ -3565,7 +3565,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (list.isEmpty()) { // nothing is changed
             return;
         }
-        client.getSession().write(CWvsContext.updateSkills(list, hyper));
+        client.getSession().write(CWvsContext.updateLinkSkill(list, true, false, false));
         reUpdateStat(hasRecovery, recalculate);
     }
 
@@ -3593,7 +3593,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         if (list.isEmpty()) { // nothing is changed
             return;
         }
-        client.getSession().write(CWvsContext.updateSkills(list, hyper));
+        client.getSession().write(CWvsContext.updateLinkSkill(list, true, false, false));
         reUpdateStat(hasRecovery, recalculate);
     }
 
@@ -3644,7 +3644,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
         }
         if (write && !newL.isEmpty()) {
-            client.getSession().write(CWvsContext.updateSkills(newL, false));
+            client.getSession().write(CWvsContext.updateLinkSkill(newL, true, false, false));
         }
     }
 
@@ -4066,7 +4066,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             }
             pendingExpiration = null;
             if (pendingSkills != null) {
-                client.getSession().write(CWvsContext.updateSkills(pendingSkills, false));
+                client.getSession().write(CWvsContext.updateLinkSkill(pendingSkills, true, false, false));
                 for (Skill z : pendingSkills.keySet()) {
                     client.getSession().write(CWvsContext.broadcastMsg(5, "[" + SkillFactory.getSkillName(z.getId()) + "] skill has expired and will not be available for use."));
                 }
@@ -6803,7 +6803,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         PlayerBuffStorage.addBuffsToStorage(getId(), getAllBuffs());
         PlayerBuffStorage.addCooldownsToStorage(getId(), getCooldowns());
         PlayerBuffStorage.addDiseaseToStorage(getId(), getAllDiseases());
-        getClient().getSession().write(CWvsContext.updateSkills(getSkills(), false));
+        getClient().getSession().write(CWvsContext.updateLinkSkill(getSkills(), true, false, false));
         World.ChannelChange_Data(new CharacterTransfer(this), getId(), channel);
         ch.removePlayer(this);
         client.updateLoginState(MapleClient.CHANGE_CHANNEL, client.getSessionIPAddress());

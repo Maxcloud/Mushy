@@ -30,7 +30,7 @@ import server.life.Element;
 import tools.ArrayUtil;
 import tools.Pair;
 import tools.Triple;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 import tools.packet.CField.EffectPacket;
 import tools.packet.CWvsContext.InventoryPacket;
 import tools.packet.JobPacket;
@@ -3192,7 +3192,7 @@ public class PlayerStats implements Serializable {
         }
     }
     
-    public final void connectData(final MaplePacketLittleEndianWriter mplew) { 
+    public final void connectData(final PacketWriter mplew) { 
         mplew.writeShort(str); 
         mplew.writeShort(dex); 
         mplew.writeShort(int_); 
@@ -3203,7 +3203,7 @@ public class PlayerStats implements Serializable {
         mplew.writeInt(maxmp); 
     } 
 
-    public final void zeroData(final MaplePacketLittleEndianWriter mplew, final MapleCharacter chr) {
+    public final void zeroData(final PacketWriter mplew, final MapleCharacter chr) {
         mplew.writeInt(0);
         mplew.write(0xFF);
         mplew.write(0);

@@ -1429,7 +1429,7 @@ public class MapleStatEffect implements Serializable {
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY3, ret.info.get(MapleStatInfo.x)); 
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY4, ret.info.get(MapleStatInfo.x));
                 ret.statups.put(MapleBuffStat.IndiePAD, Integer.MAX_VALUE);
-                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));
+                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));	
                 break;
             case 4341054: // blade clone
                 ret.statups.put(MapleBuffStat.ARIANT_COSS_IMU2, Integer.valueOf(1));
@@ -1788,6 +1788,12 @@ public class MapleStatEffect implements Serializable {
             }
             applyto.gainXenonSurplus((short) -powerchange);
         }
+	if (getPPChange() != 0) {
+			// TODO: Neptune forgot to add these functions.
+            /*if (applyfrom.getPsychicPoint() < -getPPChange())
+                return false;
+            applyfrom.gainPsychicPoint(getPPChange());*/
+        }
         if (expinc != 0) {
             applyto.gainExp(expinc, true, true, false);
             applyto.getClient().getSession().write(EffectPacket.showForeignEffect(20));
@@ -2117,13 +2123,14 @@ public class MapleStatEffect implements Serializable {
             }
         }
                if (applyto.getJob() == 132) {       
-               if (applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
-                applyto.cancelBuffStats(MapleBuffStat.Beholder);
-                applyfrom.getClient().getSession().write(CField.skillCooldown(1321013, getCooldown(applyfrom) * 0));
-                applyto.addCooldown(1321013, System.currentTimeMillis(), getCooldown(applyfrom));
-                applyto.removeCooldown(1321013);
-            } 
-            }
+            	   System.out.println(applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF));
+	               if (applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != null && applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
+		                applyto.cancelBuffStats(MapleBuffStat.Beholder);
+		                applyfrom.getClient().getSession().write(CField.skillCooldown(1321013, getCooldown(applyfrom) * 0));
+		                applyto.addCooldown(1321013, System.currentTimeMillis(), getCooldown(applyfrom));
+		                applyto.removeCooldown(1321013);
+	               } 
+               }
                
                if (GameConstants.isLuminous(applyto.getJob())) {       
                if (applyto.getBuffedValue(MapleBuffStat.LUMINOUS_GAUGE) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
@@ -4574,5 +4581,9 @@ private boolean isSpiritClaw() {
             }
         }
         return sourceid == 4221013;
+    }
+	
+    public final int getPPChange() {
+        return info.get(MapleStatInfo.ppRecovery) - info.get(MapleStatInfo.ppCon);
     }
 }

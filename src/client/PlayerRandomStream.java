@@ -1,7 +1,7 @@
 package client;
 
 import tools.Randomizer;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 
 public class PlayerRandomStream {
 
@@ -25,7 +25,7 @@ public class PlayerRandomStream {
         return (v8 ^ v9 ^ v10) & 0xffffffffL; // to be confirmed, I am not experienced in converting signed > unsigned
     }
 
-    public final void connectData(final MaplePacketLittleEndianWriter mplew) {
+    public final void connectData(final PacketWriter mplew) {
         long v5 = CRand32__Random();
         long s2 = CRand32__Random();
         long v6 = CRand32__Random();

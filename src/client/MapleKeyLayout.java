@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 import net.DatabaseConnection;
 import tools.Pair;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 
 public class MapleKeyLayout implements Serializable {
 
@@ -35,7 +35,7 @@ public class MapleKeyLayout implements Serializable {
         changed = false;
     }
 
-    public final void writeData(final MaplePacketLittleEndianWriter mplew) {
+    public final void writeData(final PacketWriter mplew) {
         mplew.write(keymap.isEmpty() ? 1 : 0);
         if (keymap.isEmpty()) {
             return;

@@ -15,7 +15,7 @@ import handling.SendPacketOpcode;
 import server.MapleStatEffect;
 import tools.HexTool;
 import tools.Randomizer;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 
 /**
  *
@@ -26,9 +26,9 @@ public class JobPacket {
 	public static class WindArcherPacket {
 		public static byte[] giveWindArcherBuff(int buffid, int bufflength, Map<MapleBuffStat, Integer> statups,
 				MapleStatEffect effect, MapleCharacter chr) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			PacketHelper.writeBuffMask(pw, statups);
 			try {
 				byte count = 0;
 				StringBuilder statValue = new StringBuilder();
@@ -40,538 +40,535 @@ public class JobPacket {
 				}
 				switch (buffid) {
 				case 13001022:
-					mplew.writeShort((int) stat[1].getValue());
-					mplew.writeInt(buffid);
-					mplew.writeInt(bufflength);
+					pw.writeShort((int) stat[1].getValue());
+					pw.writeInt(buffid);
+					pw.writeInt(bufflength);
 
-					mplew.write0(9);
-					mplew.writeInt(1);
-					mplew.writeInt(buffid);
-					mplew.writeInt((int) stat[0].getValue());
-					mplew.write(HexTool.getByteArrayFromHexString("10 00 32 23 00 00 00 00"));
-					mplew.writeInt(bufflength);
-					mplew.write(HexTool.getByteArrayFromHexString("00 00 00 00 01 00 00 00 00"));
+					pw.write(new byte[9]);
+					pw.writeInt(1);
+					pw.writeInt(buffid);
+					pw.writeInt((int) stat[0].getValue());
+					pw.write(HexTool.getByteArrayFromHexString("10 00 32 23 00 00 00 00"));
+					pw.writeInt(bufflength);
+					pw.write(HexTool.getByteArrayFromHexString("00 00 00 00 01 00 00 00 00"));
 					break;
 				case 13101024:// Sylvan Aid now fiex :3
-					mplew.writeShort((int) stat[0].getValue());
-					mplew.writeInt(buffid);
-					mplew.writeInt(bufflength);
+					pw.writeShort((int) stat[0].getValue());
+					pw.writeInt(buffid);
+					pw.writeInt(bufflength);
 
-					mplew.writeShort((int) stat[2].getValue());
-					mplew.writeInt(buffid);
-					mplew.writeInt(bufflength);
+					pw.writeShort((int) stat[2].getValue());
+					pw.writeInt(buffid);
+					pw.writeInt(bufflength);
 
-					mplew.write0(9);
-					mplew.writeInt(1);
-					mplew.writeInt(buffid);
-					mplew.writeInt((int) stat[1].getValue());
-					mplew.writeLong(0);
-					mplew.writeInt(bufflength);
-					mplew.writeInt(0);
-					mplew.write(1);
-					mplew.writeInt(0);
+					pw.write(new byte[9]);
+					pw.writeInt(1);
+					pw.writeInt(buffid);
+					pw.writeInt((int) stat[1].getValue());
+					pw.writeLong(0);
+					pw.writeInt(bufflength);
+					pw.writeInt(0);
+					pw.write(1);
+					pw.writeInt(0);
 					break;
 				case 13111023:// albatross work
 				case 13120008:// max albatross NOW WORK - When albatross
 								// finished, you active again skill, else give
 								// DC and Error38
-					mplew = new MaplePacketLittleEndianWriter();
-					mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
-					mplew.write(HexTool.getByteArrayFromHexString(
+					pw = new PacketWriter();
+					pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+					pw.write(HexTool.getByteArrayFromHexString(
 							"00 00 00 00 00 00 00 00 00 40 00 00 30 00 04 00 00 00 00 00 00 01 00 82 00 00 00 00 00 14 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 "));
 					int skillLevel = chr.getSkillLevel(13111023);
 					int skill13120008Level = chr.getSkillLevel(13120008);
 					int skill13111023Level = chr.getSkillLevel(13111023);
 
-					mplew.writeShort(skill13120008Level / 2);
-					mplew.writeInt(13120008);
-					mplew.writeInt(205999);
+					pw.writeShort(skill13120008Level / 2);
+					pw.writeInt(13120008);
+					pw.writeInt(205999);
 
-					mplew.writeShort(skill13120008Level);
-					mplew.writeInt(13120008);
-					mplew.writeInt(205999);
+					pw.writeShort(skill13120008Level);
+					pw.writeInt(13120008);
+					pw.writeInt(205999);
 
-					mplew.write0(13);
-					mplew.writeInt(2);
+					pw.write(new byte[13]);
+					pw.writeInt(2);
 
-					mplew.writeInt(13120008);
-					mplew.writeInt((skill13120008Level * 5) / 3);
-					mplew.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(13120008);
+					pw.writeInt((skill13120008Level * 5) / 3);
+					pw.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(1);
-					mplew.writeInt(13120008);
-					mplew.writeInt((skillLevel * 300) / 4);
-					mplew.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(1);
+					pw.writeInt(13120008);
+					pw.writeInt((skillLevel * 300) / 4);
+					pw.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(1);
-					mplew.writeInt(13120008);
-					mplew.writeInt(-2);
-					mplew.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(1);
+					pw.writeInt(13120008);
+					pw.writeInt(-2);
+					pw.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(2);
-					mplew.writeInt(13111023);
-					mplew.writeInt(skill13111023Level);
-					mplew.write(HexTool.getByteArrayFromHexString("10 00 32 23 47 9F 01 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(2);
+					pw.writeInt(13111023);
+					pw.writeInt(skill13111023Level);
+					pw.write(HexTool.getByteArrayFromHexString("10 00 32 23 47 9F 01 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(13120008);
-					mplew.writeInt((skill13120008Level / 2) + 10);
-					mplew.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(13120008);
+					pw.writeInt((skill13120008Level / 2) + 10);
+					pw.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(1);
-					mplew.writeInt(13120008);
-					mplew.writeInt((skill13120008Level / 2));
-					mplew.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(1);
+					pw.writeInt(13120008);
+					pw.writeInt((skill13120008Level / 2));
+					pw.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(1);
-					mplew.writeInt(13120008);
-					mplew.writeInt((skill13120008Level / 2));
-					mplew.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(1);
+					pw.writeInt(13120008);
+					pw.writeInt((skill13120008Level / 2));
+					pw.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(1);
-					mplew.writeInt(13120008);
-					mplew.writeInt((skill13120008Level / 2) + 10);
-					mplew.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
-					mplew.writeInt(bufflength);
+					pw.writeInt(1);
+					pw.writeInt(13120008);
+					pw.writeInt((skill13120008Level / 2) + 10);
+					pw.write(HexTool.getByteArrayFromHexString("56 9F 33 23 01 00 00 00"));
+					pw.writeInt(bufflength);
 
-					mplew.writeInt(0);
-					mplew.write(1);
-					mplew.writeInt(0);
+					pw.writeInt(0);
+					pw.write(1);
+					pw.writeInt(0);
 					break;
 				case 13121004:// touch of the wind skill work
-					mplew.writeShort((int) stat[0].getValue());
-					mplew.writeInt(buffid);
-					mplew.writeInt(bufflength);
+					pw.writeShort((int) stat[0].getValue());
+					pw.writeInt(buffid);
+					pw.writeInt(bufflength);
 
-					mplew.writeShort((int) stat[1].getValue());
-					mplew.writeInt(buffid);
-					mplew.writeInt(bufflength);
+					pw.writeShort((int) stat[1].getValue());
+					pw.writeInt(buffid);
+					pw.writeInt(bufflength);
 
-					mplew.writeShort((int) stat[2].getValue());
-					mplew.writeInt(buffid);
-					mplew.writeInt(bufflength);
+					pw.writeShort((int) stat[2].getValue());
+					pw.writeInt(buffid);
+					pw.writeInt(bufflength);
 
-					mplew.write0(9);
-					mplew.writeInt(1);
-					mplew.writeInt(buffid);
-					mplew.writeInt((int) stat[3].getValue());
-					mplew.write(HexTool.getByteArrayFromHexString("C3 BF BB 33 00 00 00 00"));
-					mplew.writeInt(bufflength);
-					mplew.writeInt(0);
-					mplew.write(1);
-					mplew.writeInt(0);
+					pw.write(new byte[9]);
+					pw.writeInt(1);
+					pw.writeInt(buffid);
+					pw.writeInt((int) stat[3].getValue());
+					pw.write(HexTool.getByteArrayFromHexString("C3 BF BB 33 00 00 00 00"));
+					pw.writeInt(bufflength);
+					pw.writeInt(0);
+					pw.write(1);
+					pw.writeInt(0);
 					break;
 				}
 			} catch (Exception ez) {
 				ez.printStackTrace();
 			}
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] TrifleWind(int cid, int skillid, int ga, int oid, int gu) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
-			mplew.write(0);
-			mplew.writeInt(cid);
-			mplew.writeInt(7);
-			mplew.write(1);
-			mplew.writeInt(gu);
-			mplew.writeInt(oid);
-			mplew.writeInt(skillid);
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
+			pw.write(0);
+			pw.writeInt(cid);
+			pw.writeInt(7);
+			pw.write(1);
+			pw.writeInt(gu);
+			pw.writeInt(oid);
+			pw.writeInt(skillid);
 			for (int i = 1; i < ga; i++) {
-				mplew.write(1);
-				mplew.writeInt(2 + i);
-				mplew.writeInt(1);
-				mplew.writeInt(Randomizer.rand(0x2A, 0x2F));
-				mplew.writeInt(7 + i);
-				mplew.writeInt(Randomizer.rand(5, 0xAB));
-				mplew.writeInt(Randomizer.rand(0, 0x37));
-				mplew.writeLong(0);
-				mplew.writeInt(Randomizer.nextInt());
-				mplew.writeInt(0);
+				pw.write(1);
+				pw.writeInt(2 + i);
+				pw.writeInt(1);
+				pw.writeInt(Randomizer.rand(0x2A, 0x2F));
+				pw.writeInt(7 + i);
+				pw.writeInt(Randomizer.rand(5, 0xAB));
+				pw.writeInt(Randomizer.rand(0, 0x37));
+				pw.writeLong(0);
+				pw.writeInt(Randomizer.nextInt());
+				pw.writeInt(0);
 			}
-			mplew.write(0);
+			pw.write(0);
 
-			mplew.write0(69); // for no dc goodluck charm! >:D xD
+			pw.write(new byte[69]); // for no dc goodluck charm! >:D xD
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 	}
 
 	public static class PhantomPacket {
 
 		public static byte[] addStolenSkill(int jobNum, int index, int skill, int level) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.UPDATE_STOLEN_SKILLS.getValue());
-			mplew.write(1);
-			mplew.write(0);
-			mplew.writeInt(jobNum);
-			mplew.writeInt(index);
-			mplew.writeInt(skill);
-			mplew.writeInt(level);
-			mplew.writeInt(0);
-			mplew.write(0);
+			pw.writeShort(SendPacketOpcode.UPDATE_STOLEN_SKILLS.getValue());
+			pw.write(1);
+			pw.write(0);
+			pw.writeInt(jobNum);
+			pw.writeInt(index);
+			pw.writeInt(skill);
+			pw.writeInt(level);
+			pw.writeInt(0);
+			pw.write(0);
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] removeStolenSkill(int jobNum, int index) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.UPDATE_STOLEN_SKILLS.getValue());
-			mplew.write(1);
-			mplew.write(3);
-			mplew.writeInt(jobNum);
-			mplew.writeInt(index);
-			mplew.write(0);
+			pw.writeShort(SendPacketOpcode.UPDATE_STOLEN_SKILLS.getValue());
+			pw.write(1);
+			pw.write(3);
+			pw.writeInt(jobNum);
+			pw.writeInt(index);
+			pw.write(0);
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] replaceStolenSkill(int base, int skill) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.REPLACE_SKILLS.getValue());
-			mplew.write(1);
-			mplew.write(skill > 0 ? 1 : 0);
-			mplew.writeInt(base);
-			mplew.writeInt(skill);
+			pw.writeShort(SendPacketOpcode.REPLACE_SKILLS.getValue());
+			pw.write(1);
+			pw.write(skill > 0 ? 1 : 0);
+			pw.writeInt(base);
+			pw.writeInt(skill);
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] gainCardStack(int oid, int runningId, int color, int skillid, int damage, int times) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
-			mplew.write(0);
-			mplew.writeInt(oid);
-			mplew.writeInt(1);
-			mplew.writeInt(damage);
-			mplew.writeInt(skillid);
+			pw.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
+			pw.write(0);
+			pw.writeInt(oid);
+			pw.writeInt(1);
+			pw.writeInt(damage);
+			pw.writeInt(skillid);
 			for (int i = 0; i < times; i++) {
-				mplew.write(1);
-				mplew.writeInt(damage == 0 ? runningId + i : runningId);
-				mplew.writeInt(color);
-				mplew.writeInt(Randomizer.rand(15, 29));
-				mplew.writeInt(Randomizer.rand(7, 11));
-				mplew.writeInt(Randomizer.rand(0, 9));
+				pw.write(1);
+				pw.writeInt(damage == 0 ? runningId + i : runningId);
+				pw.writeInt(color);
+				pw.writeInt(Randomizer.rand(15, 29));
+				pw.writeInt(Randomizer.rand(7, 11));
+				pw.writeInt(Randomizer.rand(0, 9));
 			}
-			mplew.write(0);
+			pw.write(0);
 
-			mplew.write0(69); // for no DC it requires this do not
-										// remove
-
-			return mplew.getPacket();
+			pw.write(new byte[69]); // for no DC it requires this do not remove
+			return pw.getPacket();
 		}
 
 		public static byte[] updateCardStack(final int total) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.PHANTOM_CARD.getValue());
-			mplew.write(total);
+			pw.writeShort(SendPacketOpcode.PHANTOM_CARD.getValue());
+			pw.write(total);
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] getCarteAnimation(int cid, int oid, int job, int total, int numDisplay) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
-			mplew.write(0);
-			mplew.writeInt(cid);
-			mplew.writeInt(1);
+			pw.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
+			pw.write(0);
+			pw.writeInt(cid);
+			pw.writeInt(1);
 
-			mplew.writeInt(oid);
-			mplew.writeInt(job == 2412 ? 24120002 : 24100003);
-			mplew.write(1);
+			pw.writeInt(oid);
+			pw.writeInt(job == 2412 ? 24120002 : 24100003);
+			pw.write(1);
 			for (int i = 1; i <= numDisplay; i++) {
-				mplew.writeInt(total - (numDisplay - i));
-				mplew.writeInt(job == 2412 ? 2 : 0);
+				pw.writeInt(total - (numDisplay - i));
+				pw.writeInt(job == 2412 ? 2 : 0);
 
-				mplew.writeInt(15 + Randomizer.nextInt(15));
-				mplew.writeInt(7 + Randomizer.nextInt(5));
-				mplew.writeInt(Randomizer.nextInt(4));
+				pw.writeInt(15 + Randomizer.nextInt(15));
+				pw.writeInt(7 + Randomizer.nextInt(5));
+				pw.writeInt(Randomizer.nextInt(4));
 
-				mplew.write(i == numDisplay ? 0 : 1);
+				pw.write(i == numDisplay ? 0 : 1);
 			}
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] giveAriaBuff(int bufflevel, int buffid, int bufflength) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 			Map<MapleBuffStat, Integer> statups = new EnumMap<>(MapleBuffStat.class);
 			statups.put(MapleBuffStat.DAMAGE_RATE, 0);
 			statups.put(MapleBuffStat.IndieDamR, 0);
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketHelper.writeBuffMask(pw, statups);
 			for (int i = 0; i < 2; i++) {
-				mplew.writeShort(bufflevel);
-				mplew.writeInt(buffid);
-				mplew.writeInt(bufflength);
+				pw.writeShort(bufflevel);
+				pw.writeInt(buffid);
+				pw.writeInt(bufflength);
 			}
-			mplew.write0(3);
-			mplew.writeShort(0);
-			mplew.write(0);
-			return mplew.getPacket();
+			pw.write(new byte[3]);
+			pw.writeShort(0);
+			pw.write(0);
+			return pw.getPacket();
 		}
 	}
 
 	public static class AngelicPacket {
 
 		public static byte[] showRechargeEffect() {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-			mplew.write(0x31); // 0x2D
-			return mplew.getPacket();
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
+			pw.write(0x31); // 0x2D
+			return pw.getPacket();
 		}
 
 		public static byte[] RechargeEffect() {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
-			mplew.write(0x31); // 0x2D
-			return mplew.getPacket();
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.SHOW_SPECIAL_EFFECT.getValue());
+			pw.write(0x31); // 0x2D
+			return pw.getPacket();
 		}
 
 		public static byte[] DressUpTime(byte type) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
-			mplew.write(type);
-			mplew.writeShort(7707);
-			mplew.write(2);
-			mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
-			return mplew.getPacket();
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+			pw.write(type);
+			pw.writeShort(7707);
+			pw.write(2);
+			pw.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+			return pw.getPacket();
 		}
 
 		public static byte[] updateDress(int transform, MapleCharacter chr) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.ANGELIC_CHANGE.getValue());																																				
-			mplew.writeInt(chr.getId());
-			mplew.writeInt(transform);
-			return mplew.getPacket();
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.ANGELIC_CHANGE.getValue());																																				
+			pw.writeInt(chr.getId());
+			pw.writeInt(transform);
+			return pw.getPacket();
 		}
 
 		public static byte[] lockSkill(int skillid) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.LOCK_CHARGE_SKILL.getValue());
-			mplew.writeInt(skillid);
-			return mplew.getPacket();
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.LOCK_CHARGE_SKILL.getValue());
+			pw.writeInt(skillid);
+			return pw.getPacket();
 		}
 
 		public static byte[] unlockSkill() {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.UNLOCK_CHARGE_SKILL.getValue());
-			mplew.writeInt(0);
-			return mplew.getPacket();
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.UNLOCK_CHARGE_SKILL.getValue());
+			pw.writeInt(0);
+			return pw.getPacket();
 		}
 
 		public static byte[] absorbingSoulSeeker(int characterid, int size, Point essence1, Point essence2, int skillid,
 				boolean creation) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
-			mplew.write(!creation ? 0 : 1);
-			mplew.writeInt(characterid);
+			pw.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
+			pw.write(!creation ? 0 : 1);
+			pw.writeInt(characterid);
 			if (!creation) {
 				// false
-				mplew.writeInt(3);
-				mplew.write(1);
-				mplew.write(size);
-				mplew.write0(3);
-				mplew.writeShort(essence1.x);
-				mplew.writeShort(essence1.y);
-				mplew.writeShort(essence2.y);
-				mplew.writeShort(essence2.x);
+				pw.writeInt(3);
+				pw.write(1);
+				pw.write(size);
+				pw.write(new byte[3]);
+				pw.writeShort(essence1.x);
+				pw.writeShort(essence1.y);
+				pw.writeShort(essence2.y);
+				pw.writeShort(essence2.x);
 			} else {
 				// true
-				mplew.writeShort(essence1.x);
-				mplew.writeShort(essence1.y);
-				mplew.writeInt(4);
-				mplew.write(1);
-				mplew.writeShort(essence1.y);
-				mplew.writeShort(essence1.x);
+				pw.writeShort(essence1.x);
+				pw.writeShort(essence1.y);
+				pw.writeInt(4);
+				pw.write(1);
+				pw.writeShort(essence1.y);
+				pw.writeShort(essence1.x);
 			}
-			mplew.writeInt(skillid);
+			pw.writeInt(skillid);
 			if (!creation) {
 				for (int i = 0; i < 2; i++) {
-					mplew.write(1);
-					mplew.writeInt(Randomizer.rand(19, 20));
-					mplew.writeInt(1);
-					mplew.writeInt(Randomizer.rand(18, 19));
-					mplew.writeInt(Randomizer.rand(20, 23));
-					mplew.writeInt(Randomizer.rand(36, 55));
-					mplew.writeInt(540);
-					mplew.writeShort(0);// new 142
-					mplew.write0(6);// new 143
+					pw.write(1);
+					pw.writeInt(Randomizer.rand(19, 20));
+					pw.writeInt(1);
+					pw.writeInt(Randomizer.rand(18, 19));
+					pw.writeInt(Randomizer.rand(20, 23));
+					pw.writeInt(Randomizer.rand(36, 55));
+					pw.writeInt(540);
+					pw.writeShort(0);// new 142
+					pw.write(new byte[6]);// new 143
 				}
 			} else {
-				mplew.write(1);
-				mplew.writeInt(Randomizer.rand(6, 21));
-				mplew.writeInt(1);
-				mplew.writeInt(Randomizer.rand(42, 45));
-				mplew.writeInt(Randomizer.rand(4, 7));
-				mplew.writeInt(Randomizer.rand(267, 100));
-				mplew.writeInt(0);// 540
-				mplew.writeInt(0);
-				mplew.writeInt(0);
+				pw.write(1);
+				pw.writeInt(Randomizer.rand(6, 21));
+				pw.writeInt(1);
+				pw.writeInt(Randomizer.rand(42, 45));
+				pw.writeInt(Randomizer.rand(4, 7));
+				pw.writeInt(Randomizer.rand(267, 100));
+				pw.writeInt(0);// 540
+				pw.writeInt(0);
+				pw.writeInt(0);
 			}
-			mplew.write(0);
-			return mplew.getPacket();
+			pw.write(0);
+			return pw.getPacket();
 		}
 
 		public static byte[] SoulSeekerRegen(MapleCharacter chr, int sn) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
-			mplew.write(1);
-			mplew.writeInt(chr.getId());
-			mplew.writeInt(sn);
-			mplew.writeInt(4);
-			mplew.write(1);
-			mplew.writeInt(sn);
-			mplew.writeInt(65111007); // hide skills
-			mplew.write(1);
-			mplew.writeInt(Randomizer.rand(0x06, 0x10));
-			mplew.writeInt(1);
-			mplew.writeInt(Randomizer.rand(0x28, 0x2B));
-			mplew.writeInt(Randomizer.rand(0x03, 0x04));
-			mplew.writeInt(Randomizer.rand(0xFA, 0x49));
-			mplew.writeInt(0);
-			mplew.writeLong(0);
-			mplew.write(0);
-			return mplew.getPacket();
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
+			pw.write(1);
+			pw.writeInt(chr.getId());
+			pw.writeInt(sn);
+			pw.writeInt(4);
+			pw.write(1);
+			pw.writeInt(sn);
+			pw.writeInt(65111007); // hide skills
+			pw.write(1);
+			pw.writeInt(Randomizer.rand(0x06, 0x10));
+			pw.writeInt(1);
+			pw.writeInt(Randomizer.rand(0x28, 0x2B));
+			pw.writeInt(Randomizer.rand(0x03, 0x04));
+			pw.writeInt(Randomizer.rand(0xFA, 0x49));
+			pw.writeInt(0);
+			pw.writeLong(0);
+			pw.write(0);
+			return pw.getPacket();
 		}
 
 		public static byte[] SoulSeeker(MapleCharacter chr, int skillid, int sn, int sc1, int sc2) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
-			mplew.write(0);
-			mplew.writeInt(chr.getId());
-			mplew.writeInt(3);
-			mplew.write(1);
-			mplew.writeInt(sn);
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
+			pw.write(0);
+			pw.writeInt(chr.getId());
+			pw.writeInt(3);
+			pw.write(1);
+			pw.writeInt(sn);
 			if (sn >= 1) {
-				mplew.writeInt(sc1);// SHOW_ITEM_GAIN_INCHAT
+				pw.writeInt(sc1);// SHOW_ITEM_GAIN_INCHAT
 				if (sn == 2) {
-					mplew.writeInt(sc2);
+					pw.writeInt(sc2);
 				}
 			}
-			mplew.writeInt(65111007); // hide skills
+			pw.writeInt(65111007); // hide skills
 			for (int i = 0; i < 2; i++) {
-				mplew.write(1);
-				mplew.writeInt(i + 2);
-				mplew.writeInt(1);
-				mplew.writeInt(Randomizer.rand(0x0F, 0x10));
-				mplew.writeInt(Randomizer.rand(0x1B, 0x22));
-				mplew.writeInt(Randomizer.rand(0x1F, 0x24));
-				mplew.writeInt(540);
-				mplew.writeInt(0);// wasshort new143
-				mplew.writeInt(0);// new143
+				pw.write(1);
+				pw.writeInt(i + 2);
+				pw.writeInt(1);
+				pw.writeInt(Randomizer.rand(0x0F, 0x10));
+				pw.writeInt(Randomizer.rand(0x1B, 0x22));
+				pw.writeInt(Randomizer.rand(0x1F, 0x24));
+				pw.writeInt(540);
+				pw.writeInt(0);// wasshort new143
+				pw.writeInt(0);// new143
 			}
-			mplew.write(0);
-			return mplew.getPacket();
+			pw.write(0);
+			return pw.getPacket();
 		}
 	}
 
 	public static class LuminousPacket {
 
 		public static byte[] updateLuminousGauge(int darktotal, int lighttotal, int darktype, int lighttype) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.LUMINOUS_COMBO.getValue());
-			mplew.writeInt(darktotal);
-			mplew.writeInt(lighttotal);
-			mplew.writeInt(darktype);
-			mplew.writeInt(lighttype);
-			mplew.writeInt(281874974);// 1210382225
+			pw.writeShort(SendPacketOpcode.LUMINOUS_COMBO.getValue());
+			pw.writeInt(darktotal);
+			pw.writeInt(lighttotal);
+			pw.writeInt(darktype);
+			pw.writeInt(lighttype);
+			pw.writeInt(281874974);// 1210382225
 
-			mplew.write0(69); // for no dc
+			pw.write(new byte[69]); // for no dc
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] giveLuminousState(int skill, int light, int dark, int duration) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			PacketWriter pw = new PacketWriter();
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 
-			PacketHelper.writeSingleMask(mplew, MapleBuffStat.LUMINOUS_GAUGE);
+			PacketHelper.writeSingleMask(pw, MapleBuffStat.LUMINOUS_GAUGE);
 
-			mplew.writeShort(1);
-			mplew.writeInt(skill); // 20040217
-			mplew.writeInt(duration);
-			mplew.write0(5);
-			mplew.writeInt(skill); // 20040217
-			mplew.writeInt(483195070);
-			mplew.write0(8);
-			mplew.writeInt(Math.max(light, -1)); // light gauge
-			mplew.writeInt(Math.max(dark, -1)); // dark gauge
-			mplew.writeInt(1);
-			mplew.writeInt(1);// was2
-			mplew.writeInt(283183599);
-			mplew.writeInt(0);
-			mplew.writeInt(0);// new143
-			mplew.writeInt(1);
-			mplew.write(0);
+			pw.writeShort(1);
+			pw.writeInt(skill); // 20040217
+			pw.writeInt(duration);
+			pw.write(new byte[5]);
+			pw.writeInt(skill); // 20040217
+			pw.writeInt(483195070);
+			pw.write(new byte[8]);
+			pw.writeInt(Math.max(light, -1)); // light gauge
+			pw.writeInt(Math.max(dark, -1)); // dark gauge
+			pw.writeInt(1);
+			pw.writeInt(1);// was2
+			pw.writeInt(283183599);
+			pw.writeInt(0);
+			pw.writeInt(0);// new143
+			pw.writeInt(1);
+			pw.write(0);
 
-			mplew.write0(69); // for no dc
-
-			return mplew.getPacket();
+			pw.write(new byte[69]); // for no dc
+			return pw.getPacket();
 		}
 	}
 
 	public static class XenonPacket {
 
 		public static byte[] giveXenonSupply(short amount) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
-			PacketHelper.writeSingleMask(mplew, MapleBuffStat.SurplusSupply);
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			PacketHelper.writeSingleMask(pw, MapleBuffStat.SurplusSupply);
 
-			mplew.writeShort(amount);
-			mplew.writeInt(30020232); // skill id
-			mplew.writeInt(-1); // duration
-			mplew.write0(18);
+			pw.writeShort(amount);
+			pw.writeInt(30020232); // skill id
+			pw.writeInt(-1); // duration
+			pw.write(new byte[18]);
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] giveAmaranthGenerator() {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 			Map<MapleBuffStat, Integer> statups = new EnumMap<>(MapleBuffStat.class);
 			statups.put(MapleBuffStat.SurplusSupply, 0);
 			statups.put(MapleBuffStat.AmaranthGenerator, 0);
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketHelper.writeBuffMask(pw, statups);
 
-			mplew.writeShort(20); // gauge fill
-			mplew.writeInt(30020232); // skill id
-			mplew.writeInt(-1); // duration
+			pw.writeShort(20); // gauge fill
+			pw.writeInt(30020232); // skill id
+			pw.writeInt(-1); // duration
 
-			mplew.writeShort(1);
-			mplew.writeInt(36121054); // skill id
-			mplew.writeInt(10000); // duration
+			pw.writeShort(1);
+			pw.writeInt(36121054); // skill id
+			pw.writeInt(10000); // duration
 
-			mplew.write0(5);
-			mplew.writeInt(1000);
-			mplew.writeInt(1);
-			mplew.write0(1);
+			pw.write(new byte[5]);
+			pw.writeInt(1000);
+			pw.writeInt(1);
+			pw.write(0);
 
-			mplew.write0(69); // for no dc
+			pw.write(new byte[69]); // for no dc
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] PinPointRocket(int cid, List<Integer> moblist) {
-			MaplePacketLittleEndianWriter packet = new MaplePacketLittleEndianWriter();
+			PacketWriter packet = new PacketWriter();
 			packet.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
 			packet.write(0);
 			packet.writeInt(cid);
@@ -596,12 +593,12 @@ public class JobPacket {
 			}
 			packet.write(0);
 
-			packet.write0(69); // for no dc
+			packet.write(new byte[69]); // for no dc
 			return packet.getPacket();
 		}
 
 		public static byte[] MegidoFlameRe(int cid, int oid) {
-			MaplePacketLittleEndianWriter packet = new MaplePacketLittleEndianWriter();
+			PacketWriter packet = new PacketWriter();
 			packet.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
 			packet.write(0);
 			packet.writeInt(cid);
@@ -620,12 +617,12 @@ public class JobPacket {
 			packet.writeLong(0);
 			packet.writeLong(0);
 			packet.write(0);
-			packet.write0(69); // for no dc
+			packet.write(new byte[69]); // for no dc
 			return packet.getPacket();
 		}
 
 		public static byte[] ShieldChacingRe(int cid, int unkwoun, int oid, int unkwoun2, int unkwoun3) {
-			MaplePacketLittleEndianWriter packet = new MaplePacketLittleEndianWriter();
+			PacketWriter packet = new PacketWriter();
 			packet.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
 			packet.write(1);
 			packet.writeInt(cid);
@@ -646,12 +643,12 @@ public class JobPacket {
 			packet.writeInt(Randomizer.nextInt());
 			packet.writeInt(0);
 			packet.write(0);
-			packet.write0(69); // for no dc
+			packet.write(new byte[69]); // for no dc
 			return packet.getPacket();
 		}
 
 		public static byte[] ShieldChacing(int cid, List<Integer> moblist, int skillid) {
-			MaplePacketLittleEndianWriter packet = new MaplePacketLittleEndianWriter();
+			PacketWriter packet = new PacketWriter();
 			packet.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
 			packet.write(0);
 			packet.writeInt(cid);
@@ -675,12 +672,12 @@ public class JobPacket {
 				packet.writeInt(0);
 			}
 			packet.write(0);
-			packet.write0(69); // for no dc
+			packet.write(new byte[69]); // for no dc
 			return packet.getPacket();
 		}
 
 		public static byte[] EazisSystem(int cid, int oid) {
-			MaplePacketLittleEndianWriter packet = new MaplePacketLittleEndianWriter();
+			PacketWriter packet = new PacketWriter();
 			packet.writeShort(SendPacketOpcode.GAIN_FORCE.getValue());
 			packet.write(0);
 			packet.writeInt(cid);
@@ -701,7 +698,7 @@ public class JobPacket {
 				packet.writeInt(0);
 			}
 			packet.write(0);
-			packet.write0(69); // for no dc
+			packet.write(new byte[69]); // for no dc
 			return packet.getPacket();
 		}
 	}
@@ -709,203 +706,198 @@ public class JobPacket {
 	public static class AvengerPacket {
 
 		public static byte[] giveAvengerHpBuff(int hp) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 
-			PacketHelper.writeSingleMask(mplew, MapleBuffStat.Larkness);
-			mplew.writeShort(3);
-			mplew.writeInt(0);
-			mplew.writeInt(2100000000);
-			mplew.write0(5);
-			mplew.writeInt(hp);
-			mplew.write0(9);
+			PacketHelper.writeSingleMask(pw, MapleBuffStat.Larkness);
+			pw.writeShort(3);
+			pw.writeInt(0);
+			pw.writeInt(2100000000);
+			pw.write(new byte[5]);
+			pw.writeInt(hp);
+			pw.write(new byte[9]);
 
-			mplew.write0(69); // for no dc
-
-			return mplew.getPacket();
+			pw.write(new byte[69]); // for no dc
+			return pw.getPacket();
 		}
 
 		public static byte[] giveExceed(short amount) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
-			PacketHelper.writeSingleMask(mplew, MapleBuffStat.EXCEED);
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			PacketHelper.writeSingleMask(pw, MapleBuffStat.EXCEED);
 
-			mplew.writeShort(amount);
-			mplew.writeInt(30010230); // skill id
-			mplew.writeInt(-1); // duration
-			mplew.write0(14);
+			pw.writeShort(amount);
+			pw.writeInt(30010230); // skill id
+			pw.writeInt(-1); // duration
+			pw.write(new byte[14]);
 
-			mplew.write0(69); // for no dc
+			pw.write(new byte[69]); // for no dc
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 
 		public static byte[] giveExceedAttack(int skill, short amount) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
-			PacketHelper.writeSingleMask(mplew, MapleBuffStat.EXCEED_ATTACK);
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			PacketHelper.writeSingleMask(pw, MapleBuffStat.EXCEED_ATTACK);
 
-			mplew.writeShort(amount);
-			mplew.writeInt(skill); // skill id
-			mplew.writeInt(15000); // duration
-			mplew.write0(14);
+			pw.writeShort(amount);
+			pw.writeInt(skill); // skill id
+			pw.writeInt(15000); // duration
+			pw.write(new byte[14]);
 
-			mplew.write0(69); // for no dc
-
-			return mplew.getPacket();
+			pw.write(new byte[69]); // for no dc
+			return pw.getPacket();
 		}
 
 		public static byte[] cancelExceed() {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.CANCEL_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.CANCEL_BUFF.getValue());
 
 			Map<MapleBuffStat, Integer> statups = new EnumMap<>(MapleBuffStat.class);
 			statups.put(MapleBuffStat.EXCEED, 0);
 			statups.put(MapleBuffStat.EXCEED_ATTACK, 0);
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketHelper.writeBuffMask(pw, statups);
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 	}
 
 	public static class DawnWarriorPacket {
 
 		public static byte[] giveMoonfallStance(int level) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 			Map<MapleBuffStat, Integer> statups = new EnumMap<>(MapleBuffStat.class);
 			statups.put(MapleBuffStat.IndieCr, 0);
 			statups.put(MapleBuffStat.MOON_STANCE2, 0);
 			statups.put(MapleBuffStat.WARRIOR_STANCE, 0);
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketHelper.writeBuffMask(pw, statups);
 
-			mplew.writeShort(level);
-			mplew.writeInt(11101022);
-			mplew.writeInt(Integer.MAX_VALUE);
-			mplew.writeShort(1);
-			mplew.writeInt(11101022);
-			mplew.writeInt(Integer.MAX_VALUE);
-			mplew.writeInt(0);
-			mplew.write(5);
-			mplew.write(1);
-			mplew.writeInt(1);
-			mplew.writeInt(11101022);
-			mplew.writeInt(level);
-			mplew.writeInt(Integer.MAX_VALUE);
-			mplew.writeInt(0);
-			mplew.writeInt(0);
-			mplew.write(1);
-			mplew.writeInt(0);
+			pw.writeShort(level);
+			pw.writeInt(11101022);
+			pw.writeInt(Integer.MAX_VALUE);
+			pw.writeShort(1);
+			pw.writeInt(11101022);
+			pw.writeInt(Integer.MAX_VALUE);
+			pw.writeInt(0);
+			pw.write(5);
+			pw.write(1);
+			pw.writeInt(1);
+			pw.writeInt(11101022);
+			pw.writeInt(level);
+			pw.writeInt(Integer.MAX_VALUE);
+			pw.writeInt(0);
+			pw.writeInt(0);
+			pw.write(1);
+			pw.writeInt(0);
 
-			mplew.write0(69); // for no dc
-
-			return mplew.getPacket();
+			pw.write(new byte[69]); // for no dc
+			return pw.getPacket();
 		}
 
 		public static byte[] giveSunriseStance(int level) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 			Map<MapleBuffStat, Integer> statups = new EnumMap<>(MapleBuffStat.class);
 			statups.put(MapleBuffStat.Booster, 0);
 			statups.put(MapleBuffStat.IndieDamR, 0);
 			statups.put(MapleBuffStat.WARRIOR_STANCE, 0);
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketHelper.writeBuffMask(pw, statups);
 
-			mplew.writeShort(level);
-			mplew.writeInt(11111022);
-			mplew.writeInt(Integer.MAX_VALUE);
-			mplew.writeInt(0);
-			mplew.write(5);
-			mplew.write(1);
-			mplew.writeInt(1);
-			mplew.writeInt(11111022);
-			mplew.writeInt(-1);
-			mplew.writeInt(Integer.MAX_VALUE);
-			mplew.writeInt(0);
-			mplew.writeInt(1);
-			mplew.writeInt(11111022);
-			mplew.writeInt(0x19);
-			mplew.writeInt(Integer.MAX_VALUE);
-			mplew.writeInt(0);
-			mplew.writeInt(0);
-			mplew.write(1);
-			mplew.writeInt(0);
+			pw.writeShort(level);
+			pw.writeInt(11111022);
+			pw.writeInt(Integer.MAX_VALUE);
+			pw.writeInt(0);
+			pw.write(5);
+			pw.write(1);
+			pw.writeInt(1);
+			pw.writeInt(11111022);
+			pw.writeInt(-1);
+			pw.writeInt(Integer.MAX_VALUE);
+			pw.writeInt(0);
+			pw.writeInt(1);
+			pw.writeInt(11111022);
+			pw.writeInt(0x19);
+			pw.writeInt(Integer.MAX_VALUE);
+			pw.writeInt(0);
+			pw.writeInt(0);
+			pw.write(1);
+			pw.writeInt(0);
 
-			mplew.write0(69); // for no dc
-
-			return mplew.getPacket();
+			pw.write(new byte[69]); // for no dc
+			return pw.getPacket();
 		}
 
 		public static byte[] giveEquinox_Moon(int level, int duration) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 			Map<MapleBuffStat, Integer> statups = new EnumMap<>(MapleBuffStat.class);
 			statups.put(MapleBuffStat.IndieCr, 0);
 			statups.put(MapleBuffStat.MOON_STANCE2, 0);
 			statups.put(MapleBuffStat.EQUINOX_STANCE, 0);
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketHelper.writeBuffMask(pw, statups);
 
-			mplew.writeShort(level);
-			mplew.writeInt(11121005);
-			mplew.writeInt(duration);
-			mplew.writeShort(1);
-			mplew.writeInt(11121005);
-			mplew.writeInt(duration);
-			mplew.writeInt(0);
-			mplew.write(5);
-			mplew.writeInt(1);
-			mplew.writeInt(11121005);
-			mplew.writeInt(level);
-			mplew.writeInt(duration);
-			mplew.writeInt(duration);
-			mplew.writeInt(0);
-			mplew.write(1);
-			mplew.writeInt(0);
+			pw.writeShort(level);
+			pw.writeInt(11121005);
+			pw.writeInt(duration);
+			pw.writeShort(1);
+			pw.writeInt(11121005);
+			pw.writeInt(duration);
+			pw.writeInt(0);
+			pw.write(5);
+			pw.writeInt(1);
+			pw.writeInt(11121005);
+			pw.writeInt(level);
+			pw.writeInt(duration);
+			pw.writeInt(duration);
+			pw.writeInt(0);
+			pw.write(1);
+			pw.writeInt(0);
 
-			mplew.write0(69); // for no dc
-
-			return mplew.getPacket();
+			pw.write(new byte[69]); // for no dc
+			return pw.getPacket();
 		}
 
 		public static byte[] giveEquinox_Sun(int level, int duration) {
-			MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+			PacketWriter pw = new PacketWriter();
 
-			mplew.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+			pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
 			Map<MapleBuffStat, Integer> statups = new EnumMap<>(MapleBuffStat.class);
 			statups.put(MapleBuffStat.Booster, 0);
 			statups.put(MapleBuffStat.IndieDamR, 0);
 			statups.put(MapleBuffStat.EQUINOX_STANCE, 0);
-			PacketHelper.writeBuffMask(mplew, statups);
+			PacketHelper.writeBuffMask(pw, statups);
 
-			mplew.writeShort(level);
-			mplew.writeInt(11121005);
-			mplew.writeInt(duration);
-			mplew.writeInt(0);
-			mplew.write(5);
-			mplew.writeInt(1);
-			mplew.writeInt(11121005);
-			mplew.writeInt(-1);
-			mplew.writeInt(duration);
-			mplew.writeInt(duration);
-			mplew.writeInt(1);
-			mplew.writeInt(11121005);
-			mplew.writeInt(0x19);
-			mplew.writeInt(duration);
-			mplew.writeInt(duration);
-			mplew.writeInt(0);
-			mplew.write(1);
-			mplew.writeInt(0);
+			pw.writeShort(level);
+			pw.writeInt(11121005);
+			pw.writeInt(duration);
+			pw.writeInt(0);
+			pw.write(5);
+			pw.writeInt(1);
+			pw.writeInt(11121005);
+			pw.writeInt(-1);
+			pw.writeInt(duration);
+			pw.writeInt(duration);
+			pw.writeInt(1);
+			pw.writeInt(11121005);
+			pw.writeInt(0x19);
+			pw.writeInt(duration);
+			pw.writeInt(duration);
+			pw.writeInt(0);
+			pw.write(1);
+			pw.writeInt(0);
 
-			mplew.write0(69); // for no dc
+			pw.write(new byte[69]); // for no dc
 
-			return mplew.getPacket();
+			return pw.getPacket();
 		}
 	}
 }

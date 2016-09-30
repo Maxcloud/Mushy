@@ -27,7 +27,7 @@ import handling.world.World;
 import handling.world.guild.MapleBBSThread.MapleBBSReply;
 import net.DatabaseConnection;
 import server.MapleStatEffect;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 import tools.packet.CWvsContext.AlliancePacket;
@@ -1024,7 +1024,7 @@ public class MapleGuild implements java.io.Serializable {
         return 10;
     }
 
-    public final void addMemberData(final MaplePacketLittleEndianWriter mplew) {
+    public final void addMemberData(final PacketWriter mplew) {
         mplew.write(members.size());
 
         for (final MapleGuildCharacter mgc : members) {

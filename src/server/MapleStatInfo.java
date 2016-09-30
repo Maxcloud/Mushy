@@ -157,6 +157,8 @@ public enum MapleStatInfo {
     pddR(0), //Weapon DEF %
     pddX(0), //Weapon DEF
     period(0), //[Guild/Professions] time taken
+    ppCon(0),
+    ppRecovery(0),
     price(0), //[Guild] price to purchase
     priceUnit(0), //[Guild] Price stuffs
     prop(100), //Percentage chance over 100%

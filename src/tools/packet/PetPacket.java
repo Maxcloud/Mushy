@@ -1,3 +1,23 @@
+/*
+ This file is part of the OdinMS Maple Story Server
+ Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+ Matthias Butz <matze@odinms.de>
+ Jan Christian Meyer <vimes@odinms.de>
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License version 3
+ as published by the Free Software Foundation. You may not use, modify
+ or distribute this program under any other version of the
+ GNU Affero General Public License.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package tools.packet;
 
 import java.awt.Point;
@@ -9,185 +29,185 @@ import client.inventory.Item;
 import client.inventory.MaplePet;
 import handling.SendPacketOpcode;
 import server.movement.LifeMovementFragment;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 
 public class PetPacket {
 
     public static final byte[] updatePet(MaplePet pet, Item item, boolean active) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.INVENTORY_OPERATION.getValue());
-        mplew.write(0);
-        mplew.write(2);
-        mplew.write(0);//new141
-        mplew.write(3);
-        mplew.write(5);
-        mplew.writeShort(pet.getInventoryPosition());
-        mplew.write(0);
-        mplew.write(5);
-        mplew.writeShort(pet.getInventoryPosition());
-        mplew.write(3);
-        mplew.writeInt(pet.getPetItemId());
-        mplew.write(1);
-        mplew.writeLong(pet.getUniqueId());
-        PacketHelper.addPetItemInfo(mplew, item, pet, active);
-        return mplew.getPacket();
+        pw.writeShort(SendPacketOpcode.INVENTORY_OPERATION.getValue());
+        pw.write(0);
+        pw.write(2);
+        pw.write(0);//new141
+        pw.write(3);
+        pw.write(5);
+        pw.writeShort(pet.getInventoryPosition());
+        pw.write(0);
+        pw.write(5);
+        pw.writeShort(pet.getInventoryPosition());
+        pw.write(3);
+        pw.writeInt(pet.getPetItemId());
+        pw.write(1);
+        pw.writeLong(pet.getUniqueId());
+        PacketHelper.addPetItemInfo(pw, item, pet, active);
+        return pw.getPacket();
     }
 
     public static final byte[] showPet(MapleCharacter chr, MaplePet pet, boolean remove, boolean hunger) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
-        mplew.writeInt(chr.getId());
-        mplew.write(chr.getPetIndex(pet));
+        pw.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
+        pw.writeInt(chr.getId());
+        pw.write(chr.getPetIndex(pet));
         if (remove) {
-            mplew.write(0);
-            mplew.write(hunger ? 1 : 0); // int now?
+            pw.write(0);
+            pw.write(hunger ? 1 : 0); // int now?
         } else {
-            mplew.write(1);
-            mplew.write(1);//was 0
-            mplew.writeInt(pet.getPetItemId());
-            mplew.writeMapleAsciiString(pet.getName());
-            mplew.writeLong(pet.getUniqueId());
-            mplew.writeShort(pet.getPos().x);
-            mplew.writeShort(pet.getPos().y - 20);
-            mplew.write(pet.getStance());
-//            mplew.writeShort(1);//new 141
-            mplew.writeShort(pet.getFh());
-            mplew.writeInt(-1);
-            mplew.writeInt(100);//new 141
+            pw.write(1);
+            pw.write(1);//was 0
+            pw.writeInt(pet.getPetItemId());
+            pw.writeMapleAsciiString(pet.getName());
+            pw.writeLong(pet.getUniqueId());
+            pw.writeShort(pet.getPos().x);
+            pw.writeShort(pet.getPos().y - 20);
+            pw.write(pet.getStance());
+//            pw.writeShort(1);//new 141
+            pw.writeShort(pet.getFh());
+            pw.writeInt(-1);
+            pw.writeInt(100);//new 141
         }
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static final byte[] removePet(int cid, int index) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
-        mplew.writeInt(cid);
-        mplew.write(index);
-        mplew.writeShort(0);
+        pw.writeShort(SendPacketOpcode.SPAWN_PET.getValue());
+        pw.writeInt(cid);
+        pw.write(index);
+        pw.writeShort(0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] movePet(int cid, int pid, byte slot, Point pos, List<LifeMovementFragment> moves) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.MOVE_PET.getValue());
-        mplew.writeInt(cid);
-        mplew.write(slot);
-        mplew.writeInt(0);//new 141
-        mplew.writePos(pos);
-        mplew.writeInt(pid);
-        PacketHelper.serializeMovementList(mplew, moves);
+        pw.writeShort(SendPacketOpcode.MOVE_PET.getValue());
+        pw.writeInt(cid);
+        pw.write(slot);
+        pw.writeInt(0);//new 141
+        pw.writePos(pos);
+        pw.writeInt(pid);
+        PacketHelper.serializeMovementList(pw, moves);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] petChat(int cid, int un, String text, byte slot) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.PET_CHAT.getValue());
-        mplew.writeInt(cid);
+        pw.writeShort(SendPacketOpcode.PET_CHAT.getValue());
+        pw.writeInt(cid);
         
-        mplew.write(slot);
-        mplew.write(un);
-        mplew.write(0);
-        mplew.writeMapleAsciiString(text);
-        mplew.write(0);
+        pw.write(slot);
+        pw.write(un);
+        pw.write(0);
+        pw.writeMapleAsciiString(text);
+        pw.write(0);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
     
     public static byte[] petColor(int cid,byte slot, int color) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.PET_COLOR.getValue());
-        mplew.writeInt(cid);
-        mplew.write(slot);
-        mplew.writeInt(color);
+        pw.writeShort(SendPacketOpcode.PET_COLOR.getValue());
+        pw.writeInt(cid);
+        pw.write(slot);
+        pw.writeInt(color);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static final byte[] commandResponse(int cid, byte command, byte slot, boolean success, boolean food) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.PET_COMMAND.getValue());
-        mplew.writeInt(cid);
-        mplew.write(slot);
-        mplew.write(command == 1 ? 1 : 0);
-        mplew.write(command);
-        mplew.write(success ? 1 : command == 1 ? 0 : 0);
-        mplew.writeInt(0);
-        mplew.write(0);//new142
-        mplew.write(0);//new142
+        pw.writeShort(SendPacketOpcode.PET_COMMAND.getValue());
+        pw.writeInt(cid);
+        pw.write(slot);
+        pw.write(command == 1 ? 1 : 0);
+        pw.write(command);
+        pw.write(success ? 1 : command == 1 ? 0 : 0);
+        pw.writeInt(0);
+        pw.write(0);//new142
+        pw.write(0);//new142
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static final byte[] showPetLevelUp(MapleCharacter chr, byte index) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
-        mplew.writeInt(chr.getId());
-        mplew.write(6);
-        mplew.write(0);
-        mplew.writeInt(index);
+        pw.writeShort(SendPacketOpcode.SHOW_FOREIGN_EFFECT.getValue());
+        pw.writeInt(chr.getId());
+        pw.write(6);
+        pw.write(0);
+        pw.writeInt(index);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
     
     public static final byte[] petSize(int cid, byte slot,short size) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.PET_SIZE.getValue());
-        mplew.writeInt(cid);
-        mplew.write(slot);
-        mplew.writeShort(size);
+        pw.writeShort(SendPacketOpcode.PET_SIZE.getValue());
+        pw.writeInt(cid);
+        pw.write(slot);
+        pw.writeShort(size);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static final byte[] showPetUpdate(MapleCharacter chr, int uniqueId, byte index) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.PET_EXCEPTION_LIST.getValue());
-        mplew.writeInt(chr.getId());
+        pw.writeShort(SendPacketOpcode.PET_EXCEPTION_LIST.getValue());
+        pw.writeInt(chr.getId());
         
-        mplew.write(index);
-        mplew.writeLong(uniqueId);
-        mplew.write(0);
-        mplew.writeInt(0);
-        //mplew.writeZeroBytes(50);
+        pw.write(index);
+        pw.writeLong(uniqueId);
+        pw.write(0);
+        pw.writeInt(0);
+        //pw.writeZeroBytes(50);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 
     public static byte[] petStatUpdate(MapleCharacter chr) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter pw = new PacketWriter();
 
-        mplew.writeShort(SendPacketOpcode.UPDATE_STATS.getValue());
-        mplew.write(0);
-        mplew.writeLong(MapleStat.PET.getValue());
+        pw.writeShort(SendPacketOpcode.UPDATE_STATS.getValue());
+        pw.write(0);
+        pw.writeLong(MapleStat.PET.getValue());
 
         byte count = 0;
         for (MaplePet pet : chr.getPets()) {
             if (pet.getSummoned()) {
-                mplew.writeLong(pet.getUniqueId());
+                pw.writeLong(pet.getUniqueId());
                 count = (byte) (count + 1);
             }
         }
         while (count < 3) {
-            mplew.write0(8);
+            pw.write(new byte[8]);
             count = (byte) (count + 1);
         }
-        mplew.write(0);
-        mplew.writeShort(0);
-        mplew.write0(100);
+        pw.write(0);
+        pw.writeShort(0);
+        pw.write(new byte[100]);
 
-        return mplew.getPacket();
+        return pw.getPacket();
     }
 }
