@@ -303,7 +303,17 @@ public class LoginPacket {
         
         pw.write(chars.size());
         for (MapleCharacter chr : chars) {
-            addCharEntry(pw, chr, (!chr.isGM()) && (chr.getLevel() >= 30), false);
+            addCharEntry(pw, chr);
+            pw.write(0);
+            
+            boolean ranking = (!chr.isGM()) && (chr.getLevel() >= 30);
+            pw.write(ranking ? 1 : 0);
+            if (ranking) {
+                pw.writeInt(chr.getRank());
+                pw.writeInt(chr.getRankMove());
+                pw.writeInt(chr.getJobRank());
+                pw.writeInt(chr.getJobRankMove());
+            }
         }
         pw.write((secondpw != null) && (secondpw.length() <= 0) ? 2 : (secondpw != null) && (secondpw.length() > 0) ? 1 : 0); 
         pw.write(0);
@@ -343,7 +353,7 @@ public class LoginPacket {
 
         pw.writeShort(SendPacketOpcode.ADD_NEW_CHAR_ENTRY.getValue());
         pw.write(worked ? 0 : 1);
-        addCharEntry(pw, chr, false, false);
+        addCharEntry(pw, chr);
 
         return pw.getPacket();
     }
@@ -358,22 +368,11 @@ public class LoginPacket {
         return pw.getPacket();
     }
 
-    private static void addCharEntry(PacketWriter pw, MapleCharacter chr, boolean ranking, boolean viewAll) {
+    private static void addCharEntry(PacketWriter pw, MapleCharacter chr) {
         PacketHelper.addCharStats(pw, chr);
         PacketHelper.addCharLook(pw, chr, true, false);
         if (GameConstants.isZero(chr.getJob())) {
             PacketHelper.addCharLook(pw, chr, true, true);
-        }
-        if (!viewAll) {
-            pw.write(0);
-        }
-        
-        pw.write(ranking ? 1 : 0);
-        if (ranking) {
-            pw.writeInt(chr.getRank());
-            pw.writeInt(chr.getRankMove());
-            pw.writeInt(chr.getJobRank());
-            pw.writeInt(chr.getJobRankMove());
         }
     }
 
