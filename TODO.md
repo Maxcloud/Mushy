@@ -1,7 +1,7 @@
 # Mushy Todo
 
 ### Character
-- [ ] Damage Skins
+- [ ] Damage Skins (Savion)
 
 ### Packet
 - [ ] SPMO
@@ -24,3 +24,4 @@
 ### Other
 - [ ] Cash shop item searching
 - [ ] recode packet handling system
+- [ ] AutoPilot (Savion)
