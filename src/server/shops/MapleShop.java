@@ -222,23 +222,12 @@ public class MapleShop {
             }
             MapleInventoryManipulator.removeFromSlot(c, type, (short) slot, quantity, false);
             double price;
-            if (!"".equals(item.getGMLog())) {
-                if (item.getGMLog().toUpperCase().startsWith("DROP")) {
-                    if ((GameConstants.isThrowingStar(item.getItemId())) || (GameConstants.isBullet(item.getItemId()))) {
-                        price = ii.getWholePrice(item.getItemId()) / ii.getSlotMax(item.getItemId());
-                    } else {
-                        price = ii.getPrice(item.getItemId());
-                    }
-                } else {
-                    price = 1.0D;
-                }
-            } else {
-                if ((GameConstants.isThrowingStar(item.getItemId())) || (GameConstants.isBullet(item.getItemId()))) {
+            
+            if ((GameConstants.isThrowingStar(item.getItemId())) || (GameConstants.isBullet(item.getItemId()))) {
                     price = ii.getWholePrice(item.getItemId()) / ii.getSlotMax(item.getItemId());
                 } else {
                     price = ii.getPrice(item.getItemId());
                 }
-            }
 
             int recvMesos = (int) Math.max(Math.ceil(price * quantity), 0.0D);
             if ((price != -1.0D) && (recvMesos > 0)) {
