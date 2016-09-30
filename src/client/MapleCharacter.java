@@ -7596,7 +7596,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             return;
         }
         chair = 0;
-        client.getSession().write(CField.cancelChair(-1));
+        client.getSession().write(CField.cancelChair(-1, this.getId()));
         map.broadcastMessage(this, CField.showChair(id, 0), false);
         giveDebuff(MapleDisease.getBySkill(type), MobSkillFactory.getMobSkill(type, level));
     }
