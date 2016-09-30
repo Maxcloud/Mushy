@@ -2295,10 +2295,11 @@ public class CField {
 		return mplew.getPacket();
 	}
 
-	public static byte[] cancelChair(int id) {
+	public static byte[] cancelChair(int id, int characterId) {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
 		mplew.writeShort(SendPacketOpcode.CANCEL_CHAIR.getValue());
+		pw.writeInt(characterId);
 		if (id == -1) {
 			mplew.write(0);
 		} else {
