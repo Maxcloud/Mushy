@@ -2295,10 +2295,12 @@ public class CField {
 		return pw.getPacket();
 	}
 
-	public static byte[] cancelChair(int id) {
+	
+	public static byte[] cancelChair(int id, int characterId) {
 		PacketWriter pw = new PacketWriter();
 
 		pw.writeShort(SendPacketOpcode.CANCEL_CHAIR.getValue());
+		pw.writeInt(characterId);
 		if (id == -1) {
 			pw.write(0);
 		} else {
