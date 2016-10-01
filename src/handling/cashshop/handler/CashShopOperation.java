@@ -188,23 +188,34 @@ public class CashShopOperation {
             slea.skip(2);
             CouponCode(slea.readMapleAsciiString(), c);
         } else if (action == 2) {
-
-            slea.skip(1);
-            int type = slea.readInt();//type
+            boolean bUsingMaplePoints = slea.readByte() > 0; //If type is two (MapleCash being used), set to true. 
+            int dwPurchaseOption = slea.readInt();
+            
+            slea.skip(1); //Unsure, new 176
             int sn = slea.readInt();
-//            final CashItem item = CashItemFactory.getInstance().getMenuItem(sn);
+            
             final CashItem item = CashItemFactory.getInstance().getAllItem(sn);
-            final int toCharge = slea.readInt();//price
+            final int toCharge = slea.readInt();
+            int nChkQuantity = slea.readInt(); //Quantity of the item, unused it seems. 
+            //slea.readInt(); //Not sure what the final three Ints are, GMS has them zero'd out.
+            //slea.readInt(); Commenting them out to prevent any type of error 38 just incase, since these are unused.
+            //slea.readInt(); 
+            
             if (item == null) {
+                //Maybe add a check to compare quantity from packet to quantity of item retrieved from SN?
                 c.getSession().write(CSPacket.sendCSFail(0));
+                doCSPackets(c);
+                return;
             }
-            chr.modifyCSPoints(type, -toCharge, true);
+            chr.modifyCSPoints(dwPurchaseOption, -toCharge, true);
             Item itemz = chr.getCashInventory().toItem(item);
             if (itemz != null) {
                 chr.getCashInventory().addToInventory(itemz);
                 c.getSession().write(CSPacket.showBoughtCSItem(itemz, item.getSN(), c.getAccID()));
             } else {
                 c.getSession().write(CSPacket.sendCSFail(0));
+                doCSPackets(c);
+                return;
             }
         } else if (action == 101) {//TODO BETTER idk what it is
 //            System.out.println("action 101");//might be farm mesos? RITE NOW IS FREEH
@@ -292,7 +303,7 @@ public class CashShopOperation {
                 c.getPlayer().modifyCSPoints(1, -item.getPrice(), false);
                 c.getSession().write(CSPacket.sendGift(item.getPrice(), item.getId(), item.getCount(), partnerName, action == 34));
             }
-        } else if (action == 5) { //was Wishlist - Now inc inv slot
+        } else if (action == 5) { //Increase Inventory Slot
             slea.skip(1);
             final int toCharge = slea.readInt();
             final boolean coupon = slea.readByte() > 0;
@@ -307,29 +318,18 @@ public class CashShopOperation {
                     c.getSession().write(CSPacket.sendCSFail(0xA4));
                 }
             } else {
-                final MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
-                if (chr.getCSPoints(toCharge) >= 4000 && chr.getInventory(type).getSlotLimit() < 93) {
-                    chr.modifyCSPoints(toCharge, -4000, false);
+                slea.skip(1); //176
+                byte bType = slea.readByte();
+                final MapleInventoryType type = MapleInventoryType.getByType(bType);
+                if (chr.getCSPoints(toCharge) >= 2500 && chr.getInventory(type).getSlotLimit() < 93) {
+                    chr.modifyCSPoints(toCharge, -2500, false);
                     chr.getInventory(type).addSlot((byte) 4);
-                    chr.dropMessage(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
-                    c.getSession().write(CField.getCharInfo(chr));
+                    String slotName = (type == MapleInventoryType.EQUIP ? "Equip" : type == MapleInventoryType.ETC ? "Etc" : type == MapleInventoryType.SETUP ? "Setup" : type == MapleInventoryType.USE ? "Use" : "Undefined " + type);
+                    chr.dropMessage(1,  slotName + " slots have been increased to " + chr.getInventory(type).getSlotLimit());
                 } else {
                     c.getSession().write(CSPacket.sendCSFail(0xA4));
                 }
             }
-//            chr.clearWishlist();
-//            if (slea.available() < 40) {
-//                c.getSession().write(CSPacket.sendCSFail(0));
-//                doCSPackets(c);
-//                return;
-//            }
-//            int[] wishlist = new int[10];
-//            for (int i = 0; i < 10; i++) {
-//                wishlist[i] = slea.readInt();
-//            }
-//            chr.setWishlist(wishlist);
-//            c.getSession().write(CSPacket.sendWishList(chr, true));
-
         } else if (action == 6) { // Increase inv
             slea.skip(1);
             final int toCharge = slea.readInt();
@@ -339,17 +339,17 @@ public class CashShopOperation {
                 if (chr.getCSPoints(toCharge) >= 6000 && chr.getInventory(type).getSlotLimit() < 89) {
                     chr.modifyCSPoints(toCharge, -6000, false);
                     chr.getInventory(type).addSlot((byte) 8);
-                    chr.dropMessage(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
+                    chr.dropMessage(1, "Slots have been increased to " + chr.getInventory(type).getSlotLimit());
                     c.getSession().write(CField.getCharInfo(chr));
                 } else {
                     c.getSession().write(CSPacket.sendCSFail(0xA4));
                 }
             } else {
                 final MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
-                if (chr.getCSPoints(toCharge) >= 4000 && chr.getInventory(type).getSlotLimit() < 93) {
-                    chr.modifyCSPoints(toCharge, -4000, false);
+                if (chr.getCSPoints(toCharge) >= 2500 && chr.getInventory(type).getSlotLimit() < 93) {
+                    chr.modifyCSPoints(toCharge, -2500, false);
                     chr.getInventory(type).addSlot((byte) 4);
-                    chr.dropMessage(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
+                    chr.dropMessage(1, "Slots have been increased to " + chr.getInventory(type).getSlotLimit());
                     c.getSession().write(CField.getCharInfo(chr));
                 } else {
                     c.getSession().write(CSPacket.sendCSFail(0xA4));
@@ -404,7 +404,7 @@ public class CashShopOperation {
                 c.getPlayer().modifyCSPoints(1, -item.getPrice(), false);
                 chr.dropMessage(1, "Additional pendant slot gained.");
             }
-        } else if (action == 14) { //get item from csinventory
+        } else if (action == 15) { //get item from csinventory
             //uniqueid, 00 01 01 00, type->position(short)
             Item item = c.getPlayer().getCashInventory().findByCashId((int) slea.readLong());
 //            Item item = MapleItemInformationProvider.getInstance().getEquipById(item);
@@ -424,7 +424,7 @@ public class CashShopOperation {
             } else {
                 c.getSession().write(CSPacket.sendCSFail(0xB1));
             }
-        } else if (action == 15) { //put item in cash inventory  
+        } else if (action == 16) { //put item in cash inventory  
 //            System.out.println("action 15");
             int uniqueid = (int) slea.readLong();
             MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
@@ -500,7 +500,7 @@ public class CashShopOperation {
              } else {
              c.getSession().write(MTSCSPacket.sendCSFail(0));
              }*/
-        } else if (action == 34) {//was 33 - packages
+        } else if (action == 36) {//Packages
             slea.skip(1);
             int unk = slea.readInt();//is1
             final CashItemInfo item = CashItemFactory.getInstance().getItem(slea.readInt());
@@ -647,14 +647,14 @@ public class CashShopOperation {
     }
 
     public static void doCSPackets(MapleClient c) {
-        c.getSession().write(CSPacket.getCSInventory(c));
-        c.getSession().write(CSPacket.doCSMagic());
-        c.getSession().write(CSPacket.getCSGifts(c));
-        c.getSession().write(CWvsContext.BuddylistPacket.updateBuddylist(c.getPlayer().getBuddylist().getBuddies()));
-        c.getSession().write(CSPacket.showNXMapleTokens(c.getPlayer()));
-//        c.getSession().write(CSPacket.sendWishList(c.getPlayer(), false));
+        //c.getSession().write(CSPacket.getCSInventory(c));
+        //c.getSession().write(CSPacket.doCSMagic());
+        //c.getSession().write(CSPacket.getCSGifts(c));
+        //c.getSession().write(CWvsContext.BuddylistPacket.updateBuddylist(c.getPlayer().getBuddylist().getBuddies()));
+        //c.getSession().write(CSPacket.showNXMapleTokens(c.getPlayer()));
+        //c.getSession().write(CSPacket.sendWishList(c.getPlayer(), false));
         c.getSession().write(CSPacket.showNXMapleTokens(c.getPlayer()));
         c.getSession().write(CSPacket.enableCSUse());
-         c.getPlayer().getCashInventory().checkExpire(c);
+        c.getPlayer().getCashInventory().checkExpire(c);
     }
 }
