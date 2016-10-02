@@ -160,7 +160,7 @@ public class CSPacket {
         pw.writeMapleAsciiString(item.getImage()); //jpeg img url
         pw.writeInt(item.getSN());
         pw.writeInt(item.getItemId());
-        pw.writeInt(1);
+        pw.writeInt(item.getBuyable());
         pw.writeInt(item.getFlag());//1 =event 2=new = 4=hot
         pw.writeInt(0);//1 = package?
         pw.writeInt(0);//changes - type?
