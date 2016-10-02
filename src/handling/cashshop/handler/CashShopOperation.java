@@ -607,6 +607,13 @@ public class CashShopOperation {
             } catch (SQLException ex) {
             }
             c.getSession().write(CSPacket.Like(item));
+        } else if (Scategory == 107) {//search results
+            int resultSize = slea.readInt();
+            List<Integer> itemList = new ArrayList<>();
+            for(int i = 0; i<resultSize;i++){
+                itemList.add(slea.readInt());
+            }
+            c.getSession().write(CSPacket.showSearchResults(itemList));
         } else if (Scategory == 109) {
             c.getSession().write(CSPacket.Favorite(c.getPlayer()));
         } else if (Scategory == 112) {//click on special item TODO
