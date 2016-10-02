@@ -1403,7 +1403,7 @@ public class SuperGMCommand {
         public int execute(MapleClient c, String[] splitted) {
             MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]);
             if (splitted.length < 3) {
-                c.getPlayer().dropMessage(5, "!gaincash <player> <amount>");
+                c.getPlayer().dropMessage(5, "!giftnx <player> <amount>");
                 return 0;
             }
             victim.modifyCSPoints(1, Integer.parseInt(splitted[2]), true);
