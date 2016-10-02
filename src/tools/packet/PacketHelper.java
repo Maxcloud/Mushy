@@ -1675,4 +1675,73 @@ public class PacketHelper {
                         addItemInfo(pw, item);
             }
     }
+	
+    public static void encodeBuffsForRemote(MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
+        final List<Pair<Integer, Integer>> buffvalue = new ArrayList<>();
+        final List<Pair<Integer, Integer>> buffvalue2 = new ArrayList<>();
+        int[] mask = new int[GameConstants.MAX_BUFFSTAT];
+        mask[7] |= 0xC00000; // 8+4
+        mask[10] |= 0x18;
+        mask[12] |= 0x10001420;
+        mask[13] |= 0x80;
+        mask[14] |= 0x80000000;
+        mask[15] |= 0xFF000;
+        buffvalue.add(new Pair(-1, 3));
+        buffvalue.add(new Pair(0, 1));
+        buffvalue.add(new Pair(0, 1));
+            buffvalue.add(new Pair(0, 2));
+            buffvalue.add(new Pair(0, 3));
+            buffvalue.add(new Pair(0, 2));
+            buffvalue.add(new Pair(0, 3));
+            buffvalue.add(new Pair(0, 2));
+            buffvalue.add(new Pair(0, 3));
+        buffvalue.add(new Pair(0, 3));
+        buffvalue.add(new Pair(0, 3));
+        buffvalue2.add(new Pair(0, 1));
+        buffvalue2.add(new Pair(0, 1));
+        buffvalue2.add(new Pair(0, 1));
+            buffvalue2.add(new Pair(0, 3));
+            buffvalue2.add(new Pair(0, 3));
+            buffvalue2.add(new Pair(0, 3));
+            buffvalue2.add(new Pair(0, 3));
+        buffvalue2.add(new Pair(0, 1));
+        PacketHelper.encodeForeignBuffInfo(1, MapleBuffStat.STIGMA, mask, buffvalue2, chr);
+        for (int i = 0; i < mask.length; i++) {
+            mplew.writeInt(mask[i]);
+        }
+        for (Pair i : buffvalue) {
+            if (((Integer) i.right).intValue() == 3) {
+                mplew.writeInt(((Integer) i.left).intValue());
+            } else if (((Integer) i.right).intValue() == 2) {
+                mplew.writeShort(((Integer) i.left).shortValue());
+            } else if (((Integer) i.right).intValue() == 1) {
+                mplew.write(((Integer) i.left).byteValue());
+            }
+        }
+        mplew.write(0); 
+        mplew.write(0); 
+        mplew.write(0); 
+        for (Pair i : buffvalue2) {
+            if (((Integer) i.right).intValue() == 3) {
+                mplew.writeInt(((Integer) i.left).intValue());
+            } else if (((Integer) i.right).intValue() == 2) {
+                mplew.writeShort(((Integer) i.left).shortValue());
+            } else if (((Integer) i.right).intValue() == 1) {
+                mplew.write(((Integer) i.left).byteValue());
+            }
+        }
+        mplew.writeInt(0); 
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        int unk2 = 0;
+        mplew.writeInt(unk2);
+        while (unk2 > 0) {
+            mplew.writeInt(0);
+            --unk2;
+        }   
+        mplew.writeInt(0);
+        mplew.writeZeroBytes(12);
+        mplew.write(HexTool.getByteArrayFromHexString("01 6C 08 00 00 00 00 00 00 00 00 00 00 01 6C 08 00 00 00 00 00 00 00 00 00 00 00 00 01 6C 08 00 00 00 01 00 00 00 00 00 00 00 00 01 6C 08 00 00 00 00 00 00 00 00 00 00 01 6C 08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 6C 08 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 6C 08 00 00 00 00 00 00 00 00 00 00 00 00 01 6C 08 00 00 00 00"));
+
+    }
 }
