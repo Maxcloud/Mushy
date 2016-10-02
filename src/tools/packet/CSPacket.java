@@ -103,6 +103,34 @@ public class CSPacket {
         return pw.getPacket();
     }
    
+    public static byte[] showSearchResults(List<Integer> itemList) { 
+        final PacketWriter pw = new PacketWriter();
+
+        pw.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
+        pw.write(0x0D); //Sniffed GMS v176.3
+        List<CashItem> items = CashItemFactory.getInstance().getAllItems();
+        List<Integer> foundItems = new ArrayList<>();
+        
+        for (Integer itemID : itemList){
+            for (CashItem i : items) {
+                if(itemID == i.getItemId()){
+                    foundItems.add(itemID); // Do it this way so we can make sure we only send items that are in the cash shop.
+                }
+            }
+        }
+
+        pw.write(foundItems.size() > 0 ? 1 : 3);
+        pw.write(foundItems.size());
+        for (Integer itemID : itemList){
+            for (CashItem i : items) {
+                if(itemID == i.getItemId()){
+                    addCSItemInfo(pw, i);
+                }
+            }
+        }
+        return pw.getPacket();
+    }
+    
     public static byte[] showNXChar(int subcategory) {
         final PacketWriter pw = new PacketWriter();
 
