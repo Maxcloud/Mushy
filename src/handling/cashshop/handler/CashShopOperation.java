@@ -52,7 +52,6 @@ public class CashShopOperation {
             chr.saveToDB(false, true);
             c.setPlayer(null);
             c.setReceiving(false);
-            c.getSession().close();
         }
     }
 
