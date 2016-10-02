@@ -10,16 +10,17 @@ package server.cash;
  */
 public class CashItem {
 
-    private final int category, subcategory, parent, sn, itemid, flag, price, discountPrice, quantity, expire, gender, likes;
+    private final int category, subcategory, parent, sn, itemid, buyable, flag, price, discountPrice, quantity, expire, gender, likes;
     private final String image;
 
-    public CashItem(int category, int subcategory, int parent, String image, int sn, int itemid, int flag, int price, int discountPrice, int quantity, int expire, int gender, int likes) {
+    public CashItem(int category, int subcategory, int parent, String image, int sn, int itemid, int buyable,  int flag, int price, int discountPrice, int quantity, int expire, int gender, int likes) {
         this.category = category;
         this.subcategory = subcategory;
         this.parent = parent;
         this.image = image;
         this.sn = sn;
         this.itemid = itemid;
+        this.buyable = buyable;
         this.flag = flag;
         this.price = price;
         this.discountPrice = discountPrice;
@@ -53,6 +54,10 @@ public class CashItem {
         return itemid;
     }
 
+    public int getBuyable() {
+        return buyable;
+    }
+    
     public int getFlag() {
         return flag;
     }
