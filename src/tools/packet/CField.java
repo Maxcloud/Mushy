@@ -994,365 +994,201 @@ public class CField {
 	}
 
 	public static byte[] spawnPlayerMapobject(MapleCharacter chr) {
-		PacketWriter pw = new PacketWriter();
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        mplew.writeShort(SendPacketOpcode.SPAWN_PLAYER.getValue());
+        mplew.writeInt(chr.getId());
+        mplew.write(chr.getLevel());
+        mplew.writeMapleAsciiString(chr.getName());
+        MapleQuestStatus ultExplorer = chr.getQuestNoAdd(MapleQuest.getInstance(111111));
+        if ((ultExplorer != null) && (ultExplorer.getCustomData() != null)) {
+            mplew.writeMapleAsciiString(ultExplorer.getCustomData());
+        } else {
+            mplew.writeMapleAsciiString("");
+        }
+        if (chr.getGuildId() <= 0) {
+            mplew.writeZeroBytes(8);
+        } else {
+            MapleGuild gs = World.Guild.getGuild(chr.getGuildId());
+            if (gs != null) {
+                mplew.writeMapleAsciiString(gs.getName());
+                mplew.writeShort(gs.getLogoBG());
+                mplew.write(gs.getLogoBGColor());
+                mplew.writeShort(gs.getLogo());
+                mplew.write(gs.getLogoColor());
+            } else {
+                mplew.writeZeroBytes(8);
+            }
+        }
+        mplew.write(chr.getGender());
+        mplew.writeInt(0); //popularity
+        mplew.writeInt(0); //farmlevel
+        mplew.writeInt(0); // nNameTagMark
+        PacketHelper.encodeBuffsForRemote(mplew, chr);
+        mplew.writeShort(chr.getJob());
+        mplew.writeShort(chr.getSubcategory());
+        mplew.writeInt(0); //nTotalCHUC
+        PacketHelper.addCharLook(mplew, chr, true, false);
+        if (JobConstants.isZero(chr.getJob())) {
+            PacketHelper.addCharLook(mplew, chr, true, false);
+        }
+        
+        mplew.writeInt(0);
+        mplew.writeInt(0); 
+        mplew.writeInt(0); 
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        mplew.writeInt(Math.min(250, chr.getInventory(MapleInventoryType.CASH).countById(5110000))); 
+        mplew.writeInt(chr.getItemEffect());
+        mplew.writeInt(0);
 
-		pw.writeShort(SendPacketOpcode.SPAWN_PLAYER.getValue());
-		pw.writeInt(chr.getId());
-		pw.write(chr.getLevel());
-		pw.writeMapleAsciiString(chr.getName());
-		MapleQuestStatus ultExplorer = chr.getQuestNoAdd(MapleQuest.getInstance(111111));
-		if ((ultExplorer != null) && (ultExplorer.getCustomData() != null)) {
-			pw.writeMapleAsciiString(ultExplorer.getCustomData());
-		} else {
-			pw.writeMapleAsciiString("");
-		}
-		if (chr.getGuildId() <= 0) {
-			pw.write(new byte[8]);
-		} else {
-			MapleGuild gs = World.Guild.getGuild(chr.getGuildId());
-			if (gs != null) {
-				pw.writeMapleAsciiString(gs.getName());
-				pw.writeShort(gs.getLogoBG());
-				pw.write(gs.getLogoBGColor());
-				pw.writeShort(gs.getLogo());
-				pw.write(gs.getLogoColor());
-			} else {
-				pw.write(new byte[8]);
-			}
-		}
-		pw.write(0);
+        mplew.writeInt(0);
+        MapleQuestStatus stat = chr.getQuestNoAdd(MapleQuest.getInstance(GameConstants.DAMAGE_SKIN));
+        mplew.writeInt((stat != null) && (stat.getCustomData() != null) ? Integer.valueOf(stat.getCustomData()) : 0);
+        mplew.writeInt(0);
+        mplew.writeInt(0); 
+        mplew.writeInt(0); 
+        mplew.writeInt(0); 
+        mplew.writeInt(0);
+        mplew.writeShort(-1);
+        mplew.writeInt(GameConstants.getInventoryType(chr.getChair()) == MapleInventoryType.SETUP ? chr.getChair() : 0);
+        int unk3 = 0;
+        mplew.writeInt(unk3);
+        if (unk3 > 0) {
+            mplew.writeMapleAsciiString("");
+        }
+        int unk4 = 0;
+        mplew.writeInt(unk4);
+        while (unk4 > 0) {
+            mplew.writeInt(0);
+            --unk4;
+        }
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        mplew.writePos(chr.getTruePosition());
+        mplew.write(chr.getStance());
+        mplew.writeShort(chr.getFH());
+        mplew.write(0);
+        
+        mplew.write(0); 
+        mplew.write(0);
+        mplew.write(1);
+        mplew.write(0); 
 
-		final List<Pair<Integer, Integer>> buffvalue = new ArrayList<>();
-		final List<Pair<Integer, Integer>> buffvaluenew = new ArrayList<>();
-		int[] mask = new int[GameConstants.MAX_BUFFSTAT];
-		mask[0] |= -33554432; // -0x2000000
-		mask[1] |= 0x2000;
-		mask[1] |= 0x1000;
-		mask[1] |= 0x200;
-		mask[5] |= 0x20000;
-		mask[5] |= 0x8000;
-		if ((chr.getBuffedValue(MapleBuffStat.DarkSight) != null) || (chr.isHidden())) {
-		//	mask[MapleBuffStat.DarkSight.getPosition(true)] |= MapleBuffStat.DarkSight.getValue();
-		}
-		if (chr.getBuffedValue(MapleBuffStat.SoulArrow) != null) {
-		//	mask[MapleBuffStat.SoulArrow.getPosition(true)] |= MapleBuffStat.SoulArrow.getValue();
-		}
-		if (chr.getBuffedValue(MapleBuffStat.DamAbsorbShield) != null) {
-			// mask[MapleBuffStat.DamAbsorbShield.getPosition(true)] |= MapleBuffStat.DamAbsorbShield.getValue();
-			buffvaluenew.add(new Pair(Integer.valueOf(1000), Integer.valueOf(2)));
-			buffvaluenew.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DamAbsorbShield)),
-					Integer.valueOf(4)));
-			buffvaluenew.add(new Pair(Integer.valueOf(9), Integer.valueOf(0)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) != null) {
-			// mask[MapleBuffStat.StopForceAtomInfo.getPosition(true)] |= MapleBuffStat.StopForceAtomInfo.getValue();
-			buffvaluenew.add(new Pair(
-					Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo))),
-					Integer.valueOf(2)));
-			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo)), Integer.valueOf(4)));
-			buffvaluenew.add(new Pair(Integer.valueOf(5), Integer.valueOf(0)));
-			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) == 61101002 ? 1 : 2),
-							Integer.valueOf(4)));
-			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) == 61101002 ? 3 : 5),
-							Integer.valueOf(4)));
-			buffvaluenew.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo).intValue()),
-					Integer.valueOf(4)));
-			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) == 61101002 ? 3 : 5),
-							Integer.valueOf(4)));
-			if (chr.getTrueBuffSource(MapleBuffStat.StopForceAtomInfo) != 61101002) {
-				buffvaluenew.add(new Pair(Integer.valueOf(8), Integer.valueOf(0)));
-			}
-		}
-		if ((chr.getBuffedValue(MapleBuffStat.ComboCounter) != null)
-				&& (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {
-			// mask[MapleBuffStat.ComboCounter.getPosition(true)] |= MapleBuffStat.ComboCounter.getValue();
-			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.ComboCounter).intValue()), Integer.valueOf(1)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.WeaponCharge) != null) {
-			// mask[MapleBuffStat.WeaponCharge.getPosition(true)] |= MapleBuffStat.WeaponCharge.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.WeaponCharge).intValue()),
-					Integer.valueOf(2)));
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.WeaponCharge)), Integer.valueOf(3)));
-		}
-		if ((chr.getBuffedValue(MapleBuffStat.ShadowPartner) != null)
-				&& (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {
-			// mask[MapleBuffStat.ShadowPartner.getPosition(true)] |= MapleBuffStat.ShadowPartner.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.ShadowPartner).intValue()),
-					Integer.valueOf(2)));
-			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.ShadowPartner)), Integer.valueOf(3)));
-		}
-		// if ((chr.getBuffedValue(MapleBuffStat.Morph) != null) &&
-		// (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {//TODO
-		// mask[MapleBuffStat.Morph.getPosition(true)] |=
-		// MapleBuffStat.Morph.getValue();
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getStatForBuff(MapleBuffStat.Morph).getMorph(chr)),
-		// Integer.valueOf(2)));
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getBuffSource(MapleBuffStat.Morph)),
-		// Integer.valueOf(3)));
-		// }
-		if (chr.getBuffedValue(MapleBuffStat.BERSERK_FURY) != null) {// works
-			// mask[MapleBuffStat.BERSERK_FURY.getPosition(true)] |= MapleBuffStat.BERSERK_FURY.getValue();
-		}
-		if (chr.getBuffedValue(MapleBuffStat.DIVINE_BODY) != null) {
-			// mask[MapleBuffStat.DIVINE_BODY.getPosition(true)] |= MapleBuffStat.DIVINE_BODY.getValue();
-		}
-		if (chr.getBuffedValue(MapleBuffStat.WIND_WALK) != null) {// TODO better
-			// mask[MapleBuffStat.WIND_WALK.getPosition(true)] |= MapleBuffStat.WIND_WALK.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.WIND_WALK).intValue()),
-					Integer.valueOf(2)));
-			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.WIND_WALK)), Integer.valueOf(3)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.PYRAMID_PQ) != null) {// TODO
-			// mask[MapleBuffStat.PYRAMID_PQ.getPosition(true)] |= MapleBuffStat.PYRAMID_PQ.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.PYRAMID_PQ).intValue()),
-					Integer.valueOf(2)));
-			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.PYRAMID_PQ)), Integer.valueOf(3)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.Flying) != null) {// TODO
-			// mask[MapleBuffStat.Flying.getPosition(true)] |= MapleBuffStat.Flying.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.Flying).intValue()),
-					Integer.valueOf(1)));
-		}
-		// if (chr.getBuffedValue(MapleBuffStat.OWL_SPIRIT) != null) {//TODO
-		// mask[MapleBuffStat.OWL_SPIRIT.getPosition(true)] |=
-		// MapleBuffStat.OWL_SPIRIT.getValue();
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.OWL_SPIRIT).intValue()),
-		// Integer.valueOf(2)));
-		// buffvalue.add(new
-		// Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.OWL_SPIRIT)),
-		// Integer.valueOf(3)));
-		// }
-		if (chr.getBuffedValue(MapleBuffStat.FinalCut) != null) {
-			// mask[MapleBuffStat.FinalCut.getPosition(true)] |= MapleBuffStat.FinalCut.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.FinalCut).intValue()),
-					Integer.valueOf(2)));
-			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.FinalCut)), Integer.valueOf(3)));
-		}
+        mplew.writeInt(chr.getMount().getLevel());
+        mplew.writeInt(chr.getMount().getExp());
+        mplew.writeInt(chr.getMount().getFatigue());
+        
+        PacketHelper.addAnnounceBox(mplew, chr);
+        mplew.write((chr.getChalkboard() != null) && (chr.getChalkboard().length() > 0) ? 1 : 0);
 
-		if (chr.getBuffedValue(MapleBuffStat.TORNADO) != null) {
-			// Smask[MapleBuffStat.TORNADO.getPosition(true)] |= MapleBuffStat.TORNADO.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.TORNADO).intValue()),
-					Integer.valueOf(2)));
-			buffvalue.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.TORNADO)), Integer.valueOf(3)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.INFILTRATE) != null) {
-			// mask[MapleBuffStat.INFILTRATE.getPosition(true)] |= MapleBuffStat.INFILTRATE.getValue();
-		}
-		if (chr.getBuffedValue(MapleBuffStat.Mechanic) != null) {
-			// mask[MapleBuffStat.Mechanic.getPosition(true)] |= MapleBuffStat.Mechanic.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.Mechanic).intValue()),
-					Integer.valueOf(2)));
-			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.Mechanic)), Integer.valueOf(3)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.BMageAura) != null) {
-			// Smask[MapleBuffStat.BMageAura.getPosition(true)] |= MapleBuffStat.BMageAura.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BMageAura).intValue()),
-					Integer.valueOf(2)));
-			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BMageAura)), Integer.valueOf(3)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.BMageAura) != null) {
-			// mask[MapleBuffStat.BLUE_AURA.getPosition(true)] |= MapleBuffStat.BLUE_AURA.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BMageAura).intValue()),
-					Integer.valueOf(2)));
-			buffvalue
-					.add(new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BMageAura)), Integer.valueOf(3)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.BMageAura) != null) {
-			// mask[MapleBuffStat.YELLOW_AURA.getPosition(true)] |= MapleBuffStat.YELLOW_AURA.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.BMageAura).intValue()),
-					Integer.valueOf(2)));
-			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.BMageAura)), Integer.valueOf(3)));
-		}
-		if ((chr.getBuffedValue(MapleBuffStat.DamAbsorbShield) != null)
-				&& (chr.getBuffedValue(MapleBuffStat.StopForceAtomInfo) == null)) {
-			// mask[MapleBuffStat.WATER_SHIELD.getPosition(true)] |= MapleBuffStat.WATER_SHIELD.getValue();
-			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTotalSkillLevel(chr.getTrueBuffSource(MapleBuffStat.DamAbsorbShield))),
-							Integer.valueOf(2)));
-			buffvaluenew.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.DamAbsorbShield)), Integer.valueOf(4)));
-			buffvaluenew.add(new Pair(Integer.valueOf(9), Integer.valueOf(0)));
-		}
-		if (chr.getBuffedValue(MapleBuffStat.Inflation) != null) {
-			// mask[MapleBuffStat.Inflation.getPosition(true)] |= MapleBuffStat.Inflation.getValue();
-			buffvalue.add(new Pair(Integer.valueOf(chr.getBuffedValue(MapleBuffStat.Inflation).intValue()),
-					Integer.valueOf(2)));
-			buffvalue.add(
-					new Pair(Integer.valueOf(chr.getTrueBuffSource(MapleBuffStat.Inflation)), Integer.valueOf(3)));
-		}
+        if ((chr.getChalkboard() != null) && (chr.getChalkboard().length() > 0)) {
+            mplew.writeMapleAsciiString(chr.getChalkboard());
+        }
+        
+        Triple rings = chr.getRings(false);
+        addRingInfo(mplew, (List) rings.getLeft());
+        addRingInfo(mplew, (List) rings.getMid());
+        addMRingInfo(mplew, (List) rings.getRight(), chr);
+        
+        int unk5 = chr.getStat().Berserk ? 1 : 0;
+        mplew.write(unk5); //mask
+        if ((unk5 & 8) != 0) { 
+            mplew.writeInt(0);
+        } else if ((unk5 & 0x10) != 0) {
+            mplew.writeInt(0);
+        } else if ((unk5 & 0x20) != 0) {
+            mplew.writeInt(0);
+        }
+        mplew.writeInt(0);
 
-		for (int i = 0; i < mask.length; i++) {
-			pw.writeInt(mask[i]);
-		}
-		for (Pair i : buffvalue) {
-			if (((Integer) i.right).intValue() == 3) {
-				pw.writeInt(((Integer) i.left).intValue());
-			} else if (((Integer) i.right).intValue() == 2) {
-				pw.writeShort(((Integer) i.left).shortValue());
-			} else if (((Integer) i.right).intValue() == 1) {
-				pw.write(((Integer) i.left).byteValue());
-			}
-		}
-		pw.writeInt(-1);
-		if (buffvaluenew.isEmpty()) {
-			pw.write(new byte[10]);
-		} else {
-			pw.write(0);
-			for (Pair i : buffvaluenew) {
-				if (((Integer) i.right).intValue() == 4) {
-					pw.writeInt(((Integer) i.left).intValue());
-				} else if (((Integer) i.right).intValue() == 2) {
-					pw.writeShort(((Integer) i.left).shortValue());
-				} else if (((Integer) i.right).intValue() == 1) {
-					pw.write(((Integer) i.left).byteValue());
-				} else if (((Integer) i.right).intValue() == 0) {
-					pw.write(new byte[((Integer) i.left).intValue()]);
-				}
-			}
-		}
-		pw.write(new byte[38]); // v143 20->38 ty hawt
+        if (JobConstants.isKaiser(chr.getJob())) {
+            String x = chr.getOneInfo(12860, "extern");
+            mplew.writeInt(x == null ? 0 : Integer.parseInt(x));
+            x = chr.getOneInfo(12860, "inner");
+            mplew.writeInt(x == null ? 0 : Integer.parseInt(x));
+            x = chr.getOneInfo(12860, "primium");
+            mplew.write(x == null ? 0 : Integer.parseInt(x));
+        }
+        
+        mplew.writeInt(0); 
 
-		int CHAR_MAGIC_SPAWN = Randomizer.nextInt();
-		pw.write(1);
-		pw.writeInt(CHAR_MAGIC_SPAWN);
-		pw.write(new byte[8]); // v143 10->8
-		pw.write(1);
-		pw.writeInt(CHAR_MAGIC_SPAWN);
-		pw.write(new byte[10]);
-		pw.write(1);
-		pw.writeInt(CHAR_MAGIC_SPAWN);
-		pw.writeShort(0);
-		int buffSrc = chr.getBuffSource(MapleBuffStat.RideVehicle);
-		if (buffSrc > 0) {
-			Item c_mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -118);
-			Item mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18);
-			if ((GameConstants.getMountItem(buffSrc, chr) == 0) && (c_mount != null)
-					&& (chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -119) != null)) {
-				pw.writeInt(c_mount.getItemId());
-			} else if ((GameConstants.getMountItem(buffSrc, chr) == 0) && (mount != null)
-					&& (chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -19) != null)) {
-				pw.writeInt(mount.getItemId());
-			} else {
-				pw.writeInt(GameConstants.getMountItem(buffSrc, chr));
-			}
-			pw.writeInt(buffSrc);
-		} else {
-			pw.writeLong(0L);
-		}
-		pw.write(1);
-		pw.writeInt(CHAR_MAGIC_SPAWN);
-		pw.writeLong(0L);
-		pw.write(1);
-		pw.writeInt(CHAR_MAGIC_SPAWN);
-		pw.write(new byte[15]);
-		pw.write(1);
-		pw.writeInt(CHAR_MAGIC_SPAWN);
-		pw.write(new byte[16]);
-		pw.write(1);
-		pw.writeInt(CHAR_MAGIC_SPAWN);
-		pw.writeShort(0);
+        PacketHelper.addFarmInfo(mplew, chr.getClient(), (byte) 0);
+        for (int i = 0; i < 5; i++) { // was 5
+            mplew.write(-1);
+        }
+        int unk6 = 0;
+        mplew.writeInt(unk6);
+        if (unk6 != 0) {
+            mplew.writeMapleAsciiString("");
+        }
+        mplew.write(1);
+        mplew.write(0); 
+        boolean starplanet = false;
+        mplew.write(starplanet);
+        if (starplanet) {
 
-		pw.writeShort(chr.getJob());
-		pw.writeShort(chr.getSubcategory());
-		PacketHelper.addCharLook(pw, chr, true, false);
-		if (GameConstants.isZero(chr.getJob())) {
-			PacketHelper.addCharLook(pw, chr, true, false);
-		}
+            // nRoundID
+            mplew.writeInt(0);
 
-		pw.writeInt(0);
-		pw.writeInt(0);
+            // the size, cannot exceed the count of 10
+            mplew.write(0);
 
-		pw.writeInt(Math.min(250, chr.getInventory(MapleInventoryType.CASH).countById(5110000))); // Valentine
-																										// Effect
-		pw.writeInt(0);
-		pw.writeInt(0);
+            // anPoint
+            mplew.writeInt(0);
 
-		pw.writeInt(0);
-		pw.writeInt(0);
-		pw.writeInt(0);
-		MapleQuestStatus stat = chr.getQuestNoAdd(MapleQuest.getInstance(124000));
-		pw.writeInt(stat != null && stat.getCustomData() != null ? Integer.parseInt(stat.getCustomData()) : 0); // title
-		pw.writeInt(0);
-		pw.writeInt(0);
-		pw.writeInt(0);// head title? chr.getHeadTitle()
-		pw.writeInt(chr.getItemEffect());
-		// pw.writeInt(chr.getDamageSkin()); // this aint working yet brah
-		pw.writeInt(GameConstants.getInventoryType(chr.getChair()) == MapleInventoryType.SETUP ? chr.getChair() : 0);
-		pw.writeInt(0);
-		pw.writeInt(0); // new v143
-		pw.writePos(chr.getTruePosition());
-		pw.write(chr.getStance());
-		pw.writeShort(chr.getFH());
-		pw.write(0);
-		pw.write(0);
-		pw.write(0);
+            // anRanking
+            mplew.writeInt(0);
 
-		pw.write(1);
-		pw.write(0);
+            // atLastCheckRank (timeGetTime - 300000)
+            mplew.writeInt(0);
 
-		pw.writeInt(chr.getMount().getLevel());
-		pw.writeInt(chr.getMount().getExp());
-		pw.writeInt(chr.getMount().getFatigue());
+            // ftShiningStarExpiredTime
+            mplew.writeLong(0);
 
-		PacketHelper.addAnnounceBox(pw, chr);
-		pw.write((chr.getChalkboard() != null) && (chr.getChalkboard().length() > 0) ? 1 : 0);
+            //nShiningStarPickedCount
+            mplew.writeInt(0);
 
-		/*
-		 * if (GameConstants.isKaiser(chr.getJob())) { //doesn't do shit?
-		 * pw.writeShort(0); pw.write(0); pw.writeInt(1);
-		 * pw.writeShort(0); }
-		 */
+            //nRoundStarPoint
+            mplew.writeInt(0);
+        }
+        
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        mplew.write(0);
+        mplew.writeInt(0);
+        mplew.writeInt(0);
+        mplew.write(0);
+        mplew.writeInt(0); 
 
-		if ((chr.getChalkboard() != null) && (chr.getChalkboard().length() > 0)) {
-			pw.writeMapleAsciiString(chr.getChalkboard());
-		}
+        //KMST IDB END
+        mplew.writeInt(0);
+        mplew.writeMapleAsciiString("");
+        mplew.writeInt(0);
+        boolean unk7 = false;
+        mplew.write(unk7);
+        if (unk7) {
+            int unk8 = 0;
+            while (unk8 > 0) {
+                mplew.writeInt(0);
+                --unk8;
+            }
+        }
+        int unk9 = 0;
+        mplew.writeInt(unk9);
+        if (unk9 != 0) {
+            mplew.writeInt(0);
+            mplew.writeInt(0);
+            mplew.writeInt(0);
+            mplew.writeShort(0);
+            mplew.writeShort(0);
+        }
+        mplew.writeInt(0);
+        mplew.writeInt(0); // if result > 0, read int till 0?
+        mplew.writeZeroBytes(5); // (From sniffing, Unknown)
 
-		Triple rings = chr.getRings(false);
-		addRingInfo(pw, (List) rings.getLeft());
-		addRingInfo(pw, (List) rings.getMid());
-		addMRingInfo(pw, (List) rings.getRight(), chr);
-
-		pw.write(chr.getStat().Berserk ? 1 : 0); // mask
-		pw.writeInt(0);
-
-		if (GameConstants.isKaiser(chr.getJob())) {
-			String x = chr.getOneInfo(12860, "extern");
-			pw.writeInt(x == null ? 0 : Integer.parseInt(x));
-			x = chr.getOneInfo(12860, "inner");
-			pw.writeInt(x == null ? 0 : Integer.parseInt(x));
-			x = chr.getOneInfo(12860, "primium");
-			pw.write(x == null ? 0 : Integer.parseInt(x));
-		}
-
-		pw.write(0); // new v142->v143
-		pw.writeInt(0); // new v142->v143
-
-		PacketHelper.addFarmInfo(pw, chr.getClient(), (byte) 0);
-		for (int i = 0; i < 5; i++) {
-			pw.write(-1);
-		}
-
-		pw.writeInt(0);
-		pw.write(0);
-		pw.writeInt(0);
-
-		return pw.getPacket();
-	}
+        return mplew.getPacket();
+    }
 
 	public static byte[] removePlayerFromMap(int cid) {
 		PacketWriter pw = new PacketWriter();
