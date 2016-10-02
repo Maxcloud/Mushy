@@ -9,8 +9,13 @@ import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import handling.channel.handler.MovementParse;
 import server.life.MapleMonster;
+import server.life.MobAttackInfo;
+import server.life.MobSkill;
+import server.life.MobSkillFactory;
 import server.maps.MapleMap;
+import server.maps.MapleMapObjectType;
 import server.movement.LifeMovementFragment;
+import tools.Pair;
 import tools.Randomizer;
 import tools.data.LittleEndianAccessor;
 import tools.packet.MobPacket;
@@ -20,64 +25,56 @@ public class MoveLifeHandler {
 	@PacketHandler(opcode = RecvPacketOpcode.MOVE_LIFE)
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		
-		if (c.getPlayer() == null) {
+		int objectId = lea.readInt();
+        MapleMonster monster = c.getPlayer().getMap().getMonsterByOid(objectId);
+        if (monster == null || monster.getType() != MapleMapObjectType.MONSTER) {
             return;
         }
+        lea.skip(1); // ?
+        short moveId = lea.readShort();
         
-        MapleMap map = c.getPlayer().getMap();
-        if (map == null) {
-        	return;
-        }
-        
-        int oid = lea.readInt();
-        
-        MapleMonster monster = map.getMonsterByOid(oid);
-        if (monster == null || monster.getLinkCID() > 0) {
-            return;
-        }
-        
-        lea.skip(1);
-        short moveid = lea.readShort();
-        boolean useSkill = lea.readByte() > 0;
-        byte skill = lea.readByte();
-        int unk = lea.readInt();
-        
-        int realskill = 0;
-        int level = 0;
+        byte pNibbles = lea.readByte();
+		byte rawActivity = lea.readByte();
+		int useSkillId = lea.readByte();
+		int useSkillLevel = lea.readByte();
+           
+		if (rawActivity >= 0) {
+			rawActivity = (byte) (rawActivity & 0xFF >> 1);
+		}
 
-        /*if (useSkill) {
-            byte size = monster.getNoSkills();
-            boolean used = false;
+		boolean isAttack = inRangeInclusive(rawActivity, 12, 20);
+		boolean isSkill = inRangeInclusive(rawActivity, 21, 25);
 
-            if (size > 0) {
-                Pair skillToUse = (Pair) monster.getSkills().get((byte) Randomizer.nextInt(size));
-                realskill = ((Integer) skillToUse.getLeft());
-                level = ((Integer) skillToUse.getRight());
+		byte attackId = (byte) (isAttack ? rawActivity - 12 : -1);
+		boolean nextMovementCouldBeSkill = (pNibbles & 0x0F) != 0;
 
-                MobSkill mobSkill = MobSkillFactory.getMobSkill(realskill, level);
+		
+		MobSkill toUse = null;
+		int percHpLeft = (int) ((monster.getHp() / monster.getMobMaxHp()) * 100);
 
-                if ((mobSkill != null) && (!mobSkill.checkCurrentBuff(c.getPlayer(), monster))) {
-                    long now = System.currentTimeMillis();
-                    long ls = monster.getLastSkillUsed(realskill);
-
-                    if ((ls == 0L) || ((now - ls > mobSkill.getCoolTime()) && (!mobSkill.onlyOnce()))) {
-                        monster.setLastSkillUsed(realskill, now, mobSkill.getCoolTime());
-
-                        int reqHp = (int) ((float) monster.getHp() / (float) monster.getMobMaxHp() * 100.0F);
-                        if (reqHp <= mobSkill.getHP()) {
-                            used = true;
-                            mobSkill.applyEffect(c.getPlayer(), monster, true);
-                        }
-                    }
-                }
-            }
-            if (!used) {
-                realskill = 0;
-                level = 0;
-            }
-        }*/
-        
-        lea.readByte();
+		if (nextMovementCouldBeSkill) {
+			int Random = Randomizer.nextInt(monster.getNoSkills());
+			Pair<Integer, Integer> skillToUse = monster.getSkills().get(Random);
+			useSkillId = skillToUse.getLeft();
+			useSkillLevel = skillToUse.getRight();
+			toUse = MobSkillFactory.getMobSkill(useSkillId, useSkillLevel);
+			
+			if (isSkill || isAttack) {
+				if (useSkillId != toUse.getSkillId() || useSkillLevel != toUse.getSkillLevel()) {
+					useSkillId = 0;
+					useSkillLevel = 0;
+					return;
+				} else if (toUse.getHP() < percHpLeft) {
+					toUse = null;
+				} else {
+					toUse.applyEffect(c.getPlayer(), monster, true);
+				}
+			} else {
+				MobAttackInfo mobAttack = monster.getStats().getMobAttack(attackId);
+			}
+		}
+		
+		lea.readByte();
         // for: short, short
         
         lea.readByte();
@@ -101,27 +98,22 @@ public class MoveLifeHandler {
         short y = lea.readShort();
         short vx = lea.readShort();
         short vy = lea.readShort();
-        
-        Point startPos = monster.getPosition();
-        
-        List<LifeMovementFragment> res = MovementParse.parseMovement(lea, 2);
-        
-        if ((GameConstants.isLuminous(c.getPlayer().getJob())) && (Randomizer.nextInt(100) < 20)) {
-            c.getPlayer().applyBlackBlessingBuff(1);
-        }
 
-        if ((res != null) && (c.getPlayer() != null) && (res.size() > 0)) {
-            c.getSession().write(MobPacket.moveMonsterResponse(monster.getObjectId(), moveid, monster.getMp(), monster.isControllerHasAggro(), realskill, level));
-            
-            if (monster.isControllerHasAggro()) {
-                c.getSession().write(MobPacket.getMonsterSkill(monster.getObjectId()));
-            }
-            
-            MovementParse.updatePosition(res, monster, -1);
-            Point endPos = monster.getTruePosition();
-            map.moveMonster(monster, endPos);
-            map.broadcastMessage(c.getPlayer(), MobPacket.moveMonster(useSkill, skill, unk, monster.getObjectId(), startPos, res), endPos);
+        Point startPos = monster.getPosition();
+        List<LifeMovementFragment> res = MovementParse.parseMovement(lea, 2);
+
+        if (monster != null && c != null) {
+            c.getSession().write(MobPacket.moveMonsterResponse(objectId, moveId, monster.getMp(), monster.isControllerHasAggro(), useSkillId, useSkillLevel));
         }
-        
+        if (res != null) {
+            final MapleMap map = c.getPlayer().getMap();
+            MovementParse.updatePosition(res, monster, -1);
+            map.moveMonster(monster, monster.getPosition());
+            map.broadcastMessage(c.getPlayer(), MobPacket.moveMonster(pNibbles, rawActivity, useSkillId, useSkillLevel, startPos, res), monster.getPosition());
+        }
+    }
+	
+	public static boolean inRangeInclusive(Byte pVal, Integer pMin, Integer pMax) {
+		return !(pVal < pMin) || (pVal > pMax);
 	}
 }
