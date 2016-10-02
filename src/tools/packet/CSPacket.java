@@ -38,10 +38,10 @@ public class CSPacket {
 
         pw.writeShort(SendPacketOpcode.CASH_SHOP.getValue());
         pw.write(5);
-        CashItemFactory cif = CashItemFactory.getInstance();
-        pw.write(cif.getMenuItems(301).size() > 0 ? 1 : 3);
-        pw.write(cif.getMenuItems(301).size());
-        for (CashItem i : cif.getMenuItems(301)) {
+        List<CashItem> items = CashItemFactory.getInstance().getMenuItems(301);
+        pw.write(items.size() > 0 ? 1 : 3);
+        pw.write(items.size());
+        for (CashItem i : items) {
             addCSItemInfo(pw, i);
         }
         return pw.getPacket();
@@ -52,10 +52,10 @@ public class CSPacket {
 
         pw.writeShort(SendPacketOpcode.CASH_SHOP.getValue());
         pw.write(4);
-        CashItemFactory cif = CashItemFactory.getInstance();
-        pw.write(cif.getMenuItems(401).size() > 0 ? 1 : 3);
-        pw.write(cif.getMenuItems(401).size());
-        for (CashItem i : cif.getMenuItems(401)) {
+        List<CashItem> items = CashItemFactory.getInstance().getMenuItems(401);
+        pw.write(items.size() > 0 ? 1 : 3);
+        pw.write(items.size());
+        for (CashItem i : items) {
             addCSItemInfo(pw, i);
         }
         return pw.getPacket();
@@ -66,10 +66,10 @@ public class CSPacket {
 
         pw.writeShort(SendPacketOpcode.CASH_SHOP.getValue());
         pw.write(6);
-        CashItemFactory cif = CashItemFactory.getInstance();
-        pw.write(cif.getMenuItems(302).size() > 0 ? 1 : 3);
-        pw.write(cif.getMenuItems(302).size());
-        for (CashItem i : cif.getMenuItems(302)) {
+        List<CashItem> items = CashItemFactory.getInstance().getMenuItems(302);
+        pw.write(items.size() > 0 ? 1 : 3);
+        pw.write(items.size());
+        for (CashItem i : items) {
             addCSItemInfo(pw, i);
         }
         return pw.getPacket();
@@ -80,10 +80,10 @@ public class CSPacket {
 
         pw.writeShort(SendPacketOpcode.CASH_SHOP.getValue());
         pw.write(8);
-        CashItemFactory cif = CashItemFactory.getInstance();
-        pw.write(cif.getMenuItems(303).size() > 0 ? 1 : 3);
-        pw.write(cif.getMenuItems(303).size());
-        for (CashItem i : cif.getMenuItems(303)) {
+        List<CashItem> items = CashItemFactory.getInstance().getMenuItems(303);
+        pw.write(items.size() > 0 ? 1 : 3);
+        pw.write(items.size());
+        for (CashItem i : items) {
             addCSItemInfo(pw, i);
         }
         return pw.getPacket();
@@ -94,13 +94,12 @@ public class CSPacket {
 
         pw.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
         pw.write(11);
-        CashItemFactory cif = CashItemFactory.getInstance();
-        pw.write(cif.getCategoryItems(subcategory).size() > 0 ? 1 : 3);
-        pw.write(cif.getCategoryItems(subcategory).size());
-        for (CashItem i : cif.getCategoryItems(subcategory)) {
+        List<CashItem> items = CashItemFactory.getInstance().getCategoryItems(subcategory);
+        pw.write(items.size() > 0 ? 1 : 3);
+        pw.write(items.size());
+        for (CashItem i : items) {
             addCSItemInfo(pw, i);
         }
-
         return pw.getPacket();
     }
    
