@@ -56,14 +56,14 @@ import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
 import tools.Pair;
 import tools.data.LittleEndianAccessor;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
 
 public class NPCHandler {
 
     public static void NPCAnimation(LittleEndianAccessor slea, MapleClient c) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        PacketWriter mplew = new PacketWriter();
         mplew.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
         int length = (int) slea.available();
         if (length == 10) {

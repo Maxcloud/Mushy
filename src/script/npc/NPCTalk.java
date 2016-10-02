@@ -5,6 +5,21 @@
 
 package script.npc;
 
+/**
+ * Parameter types that can be used.
+ * 
+ * NOESC        = 1
+ * NPC_REPLACED_BY_USER  = 2
+ * NPC_REPLACED_BY_NPC  = 4
+ * FLIP_IMAGE   = 8
+ * NPC_REPLACED_BY_USER_LEFT  = 10h
+ * SCENARIOILLUCHAT  = 20h
+ * NOENTER      = 40h
+ * SCENARIOILLUCHATXL  = 80h
+ * 
+ * @author Maxcloud
+ *
+ */
 public class NPCTalk {
 
 	private byte type, msg, param, color;

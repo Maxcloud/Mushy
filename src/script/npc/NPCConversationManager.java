@@ -97,7 +97,7 @@ import tools.Pair;
 import tools.Randomizer;
 import tools.StringUtil;
 import tools.Triple;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 import tools.packet.CField;
 import tools.packet.CField.NPCPacket;
 import tools.packet.CField.UIPacket;
@@ -2646,7 +2646,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
 
 	public void displayRank(int npcid, List<Triple<Short, String, Integer>> list) {
-		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+		PacketWriter mplew = new PacketWriter();
 
 		mplew.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
 		mplew.write(0x50);
@@ -2656,7 +2656,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			mplew.writeShort(info.getLeft()); // Rank
 			mplew.writeMapleAsciiString(info.getMid()); // Name
 			mplew.writeInt(info.getRight()); // Value
-			mplew.write0(16);
+			mplew.write(new byte[16]);
 		}
 		c.getSession().write(mplew.getPacket());
 	}

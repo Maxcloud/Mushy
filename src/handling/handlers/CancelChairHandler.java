@@ -12,16 +12,19 @@ public class CancelChairHandler {
 	public static void handle(MapleClient c, LittleEndianAccessor lea) {
 		short id = lea.readShort();
 
+		if (c.getPlayer() == null || c.getPlayer().getMap() == null){
+			c.disconnect(false, false);
+			return;
+		}
+		
+		c.getSession().write(CField.cancelChair(id, c.getPlayer().getId()));
+		
 		if (id == -1) {
 			c.getPlayer().cancelFishingTask();
 			c.getPlayer().setChair(0);
-			c.getSession().write(CField.cancelChair(-1));
-			if (c.getPlayer().getMap() != null) {
-				c.getPlayer().getMap().broadcastMessage(c.getPlayer(), CField.showChair(c.getPlayer().getId(), 0), false);
-			}
+			c.getPlayer().getMap().broadcastMessage(c.getPlayer(), CField.showChair(c.getPlayer().getId(), 0), false);
 		} else {
 			c.getPlayer().setChair(id);
-			c.getSession().write(CField.cancelChair(id));
 		}
 	}
 }

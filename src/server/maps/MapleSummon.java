@@ -205,25 +205,25 @@ public class MapleSummon extends AnimatedMapleMapObject {
             return 0;
         }
         switch (skill) {
-            case 1321007:
-            case 1301013:
-            case 36121014:
-                return 2; //buffs and stuff
-            case 35111001: //satellite.
-            case 35111009:
-            case 35111010:
-            case 42111003: // Kishin Shoukan
-            case 36121013:     
+            case 1321007: // beholden
+            case 1301013: // evil eye
+            case 36121014: // hypogram field: support
+                return 2; // buffs and stuff
+            case 35111001: // satellite
+            case 35111009: // satellite
+            case 35111010: // satellite
+            case 36121013: // hypogram field: force field
+            case 42111003: // kishin shoukan
                 return 3; //attacks what you attack
             case 35121009: //bots n. tots
-                return 5; //sub summons
-            case 35121003:
-                return 6; //charge
-            case 4111007: // test
-            case 4211007: //dark flare
-            case 14111010: //dark flare
-                return 7; //attacks what you get hit by
-            case 42101001: // Shikigami Charm
+                return 5; // sub summons
+            case 35121003: // giant robot sg-88
+                return 6; // charge
+            case 4111007: // dark flare
+            case 4211007: // dark flare
+            case 14111010: // dark flare
+                return 7; // attacks what you get hit by
+            case 42101001: // shikigami charm
                 return 8;
         }
         return 1;

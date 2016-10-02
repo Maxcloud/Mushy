@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.flywaydb.core.Flyway;
+
 import client.SkillFactory;
 import client.inventory.MapleInventoryIdentifier;
 import constants.GameConstants;
@@ -50,6 +52,7 @@ public class Start extends Properties {
             System.exit(0);
         }
 
+        // Load config.ini properties
         ServerConfig.interface_ = p.getProperty("ip");
         ServerConfig.serverName = p.getProperty("name");
         ServerConfig.eventMessage = p.getProperty("event");
@@ -57,16 +60,27 @@ public class Start extends Properties {
         ServerConfig.maxCharacters = getByte(p, "characters");
         ServerConfig.userLimit = getShort(p, "users");
         ServerConfig.channelCount = getByte(p, "channels");
-
-        System.setProperty("sendops", p.getProperty("sendops"));
-        System.setProperty("recvops", p.getProperty("recvops"));
-
         ServerConfig.port = p.getProperty("sql_port");
         ServerConfig.user = p.getProperty("sql_user");
         ServerConfig.pass = p.getProperty("sql_password");
         ServerConfig.database = p.getProperty("sql_db");
+        
+        // Load opcode properties
+        System.setProperty("sendops", p.getProperty("sendops"));
+        System.setProperty("recvops", p.getProperty("recvops"));
 
+        // Load the WZ path
         System.setProperty("wzpath", p.getProperty("wzpath"));
+        		
+        // Migrate the database
+        Flyway flyway = new Flyway();
+        
+        String args = String.format("jdbc:mysql://%s:%s/%s?useSSL=false",
+        		ServerConfig.interface_, ServerConfig.port, ServerConfig.database);
+        
+        flyway.setDataSource(args, ServerConfig.user, ServerConfig.pass);
+        flyway.setLocations("filesystem:./resources/db/migration");
+        flyway.migrate();
 
         try {
             try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET loggedin = 0")) {

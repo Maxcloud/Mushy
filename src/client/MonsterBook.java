@@ -22,7 +22,7 @@ import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
 import tools.Pair;
 import tools.Triple;
-import tools.data.MaplePacketLittleEndianWriter;
+import tools.data.PacketWriter;
 import tools.packet.CField;
 
 public final class MonsterBook
@@ -113,7 +113,7 @@ public final class MonsterBook
         return returnval;
     }
 
-    public void writeCharInfoPacket(MaplePacketLittleEndianWriter mplew) {
+    public void writeCharInfoPacket(PacketWriter mplew) {
         List cardSize = new ArrayList(10);
         for (int i = 0; i < 10; i++) {
             cardSize.add(Integer.valueOf(0));
@@ -132,7 +132,7 @@ public final class MonsterBook
         mplew.writeInt(this.finishedSets);
     }
 
-    public void writeFinished(MaplePacketLittleEndianWriter mplew) {
+    public void writeFinished(PacketWriter mplew) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         mplew.write(1);
         mplew.writeShort(this.cardItems.size());
@@ -161,7 +161,7 @@ public final class MonsterBook
         }
     }
 
-    public void writeUnfinished(MaplePacketLittleEndianWriter mplew) {
+    public void writeUnfinished(PacketWriter mplew) {
         mplew.write(0);
         mplew.writeShort(this.cardItems.size());
         for (Iterator i$ = this.cardItems.iterator(); i$.hasNext();) {

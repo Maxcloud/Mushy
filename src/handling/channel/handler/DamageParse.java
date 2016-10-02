@@ -816,15 +816,19 @@ public class DamageParse {
 	}
 
 	private static double ElementalStaffAttackBonus(Element elem, double elemMaxDamagePerMob, PlayerStats stats) {
+		if(elem == null){
+                	return  elemMaxDamagePerMob / 100.0D * (stats.def);
+            	}
+		
 		switch (elem) {
-		case FIRE:
-			return elemMaxDamagePerMob / 100.0D * (stats.element_fire + stats.getElementBoost(elem));
-		case ICE:
-			return elemMaxDamagePerMob / 100.0D * (stats.element_ice + stats.getElementBoost(elem));
-		case LIGHTING:
-			return elemMaxDamagePerMob / 100.0D * (stats.element_light + stats.getElementBoost(elem));
-		case POISON:
-			return elemMaxDamagePerMob / 100.0D * (stats.element_psn + stats.getElementBoost(elem));
+			case FIRE:
+				return elemMaxDamagePerMob / 100.0D * (stats.element_fire + stats.getElementBoost(elem));
+			case ICE:
+				return elemMaxDamagePerMob / 100.0D * (stats.element_ice + stats.getElementBoost(elem));
+			case LIGHTING:
+				return elemMaxDamagePerMob / 100.0D * (stats.element_light + stats.getElementBoost(elem));
+			case POISON:
+				return elemMaxDamagePerMob / 100.0D * (stats.element_psn + stats.getElementBoost(elem));
 		}
 		return elemMaxDamagePerMob / 100.0D * (stats.def + stats.getElementBoost(elem));
 	}
@@ -1662,9 +1666,9 @@ public class DamageParse {
 
 			lea.skip(12);
 			byte bullets = lea.readByte();
-			List allDamageNumbers = new ArrayList();
+			List<Pair<Integer, Boolean>> allDamageNumbers = new ArrayList<Pair<Integer, Boolean>>();
 			for (int j = 0; j < bullets; j++) {
-				allDamageNumbers.add(new Pair(Integer.valueOf(lea.readInt()), Boolean.valueOf(false)));
+				allDamageNumbers.add(new Pair<Integer, Boolean>(Integer.valueOf(lea.readInt()), Boolean.valueOf(false)));
 			}
 			ret.allDamage.add(new AttackPair(Integer.valueOf(oid).intValue(), allDamageNumbers));
 			lea.skip(4);

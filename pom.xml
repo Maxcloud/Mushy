@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <version>1.76.2</version>
+  <version>1.76.3</version>
   <name>Mushy</name>
   <build>
     <directory>${project.basedir}/bin</directory>
@@ -65,6 +65,16 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>19.0</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.flywaydb</groupId>
+    	<artifactId>flyway-core</artifactId>
+    	<version>4.0.3</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.h2database</groupId>
+    	<artifactId>h2</artifactId>
+    	<version>1.4.191</version>
     </dependency>
   </dependencies>
   <properties>

@@ -401,8 +401,8 @@ public class MapleStatEffect implements Serializable {
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IncMaxMP, Integer.valueOf(ret.immp));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMHPR, ret.info.get(MapleStatInfo.indieMhpR));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMMPR, ret.info.get(MapleStatInfo.indieMmpR));
-            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IncMaxHP, ret.info.get(MapleStatInfo.indieMhp));
-            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IncMaxMP, ret.info.get(MapleStatInfo.indieMmp));
+            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMHP, ret.info.get(MapleStatInfo.indieMhp));
+            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMMP, ret.info.get(MapleStatInfo.indieMmp));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.PVPDamage, Integer.valueOf(ret.incPVPdamage));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieJump, ret.info.get(MapleStatInfo.indieJump));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieSpeed, ret.info.get(MapleStatInfo.indieSpeed));
@@ -1194,7 +1194,7 @@ public class MapleStatEffect implements Serializable {
                     ret.moveTo = ret.info.get(MapleStatInfo.x);
                     break;
                 case 5311004:
-                    ret.statups.put(MapleBuffStat.BARREL_ROLL, 0);
+                    ret.statups.put(MapleBuffStat.RepeatEffect, 0);
                     break;
                 case 5121015:
                     ret.statups.put(MapleBuffStat.DamR, ret.info.get(MapleStatInfo.x));
@@ -1429,7 +1429,7 @@ public class MapleStatEffect implements Serializable {
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY3, ret.info.get(MapleStatInfo.x)); 
                 ret.statups.put(MapleBuffStat.KAISER_MAJESTY4, ret.info.get(MapleStatInfo.x));
                 ret.statups.put(MapleBuffStat.IndiePAD, Integer.MAX_VALUE);
-                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));
+                ret.statups.put(MapleBuffStat.IndieBooster, ret.info.get(MapleStatInfo.indieBooster));	
                 break;
             case 4341054: // blade clone
                 ret.statups.put(MapleBuffStat.ARIANT_COSS_IMU2, Integer.valueOf(1));
@@ -1789,9 +1789,10 @@ public class MapleStatEffect implements Serializable {
             applyto.gainXenonSurplus((short) -powerchange);
         }
 	if (getPPChange() != 0) {
-            if (applyfrom.getPsychicPoint() < -getPPChange())
+			// TODO: Neptune forgot to add these functions.
+            /*if (applyfrom.getPsychicPoint() < -getPPChange())
                 return false;
-            applyfrom.gainPsychicPoint(getPPChange());
+            applyfrom.gainPsychicPoint(getPPChange());*/
         }
         if (expinc != 0) {
             applyto.gainExp(expinc, true, true, false);
@@ -2122,13 +2123,14 @@ public class MapleStatEffect implements Serializable {
             }
         }
                if (applyto.getJob() == 132) {       
-               if (applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
-                applyto.cancelBuffStats(MapleBuffStat.Beholder);
-                applyfrom.getClient().getSession().write(CField.skillCooldown(1321013, getCooldown(applyfrom) * 0));
-                applyto.addCooldown(1321013, System.currentTimeMillis(), getCooldown(applyfrom));
-                applyto.removeCooldown(1321013);
-            } 
-            }
+            	   System.out.println(applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF));
+	               if (applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != null && applyto.getBuffedValue(MapleBuffStat.IgnoreTargetDEF) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
+		                applyto.cancelBuffStats(MapleBuffStat.Beholder);
+		                applyfrom.getClient().getSession().write(CField.skillCooldown(1321013, getCooldown(applyfrom) * 0));
+		                applyto.addCooldown(1321013, System.currentTimeMillis(), getCooldown(applyfrom));
+		                applyto.removeCooldown(1321013);
+	               } 
+               }
                
                if (GameConstants.isLuminous(applyto.getJob())) {       
                if (applyto.getBuffedValue(MapleBuffStat.LUMINOUS_GAUGE) != 1); { //Sacrifice is the only skill Dark Knights have that give Ignore Def hacky but works
@@ -2660,7 +2662,7 @@ public class MapleStatEffect implements Serializable {
                 applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), sourceid, zz, -1, level), false);
                 applyto.getClient().getSession().write(CField.EffectPacket.showOwnDiceEffect(sourceid, zz, -1, level));
                 localstatups = new EnumMap<>(MapleBuffStat.class);
-                localstatups.put(MapleBuffStat.BARREL_ROLL, zz);
+                localstatups.put(MapleBuffStat.RepeatEffect, zz);
                 break;
             }
             case 5211011:

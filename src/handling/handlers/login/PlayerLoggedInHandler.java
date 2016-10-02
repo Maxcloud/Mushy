@@ -114,7 +114,7 @@ public class PlayerLoggedInHandler {
 		
 		PlayersHandler.calcHyperSkillPointCount(c);
 		// c.getSession().write(CSPacket.enableCSUse());
-		c.getSession().write(CWvsContext.updateSkills(c.getPlayer().getSkills(), false));//skill to 0 "fix"
+		c.getSession().write(CWvsContext.updateLinkSkill(c.getPlayer().getSkills(), true, false, false));
 		// player.getStolenSkills();
 		// c.getSession().write(JobPacket.addStolenSkill());
 
@@ -185,7 +185,7 @@ public class PlayerLoggedInHandler {
 		// player.startFairySchedule(false);
 		// player.baseSkills(); // fix people who've lost skills.
 		if (GameConstants.isZero(player.getJob())) {
-			c.getSession().write(CWvsContext.updateSkills(player.getSkills(), false));
+			c.getSession().write(CWvsContext.updateLinkSkill(c.getPlayer().getSkills(), true, false, false));
 		}
 		c.getSession().write(CField.getKeymap(player.getKeyLayout()));
 		// player.updatePetAuto();

@@ -54,9 +54,6 @@ public class NPCScriptManager extends AbstractScriptManager {
         lock.lock();
         try {
         	
-        	if(cms.containsKey(c) && c.canClickNPC())
-        		System.out.println(cms.get(c).id);
-        	
             if (!cms.containsKey(c) && c.canClickNPC()) {
                 Invocable iv = getInvocable("npc/" + npc + ".js", c, true); //safe disposal
                 if (script != null) {
@@ -78,10 +75,12 @@ public class NPCScriptManager extends AbstractScriptManager {
 
                 c.getPlayer().setConversation(1);
                 c.setClickedNPC();
+                
+                // TODO: Remove all start function(s) from the scripts.
                 try {
-                    iv.invokeFunction("start"); // Temporary until I've removed all of start
+                    iv.invokeFunction("start");
                 } catch (NoSuchMethodException nsme) {
-                	nsme.printStackTrace();
+                	// nsme.printStackTrace();
                     iv.invokeFunction("action", (byte) 1, (byte) 0, 0);
                 }
             }

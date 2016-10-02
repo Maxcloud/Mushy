@@ -21,9 +21,10 @@
 package script;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -45,39 +46,35 @@ public abstract class AbstractScriptManager {
     }
 
     protected Invocable getInvocable(String path, MapleClient c, boolean npc) {
-        FileReader fr = null;
-        try {
-            path = "scripts/" + path;
-            ScriptEngine engine = null;
+        path = "scripts/" + path;
+		ScriptEngine engine = null;
 
-            if (c != null) {
-                engine = c.getScriptEngine(path);
-            }
-            if (engine == null) {
-                File scriptFile = new File(path);
-                if (!scriptFile.exists()) {
-                    return null;
-                }
-                engine = sem.getEngineByName("javascript");
-                if (c != null) {
-                    c.setScriptEngine(path, engine);
-                }
-                fr = new FileReader(scriptFile);
-                engine.eval(fr);
-            } else if (c != null && npc) {
-                //c.getPlayer().dropMessage(-1, "You already are talking to this NPC. Use @ea if this is not intended.");
-            }
-            return (Invocable) engine;
-        } catch (FileNotFoundException | ScriptException e) {
-            System.err.println("Error executing script. Path: " + path + "\nException " + e);
-            return null;
-        } finally {
-            try {
-                if (fr != null) {
-                    fr.close();
-                }
-            } catch (IOException ignore) {
-            }
-        }
+		if (c != null)
+		    engine = c.getScriptEngine(path);
+
+		if (engine == null) {
+		    File scriptFile = new File(path);
+		    if (!scriptFile.exists()) {
+		        return null;
+		    }
+		    engine = sem.getEngineByName("javascript");
+		    if (c != null) {
+		        c.setScriptEngine(path, engine);
+		    }
+		    try (Stream<String> stream = Files.lines(scriptFile.toPath())) {
+		    	String lines = "load('nashorn:mozilla_compat.js');";
+		    	lines += stream.collect(Collectors.joining(System.lineSeparator()));
+		    	
+		    	engine.eval(lines);
+		    	
+		    } catch (ScriptException | IOException e) {
+		    	return null;
+		    }
+		    // fr = new FileReader(scriptFile);
+		    
+		} else if (c != null && npc) {
+		    //c.getPlayer().dropMessage(-1, "You already are talking to this NPC. Use @ea if this is not intended.");
+		}
+		return (Invocable) engine;
     }
 }
