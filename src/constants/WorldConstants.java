@@ -60,9 +60,9 @@ public class WorldConstants {
 
         WorldOption(int world, byte flag, boolean show, int channels) {
             this.world = world;
-            this.exp = ServerConfig.EXP;
-            this.meso = ServerConfig.MESO;
-            this.drop =ServerConfig.DROP;
+            this.exp = ServerConfig.EXP_RATE;
+            this.meso = ServerConfig.MESO_RATE;
+            this.drop =ServerConfig.DROP_RATE;
             this.flag = flag;
             this.show = show;
             this.available = show;
@@ -84,9 +84,9 @@ public class WorldConstants {
 
         WorldOption(int world, int exp, int meso, int drop, byte flag, boolean show, boolean available, int channels, String worldtip) {
             this.world = world;
-            this.exp = ServerConfig.EXP;
-            this.meso = ServerConfig.MESO;
-            this.drop =ServerConfig.DROP;
+            this.exp = ServerConfig.EXP_RATE;
+            this.meso = ServerConfig.MESO_RATE;
+            this.drop =ServerConfig.DROP_RATE;
             this.flag = flag;
             this.show = show;
             this.available = available;

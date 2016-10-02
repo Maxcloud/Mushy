@@ -25,7 +25,7 @@ public class CashShopServer {
     private static boolean finishedShutdown = false;
 
     public static void run_startup_configurations() {
-        ip = ServerConfig.interface_ + ":" + PORT;
+        ip = ServerConfig.IP_ADDRESS + ":" + PORT;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());

@@ -119,14 +119,14 @@ public class ChannelServer {
     private final void run_startup_configurations() {
         setChannel(channel); //instances.put
         try {
-            serverMessage = ServerConfig.scrollingMessage;
-            serverName = ServerConfig.serverName;
+            serverMessage = ServerConfig.SCROLL_MESSAGE;
+            serverName = ServerConfig.SERVER_NAME;
             eventSM = new EventScriptManager(this, EventConstants.getEvents().split(","));
             port = (short) (DEFAULT_PORT + channel);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        ip = ServerConfig.interface_ + ":" + port;
+        ip = ServerConfig.IP_ADDRESS + ":" + port;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());
@@ -283,7 +283,7 @@ public class ChannelServer {
     public static void startChannel_Main() {
         serverStartTime = System.currentTimeMillis();
 
-        for (int i = 0; i < ServerConfig.channelCount; i++) {
+        for (int i = 0; i < ServerConfig.CHANNEL_COUNT; i++) {
             newInstance(i + 1).run_startup_configurations();
         }
     }
