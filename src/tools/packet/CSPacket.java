@@ -160,7 +160,7 @@ public class CSPacket {
         pw.writeMapleAsciiString(item.getImage()); //jpeg img url
         pw.writeInt(item.getSN());
         pw.writeInt(item.getItemId());
-        pw.writeInt(1);
+        pw.writeInt(item.getBuyable());
         pw.writeInt(item.getFlag());//1 =event 2=new = 4=hot
         pw.writeInt(0);//1 = package?
         pw.writeInt(0);//changes - type?
@@ -441,9 +441,9 @@ public class CSPacket {
         PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-        pw.write(Operation_Code + 17);//17
+        pw.write(0xD); //v176.3 Sniffed
         addCashItemInfo(pw, item, accid, sn);
-        pw.write(new byte[5]);
+        pw.write(new byte[6]);
 
         return pw.getPacket();
     }
