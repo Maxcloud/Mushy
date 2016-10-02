@@ -20,24 +20,24 @@ import server.cash.CashItemInfo.CashModInfo;
 
 public class CashItemFactory {
 
-    private final static CashItemFactory instance = new CashItemFactory();
+    private static CashItemFactory instance = new CashItemFactory();
     
-    private final MapleDataProvider data = MapleDataProviderFactory.getDataProvider("Etc.wz");
+    private MapleDataProvider data = MapleDataProviderFactory.getDataProvider("Etc.wz");
     
-    private final Map<Integer, CashItemInfo> itemStats = new HashMap<>();
-    private final Map<Integer, List<Integer>> itemPackage = new HashMap<>();
-    private final Map<Integer, CashModInfo> itemMods = new HashMap<>();
-    private final Map<Integer, CashItem> menuItems = new HashMap<>();
-    private final Map<Integer, CashItem> categoryItems = new HashMap<>();
+    private Map<Integer, CashItemInfo> itemStats = new HashMap<>();
+    private Map<Integer, List<Integer>> itemPackage = new HashMap<>();
+    private Map<Integer, CashModInfo> itemMods = new HashMap<>();
+    private Map<Integer, CashItem> menuItems = new HashMap<>();
+    private Map<Integer, CashItem> categoryItems = new HashMap<>();
     
-    private final List<CashCategory> categories = new LinkedList<>();
+    private List<CashCategory> categories = new LinkedList<>();
    
     public static CashItemFactory getInstance() {
         return instance;
     }
 
     public void initialize() {
-        final List<MapleData> commodity = data.getData("Commodity.img").getChildren();
+        List<MapleData> commodity = data.getData("Commodity.img").getChildren();
         
         for (MapleData field : commodity) {
             int itemid = MapleDataTool.getIntConvert("ItemId", field, 0);
@@ -48,20 +48,20 @@ public class CashItemFactory {
             int gender = MapleDataTool.getIntConvert("Gender", field, 2);
             int sale = MapleDataTool.getIntConvert("OnSale", field, 0);
             
-            final CashItemInfo stats = new CashItemInfo(itemid, count, price, sn, period, gender, (sale > 0 && price > 0), 0);
+            CashItemInfo stats = new CashItemInfo(itemid, count, price, sn, period, gender, (sale > 0 && price > 0), 0);
            
             if (sn > 0) {
                 itemStats.put(sn, stats);
             }
         }
 
-        final MapleData cPackage = data.getData("CashPackage.img");
+        MapleData cPackage = data.getData("CashPackage.img");
         for (MapleData c : cPackage.getChildren()) {
             
         	if (c.getChildByPath("SN") == null)
                 continue;
             
-            final List<Integer> packageItems = new ArrayList<Integer>();
+            List<Integer> packageItems = new ArrayList<Integer>();
             for (MapleData d : c.getChildByPath("SN").getChildren()) {
                 packageItems.add(MapleDataTool.getIntConvert(d));
             }
@@ -76,7 +76,7 @@ public class CashItemFactory {
                     CashModInfo ret = new CashModInfo(rs.getInt("serial"), rs.getInt("discount_price"), rs.getInt("mark"), rs.getInt("showup") > 0, rs.getInt("itemid"), rs.getInt("priority"), rs.getInt("package") > 0, rs.getInt("period"), rs.getInt("gender"), rs.getInt("count"), rs.getInt("meso"), rs.getInt("unk_1"), rs.getInt("unk_2"), rs.getInt("unk_3"), rs.getInt("extra_flags"));
                     itemMods.put(ret.sn, ret);
                     if (ret.showUp) {
-                        final CashItemInfo cc = itemStats.get(Integer.valueOf(ret.sn));
+                        CashItemInfo cc = itemStats.get(Integer.valueOf(ret.sn));
                         if (cc != null) {
                             ret.toCItem(cc);
                         }
@@ -126,13 +126,13 @@ public class CashItemFactory {
 
     }
 
-    public final CashItemInfo getSimpleItem(int sn) {
+    public CashItemInfo getSimpleItem(int sn) {
         return itemStats.get(sn);
     }
 
-    public final CashItemInfo getItem(int sn) {
-        final CashItemInfo stats = itemStats.get(Integer.valueOf(sn));
-        final CashModInfo z = getModInfo(sn);
+    public CashItemInfo getItem(int sn) {
+        CashItemInfo stats = itemStats.get(sn);
+        CashModInfo z = getModInfo(sn);
         if (z != null && z.showUp) {
             return z.toCItem(stats); //null doesnt matter
         }
@@ -142,7 +142,7 @@ public class CashItemFactory {
         return stats;
     }
 
-    public final CashItem getMenuItem(int sn) {
+    public CashItem getMenuItem(int sn) {
         for (CashItem ci : getMenuItems()) {
             if (ci.getSN() == sn) {
                 return ci;
@@ -151,7 +151,7 @@ public class CashItemFactory {
         return null;
     }
     
-    public final CashItem getAllItem(int sn) {
+    public CashItem getAllItem(int sn) {
         for (CashItem ci : getAllItems()) {
             if (ci.getSN() == sn) {
                 return ci;
@@ -160,23 +160,23 @@ public class CashItemFactory {
         return null;
     }
 
-    public final List<Integer> getPackageItems(int itemId) {
+    public List<Integer> getPackageItems(int itemId) {
         return itemPackage.get(itemId);
     }
 
-    public final CashModInfo getModInfo(int sn) {
+    public CashModInfo getModInfo(int sn) {
         return itemMods.get(sn);
     }
 
-    public final Collection<CashModInfo> getAllModInfo() {
+    public Collection<CashModInfo> getAllModInfo() {
         return itemMods.values();
     }
 
-    public final List<CashCategory> getCategories() {
+    public List<CashCategory> getCategories() {
         return categories;
     }
 
-    public final List<CashItem> getMenuItems(int type) {
+    public List<CashItem> getMenuItems(int type) {
         List<CashItem> items = new LinkedList<CashItem>();
         for (CashItem ci : menuItems.values()) {
             if (ci.getSubCategory() / 10000 == type) {
@@ -186,14 +186,14 @@ public class CashItemFactory {
         return items;
     }
 
-    public final List<CashItem> getMenuItems() {
+    public List<CashItem> getMenuItems() {
         List<CashItem> items = new LinkedList<CashItem>();
         for (CashItem ci : menuItems.values()) {
             items.add(ci);
         }
         return items;
     }
-    public final List<CashItem> getAllItems(int type) {
+    public List<CashItem> getAllItems(int type) {
         List<CashItem> items = new LinkedList<CashItem>();
         for (CashItem ci : categoryItems.values()) {
             if (ci.getSubCategory() / 10000 == type) {
@@ -203,7 +203,7 @@ public class CashItemFactory {
         return items;
     }
 
-    public final List<CashItem> getAllItems() {
+    public List<CashItem> getAllItems() {
         List<CashItem> items = new LinkedList<CashItem>();
         for (CashItem ci : categoryItems.values()) {
             items.add(ci);
@@ -211,7 +211,7 @@ public class CashItemFactory {
         return items;
     }
 
-    public final List<CashItem> getCategoryItems(int subcategory) {
+    public List<CashItem> getCategoryItems(int subcategory) {
         List<CashItem> items = new LinkedList<CashItem>();
         for (CashItem ci : categoryItems.values()) {
             if (ci.getSubCategory() == subcategory) {
