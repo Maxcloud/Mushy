@@ -43,32 +43,32 @@ public class Start extends Properties {
 
     public void run() throws InterruptedException, IOException {
         long start = System.currentTimeMillis();
-        Properties initialProp = new Properties();
+        Properties properties = new Properties();
         try {
-        	initialProp.load(new FileInputStream("config.properties"));
+        	properties.load(new FileInputStream("config.properties"));
         } catch (IOException ex) {
             System.out.println("Failed to load config.properties");
         }
 
         // Load Server Configuration
-        ServerConfig.IP_ADDRESS = initialProp.getProperty("ip");
-        ServerConfig.SERVER_NAME = initialProp.getProperty("name");
-        ServerConfig.EVENT_MSG = initialProp.getProperty("event");
-        ServerConfig.SCROLL_MESSAGE = initialProp.getProperty("message");
-        ServerConfig.MAX_CHARACTERS = getByte(initialProp, "characters");
-        ServerConfig.USER_LIMIT = getShort(initialProp, "users");
-        ServerConfig.CHANNEL_COUNT = getByte(initialProp, "channels");
-        ServerConfig.SQL_PORT = initialProp.getProperty("sql_port");
-        ServerConfig.SQL_USER = initialProp.getProperty("sql_user");
-        ServerConfig.SQL_PASS = initialProp.getProperty("sql_password");
-        ServerConfig.SQL_DATABASE = initialProp.getProperty("sql_db");
+        ServerConfig.IP_ADDRESS = properties.getProperty("ip");
+        ServerConfig.SERVER_NAME = properties.getProperty("name");
+        ServerConfig.EVENT_MSG = properties.getProperty("event");
+        ServerConfig.SCROLL_MESSAGE = properties.getProperty("message");
+        ServerConfig.MAX_CHARACTERS = getByte(properties, "characters");
+        ServerConfig.USER_LIMIT = getShort(properties, "users");
+        ServerConfig.CHANNEL_COUNT = getByte(properties, "channels");
+        ServerConfig.SQL_PORT = properties.getProperty("sql_port");
+        ServerConfig.SQL_USER = properties.getProperty("sql_user");
+        ServerConfig.SQL_PASS = properties.getProperty("sql_password");
+        ServerConfig.SQL_DATABASE = properties.getProperty("sql_db");
         
         // Load opcode properties
-        System.setProperty("sendops", initialProp.getProperty("sendops"));
-        System.setProperty("recvops", initialProp.getProperty("recvops"));
+        System.setProperty("sendops", properties.getProperty("sendops"));
+        System.setProperty("recvops", properties.getProperty("recvops"));
 
         // Load the WZ path
-        System.setProperty("wzpath", initialProp.getProperty("wzpath"));
+        System.setProperty("wzpath", properties.getProperty("wzpath"));
         		
         // Migrate the database
         Flyway flyway = new Flyway();
