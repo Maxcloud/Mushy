@@ -79,10 +79,10 @@ public class LoginServer {
     }
 
     public static final void run_startup_configurations() {
-        userLimit = ServerConfig.userLimit;
-        serverName = ServerConfig.serverName;
-        eventMessage = ServerConfig.eventMessage;
-        maxCharacters = ServerConfig.maxCharacters;
+        userLimit = ServerConfig.USER_LIMIT;
+        serverName = ServerConfig.SERVER_NAME;
+        eventMessage = ServerConfig.EVENT_MSG;
+        maxCharacters = ServerConfig.MAX_CHARACTERS;
 
         ByteBuffer.setUseDirectBuffers(false);
         ByteBuffer.setAllocator(new SimpleByteBufferAllocator());

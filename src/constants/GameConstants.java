@@ -45,7 +45,6 @@ import tools.Randomizer;
 
 public class GameConstants {
 
-
 	public static boolean isBonusPot(int opID) {
 		//bpots always are x2xxx
 		return Math.floor((opID / 1000) % 10) == 2;
@@ -53,11 +52,11 @@ public class GameConstants {
 
 	public static int getRequiredSense(int reqLevel) {
 		int res = 0;
-		if(reqLevel > 120){
+		if (reqLevel > 120) {
 			res = 90;
-		}else if(reqLevel > 70){
+		} else if (reqLevel > 70) {
 			res = 60;
-		}else if(reqLevel > 30){
+		} else if (reqLevel > 30) {
 			res = 30;
 		}
 		return res;
