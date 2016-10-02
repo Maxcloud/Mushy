@@ -1474,4 +1474,21 @@ public class MapleClient implements Serializable {
         }, 10000); // note: idletime gets added to this too)
      
     }
+
+	//0 = "You must create PIC before proceeding"
+	//1 = Enter your PIC
+	//2/3 = No PIC asked
+	//4 = "You haven't changed your PIC in a while"
+	public byte getPicStatus() {
+		if (secondPassword == null){
+			return 0;
+		}
+		if (secondPassword.length() > 0){
+			return 1;
+		}
+		if (secondPassword.length() <= 0){
+			return 2;
+		}
+		return 0;
+	}
 }

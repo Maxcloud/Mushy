@@ -401,8 +401,8 @@ public class MapleStatEffect implements Serializable {
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IncMaxMP, Integer.valueOf(ret.immp));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMHPR, ret.info.get(MapleStatInfo.indieMhpR));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMMPR, ret.info.get(MapleStatInfo.indieMmpR));
-            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IncMaxHP, ret.info.get(MapleStatInfo.indieMhp));
-            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IncMaxMP, ret.info.get(MapleStatInfo.indieMmp));
+            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMHP, ret.info.get(MapleStatInfo.indieMhp));
+            addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieMMP, ret.info.get(MapleStatInfo.indieMmp));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.PVPDamage, Integer.valueOf(ret.incPVPdamage));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieJump, ret.info.get(MapleStatInfo.indieJump));
             addBuffStatPairToListIfNotZero(ret.statups, MapleBuffStat.IndieSpeed, ret.info.get(MapleStatInfo.indieSpeed));
@@ -1194,7 +1194,7 @@ public class MapleStatEffect implements Serializable {
                     ret.moveTo = ret.info.get(MapleStatInfo.x);
                     break;
                 case 5311004:
-                    ret.statups.put(MapleBuffStat.BARREL_ROLL, 0);
+                    ret.statups.put(MapleBuffStat.RepeatEffect, 0);
                     break;
                 case 5121015:
                     ret.statups.put(MapleBuffStat.DamR, ret.info.get(MapleStatInfo.x));
@@ -2662,7 +2662,7 @@ public class MapleStatEffect implements Serializable {
                 applyto.getMap().broadcastMessage(applyto, CField.EffectPacket.showDiceEffect(applyto.getId(), sourceid, zz, -1, level), false);
                 applyto.getClient().getSession().write(CField.EffectPacket.showOwnDiceEffect(sourceid, zz, -1, level));
                 localstatups = new EnumMap<>(MapleBuffStat.class);
-                localstatups.put(MapleBuffStat.BARREL_ROLL, zz);
+                localstatups.put(MapleBuffStat.RepeatEffect, zz);
                 break;
             }
             case 5211011:

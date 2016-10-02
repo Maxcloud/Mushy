@@ -280,7 +280,7 @@ public class LoginPacket {
         return pw.getPacket();
     }
 
-    public static byte[] getCharList(String secondpw, List<MapleCharacter> chars, int charslots) {
+    public static byte[] getCharList(MapleClient client, List<MapleCharacter> characters) {
         PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.CHARLIST.getValue());
@@ -301,13 +301,23 @@ public class LoginPacket {
         
         pw.writeInt(0); // ? (nSecond)
         
-        pw.write(chars.size());
-        for (MapleCharacter chr : chars) {
-            addCharEntry(pw, chr, (!chr.isGM()) && (chr.getLevel() >= 30), false);
+        pw.write(characters.size());
+        for (MapleCharacter character : characters) {
+            addCharEntry(pw, character);
+            pw.write(0);
+            
+            boolean ranking = !character.isGM() && character.getLevel() >= 30;
+            pw.write(ranking);
+            if (ranking) {
+                pw.writeInt(character.getRank());
+                pw.writeInt(character.getRankMove());
+                pw.writeInt(character.getJobRank());
+                pw.writeInt(character.getJobRankMove());
+            }
         }
-        pw.write((secondpw != null) && (secondpw.length() <= 0) ? 2 : (secondpw != null) && (secondpw.length() > 0) ? 1 : 0); 
-        pw.write(0);
-        pw.writeInt(charslots);
+        pw.write(client.getPicStatus());
+		pw.write(0);
+		pw.writeInt(client.getCharacterSlots());
         
         pw.writeInt(0); // buy character count?
         pw.writeInt(-1); // event new char job
@@ -343,7 +353,7 @@ public class LoginPacket {
 
         pw.writeShort(SendPacketOpcode.ADD_NEW_CHAR_ENTRY.getValue());
         pw.write(worked ? 0 : 1);
-        addCharEntry(pw, chr, false, false);
+        addCharEntry(pw, chr);
 
         return pw.getPacket();
     }
@@ -358,22 +368,11 @@ public class LoginPacket {
         return pw.getPacket();
     }
 
-    private static void addCharEntry(PacketWriter pw, MapleCharacter chr, boolean ranking, boolean viewAll) {
+    private static void addCharEntry(PacketWriter pw, MapleCharacter chr) {
         PacketHelper.addCharStats(pw, chr);
         PacketHelper.addCharLook(pw, chr, true, false);
         if (GameConstants.isZero(chr.getJob())) {
             PacketHelper.addCharLook(pw, chr, true, true);
-        }
-        if (!viewAll) {
-            pw.write(0);
-        }
-        
-        pw.write(ranking ? 1 : 0);
-        if (ranking) {
-            pw.writeInt(chr.getRank());
-            pw.writeInt(chr.getRankMove());
-            pw.writeInt(chr.getJobRank());
-            pw.writeInt(chr.getJobRankMove());
         }
     }
 

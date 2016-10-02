@@ -515,12 +515,11 @@ public class PacketHelper {
         for (MapleTrait.MapleTraitType t : MapleTrait.MapleTraitType.values()) {
             pw.writeInt(chr.getTrait(t).getTotalExp());
         }
-        //for (MapleTrait.MapleTraitType t : MapleTrait.MapleTraitType.values()) {
-        //    pw.writeShort(0); //today's stats
-        //}
-        //pw.write(0);
-        //pw.writeLong(getTime(System.currentTimeMillis()));
-        pw.write(new byte[21]);
+        for (MapleTrait.MapleTraitType t : MapleTrait.MapleTraitType.values()) {
+            pw.writeShort(0); //today's stats
+        }
+        pw.write(0);
+        pw.writeLong(getTime(-2));
         
         pw.writeInt(chr.getStat().pvpExp);
         pw.write(chr.getStat().pvpRank);
@@ -627,14 +626,18 @@ public class PacketHelper {
         pw.writeInt(cWeapon != null ? cWeapon.intValue() : 0);
         
         Integer Weapon = equip.get(Byte.valueOf((byte) -11));
-        pw.writeInt(Weapon != null ? Weapon.intValue() : 0); //new v139
+        pw.writeInt(Weapon != null ? Weapon.intValue() : 0);
         
         boolean zero = GameConstants.isZero(chr.getJob());
         Integer Shield = equip.get(Byte.valueOf((byte) -10));
-        pw.writeInt(!zero && Shield != null ? Shield.intValue() : 0); //new v139
+        pw.writeInt(!zero && Shield != null ? Shield.intValue() : 0);
         
-        pw.write(0); // mercedes elf ears
-        pw.write(new byte[12]); // all 3 pets unique id
+        pw.write(GameConstants.isMercedes(chr.getJob()) ? 1 : 0);
+        
+        // all 3 pets unique id
+        pw.writeInt(0);
+        pw.writeInt(0);
+        pw.writeInt(0);
         
 	    if (GameConstants.isDemonSlayer(chr.getJob()) || GameConstants.isXenon(chr.getJob()) || GameConstants.isDemonAvenger(chr.getJob())) {
 	        pw.writeInt(chr.getFaceMarking());

@@ -2173,16 +2173,16 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
-            pw.write(14);//12 v140
+            pw.write(16);
             pw.writeInt(partyid);
             pw.writeInt(999999999);
             pw.writeInt(999999999);
             pw.writeInt(0);
-            pw.writeShort(0);
-            pw.writeShort(0);
+            pw.writeInt(0);
             pw.write(0);
             pw.write(1);
-
+            pw.writeMapleAsciiString("Best party ever!");
+            
             return pw.getPacket();
         }
 
@@ -2190,7 +2190,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
-            pw.write(4);
+            pw.write(24); // 18
             pw.writeInt(from.getParty() == null ? 0 : from.getParty().getId());
             pw.writeMapleAsciiString(from.getName());
             pw.writeInt(from.getLevel());
@@ -2200,7 +2200,7 @@ public class CWvsContext {
             return pw.getPacket();
         }
 
-        public static byte[] partyRequestInvite(MapleCharacter from) {
+        public static byte[] partyRequestInvite(MapleCharacter from) { // does not seems to exist anywhere
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
@@ -2218,10 +2218,8 @@ public class CWvsContext {
 
             pw.writeShort(SendPacketOpcode.PARTY_OPERATION.getValue());
             pw.write(message);
-            if ((message == 30) || (message == 52)) {
+            if (message == 33) {
                 pw.writeMapleAsciiString(charname);
-            } else if (message == 45) {
-                pw.write(0);
             }
 
             return pw.getPacket();
@@ -2234,9 +2232,9 @@ public class CWvsContext {
         public static void addPartyStatus(int forchannel, MapleParty party, PacketWriter lew, boolean leaving, boolean exped) {
             List<MaplePartyCharacter> partymembers;
             if (party == null) {
-                partymembers = new ArrayList();
+                partymembers = new ArrayList<>();
             } else {
-                partymembers = new ArrayList(party.getMembers());
+                partymembers = new ArrayList<>(party.getMembers());
             }
             while (partymembers.size() < 6) {
                 partymembers.add(new MaplePartyCharacter());
@@ -2251,18 +2249,12 @@ public class CWvsContext {
                 lew.writeInt(partychar.getJobId());
             }
             for (MaplePartyCharacter partychar : partymembers) {
-                lew.writeInt(0);
-            }
-            for (MaplePartyCharacter partychar : partymembers) {
                 lew.writeInt(partychar.getLevel());
             }
             for (MaplePartyCharacter partychar : partymembers) {
                 lew.writeInt(partychar.isOnline() ? partychar.getChannel() - 1 : -2);
             }
-            for (MaplePartyCharacter partychar : partymembers) {
-                lew.writeInt(0);
-            }
-
+            
             lew.writeInt(party == null ? 0 : party.getLeader().getId());
             if (exped) {
                 return;
@@ -2294,7 +2286,7 @@ public class CWvsContext {
                 case DISBAND:
                 case EXPEL:
                 case LEAVE:
-                    pw.write(18);
+                    pw.write(21); // 18
                     pw.writeInt(party.getId());
                     pw.writeInt(target.getId());
                     pw.write(op == PartyOperation.DISBAND ? 0 : 1);
@@ -2306,20 +2298,19 @@ public class CWvsContext {
                     addPartyStatus(forChannel, party, pw, op == PartyOperation.LEAVE);
                     break;
                 case JOIN:
-                    pw.write(21);
-                    pw.writeInt(party.getId());
+                    pw.write(24); // 21
                     pw.writeMapleAsciiString(target.getName());
                     addPartyStatus(forChannel, party, pw, false);
                     break;
                 case SILENT_UPDATE:
                 case LOG_ONOFF:
-                    pw.write(13);
+                    pw.write(16); // 13
                     pw.writeInt(party.getId());
                     addPartyStatus(forChannel, party, pw, op == PartyOperation.LOG_ONOFF);
                     break;
                 case CHANGE_LEADER:
                 case CHANGE_LEADER_DC:
-                    pw.write(45);
+                    pw.write(48); // 45
                     pw.writeInt(target.getId());
                     pw.write(op == PartyOperation.CHANGE_LEADER_DC ? 1 : 0);
             }
@@ -3622,8 +3613,8 @@ public class CWvsContext {
             		.filter(stat -> stat.getKey().isIndie())
             		.collect(Collectors.toMap(stat -> stat.getKey(), stat -> stat.getValue()));
             
-            pw.writeInt(stats.size());
             for(Map.Entry<MapleBuffStat, Integer> stat : stats.entrySet()) {
+            	pw.writeInt(1); // the size of the array.
             	pw.writeInt(buffid); // nReason
             	pw.writeInt(effect.getLevel()); // nValue
             	pw.writeInt(Integer.MAX_VALUE); // nKey
@@ -3633,22 +3624,18 @@ public class CWvsContext {
             	pw.writeInt(0); // size
             	// pw.writeInt(0); // nMValueKey
             	// pw.writeInt(0); // nMValue
-            	
-            	pw.writeInt(0); // 175.1 ?
             }
             
-            for (Map.Entry<MapleBuffStat, Integer> stat : statups.entrySet()) {
-            	
-            	if (stat.getKey() == MapleBuffStat.UsingScouter) {
-            		pw.writeInt(0); // nUsingScouter
-            	}
-            }
+            
+            if(statups.containsKey(MapleBuffStat.UsingScouter))
+            	pw.writeInt(0); // nUsingScouter
             
             pw.writeShort(1);
             pw.write(0);
             pw.write(0); // bJustBuffCheck
             pw.write(0); // bFirstSet
             
+            pw.writeInt(0); // 174.1
             
             boolean isMovementAffectingStat = statups.entrySet().stream().anyMatch(stat -> stat.getKey().isMovementAffectingStat());
             
@@ -3678,37 +3665,17 @@ public class CWvsContext {
             return pw.getPacket();
         }
 
-   /*     public static byte[] cancelBuff(List<MapleBuffStat> statups) {
+        public static byte[] cancelBuff(List<MapleBuffStat> statups) {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.CANCEL_BUFF.getValue());
 
             PacketHelper.writeMask(pw, statups);
-            for (MapleBuffStat z : statups) {
-                if (z.canStack()) {
-                    pw.writeInt(0); //amount of buffs still in the stack? dunno mans
-                }
-            }
-            pw.write(3);
-            pw.write(1);
-            pw.writeLong(0);
-            pw.writeLong(0);
-            pw.writeLong(0);
-            pw.write(0);
-            return pw.getPacket();
-        }*/
-        
-                public static byte[] cancelBuff(List<MapleBuffStat> statups) {
-            PacketWriter pw = new PacketWriter();
 
-            pw.writeShort(SendPacketOpcode.CANCEL_BUFF.getValue());
-
-            PacketHelper.writeMask(pw, statups);
-            for (MapleBuffStat z : statups) {
-                // if (z.canStack()) {
-                //     pw.writeInt(0);
-                // }
-            }
+            statups.stream()
+            	.filter(stat -> stat.isIndie())
+            	.collect(Collectors.toList())
+            	.forEach(stat -> pw.writeInt(0));
 
             pw.writeShort(0);
             pw.write(0);
