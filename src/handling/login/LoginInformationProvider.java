@@ -38,7 +38,7 @@ public class LoginInformationProvider {
 
         UltimateAdventurer(-1, 0, 100000000, true, true, false, false, true, false),
         Resistance(0, 3000, 931000000, true, false, false, false, false, false), // tutorial works 100%
-        Adventurer(1, 0, 4000000, false, true, false, false, false, false),
+        Adventurer(1, 0, 4000011, false, true, false, false, false, false),
         Cygnus(2, 1000, 130030000, false, true, false, false, false, true),
         Aran(3, 2000, 914000000, true, true, false, false, true, false),
         Evan(4, 2001, 900010000, true, true, false, false, true, false),//evan starter map - need to test tutorial

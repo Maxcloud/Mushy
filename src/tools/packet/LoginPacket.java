@@ -306,10 +306,11 @@ public class LoginPacket {
             addCharEntry(pw, character);
             pw.write(0);
             
-            boolean ranking = !character.isGM() && character.getLevel() >= 30;
-            pw.write(ranking);
-            if (ranking) {
-                pw.writeInt(character.getRank());
+            if (character.getJob() == 900 || character.getJob() == 910) {
+            	pw.write(0);
+            } else {
+            	pw.write(1); 
+            	pw.writeInt(character.getRank());
                 pw.writeInt(character.getRankMove());
                 pw.writeInt(character.getJobRank());
                 pw.writeInt(character.getJobRankMove());
