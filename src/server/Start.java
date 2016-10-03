@@ -78,7 +78,7 @@ public class Start extends Properties {
         
         flyway.setDataSource(args, ServerConfig.SQL_USER, ServerConfig.SQL_PASS);
         flyway.setLocations("filesystem:./resources/db/migration");
-//        flyway.migrate();
+        flyway.migrate();
 
         try {
             try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET loggedin = 0")) {
