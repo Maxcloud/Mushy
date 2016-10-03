@@ -8,8 +8,11 @@
 - [ ] Violet Cubes
 
 ### Item
-- [ ] Enchantment system
+- [ ] Enchantment system (Spell trace, Equipment trace, transfering equip trace to new equip)
 - [ ] Recode magnifying system
+- [ ] Transfer equipment system
+- [ ] Tons of use items
+- [ ] Tons of cash items
 
 ### Map
 - [ ] Runes (Alan)

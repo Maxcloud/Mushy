@@ -67,6 +67,7 @@ public class OpcodeManager {
 		UseCashItemHandler.class,
 		UseBonusPotentialScrollHandler.class,
 		BlackCubeResultHandler.class,
+		UseEnhancementHandler.class,
 
 		MesoDropHandler.class,
 		QuestActionHandler.class,

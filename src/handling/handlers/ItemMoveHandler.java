@@ -20,6 +20,9 @@ public class ItemMoveHandler {
         MapleInventoryType type = MapleInventoryType.getByType(lea.readByte());
         short src = lea.readShort();
         short dst = lea.readShort();
+        if(type == MapleInventoryType.EQUIP && src < 0){
+            type = MapleInventoryType.EQUIPPED;
+        }
         short quantity = lea.readShort();
         if(c.getPlayer().getInventory(type).getItem(src) == null){
             c.getSession().write(CWvsContext.InventoryPacket.getInventoryFull());

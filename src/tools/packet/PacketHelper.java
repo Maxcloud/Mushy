@@ -49,6 +49,7 @@ import client.inventory.MaplePotionPot;
 import client.inventory.MapleRing;
 import client.inventory.MapleWeaponType;
 import constants.GameConstants;
+import constants.ItemConstants;
 import handling.Buffstat;
 import handling.world.MapleCharacterLook;
 import server.MapleItemInformationProvider;
@@ -827,7 +828,7 @@ public class PacketHelper {
             if (equip.getStats().contains(EquipStat.PVP_DAMAGE)) {
                 pw.writeShort(equip.getPVPDamage());
             }
-            if (equip.getStats().contains(EquipStat.ENHANCT_BUFF)) {
+            if (equip.getStats().contains(EquipStat.ENCHANT_BUFF)) {
                 pw.writeShort(equip.getEnhanctBuff());
             }
             if (equip.getStats().contains(EquipStat.DURABILITY_SPECIAL)) {
@@ -887,9 +888,11 @@ public class PacketHelper {
 //                System.out.println("unk8 " + System.currentTimeMillis());
                 pw.writeLong(System.currentTimeMillis());
             }
-            if (equip.getSpecialStats().contains(EquipSpecialStat.UNK10)) {
+            if (equip.getSpecialStats().contains(EquipSpecialStat.CAN_ENHANCE)) {
 //                System.out.println("unk10 " + 1);
-                pw.writeInt(0);
+                int reqLevel = ItemConstants.getLevelByEquip(equip);
+                pw.writeInt(equip.getEnhance() < ItemConstants.getMaxStarsByItemLevel(reqLevel) ? 0x100 : 0);
+                // Previously UNK10, this makes stars go blue if a != 1 in the int [00 0a 00 00]
             }
         }
     }

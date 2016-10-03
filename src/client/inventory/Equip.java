@@ -5,6 +5,7 @@ import java.util.*;
 
 import constants.EventConstants;
 import constants.GameConstants;
+import constants.ItemConstants;
 import server.MapleItemInformationProvider;
 import server.StructItemOption;
 import tools.ArrayUtil;
@@ -23,7 +24,7 @@ public class Equip extends Item implements Serializable {
     //charm: -1 = has not been initialized yet, 0 = already been worn, >0 = has teh charm exp
     private byte upgradeSlots = 0, level = 0, vicioushammer = 0, enhance = 0, enhanctBuff = 0, reqLevel = 0, yggdrasilWisdom = 0, bossDamage = 0, ignorePDR = 0, totalDamage = 0, allStat = 0, karmaCount = -1;
     private short str = 0, dex = 0, _int = 0, luk = 0, hp = 0, mp = 0, watk = 0, matk = 0, wdef = 0, mdef = 0, acc = 0, avoid = 0, hands = 0, speed = 0, jump = 0, charmExp = 0, pvpDamage = 0;
-    private int durability = -1, incSkill = -1, fusionAnvil = 0;
+    private int durability = -1, incSkill = -1, fusionAnvil = 0, successiveEnhanceFails = 0;
     private long itemEXP = 0;
     private boolean finalStrike = false;
     private int[] mainPotential = new int[3];
@@ -35,6 +36,7 @@ public class Equip extends Item implements Serializable {
     private List<EquipStat> stats = new LinkedList<EquipStat>();
     private List<EquipSpecialStat> specialStats = new LinkedList<EquipSpecialStat>();
     private Map<EquipStat, Long> statsTest = new LinkedHashMap<>();
+    private Map<Byte, Map<EquipStat, Short>> lastAddedStatsPerStar = new HashMap<>();
 
     public Equip(int id, short position, byte flag) {
         super(id, position, (short) 1, flag);
@@ -991,7 +993,7 @@ public class Equip extends Item implements Serializable {
             eq.getStatsTest().put(EquipStat.PVP_DAMAGE, Long.valueOf(eq.getPVPDamage()));
         }
         if (eq.getEnhanctBuff() > 0) {
-            eq.getStatsTest().put(EquipStat.ENHANCT_BUFF, Long.valueOf(eq.getEnhanctBuff()));
+            eq.getStatsTest().put(EquipStat.ENCHANT_BUFF, Long.valueOf(eq.getEnhanctBuff()));
         }
         if (eq.getReqLevel() > 0) {
             eq.getStatsTest().put(EquipStat.REQUIRED_LEVEL, Long.valueOf(eq.getReqLevel()));
@@ -1017,7 +1019,7 @@ public class Equip extends Item implements Serializable {
         }
         eq.getStatsTest().put(EquipStat.KARMA_COUNT, Long.valueOf(eq.getKarmaCount())); //no count = -1
         //eq.getStatsTest().put(EquipStat.UNK8, Long.valueOf(-1)); // test
-        //eq.getStatsTest().put(EquipStat.UNK10, Long.valueOf(0)); // test
+        //eq.getStatsTest().put(EquipStat.CAN_ENHANCE, Long.valueOf(0)); // test
         return (Equip) eq.copy();
     }
 
@@ -1097,7 +1099,7 @@ public class Equip extends Item implements Serializable {
             eq.getStats().add(EquipStat.PVP_DAMAGE);
         }
         if (eq.getEnhanctBuff() > 0) {
-            eq.getStats().add(EquipStat.ENHANCT_BUFF);
+            eq.getStats().add(EquipStat.ENCHANT_BUFF);
         }
         if (eq.getReqLevel() > 0) {
             eq.getStats().add(EquipStat.REQUIRED_LEVEL);
@@ -1123,10 +1125,10 @@ public class Equip extends Item implements Serializable {
         }
         eq.getSpecialStats().add(EquipSpecialStat.KARMA_COUNT); //no count = -1
         //if (0 != 0) {
-        //    eq.getSpecialStats().add(EquipSpecialStat.UNK10);
+        //    eq.getSpecialStats().add(EquipSpecialStat.CAN_ENHANCE);
         //}
         eq.getSpecialStats().add(EquipSpecialStat.UNK8); // test
-        eq.getSpecialStats().add(EquipSpecialStat.UNK10); // test
+        eq.getSpecialStats().add(EquipSpecialStat.CAN_ENHANCE); // test
         return (Equip) eq.copy();
     }
 
@@ -1136,5 +1138,129 @@ public class Equip extends Item implements Serializable {
 
     public void setOldPotential(int[] potential){
         this.oldPotential = potential;
+    }
+
+    public void enhance(){
+        Map<EquipStat, Short> addedStats = new HashMap<>();
+        Map<EnhanceStat, Short> enhanceInfo = getEnhanceStats();
+        for(EnhanceStat enhStat : enhanceInfo.keySet()){
+            EquipStat equipStat = ItemConstants.getEquipStatByEnhanceStat(enhStat);
+            setEquipStat(equipStat, (short) (getEquipStat(equipStat) + enhanceInfo.get(enhStat)));
+            addedStats.put(equipStat, enhanceInfo.get(enhStat));
+        }
+        getLastAddedStatsPerStar().put(getEnhance(), addedStats);
+        setEnhance((byte) (getEnhance() + 1));
+    }
+
+    public void removeStar() {
+        // could probably be done using a stack, but whatever, this works.
+        // also, this has to be stored in the DB.
+        // Now if the equip class is gone (like after a restart) you won't get your stats removed.
+        setEnhance((byte) (getEnhance() - 1));
+        Map<EquipStat, Short> lastAddedStats = getLastAddedStatsPerStar().get(getEnhance());
+        if(lastAddedStats != null) {
+            for (EquipStat es : lastAddedStats.keySet()) {
+                setEquipStat(es, (short) (getEquipStat(es)-lastAddedStats.get(es)));
+            }
+        }
+    }
+
+    public void setEquipStat(EquipStat es, short amount){
+        switch(es){
+            case STR:
+                setStr(amount);
+                break;
+            case DEX:
+                setDex(amount);
+                break;
+            case LUK:
+                setLuk(amount);
+                break;
+            case INT:
+                setInt(amount);
+                break;
+            case WATK:
+                setWatk(amount);
+                break;
+            case MATK:
+                setMatk(amount);
+                break;
+            case WDEF:
+                setWdef(amount);
+                break;
+            case MDEF:
+                setMdef(amount);
+                break;
+            case ACC:
+                setAcc(amount);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public short getEquipStat(EquipStat es){
+        short res = 0;
+        switch(es){
+            case STR:
+                res = getStr();
+                break;
+            case DEX:
+                res = getDex();
+                break;
+            case LUK:
+                res = getLuk();
+                break;
+            case INT:
+                res = getInt();
+                break;
+            case WATK:
+                res = getWatk();
+                break;
+            case MATK:
+                res =  getMatk();
+                break;
+            case WDEF:
+                res = getWdef();
+                break;
+            case MDEF:
+                res = getMdef();
+                break;
+            case ACC:
+                res =  getAcc();
+                break;
+            default:
+                break;
+        }
+        return res;
+    }
+
+    public Map<EnhanceStat, Short> getEnhanceStats() {
+        Map<EnhanceStat, Short> res = new HashMap<>();
+        EnhanceStat[] upgradeStats = EnhanceStat.values();
+        // these values are thought up on the spot.
+        int base = 2;
+        for(EnhanceStat es : upgradeStats){
+            short currentStat = getEquipStat(ItemConstants.getEquipStatByEnhanceStat(es));
+            if(currentStat > 0) {
+                if(es == EnhanceStat.WDEF || es == EnhanceStat.MDEF){
+                    base = 10;
+                }
+                res.put(es, (short) (base + getEnhance()/5 + currentStat/50)); // base + more per 5 stars + more per 50 stat
+            }
+        }
+        return res;
+    }
+
+    public int getSuccessiveEnhanceFails(){
+        return successiveEnhanceFails;
+    }
+
+    public void setSuccessiveEnhanceFails(int successiveEnhanceFails) {
+        this.successiveEnhanceFails = successiveEnhanceFails;
+    }
+
+    public Map<Byte, Map<EquipStat, Short>> getLastAddedStatsPerStar(){
+        return lastAddedStatsPerStar;
     }
 }

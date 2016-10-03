@@ -32,11 +32,8 @@ import client.inventory.Equip;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
 import tools.FileoutputUtil;
@@ -4971,4 +4968,5 @@ public class GameConstants {
 				return Equip.LEGENDARY;
 		}
 	}
+
 }

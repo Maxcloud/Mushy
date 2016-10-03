@@ -10,6 +10,7 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import constants.ItemConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import server.MapleItemInformationProvider;
@@ -37,14 +38,14 @@ public class UseMagnifyGlassHandler {
             return;
         }
         Equip equip = (Equip) item;
-        final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        final int reqLevel = ii.getReqLevel(equip.getItemId()) / 10;
+        final int reqLevel = ItemConstants.getLevelByEquip(equip) / 10;
         boolean hasEnoughInsight = chr.getTrait(MapleTrait.MapleTraitType.sense).getLevel() >= GameConstants.getRequiredSense(reqLevel);
         long price = hasEnoughInsight ? 0 : GameConstants.getMagnifyPrice(equip); // free if above required insight
-        //TODO checks for price
-        if(equip.getState() == 1 && chr.getMeso() >= price){
+
+
+
+        if(equip.getState() == 1 && chr.checkAndAddMeso(-price, false)){
             equip.revealHiddenPotential();
-            chr.gainMeso(-price, false);
             c.getPlayer().getMap().broadcastMessage(CField.showPotentialReset(chr.getId(), true, equip.getItemId()));
             c.getSession().write(CWvsContext.enableActions());
             c.getPlayer().forceReAddItem(equip, mit);

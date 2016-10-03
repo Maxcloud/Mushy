@@ -14,7 +14,7 @@ public enum EquipSpecialStat {
     ALL_STAT(0x2),
     KARMA_COUNT(0x4),
     UNK8(0x8), //long
-    UNK10(0x10); //int
+    CAN_ENHANCE(0x10); //int
 
     private final int value;
 
