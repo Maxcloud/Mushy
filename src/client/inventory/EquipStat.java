@@ -35,7 +35,7 @@ public enum EquipStat {
     VICIOUS_HAMMER(0x400000, 4, 1),
     PVP_DAMAGE(0x800000, 2, 1),
     DOWNLEVEL(0x1000000, 1, 1),
-    ENHANCT_BUFF(0x2000000, 2, 1),
+    ENCHANT_BUFF(0x2000000, 2, 1),
     DURABILITY_SPECIAL(0x4000000, 4, 1),
     REQUIRED_LEVEL(0x8000000, 1, 1),
     YGGDRASIL_WISDOM(0x10000000, 1, 1),
@@ -46,7 +46,7 @@ public enum EquipStat {
     ALL_STAT(0x2, 1, 2),
     KARMA_COUNT(0x4, 1, 2),
     UNK8(0x8, 8, 2), //long
-    UNK10(0x10, 4, 2); //int
+    CAN_ENHANCE(0x10, 4, 2); //int
     private final int value, datatype, first;
 
     private EquipStat(int value, int datatype, int first) {
@@ -71,14 +71,14 @@ public enum EquipStat {
         return (flag & value) != 0;
     }
 
-    public enum EnhanctBuff {
+    public enum EnchantBuff {
 
         UPGRADE_TIER(0x1),
         NO_DESTROY(0x2),
         SCROLL_SUCCESS(0x4);
         private final int value;
 
-        private EnhanctBuff(int value) {
+        private EnchantBuff(int value) {
             this.value = value;
         }
 

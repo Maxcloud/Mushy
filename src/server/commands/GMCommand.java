@@ -71,6 +71,27 @@ public class GMCommand {
             return 1;
         }
     }
+
+    public static class RemoveSlots extends CommandExecute {
+
+        @Override
+        public int execute(MapleClient c, String[] splitted) {
+            Equip item = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(Short.parseShort(splitted[1]));
+            item.setUpgradeSlots((byte) 0);
+            c.getPlayer().updateItemsFromScrolling(null, item, MapleInventoryType.EQUIP);
+            return 1;
+        }
+    }
+
+    public static class SetStars extends CommandExecute {
+        @Override
+        public int execute(MapleClient c, String[] splitted) {
+            Equip item = (Equip) c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(Short.parseShort(splitted[1]));
+            item.setEnhance(Byte.parseByte(splitted[2]));
+            c.getPlayer().updateItemsFromScrolling(null, item, MapleInventoryType.EQUIP);
+            return 1;
+        }
+    }
     
     public static class Job extends CommandExecute {
 
@@ -773,6 +794,7 @@ public class GMCommand {
             for(int i = 0; i < item.getBonusPotential().length; i++){
                 chr.dropMessage(6, "Bonus[" + i + "] = " + item.getBonusPotentialByLine(i));
             }
+
             return 1;
         }
     }
