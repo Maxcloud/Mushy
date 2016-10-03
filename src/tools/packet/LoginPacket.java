@@ -306,7 +306,7 @@ public class LoginPacket {
             addCharEntry(pw, character);
             pw.write(0);
             
-            boolean ranking = !character.isGM() && character.getLevel() >= 30;
+            boolean ranking = !GameConstants.isGM(character.getJob()) && character.getLevel() >= 30;
             pw.write(ranking);
             if (ranking) {
                 pw.writeInt(character.getRank());

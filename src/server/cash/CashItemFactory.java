@@ -186,13 +186,10 @@ public class CashItemFactory {
         return items;
     }
 
-    public List<CashItem> getMenuItems() {
-        List<CashItem> items = new LinkedList<CashItem>();
-        for (CashItem ci : menuItems.values()) {
-            items.add(ci);
-        }
-        return items;
+    public Collection<CashItem> getMenuItems() {
+        return menuItems.values();
     }
+    
     public List<CashItem> getAllItems(int type) {
         List<CashItem> items = new LinkedList<CashItem>();
         for (CashItem ci : categoryItems.values()) {
@@ -203,12 +200,8 @@ public class CashItemFactory {
         return items;
     }
 
-    public List<CashItem> getAllItems() {
-        List<CashItem> items = new LinkedList<CashItem>();
-        for (CashItem ci : categoryItems.values()) {
-            items.add(ci);
-        }
-        return items;
+    public Collection<CashItem> getAllItems() {
+        return categoryItems.values();
     }
 
     public List<CashItem> getCategoryItems(int subcategory) {
