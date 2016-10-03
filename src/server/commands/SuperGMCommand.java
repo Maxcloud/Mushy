@@ -610,7 +610,7 @@ public class SuperGMCommand {
             } else {
                 for (final MapleMapObject mmo : c.getPlayer().getMap().getAllMonster()) {
                     final MapleMonster monster = (MapleMonster) mmo;
-                    c.getPlayer().getMap().broadcastMessage(MobPacket.moveMonster(false, -1, 0, monster.getObjectId(), monster.getTruePosition(), c.getPlayer().getLastRes()));
+                    c.getPlayer().getMap().broadcastMessage(MobPacket.moveMonster((byte) -1, -1, 0, monster.getObjectId(), monster.getTruePosition(), c.getPlayer().getLastRes()));
                     monster.setPosition(c.getPlayer().getPosition());
                 }
             }

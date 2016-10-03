@@ -375,7 +375,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         ret.exp = 0;
         ret.gmLevel = 0;
         ret.job = (short) type.id;
-        ret.meso = 100000;
+        ret.meso = 0;
         ret.level = 1;
         ret.remainingAp = 0;
         ret.fame = 0;

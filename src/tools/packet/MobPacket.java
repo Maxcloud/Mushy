@@ -230,13 +230,13 @@ public class MobPacket {
 		return pw.getPacket();
 	}
 
-	public static byte[] moveMonster(boolean useskill, int skill, int unk, int oid, Point xy, List<LifeMovementFragment> moves) {
+	public static byte[] moveMonster(byte useskill, int skill, int unk, int oid, Point xy, List<LifeMovementFragment> moves) {
 		PacketWriter pw = new PacketWriter();
 
 		pw.writeShort(SendPacketOpcode.MOVE_MONSTER.getValue());
 		pw.writeInt(oid);
 		
-		pw.write(useskill ? 1 : 0);
+		pw.write(useskill);
 		pw.write(skill);
 		pw.writeInt(unk);
 		
