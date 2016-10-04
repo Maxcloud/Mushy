@@ -3,10 +3,10 @@ package constants;
 public class ServerConfig {
 
 	// Database Connection
-	public static String SQL_PORT;
-	public static String SQL_DATABASE;
-	public static String SQL_USER;
-	public static String SQL_PASS;
+	public static String SQL_PORT ="3306";
+	public static String SQL_DATABASE = "mushy";
+	public static String SQL_USER = "root";
+	public static String SQL_PASS = "Adminroot0829!";
 
 	// Server Configuration	
 	public static String SERVER_NAME;

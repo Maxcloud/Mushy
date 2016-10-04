@@ -57,28 +57,28 @@ public class CSMenuItem {
         this.likes = likes;
     }
 
-    public static void writeData(CSMenuItem csmi, PacketWriter mplew) {
-        mplew.writeInt(csmi.c);
-        mplew.writeInt(csmi.sc);
-        mplew.writeInt(csmi.p);
-        mplew.writeMapleAsciiString(csmi.img); // TODO add check if cat != 4 write empty string
-        mplew.writeInt(csmi.sn);
-        mplew.writeInt(csmi.id);
-        mplew.writeInt(1);
-        mplew.writeInt(csmi.flag);
-        mplew.writeInt(0);
-        mplew.writeInt(0); // this one changes
-        mplew.writeInt(csmi.op);
-        mplew.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
-        mplew.writeLong(PacketHelper.MAX_TIME);
-        mplew.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
-        mplew.writeLong(PacketHelper.MAX_TIME);
-        mplew.writeInt(csmi.sp);
-        mplew.writeInt(0);
-        mplew.writeInt(csmi.qty);
-        mplew.writeInt(csmi.dur);
-        mplew.write(HexTool.getByteArrayFromHexString("01 00 01 00 01 00 00 00 01 00 02 00 00 00")); // flags maybe
-        mplew.writeInt(csmi.likes);
-        mplew.write(new byte[20]);
+    public static void writeData(CSMenuItem csmi, PacketWriter pw) {
+        pw.writeInt(csmi.c);
+        pw.writeInt(csmi.sc);
+        pw.writeInt(csmi.p);
+        pw.writeMapleAsciiString(csmi.img); // TODO add check if cat != 4 write empty string
+        pw.writeInt(csmi.sn);
+        pw.writeInt(csmi.id);
+        pw.writeInt(1);
+        pw.writeInt(csmi.flag);
+        pw.writeInt(0);
+        pw.writeInt(0); // this one changes
+        pw.writeInt(csmi.op);
+        pw.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
+        pw.writeLong(PacketHelper.MAX_TIME);
+        pw.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
+        pw.writeLong(PacketHelper.MAX_TIME);
+        pw.writeInt(csmi.sp);
+        pw.writeInt(0);
+        pw.writeInt(csmi.qty);
+        pw.writeInt(csmi.dur);
+        pw.write(HexTool.getByteArrayFromHexString("01 00 01 00 01 00 00 00 01 00 02 00 00 00")); // flags maybe
+        pw.writeInt(csmi.likes);
+        pw.write(new byte[20]);
     }
 }

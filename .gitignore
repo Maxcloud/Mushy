@@ -10,3 +10,4 @@ wz/
 *.classpath
 *.project
 Mushy.iml
+config.properties

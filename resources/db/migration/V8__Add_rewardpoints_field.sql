@@ -1,0 +1,1 @@
+ALTER TABLE accounts ADD COLUMN rPoints int(11) NOT NULL DEFAULT 0 AFTER mPoints;

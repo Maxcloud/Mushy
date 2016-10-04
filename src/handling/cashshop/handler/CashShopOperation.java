@@ -171,7 +171,7 @@ public class CashShopOperation {
 
     public static void BuyCashItem(final LittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {
         final int action = slea.readByte();
-//        System.out.println("action " + action);
+        System.out.println("action " + action);
         if (action == 0) {
             slea.skip(2);
             CouponCode(slea.readMapleAsciiString(), c);
@@ -192,8 +192,6 @@ public class CashShopOperation {
             if (item == null) {
                 //Maybe add a check to compare quantity from packet to quantity of item retrieved from SN?
                 c.getSession().write(CSPacket.sendCSFail(0));
-                doCSPackets(c);
-                return;
             }
             chr.modifyCSPoints(dwPurchaseOption, -toCharge, true);
             Item itemz = chr.getCashInventory().toItem(item);
@@ -202,8 +200,6 @@ public class CashShopOperation {
                 c.getSession().write(CSPacket.showBoughtCSItem(itemz, item.getSN(), c.getAccID()));
             } else {
                 c.getSession().write(CSPacket.sendCSFail(0));
-                doCSPackets(c);
-                return;
             }
         } else if (action == 101) {//TODO BETTER idk what it is
 //            System.out.println("action 101");//might be farm mesos? RITE NOW IS FREEH
@@ -300,7 +296,7 @@ public class CashShopOperation {
                 if (chr.getCSPoints(toCharge) >= 6000 && chr.getInventory(type).getSlotLimit() < 89) {
                     chr.modifyCSPoints(toCharge, -6000, false);
                     chr.getInventory(type).addSlot((byte) 8);
-                    chr.dropMessage(1, "Slots has been increased to " + chr.getInventory(type).getSlotLimit());
+                    chr.dropMessage(1, "Slots have been increased to " + chr.getInventory(type).getSlotLimit());
                     c.getSession().write(CField.getCharInfo(chr));
                 } else {
                     c.getSession().write(CSPacket.sendCSFail(0xA4));
@@ -425,7 +421,7 @@ public class CashShopOperation {
                 }
                 item_.setPosition((byte) 0);
                 c.getPlayer().getCashInventory().addToInventory(item_);
-                c.getSession().write(CSPacket.showBoughtCSItem(item, item.getUniqueId(), c.getAccID()));
+                c.getSession().write(CSPacket.showBoughtCSItem(item_, item.getUniqueId(), c.getAccID())); //item_ shows correct quantity, item would show 0 quantity as it would be removedfromslot. 
                 //warning: this d/cs
 //                c.getSession().write(CSPacket.confirmToCSInventory(item, c.getAccID(), itemz.getSN()));
             } else {
@@ -573,18 +569,16 @@ public class CashShopOperation {
     public static void SwitchCategory(final LittleEndianAccessor slea, final MapleClient c) {
         int Scategory = slea.readByte();
 //        System.out.println("Scategory " + Scategory);
-        if (Scategory == 103) {
+        if (Scategory == 103) { //Add Favorite
             slea.skip(1);
             int itemSn = slea.readInt();
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO `wishlist` VALUES (?, ?)")) {
-                ps.setInt(1, c.getPlayer().getId());
-                ps.setInt(2, itemSn);
-                ps.executeUpdate();
-                ps.close();
-            } catch (SQLException ex) {
-                System.out.println("error");
-            }
+            c.getPlayer().addFavorite(itemSn);
             c.getSession().write(CSPacket.addFavorite(false, itemSn));
+        } else if (Scategory == 104) { //Remove Favorite
+            slea.skip(1);
+            int itemSn = slea.readInt();
+            c.getPlayer().removeFavorite(itemSn);
+            c.getSession().write(CSPacket.removeFavorite(true, itemSn));
         } else if (Scategory == 105) {
             int item = slea.readInt();
             try {
@@ -605,6 +599,10 @@ public class CashShopOperation {
             c.getSession().write(CSPacket.showSearchResults(searchList));
         } else if (Scategory == 109) {
             c.getSession().write(CSPacket.Favorite(c.getPlayer()));
+        } else if (Scategory == 111) {//Unknown.
+            //6F - 111
+            //8E EF F5 05 - SN  100003726
+            //5D 6D 54 00 - ItemID 5533021
         } else if (Scategory == 112) {//click on special item TODO
             //int C8 - C9 - CA
         } else if (Scategory == 113) {//buy from cart inventory TODO
@@ -616,11 +614,11 @@ public class CashShopOperation {
             if (category == 4000000) {
                 c.getSession().write(CSPacket.CS_Top_Items());
                 c.getSession().write(CSPacket.CS_Picture_Item());
-            } else if (category == 1060100) {
+            } else if (category >=  1060100 && category <= 1061700) { //Prevents "equips" from crashing on error 38. 
                 c.getSession().write(CSPacket.showNXChar(category));
                 c.getSession().write(CSPacket.changeCategory(category));
             } else {
-//                System.err.println(category);
+                //System.err.println(category);
                 c.getSession().write(CSPacket.changeCategory(category));
             }
         }
@@ -647,7 +645,6 @@ public class CashShopOperation {
         //c.getSession().write(CSPacket.getCSGifts(c));
         //c.getSession().write(CWvsContext.BuddylistPacket.updateBuddylist(c.getPlayer().getBuddylist().getBuddies()));
         //c.getSession().write(CSPacket.showNXMapleTokens(c.getPlayer()));
-        //c.getSession().write(CSPacket.sendWishList(c.getPlayer(), false));
         c.getSession().write(CSPacket.showNXMapleTokens(c.getPlayer()));
         c.getSession().write(CSPacket.enableCSUse());
         c.getPlayer().getCashInventory().checkExpire(c);

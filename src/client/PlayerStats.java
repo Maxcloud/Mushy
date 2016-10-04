@@ -3192,28 +3192,28 @@ public class PlayerStats implements Serializable {
         }
     }
     
-    public final void connectData(final PacketWriter mplew) { 
-        mplew.writeShort(str); 
-        mplew.writeShort(dex); 
-        mplew.writeShort(int_); 
-        mplew.writeShort(luk); 
-        mplew.writeInt(hp); 
-        mplew.writeInt(maxhp); 
-        mplew.writeInt(mp); 
-        mplew.writeInt(maxmp); 
+    public final void connectData(final PacketWriter pw) { 
+        pw.writeShort(str); 
+        pw.writeShort(dex); 
+        pw.writeShort(int_); 
+        pw.writeShort(luk); 
+        pw.writeInt(hp); 
+        pw.writeInt(maxhp); 
+        pw.writeInt(mp); 
+        pw.writeInt(maxmp); 
     } 
 
-    public final void zeroData(final PacketWriter mplew, final MapleCharacter chr) {
-        mplew.writeInt(0);
-        mplew.write(0xFF);
-        mplew.write(0);
-        mplew.writeInt(maxhp);
-        mplew.writeInt(maxmp);
-        mplew.write(0);
-        mplew.writeInt(chr.getSecondHair());
-        mplew.writeInt(chr.getSecondFace());
-        mplew.writeInt(maxhp);
-        mplew.writeInt(maxmp);
+    public final void zeroData(final PacketWriter pw, final MapleCharacter chr) {
+        pw.writeInt(0);
+        pw.write(0xFF);
+        pw.write(0);
+        pw.writeInt(maxhp);
+        pw.writeInt(maxmp);
+        pw.write(0);
+        pw.writeInt(chr.getSecondHair());
+        pw.writeInt(chr.getSecondFace());
+        pw.writeInt(maxhp);
+        pw.writeInt(maxmp);
     }
     private final static int[] allJobs = {0, 10000, 10000000, 20000000, 20010000, 20020000, 20030000, 20040000, 30000000, 30010000, 50000000};
     public final static int[] pvpSkills = {1000007, 2000007, 3000006, 4000010, 5000006, 5010004, 11000006, 12000006, 13000005, 14000006, 15000005, 21000005, 22000002, 23000004, 31000005, 32000012, 33000004, 35000005};

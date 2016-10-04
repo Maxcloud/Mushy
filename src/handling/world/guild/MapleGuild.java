@@ -1024,20 +1024,20 @@ public class MapleGuild implements java.io.Serializable {
         return 10;
     }
 
-    public final void addMemberData(final PacketWriter mplew) {
-        mplew.write(members.size());
+    public final void addMemberData(final PacketWriter pw) {
+        pw.write(members.size());
 
         for (final MapleGuildCharacter mgc : members) {
-            mplew.writeInt(mgc.getId());
+            pw.writeInt(mgc.getId());
         }
         for (final MapleGuildCharacter mgc : members) {
-            mplew.writeAsciiString(mgc.getName(), 13);
-            mplew.writeInt(mgc.getJobId()); //-1 = ??
-            mplew.writeInt(mgc.getLevel()); //-1 = ??
-            mplew.writeInt(mgc.getGuildRank());
-            mplew.writeInt(mgc.isOnline() ? 1 : 0);
-            mplew.writeInt(mgc.getAllianceRank());
-            mplew.writeInt(mgc.getGuildContribution());
+            pw.writeAsciiString(mgc.getName(), 13);
+            pw.writeInt(mgc.getJobId()); //-1 = ??
+            pw.writeInt(mgc.getLevel()); //-1 = ??
+            pw.writeInt(mgc.getGuildRank());
+            pw.writeInt(mgc.isOnline() ? 1 : 0);
+            pw.writeInt(mgc.getAllianceRank());
+            pw.writeInt(mgc.getGuildContribution());
         }
     }
 

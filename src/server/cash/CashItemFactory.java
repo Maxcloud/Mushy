@@ -207,7 +207,7 @@ public class CashItemFactory {
     public List<CashItem> getCategoryItems(int subcategory) {
         List<CashItem> items = new LinkedList<CashItem>();
         for (CashItem ci : categoryItems.values()) {
-            if (ci.getSubCategory() == subcategory) {
+            if ((ci.getSubCategory() == subcategory) || ((ci.getSubCategory()/10) == (subcategory/10))) { //10 allows us to get sub-sub-categories as they differ from subcategories by 1 digit.
                 items.add(ci);
             }
         }

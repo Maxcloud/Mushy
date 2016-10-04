@@ -549,15 +549,17 @@ public class CWvsContext {
     }
 
     public static byte[] charInfo(MapleCharacter chr, boolean isSelf) {
+
         PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.CHAR_INFO.getValue());
         pw.writeInt(chr.getId());
-        pw.write(chr.getLevel());
-        pw.writeShort(chr.getJob());
-        pw.writeShort(chr.getSubcategory());
-        pw.write(chr.getStat().pvpRank);
-        pw.writeInt(chr.getFame());
+        pw.write(0); //Starplanet bool
+        pw.write(chr.getLevel());//nSense
+        pw.writeShort(chr.getJob()); //nCraft
+        pw.writeShort(chr.getSubcategory()); //nSubJob
+        pw.write(chr.getStat().pvpRank); //pMedalInfo
+        pw.writeInt(chr.getFame()); //nPOP
         MapleMarriage marriage = chr.getMarriage();
         pw.write(marriage != null && marriage.getId() != 0);
         if (marriage != null && marriage.getId() != 0) {
@@ -598,30 +600,28 @@ public class CWvsContext {
                 pw.writeMapleAsciiString("");
             }
         }
+        
+        int bPetSize = chr.getSummonedPets().size();
+        pw.write(bPetSize == 0 ? 0xFF : (bPetSize-1));// nForcedPetIdx, default to FF?
+        pw.write(0); //nTab
+        pw.write(0); //bPetActivated
 
-        pw.write(isSelf ? 1 : 0);
-        pw.write(0);
 
-
-        byte index = 1;
+        byte index = 0;
+        pw.write(bPetSize);
         for (MaplePet pet : chr.getSummonedPets()) {
-            if (index == 1) {   // please test if this doesn't d/c when viewing multipets
-                pw.write(index);
-            }  
+            pw.writeInt(index);
             pw.writeInt(pet.getPetItemId());
             pw.writeMapleAsciiString(pet.getName());
             pw.write(pet.getLevel());
             pw.writeShort(pet.getCloseness());
             pw.write(pet.getFullness());
-            pw.writeShort(0);
+            pw.writeShort(pet.getFlags());
             Item inv = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) (byte) (index == 2 ? -130 : index == 1 ? -114 : -138));
             pw.writeInt(inv == null ? 0 : inv.getItemId());
             pw.writeInt(-1);//new v140
-            pw.write(chr.getSummonedPets().size() > index); //continue loop
+            pw.write((chr.getSummonedPets().size() -1) > index); //continue loop
             index++;
-        }
-        if (index == 1) { //index no change means no pets
-            pw.write(0);
         }
         /*if ((chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -18) != null) && (chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -19) != null)) {
          MapleMount mount = chr.getMount();
@@ -632,14 +632,9 @@ public class CWvsContext {
          } else {
          pw.write(0);
          }*/
-        int wishlistSize = chr.getWishlistSize();
-        pw.write(wishlistSize);
-        if (wishlistSize > 0) {
-            int[] wishlist = chr.getWishlist();
-            for (int x = 0; x < wishlistSize; x++) {
-                pw.writeInt(wishlist[x]);
-            }
-        }
+       
+        pw.write(0); //old WishList code, zero'd out. 
+        
         Item medal = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((byte) -46);
         pw.writeInt(medal == null ? 0 : medal.getItemId());
         List<Pair<Integer, Long>> medalQuests = chr.getCompletedMedals();
@@ -648,11 +643,24 @@ public class CWvsContext {
             pw.writeShort(((Integer) x.left).intValue());
             pw.writeLong(((Long) x.right).longValue());
         }
+        
+        pw.write(1); //DamageSkinSaveInfo, v158+ only
+        pw.writeInt(0); //SkinID
+        pw.writeInt(2431965); //DD 1B 25 00 ItemID
+        pw.write(0); //bNotSave
+        pw.writeMapleAsciiString("This is a basic Damage Skin.\\r\\n\\r\\n\\r\\n\\r\\n\\r\\n"); //Sniffed from GMS
+        pw.writeInt(0xFFFFFF); //SkinID
+        pw.writeInt(0);
+        pw.write(1);
+        pw.writeShort(0);
+        pw.writeShort(0);
+        pw.writeShort(0);
+        
         for (MapleTrait.MapleTraitType t : MapleTrait.MapleTraitType.values()) {
             pw.write(chr.getTrait(t).getLevel());
         }
 
-        pw.writeInt(0); //farm id?
+        pw.writeInt(chr.getAccountID()); //dwAccountID
         PacketHelper.addFarmInfo(pw, chr.getClient(), (byte) 0);
 
         pw.writeInt(0);
@@ -670,6 +678,17 @@ public class CWvsContext {
             pw.writeInt(i);
         }
 
+        pw.writeInt(0); //nDamageSkin
+        pw.writeInt(0x1E); //nMaxDamageSkin (30)
+        pw.writeInt(0); //aDamageSkins.size
+        //if(size>0)
+        //for (Integer nSkinID : pUser.aDamageSkins) {
+            //if (nSkinID != pUser.nDamageSkin) {
+            //    oPacket.EncodeInt(nSkinID);
+            //}
+        //}
+        //oPacket.EncodeInt(pUser.nSkinID); // GMS keeps the active damage skin as last in the array*/
+        
         return pw.getPacket();
     }
 

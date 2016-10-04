@@ -2646,19 +2646,19 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
 
 	public void displayRank(int npcid, List<Triple<Short, String, Integer>> list) {
-		PacketWriter mplew = new PacketWriter();
+		PacketWriter pw = new PacketWriter();
 
-		mplew.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-		mplew.write(0x50);
-		mplew.writeInt(npcid);
-		mplew.writeInt(list.size());
+		pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
+		pw.write(0x50);
+		pw.writeInt(npcid);
+		pw.writeInt(list.size());
 		for (Triple<Short, String, Integer> info : list) {
-			mplew.writeShort(info.getLeft()); // Rank
-			mplew.writeMapleAsciiString(info.getMid()); // Name
-			mplew.writeInt(info.getRight()); // Value
-			mplew.write(new byte[16]);
+			pw.writeShort(info.getLeft()); // Rank
+			pw.writeMapleAsciiString(info.getMid()); // Name
+			pw.writeInt(info.getRight()); // Value
+			pw.write(new byte[16]);
 		}
-		c.getSession().write(mplew.getPacket());
+		c.getSession().write(pw.getPacket());
 	}
 
 	public void dragonShoutReward(int reward) {

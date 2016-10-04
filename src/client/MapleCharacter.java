@@ -153,7 +153,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private short level, job, mulung_energy, combo, force, availableCP, fatigue, totalCP, hpApUsed, scrolledPosition,
             kaiserCombo, xenonSurplus, exceed, exceedAttack = 0;
     public int accountid, id, hair, face, secondHair, secondFace, faceMarking, elf, mapid, fame, pvpExp, pvpPoints, totalWins, totalLosses,
-            guildid = 0, fallcounter, maplepoints, acash, nxcredit, chair, itemEffect, points, vpoints, dpoints, epoints,
+            guildid = 0, fallcounter, maplepoints, acash, nxcredit, rewardpoints, chair, itemEffect, points, vpoints, dpoints, epoints,
             rank = 1, rankMove = 0, jobRank = 1, jobRankMove = 0, marriageId, marriageItemId, dotHP,
             coconutteam, followid, battleshipHP, gachexp, challenge, guildContribution = 0,
             remainingAp, honourExp, honorLevel, runningLight, runningLightSlot, runningDark, runningDarkSlot, luminousState, starterquest, starterquestid;
@@ -162,7 +162,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private int[] wishlist, rocks, savedLocations, regrocks, hyperrocks, remainingSp = new int[10], remainingHSp = new int[3];
     private transient AtomicInteger inst, insd;
     private transient List<LifeMovementFragment> lastres;
-    private List<Integer> lastmonthfameids, extendedSlots;
+    private List<Integer> lastmonthfameids, extendedSlots, favorites;
     private List<MapleDoor> doors;
     private List<MechDoor> mechDoors;
     private List<MaplePet> pets;
@@ -227,8 +227,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
     private transient Map<Integer, Integer> linkMobs;
     private List<InnerSkillValueHolder> innerSkills;
     public boolean keyvalue_changed = false, innerskill_changed = true;
-    private boolean changed_wishlist, changed_trocklocations, changed_regrocklocations, changed_hyperrocklocations, changed_skillmacros,
-            changed_savedlocations, changed_questinfo, changed_skills, changed_extendedSlots, update_skillswipe;
+    private boolean changed_trocklocations, changed_regrocklocations, changed_hyperrocklocations, changed_skillmacros,
+            changed_savedlocations, changed_questinfo, changed_skills, changed_extendedSlots, changed_favorites, update_skillswipe;
     /*
      * Start of Custom Feature
      */
@@ -276,7 +276,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         }
         if (ChannelServer) {
             changed_skills = false;
-            changed_wishlist = false;
             changed_trocklocations = false;
             changed_regrocklocations = false;
             changed_hyperrocklocations = false;
@@ -285,6 +284,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             changed_extendedSlots = false;
             changed_questinfo = false;
             update_skillswipe = false;
+            changed_favorites = false;
             scrolledPosition = 0;
             lastCombo = 0;
             mulung_energy = 0;
@@ -329,7 +329,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             for (int i = 0; i < petStore.length; i++) {
                 petStore[i] = (byte) -1;
             }
-            wishlist = new int[30];
             rocks = new int[10];
             regrocks = new int[5];
             hyperrocks = new int[13];
@@ -365,6 +364,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             friendshippoints = new int[4];
             coreAura = new MapleCoreAura(id, 24 * 60);
             potionPots = new ArrayList<>();
+			favorites = new ArrayList<>();
         }
     }
 
@@ -407,6 +407,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                     ret.nxcredit = rs.getInt("nxCredit");
                     ret.acash = rs.getInt("ACash");
                     ret.maplepoints = rs.getInt("mPoints");
+                    ret.rewardpoints = rs.getInt("rPoints");
                     ret.points = rs.getInt("points");
                     ret.vpoints = rs.getInt("vpoints");
                     ret.epoints = rs.getInt("epoints");
@@ -559,7 +560,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         ret.questinfo = ct.InfoQuest;
         ret.familiars = ct.familiars;
         ret.savedLocations = ct.savedlocation;
-        ret.wishlist = ct.wishlist;
         ret.rocks = ct.rocks;
         ret.regrocks = ct.regrocks;
         ret.hyperrocks = ct.hyperrocks;
@@ -574,10 +574,12 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         ret.nxcredit = ct.nxCredit;
         ret.acash = ct.ACash;
         ret.maplepoints = ct.MaplePoints;
+        ret.rewardpoints = ct.RewardPoints;
         ret.numClones = ct.clonez;
         ret.imps = ct.imps;
         ret.rebuy = ct.rebuy;
         ret.mount = new MapleMount(ret, ct.mount_itemid, PlayerStats.getSkillByJob(1004, ret.job), ct.mount_Fatigue, ct.mount_level, ct.mount_exp);
+        ret.favorites = ct.favorites;
         ret.expirationTask(false, false);
         ret.stats.recalcLocalStats(true, ret);
         client.setTempIP(ct.tempIP);
@@ -828,6 +830,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                     ret.nxcredit = rs.getInt("nxCredit");
                     ret.acash = rs.getInt("ACash");
                     ret.maplepoints = rs.getInt("mPoints");
+                    ret.rewardpoints = rs.getInt("rPoints");
                     ret.points = rs.getInt("points");
                     ret.vpoints = rs.getInt("vpoints");
                     ret.epoints = rs.getInt("epoints");
@@ -1051,21 +1054,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 ret.storage = MapleStorage.loadStorage(ret.accountid);
                 ret.cs = new CashShop(ret.accountid, charid, ret.getJob());
 
-                ps = con.prepareStatement("SELECT sn FROM wishlist WHERE characterid = ?");
-                ps.setInt(1, charid);
-                rs = ps.executeQuery();
-                int i = 0;
-                while (rs.next()) {
-                    ret.wishlist[i] = rs.getInt("sn");
-                    i++;
-                }
-                while (i < 30) {
-                    ret.wishlist[i] = 0;
-                    i++;
-                }
-                rs.close();
-                ps.close();
-
                 ps = con.prepareStatement("SELECT mapid FROM trocklocations WHERE characterid = ?");
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
@@ -1144,7 +1132,16 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 ret.mount = new MapleMount(ret, mount != null ? mount.getItemId() : 0, 80001000, rs.getByte("Fatigue"), rs.getByte("Level"), rs.getInt("Exp"));
                 ps.close();
                 rs.close();
-
+				
+				ps = con.prepareStatement("SELECT * FROM favorites WHERE `accountid` = ?");
+                ps.setInt(1, ret.accountid);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    ret.favorites.add(rs.getInt("sn"));
+                }
+                ps.close();
+                rs.close();
+				
                 ret.stats.recalcLocalStats(true, ret);
             } else { // Not channel server
                 for (Pair<Item, MapleInventoryType> mit : ItemLoader.INVENTORY.loadItems(true, charid).values()) {
@@ -1695,15 +1692,16 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 buddylist.setChanged(false);
             }
 
-            ps = con.prepareStatement("UPDATE accounts SET `nxCredit` = ?, `ACash` = ?, `mPoints` = ?, `points` = ?, `vpoints` = ?, `dpoints` = ?, `epoints` = ? WHERE id = ?");
+            ps = con.prepareStatement("UPDATE accounts SET `nxCredit` = ?, `ACash` = ?, `mPoints` = ?, `rPoints` = ?, `points` = ?, `vpoints` = ?, `dpoints` = ?, `epoints` = ? WHERE id = ?");
             ps.setInt(1, nxcredit);
             ps.setInt(2, acash);
             ps.setInt(3, maplepoints);
-            ps.setInt(4, points);
-            ps.setInt(5, vpoints);
-            ps.setInt(6, dpoints);
-            ps.setInt(7, epoints);
-            ps.setInt(8, client.getAccID());
+            ps.setInt(4, rewardpoints);
+            ps.setInt(5, points);
+            ps.setInt(6, vpoints);
+            ps.setInt(7, dpoints);
+            ps.setInt(8, epoints);
+            ps.setInt(9, client.getAccID());
             ps.executeUpdate();
             ps.close();
 
@@ -1747,16 +1745,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 }
             }
             ps.close();
-            if (changed_wishlist) {
-                deleteWhereCharacterId(con, "DELETE FROM wishlist WHERE characterid = ?");
-                for (int i = 0; i < getWishlistSize(); i++) {
-                    ps = con.prepareStatement("INSERT INTO wishlist(characterid, sn) VALUES(?, ?) ");
-                    ps.setInt(1, getId());
-                    ps.setInt(2, wishlist[i]);
-                    ps.execute();
-                    ps.close();
-                }
-            }
+            
             if (changed_trocklocations) {
                 deleteWhereCharacterId(con, "DELETE FROM trocklocations WHERE characterid = ?");
                 for (int i = 0; i < rocks.length; i++) {
@@ -1806,7 +1795,20 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                     }
                 }
             }
-            changed_wishlist = false;
+			
+            if (changed_favorites) {
+                ps = con.prepareStatement("DELETE FROM favorites WHERE accountid = ?");
+                ps.setInt(1, getAccountID());
+                ps.executeUpdate();
+                ps.close();
+                for (int i : favorites) {
+                    ps = con.prepareStatement("INSERT INTO favorites(accountid, sn) VALUES(?, ?) ");
+                    ps.setInt(1, getAccountID());
+                    ps.setInt(2, i);
+                    ps.execute();
+                    ps.close();
+                }
+            }
             changed_trocklocations = false;
             changed_regrocklocations = false;
             changed_hyperrocklocations = false;
@@ -1814,6 +1816,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
             changed_savedlocations = false;
             changed_questinfo = false;
             changed_extendedSlots = false;
+            changed_favorites = false;
             changed_skills = false;
             con.commit();
         } catch (SQLException | DatabaseException e) {
@@ -1878,12 +1881,12 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         return stats;
     }
 
-    public final void QuestInfoPacket(final tools.data.PacketWriter mplew) {
-        mplew.writeShort(questinfo.size()); // // Party Quest data (quest needs to be added in the quests list)
+    public final void QuestInfoPacket(final tools.data.PacketWriter pw) {
+        pw.writeShort(questinfo.size()); // // Party Quest data (quest needs to be added in the quests list)
 
         for (final Entry<Integer, String> q : questinfo.entrySet()) {
-            mplew.writeInt(q.getKey()); // 174.1 this is now an integer.
-            mplew.writeMapleAsciiString(q.getValue() == null ? "" : q.getValue());
+            pw.writeInt(q.getKey()); // 174.1 this is now an integer.
+            pw.writeMapleAsciiString(q.getValue() == null ? "" : q.getValue());
         }
     }
 
@@ -5508,6 +5511,16 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 maplepoints += quantity;
                 client.getSession().write(CWvsContext.updateMaplePoint(maplepoints));
                 break;
+            case 16: //Fallthrough intended.
+            case 5:
+                if (rewardpoints + quantity < 0) {
+                    if (show) {
+                        dropMessage(-1, "You have gained the max reward points. No reward points will be awarded.");
+                    }
+                    return;
+                }
+                rewardpoints += quantity;
+                break;
             default:
                 break;
         }
@@ -5525,6 +5538,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 return acash;
             case 2:
                 return maplepoints;
+            case 5: 
+                return rewardpoints;
             default:
                 return 0;
         }
@@ -5883,32 +5898,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public MapleMount getMount() {
         return mount;
-    }
-
-    public int[] getWishlist() {
-        return wishlist;
-    }
-
-    public void clearWishlist() {
-        for (int i = 0; i < 10; i++) {
-            wishlist[i] = 0;
-        }
-        changed_wishlist = true;
-    }
-
-    public int getWishlistSize() {
-        int ret = 0;
-        for (int i = 0; i < 10; i++) {
-            if (wishlist[i] > 0) {
-                ret++;
-            }
-        }
-        return ret;
-    }
-
-    public void setWishlist(int[] wl) {
-        this.wishlist = wl;
-        changed_wishlist = true;
     }
 
     public int[] getRocks() {
@@ -6583,7 +6572,6 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         ret.keylayout = keylayout;
         ret.questinfo = questinfo;
         ret.savedLocations = savedLocations;
-        ret.wishlist = wishlist;
         ret.buddylist = buddylist;
         ret.keydown_skill = 0;
         ret.lastmonthfameids = lastmonthfameids;
@@ -6594,6 +6582,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         ret.nxcredit = nxcredit;
         ret.acash = acash;
         ret.maplepoints = maplepoints;
+        ret.rewardpoints = rewardpoints;
         ret.clone = true;
         ret.client.setChannel(this.client.getChannel());
         while (map.getCharacterById(ret.id) != null || client.getChannelServer().getPlayerStorage().getCharacterById(ret.id) != null) {
@@ -9591,5 +9580,21 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public Equip getLastBlackCubedItem(){
         return lastBlackCubedItem;
+    }
+	
+    public List<Integer> getFavorites() {
+        return favorites;
+    }
+    
+    public void addFavorite(int sn){
+        if(!favorites.contains(sn)){
+            favorites.add(sn);
+            changed_favorites = true;
+        }
+    }
+	
+    public void removeFavorite(int sn){
+        favorites.remove(favorites.indexOf(sn));
+        changed_favorites = true;
     }
 }

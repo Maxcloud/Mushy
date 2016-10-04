@@ -13,7 +13,10 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import constants.ServerConfig;
 import handling.SendPacketOpcode;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 import server.cash.CashCategory;
 import server.cash.CashItem;
 import server.cash.CashItemFactory;
@@ -35,6 +38,23 @@ public class CSPacket {
         return pw.getPacket();
     }
 
+    public static byte[] CS_ServerMessage() {
+        final PacketWriter pw = new PacketWriter();
+
+        pw.writeShort(SendPacketOpcode.CASH_SHOP.getValue());
+        pw.write(12);
+        pw.write(01); //Flag to enable Server Message? 
+        
+        pw.writeMapleAsciiString(ServerConfig.SCROLL_MESSAGE);
+        //pw.writeMapleAsciiString(this.getClient().getChannelServer().getServerMessage());
+        //Use the default scrolling message, or whatever the current server message is? Is the CashShop apart of ChannelServer?
+        
+        pw.writeLong(PacketHelper.getTime(-2L));
+        pw.writeLong(PacketHelper.MAX_TIME);
+        
+        return pw.getPacket();
+    }
+    
     public static byte[] CS_Top_Items() {
         final PacketWriter pw = new PacketWriter();
 
@@ -141,13 +161,25 @@ public class CSPacket {
         final PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
-        pw.write(remove ? 0x10 : 0x0E); //16 remove
+        pw.write(0x0E); 
         pw.write(1);
         pw.writeInt(itemSn);
 
         return pw.getPacket();
     }
 
+	public static byte[] removeFavorite(boolean remove, int itemSn) {
+        final PacketWriter pw = new PacketWriter();
+
+        pw.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
+        pw.write(0x10); 
+        pw.write(1);
+        pw.writeInt(itemSn);
+        pw.write(1);
+
+        return pw.getPacket();
+    }
+	
     public static byte[] Like(int item) {
         final PacketWriter pw = new PacketWriter();
 
@@ -160,22 +192,90 @@ public class CSPacket {
 
     public static byte[] Favorite(MapleCharacter chr) {
         final PacketWriter pw = new PacketWriter();
-
         pw.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
-        pw.write(18);
-        pw.write(chr.getWishlistSize() > 0 ? 1 : 3);
-        pw.write(chr.getWishlistSize());
-        CashItemFactory cif = CashItemFactory.getInstance();
-        pw.write(chr.getWishlistSize() > 0 ? 1 : 3);
-        pw.write(chr.getWishlistSize());
-        for (int i : chr.getWishlist()) {
-            CashItem ci = cif.getAllItem(i);
-//        for (CashItem i : cif.getMenuItems(301)) {//TODO create and load form favorites?
-            addCSItemInfo(pw, ci);
+        
+        List<Integer> favorites = chr.getFavorites();
+        List<CashItem> items = CashItemFactory.getInstance().getAllItems()
+                        .stream()
+                        .filter(item -> favorites.contains(item.getSN()))
+                        .collect(Collectors.toList());
+        
+        pw.write(0x12);
+        pw.write(favorites.size() > 0 ? 1 : 3);
+        pw.write(favorites.size());
+        
+        for(CashItem item : items){
+            addCSItemInfoFavorites(pw, item);
         }
         return pw.getPacket();
     }
 
+	public static void addCSItemInfoFavorites(PacketWriter pw, CashItem item) {
+        pw.writeInt(2000000); //Favorites Category.
+        pw.writeInt(2000000); //4000000 + 10000 + page * 10000
+        pw.writeInt(item.getParent()); //1000000 + 70000 + page * 100 + item on page
+        pw.writeMapleAsciiString(item.getImage()); //jpeg img url
+        pw.writeInt(item.getSN());
+        pw.writeInt(item.getItemId());
+        pw.writeInt(item.getBuyable());
+        pw.writeInt(item.getFlag());//1 =event 2=new = 4=hot
+        pw.writeInt(0);//1 = package?
+        pw.writeInt(0);//changes - type?
+        pw.writeInt(item.getPrice());
+        pw.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
+        pw.writeLong(PacketHelper.MAX_TIME);
+        pw.write(HexTool.getByteArrayFromHexString("00 80 22 D6 94 EF C4 01")); // 1/1/2005
+        pw.writeLong(PacketHelper.MAX_TIME);
+        pw.writeInt(item.getPrice()); //after discount
+        pw.writeInt(0);
+        pw.writeInt(item.getQuantity());
+        pw.writeInt(item.getExpire());
+        pw.write(1); //buy
+        pw.write(0); //gift
+        pw.write(1); //cart
+        pw.write(0);
+        pw.write(1); //favorite
+
+        pw.writeInt(256);//yolo, nawh mean?
+        pw.writeShort(256);//yolo, nawh mean?
+        pw.write(0);//yolo, nawh mean?
+        
+
+        pw.writeInt(item.getGender());//gender female 1 male 0 nogender 2
+        pw.writeInt(item.getLikes()); //likes
+        pw.writeInt(0);
+        if(item.getItemId() == 5220083){ //For Starter Pack, only item that does this? 
+            pw.writeMapleAsciiString("FSPackCnt");
+            pw.writeShort(0);
+        }else{
+            pw.writeInt(0);
+        }
+        pw.writeInt(0);
+        pw.writeInt(0);
+
+        pw.writeInt(0);//yolo, nawh mean?
+        pw.writeShort(0);
+        pw.writeShort(1); //flag for Favorite.
+        
+        List<Integer> pack = CashItemFactory.getInstance().getPackageItems(item.getSN());
+        if (pack == null) { 
+            pw.writeInt(0);
+        } else {
+            pw.writeInt(pack.size());
+            for (int i = 0; i < pack.size(); i++) {
+                pw.writeInt(item.getSN());//item.getSN()); //should be pack item sn
+                pw.writeInt(item.getItemId());//((Integer) pack.get(i)).intValue());
+                pw.writeInt(1);//1
+                pw.writeInt(item.getPrice()); //pack item usual price
+                pw.writeInt(item.getDiscountPrice()); //pack item discounted price
+                pw.writeInt(0);
+                pw.writeInt(1);
+                pw.writeInt(0);
+                pw.writeInt(2);
+            }
+        }
+    }
+	
     public static void addCSItemInfo(PacketWriter pw, CashItem item) {
         pw.writeInt(item.getCategory());
         pw.writeInt(item.getSubCategory()); //4000000 + 10000 + page * 10000
@@ -209,17 +309,18 @@ public class CSPacket {
         pw.writeInt(item.getGender());//gender female 1 male 0 nogender 2
         pw.writeInt(item.getLikes()); //likes
         pw.writeInt(0);
-//        if(ispack){
-//            pw.writeAsciiString("lol");
-//            pw.writeShort(0);
-//        }else{
-        pw.writeInt(0);
-//        }
+        if(item.getItemId() == 5220083){ //For Starter Pack, only item that does this? 
+            pw.writeMapleAsciiString("FSPackCnt");
+            pw.writeShort(0);
+        }else{
+            pw.writeInt(0);
+        }
         pw.writeInt(0);
         pw.writeInt(0);
         
         pw.writeInt(0);//yolo, nawh mean?
-        pw.writeInt(0);//yolo, nawh mean?
+        pw.writeShort(0);
+        pw.writeShort(0); //flag for Favorite.
 
         List<Integer> pack = CashItemFactory.getInstance().getPackageItems(item.getSN());
         if (pack == null) {
@@ -355,7 +456,7 @@ public class CSPacket {
         pw.writeShort(SendPacketOpcode.CS_UPDATE.getValue());
         pw.writeInt(chr.getCSPoints(1)); // NX Credit
         pw.writeInt(chr.getCSPoints(2)); // MPoint
-        pw.writeInt(chr.getCSPoints(3)); // Maple Rewards (Not in v144.3) but needed to show Nx prepaid for some reason ._.
+        pw.writeInt(chr.getCSPoints(5)); // Maple Rewards
         pw.writeInt(chr.getCSPoints(4)); // Nx Prepaid
 
         return pw.getPacket();
@@ -445,21 +546,6 @@ public class CSPacket {
         return pw.getPacket();
     }
 
-    public static byte[] sendWishList(MapleCharacter chr, boolean update) {
-        PacketWriter pw = new PacketWriter();
-
-//        pw.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-        System.out.println("wishlist");
-        pw.write(HexTool.getByteArrayFromHexString("6E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"));
-//        pw.write(Operation_Code + (/*update ? 15 : */8)); // 9 = Failed + transfer, 16 = Failed.
-//        int[] list = chr.getWishlist();
-//        for (int i = 0; i < 10; i++) {
-//            pw.writeInt(list[i] != -1 ? list[i] : 0);
-//        }
-
-        return pw.getPacket();
-    }
-
     public static byte[] showBoughtCSItem(Item item, int sn, int accid) {
         PacketWriter pw = new PacketWriter();
 
@@ -475,9 +561,9 @@ public class CSPacket {
         PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-        pw.write(Operation_Code + 17);
+        pw.write(0xD); //v176.3 Sniffed
         addCashItemInfo(pw, uniqueid, accid, itemid, sn, quantity, giftFrom, expire);
-        pw.write(new byte[5]);
+        pw.write(new byte[6]);
         return pw.getPacket();
     }
 
@@ -614,31 +700,22 @@ public class CSPacket {
         PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-        pw.write(Operation_Code + 38); // 37 = Failed//36 8A
+        pw.write(38); //Sniffed from GMS 176.3
         pw.write(1);
         pw.writeShort(pos);
         PacketHelper.addItemInfo(pw, item);
-        pw.writeInt(0); // For each: 8 bytes(Could be 2 ints or 1 long)
+        pw.writeInt(0);
+        pw.write(0); //v176?
 
         return pw.getPacket();
     }
 
-//    public static byte[] confirmToCSInventory(Item item, int accId, int sn) {
-//        PacketWriter pw = new PacketWriter();
-//
-//        pw.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-//        pw.write(Operation_Code + 40); // 39 = Failed//38
-//        addCashItemInfo(pw, item, accId, sn, false);
-//        System.out.println("string " + pw.toString());
-//        return pw.getPacket();
-//    }
     public static byte[] confirmToCSInventory(Item item, int accId, int sn) {
         PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.CS_OPERATION.getValue());
-        pw.write(Operation_Code + 40);
+        pw.write(0x28);
         addCashItemInfo(pw, item, accId, sn, false);
-//        System.out.println("string " + pw.toString());
         return pw.getPacket();
     }
 
@@ -1017,24 +1094,28 @@ public class CSPacket {
 
     public static void addCashItemInfo(PacketWriter pw, int uniqueid, int accId, int itemid, int sn, int quantity, String sender, long expire, boolean isFirst) {
         pw.writeLong(uniqueid > 0 ? uniqueid : 0);
-        pw.writeLong(accId);
-        pw.writeInt(itemid);
-        pw.writeInt(sn);
-        pw.writeShort(1);//quantity
-        pw.writeAsciiString(sender, 13); //owner for the lulzlzlzl
-        pw.write(HexTool.getByteArrayFromHexString("00 80 05 BB 46 E6 17 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"));
-//        pw.write(HexTool.getByteArrayFromHexString("00 80 05 BB 46 E6 17 02"));
-//        pw.writeLong(isFirst ?  0 : sn);
-//        pw.writeZeroBytes(10);
-//        // new: this part, or part of this, may be outside of the item loop.
-//        pw.writeLong(0);
-//        pw.write(HexTool.getByteArrayFromHexString("00 40 E0 FD 3B 37 4F 01"));
-////        pw.writeLong(PacketHelper.getTime(-2L));
-//        // i suspect these are outside of the loop, no way to confirm though
-//        pw.writeLong(0);
-//        pw.writeLong(0);
-//        pw.writeZeroBytes(5); //new v142
+        pw.writeInt(accId); //dwAccountID
+        pw.writeInt(0); //dwCharacterID but not being passed through, and GMS passes it as zero anyways.
+        pw.writeInt(itemid); //nItemID
+        pw.writeInt(sn); //nCommodityID
+        pw.writeShort(quantity);//nNumber
+        pw.writeAsciiString(sender, 13);  // sBuyCharacterID
+        pw.writeLong(expire); //dateExpire
+        pw.writeInt(0); //nPaybackRate
+        pw.writeLong(0); //dDiscountRate
+        pw.writeInt(0); //dwOrderNo
+        pw.writeInt(0); //dwProductNo
+        pw.write(0); //bRefundable
+        pw.write(0); //nSourceFlag
+        pw.write(0); //liSN.QuadPart
+        pw.writeLong(0);
+        pw.writeLong(0);
+        pw.writeInt(0); //a2->anOption[0]
 
+        for(int i = 0; i<3;i++){
+            pw.writeInt(0); //anOption[1], [2], [3] (I presume)
+        }
+        
         //additional 4 bytes for some stuff?
         //if (isFirst && uniqueid > 0 && GameConstants.isEffectRing(itemid)) {
         //	MapleRing ring = MapleRing.loadFromDb(uniqueid);

@@ -1,9 +1,13 @@
 package tools.data;
 
+import handling.RecvPacketOpcode;
+import handling.SendPacketOpcode;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
+import java.util.HashSet;
+import java.util.Set;
 
 import tools.HexTool;
 
@@ -42,7 +46,7 @@ public class PacketWriter {
     public final byte[] getPacket() {
         return baos.toByteArray();
     }
-
+    
     /**
      * Changes this packet into a human-readable hexadecimal stream of bytes.
      *
