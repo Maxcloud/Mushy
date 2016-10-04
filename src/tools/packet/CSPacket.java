@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import client.MapleCharacter;
 import client.MapleClient;
@@ -103,32 +105,25 @@ public class CSPacket {
         return pw.getPacket();
     }
    
-    public static byte[] showSearchResults(List<Integer> itemList) { 
-        final PacketWriter pw = new PacketWriter();
+    public static byte[] showSearchResults(Set<Integer> searchList) { 
+    	final PacketWriter pw = new PacketWriter();
 
-        pw.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
-        pw.write(0x0D); //Sniffed GMS v176.3
-        List<CashItem> items = CashItemFactory.getInstance().getAllItems();
-        List<Integer> foundItems = new ArrayList<>();
-        
-        for (Integer itemID : itemList){
-            for (CashItem i : items) {
-                if(itemID == i.getItemId()){
-                    foundItems.add(itemID); // Do it this way so we can make sure we only send items that are in the cash shop.
-                }
-            }
-        }
+    	pw.writeShort(SendPacketOpcode.CASH_SHOP_UPDATE.getValue());
+    	pw.write(0xD);
 
-        pw.write(foundItems.size() > 0 ? 1 : 3);
-        pw.write(foundItems.size());
-        for (Integer itemID : itemList){
-            for (CashItem i : items) {
-                if(itemID == i.getItemId()){
-                    addCSItemInfo(pw, i);
-                }
-            }
-        }
-        return pw.getPacket();
+    	//Iterate through all cash items, only returning if there is a match
+    	List<CashItem> items = CashItemFactory.getInstance().getAllItems()
+    			.stream()
+    			.filter(item -> searchList.contains(item.getItemId()))
+    			.collect(Collectors.toList());
+
+    	pw.write(items.size() > 0 ? 1 : 3);
+    	pw.write(items.size());
+    	for (CashItem item : items) {
+    		addCSItemInfo(pw, item);
+    	}
+
+    	return pw.getPacket();
     }
     
     public static byte[] showNXChar(int subcategory) {

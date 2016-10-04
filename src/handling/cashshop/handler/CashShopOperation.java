@@ -1,5 +1,14 @@
 package handling.cashshop.handler;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import client.MapleClient;
@@ -14,14 +23,6 @@ import handling.login.LoginServer;
 import handling.world.CharacterTransfer;
 import handling.world.World;
 import net.DatabaseConnection;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.cash.CashItem;
@@ -33,8 +34,8 @@ import tools.FileoutputUtil;
 import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
-import tools.packet.CWvsContext;
 import tools.packet.CSPacket;
+import tools.packet.CWvsContext;
 
 public class CashShopOperation {
 
@@ -596,12 +597,12 @@ public class CashShopOperation {
             }
             c.getSession().write(CSPacket.Like(item));
         } else if (Scategory == 107) {//search results
+            Set<Integer> searchList = new HashSet<Integer>();
             int resultSize = slea.readInt();
-            List<Integer> itemList = new ArrayList<>();
-            for(int i = 0; i<resultSize;i++){
-                itemList.add(slea.readInt());
+            for(int i = 0; i < resultSize; i++){
+                searchList.add(slea.readInt());
             }
-            c.getSession().write(CSPacket.showSearchResults(itemList));
+            c.getSession().write(CSPacket.showSearchResults(searchList));
         } else if (Scategory == 109) {
             c.getSession().write(CSPacket.Favorite(c.getPlayer()));
         } else if (Scategory == 112) {//click on special item TODO

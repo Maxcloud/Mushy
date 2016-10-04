@@ -1023,7 +1023,7 @@ public class GameConstants {
 	}
 
 	public static boolean isGM(int job) {
-		return job == 910 || job == 900 || (job >= 900 && job <= 910);
+		return 900 <= job && job <= 910;
 	}
 
 	public static boolean isGMEquip(final int itemId) {
