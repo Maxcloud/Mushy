@@ -32,7 +32,7 @@ public class CharacterTransfer implements Externalizable {
 
     public int characterid, accountid, fame, pvpExp, pvpPoints, hair, face,
             faceMarking, elf, mapid, honourexp, honourlevel, guildid,
-            partyid, messengerid, ACash, nxCredit, MaplePoints, RewardPoints,
+            partyid, messengerid, ACash, nxCredit, maplepoints, rewardpoints,
             mount_itemid, mount_exp, points, vpoints, dpoints, epoints, marriageId, maxhp, maxmp, hp, mp,
             familyid, seniorid, junior1, junior2, currentrep, totalrep, battleshipHP, gachexp, guildContribution, totalWins, totalLosses;
     public byte channel, gender, gmLevel, guildrank, alliancerank, clonez,
@@ -79,8 +79,8 @@ public class CharacterTransfer implements Externalizable {
         this.channel = (byte) chr.getClient().getChannel();
         this.nxCredit = chr.getCSPoints(1);
         this.ACash = chr.getCSPoints(4);
-        this.MaplePoints = chr.getCSPoints(2);
-        this.RewardPoints = chr.getCSPoints(5);
+        this.maplepoints = chr.getCSPoints(2);
+        this.rewardpoints = chr.getCSPoints(5);
         this.stolenSkills = chr.getStolenSkills();
         this.vpoints = chr.getVPoints();
         this.name = chr.getName();
@@ -242,8 +242,8 @@ public class CharacterTransfer implements Externalizable {
         this.channel = in.readByte();
         this.nxCredit = in.readInt();
         this.ACash = in.readInt();
-        this.MaplePoints = in.readInt();
-        this.RewardPoints = in.readInt();
+        this.maplepoints = in.readInt();
+        this.rewardpoints = in.readInt();
         this.name = in.readUTF();
         this.fame = in.readInt();
         this.gender = in.readByte();
@@ -462,8 +462,8 @@ public class CharacterTransfer implements Externalizable {
         out.writeByte(this.channel);
         out.writeInt(this.nxCredit);
         out.writeInt(this.ACash);
-        out.writeInt(this.MaplePoints);
-        out.writeInt(this.RewardPoints);
+        out.writeInt(this.maplepoints);
+        out.writeInt(this.rewardpoints);
         out.writeUTF(this.name);
         out.writeInt(this.fame);
         out.writeByte(this.gender);

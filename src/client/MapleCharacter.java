@@ -573,8 +573,8 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         client.setAccountName(ct.accountname);
         ret.nxcredit = ct.nxCredit;
         ret.acash = ct.ACash;
-        ret.maplepoints = ct.MaplePoints;
-        ret.rewardpoints = ct.RewardPoints;
+        ret.maplepoints = ct.maplepoints;
+        ret.rewardpoints = ct.rewardpoints;
         ret.numClones = ct.clonez;
         ret.imps = ct.imps;
         ret.rebuy = ct.rebuy;
