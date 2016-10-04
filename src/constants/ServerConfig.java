@@ -6,7 +6,7 @@ public class ServerConfig {
 	public static String SQL_PORT ="3306";
 	public static String SQL_DATABASE = "mushy";
 	public static String SQL_USER = "root";
-	public static String SQL_PASS = "Adminroot0829!";
+	public static String SQL_PASS = "";
 
 	// Server Configuration	
 	public static String SERVER_NAME;
