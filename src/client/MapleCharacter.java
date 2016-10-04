@@ -1133,7 +1133,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
                 ps.close();
                 rs.close();
 				
-				ps = con.prepareStatement("SELECT * FROM favorites WHERE `accountid` = ?");
+		ps = con.prepareStatement("SELECT * FROM favorites WHERE `accountid` = ?");
                 ps.setInt(1, ret.accountid);
                 rs = ps.executeQuery();
                 while (rs.next()) {
