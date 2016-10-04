@@ -2518,7 +2518,7 @@ public class CField {
 		pw.writeShort(SendPacketOpcode.COOLDOWN.getValue());
 		pw.writeInt(1);
 		pw.writeInt(sid);
-		pw.writeInt(time);
+		pw.writeInt(time * 1000);
 
 		return pw.getPacket();
 	}
