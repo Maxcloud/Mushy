@@ -351,7 +351,9 @@ public class GameConstants {
 			}
 		} if (isAran(job)) {
 			return false;
-		}
+		} else if (isGM(job)){
+                	return false;
+            	}
 		return true;
 	}
 
