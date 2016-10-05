@@ -5,8 +5,8 @@ A community-developed open-source v176 emulator for MapleStory.
  * Clone this repository.
  * Download Global MapleStory and install it.
  * Follow most of this [installation guide](http://forum.ragezone.com/f428/maplestory-private-server-v83-741739/).
- * Download the necessary data files [found here](http://www.mediafire.com/download/i3z32pobguhr333/dat.rar), extract the files into a folder called bin and place the bin folder inside the resources folder.
- * Compile the source using an IDE of your choice. The jars go inside the bin folder, not the dist folder.
+ * Download the necessary data files [found here](http://www.mediafire.com/download/i3z32pobguhr333/dat.rar), extract the files located in the folder labeled "dat" into a folder called bin and place the bin folder inside the resources folder. (Should look like Mushy\resources\bin\[files extracted here.])
+ * Open Mushy as an existing project and compile the source using an IDE of your choice. The jars go inside the bin folder, not the dist folder.
  * Double-click launch.bat to launch Mushy.
  
 ## Discord
