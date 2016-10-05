@@ -32,7 +32,7 @@ public class CharacterTransfer implements Externalizable {
 
     public int characterid, accountid, fame, pvpExp, pvpPoints, hair, face,
             faceMarking, elf, mapid, honourexp, honourlevel, guildid,
-            partyid, messengerid, ACash, nxCredit, MaplePoints,
+            partyid, messengerid, ACash, nxCredit, maplepoints, rewardpoints,
             mount_itemid, mount_exp, points, vpoints, dpoints, epoints, marriageId, maxhp, maxmp, hp, mp,
             familyid, seniorid, junior1, junior2, currentrep, totalrep, battleshipHP, gachexp, guildContribution, totalWins, totalLosses;
     public byte channel, gender, gmLevel, guildrank, alliancerank, clonez,
@@ -41,14 +41,14 @@ public class CharacterTransfer implements Externalizable {
     public String name, accountname, BlessOfFairy, BlessOfEmpress, chalkboard, tempIP;
     public short level, hpApUsed, job, fatigue;
     public Object inventorys, skillmacro, storage, cs, anticheat, innerSkills, azwanShopList;
-    public int[] savedlocation, wishlist, rocks, remainingSp, remainingHSp, regrocks, hyperrocks;
+    public int[] savedlocation, rocks, remainingSp, remainingHSp, regrocks, hyperrocks;
     public byte[] petStore;
     public MapleImp[] imps;
     public Map<Integer, Integer> mbook;
     public List<Pair<Integer, Boolean>> stolenSkills;
     public Map<Integer, Pair<Byte, Integer>> keymap;
     public Map<Integer, MonsterFamiliar> familiars;
-    public List<Integer> famedcharacters = null, extendedSlots = null;
+    public List<Integer> famedcharacters = null, extendedSlots = null, favorites = null;
     public List<Item> rebuy = null;
     public final Map<MapleTraitType, Integer> traits = new EnumMap<>(MapleTraitType.class);
     public final Map<CharacterNameAndId, Boolean> buddies = new LinkedHashMap<>();
@@ -79,7 +79,8 @@ public class CharacterTransfer implements Externalizable {
         this.channel = (byte) chr.getClient().getChannel();
         this.nxCredit = chr.getCSPoints(1);
         this.ACash = chr.getCSPoints(4);
-        this.MaplePoints = chr.getCSPoints(2);
+        this.maplepoints = chr.getCSPoints(2);
+        this.rewardpoints = chr.getCSPoints(5);
         this.stolenSkills = chr.getStolenSkills();
         this.vpoints = chr.getVPoints();
         this.name = chr.getName();
@@ -211,7 +212,6 @@ public class CharacterTransfer implements Externalizable {
         this.skillmacro = chr.getMacros();
         this.keymap = chr.getKeyLayout().Layout();
         this.savedlocation = chr.getSavedLocations();
-        this.wishlist = chr.getWishlist();
         this.rocks = chr.getRocks();
         this.regrocks = chr.getRegRocks();
         this.hyperrocks = chr.getHyperRocks();
@@ -230,6 +230,7 @@ public class CharacterTransfer implements Externalizable {
         this.mount_Fatigue = mount.getFatigue();
         this.mount_level = mount.getLevel();
         this.mount_exp = mount.getExp();
+		this.favorites = chr.getFavorites();
         TranferTime = System.currentTimeMillis();
     }
 
@@ -241,7 +242,8 @@ public class CharacterTransfer implements Externalizable {
         this.channel = in.readByte();
         this.nxCredit = in.readInt();
         this.ACash = in.readInt();
-        this.MaplePoints = in.readInt();
+        this.maplepoints = in.readInt();
+        this.rewardpoints = in.readInt();
         this.name = in.readUTF();
         this.fame = in.readInt();
         this.gender = in.readByte();
@@ -386,12 +388,6 @@ public class CharacterTransfer implements Externalizable {
             savedlocation[i] = in.readInt();
         }
 
-        final int wsize = in.readByte();
-        wishlist = new int[wsize];
-        for (int i = 0; i < wsize; i++) {
-            wishlist[i] = in.readInt();
-        }
-
         final int rsize = in.readByte();
         rocks = new int[rsize];
         for (int i = 0; i < rsize; i++) {
@@ -434,7 +430,12 @@ public class CharacterTransfer implements Externalizable {
         for (int i = 0; i < rebsize; i++) {
             this.rebuy.add((Item) in.readObject());
         }
-
+		
+        final int favoritesize = in.readShort();
+        for (int i = 0; i < favoritesize; i++) {
+            this.favorites.add(in.readInt());
+        }
+		
         this.imps = new MapleImp[in.readByte()];
         for (int x = 0; x < this.imps.length; x++) {
             if (in.readByte() > 0) {
@@ -461,7 +462,8 @@ public class CharacterTransfer implements Externalizable {
         out.writeByte(this.channel);
         out.writeInt(this.nxCredit);
         out.writeInt(this.ACash);
-        out.writeInt(this.MaplePoints);
+        out.writeInt(this.maplepoints);
+        out.writeInt(this.rewardpoints);
         out.writeUTF(this.name);
         out.writeInt(this.fame);
         out.writeByte(this.gender);
@@ -624,11 +626,6 @@ public class CharacterTransfer implements Externalizable {
             out.writeInt(zz);
         }
 
-        out.writeByte(this.wishlist.length);
-        for (int zz : wishlist) {
-            out.writeInt(zz);
-        }
-
         out.writeByte(this.rocks.length);
         for (int zz : rocks) {
             out.writeInt(zz);
@@ -678,7 +675,12 @@ public class CharacterTransfer implements Externalizable {
         for (int i = 0; i < rebuy.size(); i++) {
             out.writeObject(rebuy.get(i));
         }
-
+		
+        out.writeShort(favorites.size());
+        for (final Integer zz : favorites) {
+            out.writeInt(zz.intValue());
+        }
+		
         out.writeByte(this.imps.length);
         for (MapleImp imp : this.imps) {
             if (imp != null) {

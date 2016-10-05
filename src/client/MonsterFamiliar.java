@@ -145,16 +145,16 @@ public final class MonsterFamiliar extends AnimatedMapleMapObject
         }
     }
 
-    public void writeRegisterPacket(PacketWriter mplew, boolean chr) {
-        mplew.writeInt(getCharacterId());
-        mplew.writeInt(getFamiliar());
-        mplew.writeAsciiString(getName(), 13);
-        mplew.write(chr ? 1 : 0);
-        mplew.writeShort(getVitality());
-        mplew.writeInt(getFatigue());
-        mplew.writeLong(PacketHelper.getTime(getVitality() >= 3 ? System.currentTimeMillis() : -2L));
-        mplew.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
-        mplew.writeLong(PacketHelper.getTime(getExpiry()));
-        mplew.writeShort(getVitality());
+    public void writeRegisterPacket(PacketWriter pw, boolean chr) {
+        pw.writeInt(getCharacterId());
+        pw.writeInt(getFamiliar());
+        pw.writeAsciiString(getName(), 13);
+        pw.write(chr ? 1 : 0);
+        pw.writeShort(getVitality());
+        pw.writeInt(getFatigue());
+        pw.writeLong(PacketHelper.getTime(getVitality() >= 3 ? System.currentTimeMillis() : -2L));
+        pw.writeLong(PacketHelper.getTime(System.currentTimeMillis()));
+        pw.writeLong(PacketHelper.getTime(getExpiry()));
+        pw.writeShort(getVitality());
     }
 }

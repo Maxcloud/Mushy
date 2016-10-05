@@ -63,19 +63,19 @@ import tools.packet.CWvsContext;
 public class NPCHandler {
 
     public static void NPCAnimation(LittleEndianAccessor slea, MapleClient c) {
-        PacketWriter mplew = new PacketWriter();
-        mplew.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
+        PacketWriter pw = new PacketWriter();
+        pw.writeShort(SendPacketOpcode.NPC_ACTION.getValue());
         int length = (int) slea.available();
         if (length == 10) {
-            mplew.writeInt(slea.readInt());
-            mplew.writeShort(slea.readShort());
-            mplew.writeInt(slea.readInt());
+            pw.writeInt(slea.readInt());
+            pw.writeShort(slea.readShort());
+            pw.writeInt(slea.readInt());
         } else if (length > 10) {
-            mplew.write(slea.read(length - 9));
+            pw.write(slea.read(length - 9));
         } else {
             return;
         }
-        c.getSession().write(mplew.getPacket());
+        c.getSession().write(pw.getPacket());
     }
 
     public static final void NPCTalk(final LittleEndianAccessor slea, final MapleClient c, final MapleCharacter chr) {

@@ -121,8 +121,8 @@ public class OpcodeManager {
                 method.invoke(null, client, lea);
                 return true;
             } else {
-				System.out.println("[Unhandled] [Recv] (" + HexTool.getOpcodeToString(opcode) + ") " + lea);
-			}
+               //System.out.println("[Unhandled] [Recv] (" + HexTool.getOpcodeToString(opcode) + ") " + lea);
+            }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {

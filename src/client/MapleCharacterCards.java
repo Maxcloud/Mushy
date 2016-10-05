@@ -104,9 +104,9 @@ public class MapleCharacterCards {
         }
     }
 
-    public final void connectData(final PacketWriter mplew) {
+    public final void connectData(final PacketWriter pw) {
         if (cards.isEmpty()) { // we don't show for new characters 
-            mplew.write(new byte[54]); // 9 x 6
+            pw.write(new byte[54]); // 9 x 6
             return;
         }
         int poss = 0;
@@ -115,9 +115,9 @@ public class MapleCharacterCards {
             if (poss > 6) {
                 break;
             }
-            mplew.writeInt(i.cid);
-            mplew.write(i.level);
-            mplew.writeInt(i.job);
+            pw.writeInt(i.cid);
+            pw.write(i.level);
+            pw.writeInt(i.job);
         }
     }
 }

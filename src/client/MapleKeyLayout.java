@@ -35,8 +35,8 @@ public class MapleKeyLayout implements Serializable {
         changed = false;
     }
 
-    public final void writeData(final PacketWriter mplew) {
-        mplew.write(keymap.isEmpty() ? 1 : 0);
+    public final void writeData(final PacketWriter pw) {
+        pw.write(keymap.isEmpty() ? 1 : 0);
         if (keymap.isEmpty()) {
             return;
         }
@@ -44,11 +44,11 @@ public class MapleKeyLayout implements Serializable {
         for (int x = 0; x < 89; x++) {
             binding = keymap.get(Integer.valueOf(x));
             if (binding != null) {
-                mplew.write(binding.getLeft());
-                mplew.writeInt(binding.getRight());
+                pw.write(binding.getLeft());
+                pw.writeInt(binding.getRight());
             } else {
-                mplew.write(0);
-                mplew.writeInt(0);
+                pw.write(0);
+                pw.writeInt(0);
             }
         }
     }
