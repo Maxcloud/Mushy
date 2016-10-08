@@ -33,6 +33,7 @@ import com.google.common.collect.ArrayListMultimap;
 
 import client.InnerSkillValueHolder;
 import client.MapleBuffStat;
+import client.MapleBuffStatValueHolder;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleCoolDownValueHolder;
@@ -62,11 +63,14 @@ import server.shops.MapleShopItem;
 import server.stores.AbstractPlayerStore;
 import server.stores.IMaplePlayerShop;
 import tools.BitTools;
+import tools.HexTool;
 import tools.KoreanDateUtil;
 import tools.Pair;
+import tools.Randomizer;
 import tools.StringUtil;
 import tools.Triple;
 import tools.data.PacketWriter;
+import tools.packet.twostate.TSIndex;
 
 public class PacketHelper {
 
@@ -621,7 +625,7 @@ public class PacketHelper {
 	        pw.writeInt(((Integer) entry.getValue()).intValue());
 	    }
 	    
-	    pw.write(255); // new v140
+	    pw.write(255);
 
         Integer cWeapon = equip.get(Byte.valueOf((byte) -111));
         pw.writeInt(cWeapon != null ? cWeapon.intValue() : 0);
@@ -633,7 +637,7 @@ public class PacketHelper {
         Integer Shield = equip.get(Byte.valueOf((byte) -10));
         pw.writeInt(!zero && Shield != null ? Shield.intValue() : 0);
         
-        pw.write(GameConstants.isMercedes(chr.getJob()) ? 1 : 0);
+        pw.write(0); // mercedes ear
         
         // all 3 pets unique id
         pw.writeInt(0);
@@ -1582,16 +1586,16 @@ public class PacketHelper {
     }
 
     public static void addFarmInfo(PacketWriter pw, MapleClient c, byte gender) {
-        pw.writeMapleAsciiString(""); // c.getFarm().getName()
-        pw.writeInt(0); // c.getFarm().getWaru()
-        pw.writeInt(0); // c.getFarm().getLevel()
-        pw.writeInt(0); // c.getFarm().getExp()
-        pw.writeInt(0); // c.getFarm().getAestheticPoints()
-        pw.writeInt(0); // cash (gems)
-        pw.write(gender); // gender
-        pw.writeInt(0); // theme
-        pw.writeInt(0); // slot extend
-        pw.writeInt(1); // locker slot count
+        pw.writeMapleAsciiString("Creating..."); 
+        pw.writeInt(0); // nFarmPoint
+        pw.writeInt(0); // nFarmLevel
+        pw.writeInt(0); // nFarmExp
+        pw.writeInt(0); // nDecoPoint
+        pw.writeInt(0); // nFarmCash
+        pw.write(gender); // nFarmGender
+        pw.writeInt(0); // nFarmTheme
+        pw.writeInt(0); // nSlotExtend
+        pw.writeInt(1); // nLockerSlotCount
     }
 
     public static void addRedLeafInfo(PacketWriter pw, MapleCharacter chr) {
@@ -1628,10 +1632,7 @@ public class PacketHelper {
     }
 
    public static <E extends Buffstat> void writeMask(PacketWriter pw, Collection<E> statups) {
-        int[] mask = new int[10];
-        if (!statups.contains(MapleBuffStat.RideVehicle)) {
-            mask = new int[17];
-        }
+        int[] mask = new int[17];
         for (Buffstat statup : statups) {
             mask[(statup.getPosition() - 1)] |= statup.getValue();
         }
@@ -1641,10 +1642,7 @@ public class PacketHelper {
     }
 
     public static <E extends Buffstat> void writeBuffMask(PacketWriter pw, Collection<Pair<E, Integer>> statups) {
-        int[] mask = new int[10];
-        if (!statups.contains(MapleBuffStat.RideVehicle)) {
-            mask = new int[17];
-        }
+        int[] mask = new int[17];
         for (Pair statup : statups) {
             mask[(((Buffstat) statup.left).getPosition() - 1)] |= ((Buffstat) statup.left).getValue();
         }
@@ -1654,10 +1652,7 @@ public class PacketHelper {
     }
 
     public static <E extends Buffstat> void writeBuffMask(PacketWriter pw, Map<E, Integer> statups) {
-        int[] mask = new int[10];
-        if (!statups.containsKey(MapleBuffStat.RideVehicle)) {
-            mask = new int[17];
-        }
+        int[] mask = new int[17];
         for (Buffstat statup : statups.keySet()) {
             mask[(statup.getPosition() - 1)] |= statup.getValue();
         }
@@ -1677,5 +1672,837 @@ public class PacketHelper {
                     for (Item item : itemmap.get(i))
                         addItemInfo(pw, item);
             }
+    }
+    
+    public static void decodeForRemote(PacketWriter pw, MapleCharacter chr, Map<MapleBuffStat, MapleBuffStatValueHolder> statups) {
+    	for(Entry<MapleBuffStat, MapleBuffStatValueHolder> stats : statups.entrySet()) {
+			MapleBuffStat stat = stats.getKey();
+			MapleBuffStatValueHolder mbsvh = stats.getValue();
+			
+			int value = mbsvh.value;
+			int buffid = 0;
+			
+			if (mbsvh.effect != null) {
+				buffid = (mbsvh.effect.isSkill() ? mbsvh.effect.getSourceId() : -mbsvh.effect.getSourceId());
+			}
+			 
+
+			if (stat == MapleBuffStat.Speed) {
+				pw.write(0);
+			}
+						
+			if (stat == MapleBuffStat.ComboCounter) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.WeaponCharge) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ElementalCharge) {
+				pw.writeShort(0);
+			}
+
+			if (stat == MapleBuffStat.Stun) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Shock) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.Darkness) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Seal) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Weakness) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.WeaknessMdamage) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.Curse) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.Slow) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.PvPRaceEffect) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.IceKnight) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.TimeBomb) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.Team) {
+				pw.write(0);
+			}
+			
+			if (stat == MapleBuffStat.DisOrder) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.Thread) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.Poison) {
+				pw.writeShort(0);
+			}
+
+			if (stat == MapleBuffStat.Poison) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ShadowPartner) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Morph) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Ghost) {
+				pw.writeShort(0);
+			}
+
+			if (stat == MapleBuffStat.Attract) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Magnet) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.MagnetArea) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.NoBulletConsume) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.BanMap) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Barrier) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DojangShield) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ReverseInput) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.RespectPImmune) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.RespectMImmune) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DefenseAtt) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DefenseState) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DojangBerserk) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.RepeatEffect) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.StopPortion) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.StopMotion) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Fear) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.MagicShield) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Frozen) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Frozen2) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Web) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DrawBack) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.FinalCut) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Cyclone) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.OnCapsule) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.Mechanic) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Inflation) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Explosion) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DarkTornado) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AmplifyDamage) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.HideAttack) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DevilishPower) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.SpiritLink) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Event) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Event2) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DeathMark) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.PainMark) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Lapidification) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.VampDeath) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.VampDeathSummon) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.VenomSnake) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.PyramidEffect) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.KillingPoint) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.PinkbeanRollingGrade) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.IgnoreTargetDEF) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Invisible) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Judgement) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.KeyDownAreaMoving) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.StackBuff) {
+				pw.writeShort(0);
+			}
+
+			if (stat == MapleBuffStat.BlessOfDarkness) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Larkness) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ReshuffleSwitch) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.SpecialAction) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.StopForceAtomInfo) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.SoulGazeCriDamR) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.PowerTransferGauge) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AffinitySlug) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.SoulExalt) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.HiddenPieceOn) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.SmashStack) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.MobZoneState) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.GiveMeHeal) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.TouchMe) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Contagion) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Contagion) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ComboUnlimited) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.IgnorePCounter) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.IgnoreAllCounter) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.IgnorePImmune) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.IgnoreAllImmune) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.FinalJudgement) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.KnightsAura) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.IceAura) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.FireAura) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.HeavensDoor) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DamAbsorbShield) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AntiMagicShell) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.NotDamaged) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.BleedingToxin) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.WindBreakerFinal) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.IgnoreMobDamR) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.Asura) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.UnityOfPower) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Stimulate) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ReturnTeleport) {
+				pw.write(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.CapDebuff) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.OverloadCount) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.FireBomb) {
+				pw.write(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.SurplusSupply) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.NewFlying) {	
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.NaviFlying) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AmaranthGenerator) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.CygnusElementSkill) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.StrikerHyperElectric) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.EventPointAbsorb) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.EventAssemble) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Albatross) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Translucence) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.PoseType) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.LightOfSpirit) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ElementSoul) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.GlimmeringTime) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Reincarnation) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Beholder) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.QuiverCatridge) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ArmorPiercing) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+			
+			if (stat == MapleBuffStat.ZeroAuraStr) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ZeroAuraSpd) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ImmuneBarrier) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ImmuneBarrier) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.FullSoulMP) {
+				pw.writeInt(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AntiMagicShell) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.Dance) {
+				pw.writeInt(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.SpiritGuard) {
+				pw.writeInt(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ComboTempest) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.HalfstatByDebuff) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.ComplusionSlant) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.JaguarSummoned) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.BMageAura) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.DarkLighting) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AttackCountX) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.FireBarrier) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.KeyDownMoving) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.MichaelSoulLink) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.KinesisPsychicEnergeShield) {
+				pw.writeInt(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.BladeStance) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.BladeStance) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Fever) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AdrenalinBoost) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.RWBarrier) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.RWMagnumBlow) {
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.Stigma) {
+				pw.writeShort(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.PoseType) {
+				pw.write(0);
+			}
+		}
+		
+		pw.write(0); // nDefenseAtt
+		pw.write(0); // nDefenseState
+		pw.write(0); // nPVPDamage
+		
+		for(Entry<MapleBuffStat, MapleBuffStatValueHolder> stats : statups.entrySet()) {
+			MapleBuffStat stat = stats.getKey();
+			MapleBuffStatValueHolder mbsvh = stats.getValue();
+			
+			int value = mbsvh.value;
+			int buffid = 0;
+			
+			if (mbsvh.effect != null)
+				buffid = (mbsvh.effect.isSkill() ? mbsvh.effect.getSourceId() : -mbsvh.effect.getSourceId());
+
+			if (stat == MapleBuffStat.ZeroAuraStr) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.ZeroAuraSpd) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.BMageAura) {	
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.BattlePvP_Helena_Mark) {
+				pw.writeInt(0);
+				pw.writeInt(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.BattlePvP_LangE_Protection) {
+				pw.writeInt(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.MichaelSoulLink) {
+				pw.writeInt(0);
+				pw.write(0);
+				pw.writeInt(0);
+				pw.writeInt(0);
+			}
+
+			if (stat == MapleBuffStat.AdrenalinBoost) {
+				pw.write(0);
+			}
+
+			if (stat == MapleBuffStat.Stigma) {
+				pw.writeInt(0);
+			}
+		}
+		
+		// SecondaryStat::StopForceAtom::Decode
+		pw.writeInt(0); // nIdx
+		pw.writeInt(0); // nCount
+		pw.writeInt(0); // nWeaponID
+		
+		pw.writeInt(0); // v6, size
+		// forEach(v6)
+		// pw.writeInt(0); // nValue
+		
+		pw.writeInt(0); // nViperCharge
+		
+		TSIndex.encodeAll(pw, chr);
+	
     }
 }

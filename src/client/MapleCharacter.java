@@ -28,6 +28,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 import org.apache.mina.common.WriteFuture;
 
@@ -1970,6 +1971,12 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         return quests;
     }
 
+    public Map<MapleBuffStat, MapleBuffStatValueHolder> getBuffValues() {
+    	return effects.entrySet().stream()
+    			.filter(stat -> getBuffedValue(stat.getKey()) != null)
+    			.collect(Collectors.toMap(stat -> stat.getKey(), stat -> stat.getValue()));
+    }
+    
     public Integer getBuffedValue(MapleBuffStat effect) {
         final MapleBuffStatValueHolder mbsvh = effects.get(effect);
         return mbsvh == null ? null : Integer.valueOf(mbsvh.value);
@@ -1979,7 +1986,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         final MapleBuffStatValueHolder mbsvh = effects.get(effect);
         if (mbsvh == null) {
             return null;
-        }
+        }	
         return mbsvh.effect.getX();
     }
 
