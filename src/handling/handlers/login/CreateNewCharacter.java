@@ -62,7 +62,7 @@ public class CreateNewCharacter {
 		gender = lea.readByte();
 		skin = lea.readByte();
 		
-		lea.skip(1);
+		lea.skip(1); // the amount of items a new character will receive.
 		
 		face = lea.readInt();
 		hair = lea.readInt();
@@ -218,6 +218,10 @@ public class CreateNewCharacter {
 			}
 			newchar.changeSkillLevel_Skip(ss, false);
 		}*/
+		
+		final Map<Skill, SkillEntry> ss = new HashMap<>();
+		ss.put(SkillFactory.getSkill(80001770), new SkillEntry((byte) 1, (byte) 1, -1));
+		newchar.changeSkillLevel_Skip(ss, false);
 		
 		int[][] guidebooks = new int[][] { { 4161001, 0 }, { 4161047, 1 }, { 4161048, 2000 }, { 4161052, 2001 },
 				{ 4161054, 3 }, { 4161079, 2002 } };
