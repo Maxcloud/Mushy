@@ -2442,12 +2442,14 @@ public class CWvsContext {
     }
 
     public static class GuildPacket {
+    	
+    	// Probably going to need to create a new class for all of this information.
 
         public static byte[] guildInvite(int gid, String charName, int levelFrom, int jobFrom) {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(5);
+            pw.write(7); // updated
             pw.writeInt(gid);
             pw.writeMapleAsciiString(charName);
             pw.writeInt(levelFrom);
@@ -2460,7 +2462,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(32);
+            pw.write(49); // was 32
             if ((c == null) || (c.getMGC() == null)) {
                 pw.write(0);
                 return pw.getPacket();
@@ -2470,30 +2472,39 @@ public class CWvsContext {
                 pw.write(0);
                 return pw.getPacket();
             }
+            pw.write(0);
             pw.write(1);
             getGuildInfo(pw, g);
+            
+            // The amount of guild exp needed per level.
+            pw.writeInt(0);
 
             return pw.getPacket();
         }
 
-        public static void getGuildInfo(PacketWriter pw, MapleGuild guild) {
+        private static void getGuildInfo(PacketWriter pw, MapleGuild guild) {
             pw.writeInt(guild.getId());
             pw.writeMapleAsciiString(guild.getName());
             for (int i = 1; i <= 5; i++) {
                 pw.writeMapleAsciiString(guild.getRankTitle(i));
             }
             guild.addMemberData(pw);
+
+            pw.writeShort(0); // ?
             pw.writeInt(guild.getCapacity());
             pw.writeShort(guild.getLogoBG());
             pw.write(guild.getLogoBGColor());
             pw.writeShort(guild.getLogo());
             pw.write(guild.getLogoColor());
             pw.writeMapleAsciiString(guild.getNotice());
+            
             pw.writeInt(guild.getGP());
             pw.writeInt(guild.getGP());
             pw.writeInt(guild.getAllianceId() > 0 ? guild.getAllianceId() : 0);
             pw.write(guild.getLevel());
-            pw.writeShort(0);
+            pw.writeShort(0); // nRank
+            pw.writeInt(0); // nGGP (global guild points)
+            
             pw.writeShort(guild.getSkills().size());
             for (MapleGuildSkill i : guild.getSkills()) {
                 pw.writeInt(i.skillID);
@@ -2502,13 +2513,14 @@ public class CWvsContext {
                 pw.writeMapleAsciiString(i.purchaser);
                 pw.writeMapleAsciiString(i.activator);
             }
+            pw.write(0); // ?
         }
 
         public static byte[] newGuildInfo(MapleCharacter c) {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(38);
+            pw.write(56); // was 38
             if ((c == null) || (c.getMGC() == null)) {
                 return genericGuildMessage((byte) 37);
             }
@@ -2528,6 +2540,7 @@ public class CWvsContext {
             pw.write(45);
             pw.writeInt(mgc.getGuildId());
             pw.writeInt(mgc.getId());
+            
             pw.writeAsciiString(mgc.getName(), 13);
             pw.writeInt(mgc.getJobId());
             pw.writeInt(mgc.getLevel());
@@ -2555,9 +2568,8 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(56);
+            pw.write(81); // was 56
             pw.writeInt(gid);
-            pw.write(1);
 
             return pw.getPacket();
         }
@@ -2566,21 +2578,24 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(64);
+            pw.write(90); // 64
             pw.writeInt(gid);
             pw.write(capacity);
 
             return pw.getPacket();
         }
-
+        
         public static byte[] guildContribution(int gid, int cid, int c) {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(72);
+            pw.write(100); // was 72
             pw.writeInt(gid);
             pw.writeInt(cid);
+            pw.writeInt(510);
+            pw.writeInt(510);
             pw.writeInt(c);
+            pw.writeLong(PacketHelper.getTime(-2));
 
             return pw.getPacket();
         }
@@ -2589,7 +2604,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(70);
+            pw.write(98); // was 70
             pw.writeInt(mgc.getGuildId());
             pw.writeInt(mgc.getId());
             pw.write(mgc.getGuildRank());
@@ -2601,7 +2616,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(68);
+            pw.write(96); // was 68
             pw.writeInt(gid);
             for (String r : ranks) {
                 pw.writeMapleAsciiString(r);
@@ -2614,7 +2629,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(73);
+            pw.write(101); // 73																					
             pw.writeInt(gid);
             pw.writeShort(bg);
             pw.write(bgcolor);
@@ -2628,8 +2643,9 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(79);
+            pw.write(107); // was 79
             pw.writeInt(gid);
+            pw.writeInt(0); // nHonor
             pw.writeInt(GP);
             pw.writeInt(glevel);
 
@@ -2711,7 +2727,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(89);
+            pw.write(123); // 89
             pw.writeInt(gid);
             pw.writeInt(oldLeader);
             pw.writeInt(newLeader);
@@ -2725,7 +2741,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(61);
+            pw.write(86); // was 61
             pw.writeMapleAsciiString(charname);
 
             return pw.getPacket();
@@ -2735,7 +2751,7 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GUILD_OPERATION.getValue());
-            pw.write(code);//30 = cant find in ch
+            pw.write(code); //30 = cant find in ch
             if (code == 87) {
                 pw.writeInt(0);
             }
@@ -2879,7 +2895,7 @@ public class CWvsContext {
     		return showStatusInfo(40, 0, 0, 0, index, 0, data, null, null);
     	}
     	
-    	public static byte[] showStatusInfo(int mode, int questid, int job, int sp, int amount, int itemid, 
+    	private static byte[] showStatusInfo(int mode, int questid, int job, int sp, int amount, int itemid, 
     			String data, List<Integer> items, List<String> messages) {
     		return showStatusInfo(null, null, mode, questid, job, sp, amount, itemid, data, items, messages);
     	}
@@ -3314,6 +3330,8 @@ public class CWvsContext {
             PacketWriter pw = new PacketWriter();
 
             pw.writeShort(SendPacketOpcode.GIVE_BUFF.getValue());
+            
+            // SecondaryStat::DecodeForLocal
             PacketHelper.writeBuffMask(pw, statups);
 
             for (Map.Entry<MapleBuffStat, Integer> stat : statups.entrySet()) {
@@ -3596,7 +3614,7 @@ public class CWvsContext {
             		pw.writeInt(0); // mReason
             		pw.write(0);
             		pw.writeInt(0);
-            	}	
+            	}
             }
             
             
@@ -3637,7 +3655,8 @@ public class CWvsContext {
             
             pw.writeInt(0); // 174.1
             
-            boolean isMovementAffectingStat = statups.entrySet().stream().anyMatch(stat -> stat.getKey().isMovementAffectingStat());
+            boolean isMovementAffectingStat = statups.entrySet().stream()
+            		.anyMatch(stat -> stat.getKey().isMovementAffectingStat());
             
             if (isMovementAffectingStat)
             	pw.write(0);

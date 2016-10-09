@@ -71,6 +71,7 @@ public class GuildHandler {
 
 	public static final void Guild(final LittleEndianAccessor slea, final MapleClient c) {
 		final long currentTime = System.currentTimeMillis();
+		
 		if (currentTime >= nextPruneTime) {
 			Iterator<Entry<String, Pair<Integer, Long>>> itr = invited.entrySet().iterator();
 			Entry<String, Pair<Integer, Long>> inv;
@@ -83,8 +84,8 @@ public class GuildHandler {
 			nextPruneTime += 5 * 60 * 1000;
 		}
 
-		switch (slea.readByte()) { //AFTERSHOCK: most are +1
-		case 0x02: // Create guild
+		switch (slea.readByte()) {
+		case 0x04: // create guild (updated)
 			if (c.getPlayer().getGuildId() > 0 || c.getPlayer().getMapId() != 200000301) {
 				c.getPlayer().dropMessage(1, "You cannot create a new Guild while in one.");
 				return;
@@ -108,11 +109,8 @@ public class GuildHandler {
 			c.getPlayer().setGuildRank((byte) 1);
 			c.getPlayer().saveGuildStatus();
 			World.Guild.setGuildMemberOnline(c.getPlayer().getMGC(), true, c.getChannel());
-			//c.getSession().write(GuildPacket.showGuildInfo(c.getPlayer()));
 			c.getSession().write(GuildPacket.newGuildInfo(c.getPlayer()));
 			World.Guild.gainGP(c.getPlayer().getGuildId(), 500, c.getPlayer().getId());
-			//c.getPlayer().dropMessage(1, "You have successfully created a Guild.");
-			//respawnPlayer(c.getPlayer());
 			break;
 		case 0x05: // invitation
 			if (c.getPlayer().getGuildId() <= 0 || c.getPlayer().getGuildRank() > 2) { // 1 == guild master, 2 == jr
@@ -203,7 +201,7 @@ public class GuildHandler {
 
 			World.Guild.changeRank(c.getPlayer().getGuildId(), cid, newRank);
 			break;
-		case 0x10: // guild emblem change
+		case 0x14: // guild emblem change (updated)
 			if (c.getPlayer().getGuildId() <= 0 || c.getPlayer().getGuildRank() != 1 || c.getPlayer().getMapId() != 200000301) {
 				return;
 			}
@@ -212,6 +210,7 @@ public class GuildHandler {
 				c.getPlayer().dropMessage(1, "You do not have enough mesos to create an emblem.");
 				return;
 			}
+			
 			final short bg = slea.readShort();
 			final byte bgcolor = slea.readByte();
 			final short logo = slea.readShort();

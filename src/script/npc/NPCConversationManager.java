@@ -1287,7 +1287,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			if (!trueMax) {
 				c.getPlayer().gainMeso(-500000, true, true);
 			} else {
-				gainGP(-25000);
+				gainGP(-10000);
 			}
 			sendNext("Your guild capacity has been raised...");
 		} else if (!trueMax) {
@@ -1298,7 +1298,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		}
 	}
 
-	public void displayGuildRanks() {
+	public void displayGuildRanks() {	
 		c.getSession().write(GuildPacket.showGuildRanks(id, MapleGuildRanking.getInstance().getRank()));
 	}
 
