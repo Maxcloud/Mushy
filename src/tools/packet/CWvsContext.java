@@ -2780,16 +2780,21 @@ public class CWvsContext {
                     break;
                 }
             }
+            
             pw.write(notice == null ? 0 : 1);
             if (notice != null) {
                 addThread(pw, notice);
             }
+            
             if (threadCount < start) {
                 start = 0;
             }
+            
             pw.writeInt(threadCount);
+            
             int pages = Math.min(10, threadCount - start);
             pw.writeInt(pages);
+            
             for (int i = 0; i < pages; i++) {
                 addThread(pw, (MapleBBSThread) bbs.get(start + i));
             }
