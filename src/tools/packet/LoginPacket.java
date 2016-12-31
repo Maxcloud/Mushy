@@ -185,7 +185,7 @@ public class LoginPacket {
 
         return pw.getPacket();
     }
-
+    
     public static byte[] sendAuthResponse(int response) {
         PacketWriter pw = new PacketWriter();
         pw.writeShort(SendPacketOpcode.AUTH_RESPONSE.getValue());
