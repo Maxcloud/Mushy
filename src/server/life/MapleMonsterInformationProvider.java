@@ -101,17 +101,9 @@ public class MapleMonsterInformationProvider {
                     rs.close();
                 }
             } catch (SQLException ignore) {
+            	ignore.printStackTrace();
             }
         }
-        loadCustom();
-    }
-
-    public void loadCustom() {
-        globaldrops.add(new MonsterGlobalDropEntry(4001126, (int) (5 * 10000), -1, (byte) 0, 1, 3, 0)); //Maple Leaf
-        //globaldrops.add(new MonsterGlobalDropEntry(4310050, (int) (1 * 10000), -1, (byte) 0, 1, 1, 0)); //Old Maple Coin
-        globaldrops.add(new MonsterGlobalDropEntry(2290285, (int) (0.5 * 10000), -1, (byte) 0, 1, 1, 0)); //Mystery Mastery Book
-        globaldrops.add(new MonsterGlobalDropEntry(4000524, (int) (5 * 10000), -1, (byte) 0, 1, 1, 0));
-  //     MapleMonsterStats mons = MapleLifeFactory.getMonsterStats(f.mob);
     }
 
     public ArrayList<MonsterDropEntry> retrieveDrop(final int monsterId) {
