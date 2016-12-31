@@ -2,9 +2,9 @@
 .idea/
 .settings/
 bin/
-dat/
 strings/
 wz/
+!resources/bin/
 
 # Files
 *.classpath

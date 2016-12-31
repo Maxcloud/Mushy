@@ -30,6 +30,7 @@ import server.MapleStatEffect;
 import tools.data.PacketWriter;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
+import tools.packet.PacketHelper;
 import tools.packet.CWvsContext.AlliancePacket;
 import tools.packet.CWvsContext.GuildPacket;
 import tools.packet.CWvsContext.InfoPacket;
@@ -929,10 +930,6 @@ public class MapleGuild implements java.io.Serializable {
         gainGP(amount, true, -1);
     }
 
-    public final void gainGP(int amount, final boolean broadcast) {
-        gainGP(amount, broadcast, -1);
-    }
-
     public final void gainGP(int amount, final boolean broadcast, final int cid) {
         if (amount == 0) { //no change, no broadcast and no sql.
             return;
@@ -1015,7 +1012,7 @@ public class MapleGuild implements java.io.Serializable {
         return level;
     }
 
-    public final int calculateLevel() {
+    private final int calculateLevel() {
         for (int i = 1; i < 10; i++) {
             if (gp < GameConstants.getGuildExpNeededForLevel(i)) {
                 return i;
@@ -1024,20 +1021,23 @@ public class MapleGuild implements java.io.Serializable {
         return 10;
     }
 
-    public final void addMemberData(final PacketWriter mplew) {
-        mplew.write(members.size());
+    public final void addMemberData(final PacketWriter pw) {
+        pw.writeShort(members.size());
 
         for (final MapleGuildCharacter mgc : members) {
-            mplew.writeInt(mgc.getId());
+            pw.writeInt(mgc.getId());
         }
         for (final MapleGuildCharacter mgc : members) {
-            mplew.writeAsciiString(mgc.getName(), 13);
-            mplew.writeInt(mgc.getJobId()); //-1 = ??
-            mplew.writeInt(mgc.getLevel()); //-1 = ??
-            mplew.writeInt(mgc.getGuildRank());
-            mplew.writeInt(mgc.isOnline() ? 1 : 0);
-            mplew.writeInt(mgc.getAllianceRank());
-            mplew.writeInt(mgc.getGuildContribution());
+            pw.writeAsciiString(mgc.getName(), 13);
+            pw.writeInt(mgc.getJobId());
+            pw.writeInt(mgc.getLevel());
+            pw.writeInt(mgc.getGuildRank());
+            pw.writeInt(mgc.isOnline() ? 1 : 0);
+            pw.writeInt(3);
+            pw.writeInt(500);
+            pw.writeInt(mgc.getAllianceRank());
+            pw.writeInt(mgc.getGuildContribution());
+            pw.writeLong(PacketHelper.getTime(-2));
         }
     }
 
@@ -1112,10 +1112,6 @@ public class MapleGuild implements java.io.Serializable {
                 thread.replies.remove(replyid);
             }
         }
-    }
-
-    public boolean hasSkill(int id) {
-        return guildSkills.containsKey(id);
     }
 
     public static void setOfflineGuildStatus(int guildid, byte guildrank, int contribution, byte alliancerank, int cid) {

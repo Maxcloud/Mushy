@@ -8,6 +8,7 @@ import client.inventory.Equip.ScrollResult;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import constants.ItemConstants;
 import handling.PacketHandler;
 import handling.RecvPacketOpcode;
 import server.MapleItemInformationProvider;
@@ -35,11 +36,17 @@ public class UseBonusPotentialScrollHandler {
             c.getSession().write(CWvsContext.enableActions());
             return;
         }
-        
-        //IMPORTANT
-        //There needs to be a meso check added right here
-        //Otherwise 0 mesos in inventory = free scrolling
-        
+
+        final int reqLevel = ItemConstants.getLevelByEquip(equip) / 10;
+        boolean hasEnoughInsight = chr.getTrait(MapleTrait.MapleTraitType.sense).getLevel() >= GameConstants.getRequiredSense(reqLevel);
+        long price = hasEnoughInsight ? 0 : GameConstants.getMagnifyPrice(equip); // free if above required insight
+
+        if(!chr.checkAndAddMeso(-price, false)){
+            chr.dropMessage(5, "You do not have enough mesos for this operation (needs " + price + ").");
+            c.getSession().write(CWvsContext.enableActions());
+            return;
+        }
+
         int itemId = item.getItemId();
         boolean threeLines = itemId == 2048306;
         // ghetto way of getting the scroll chance, as it's not currently stored in the data cache.
@@ -59,20 +66,9 @@ public class UseBonusPotentialScrollHandler {
             equip.resetBonusPotentialWithRank(Equip.RARE, threeLines);
             equip.revealHiddenPotential();
         }
+
         // Update
-        chr.getInventory(GameConstants.getInventoryType(item.getItemId())).removeItem(item.getPosition(), (short) 1, false);
-
-        if (dst < 0) {
-            chr.equipChanged();
-        }
-
-        final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        final int reqLevel = ii.getReqLevel(equip.getItemId()) / 10;
-        boolean hasEnoughInsight = chr.getTrait(MapleTrait.MapleTraitType.sense).getLevel() >= GameConstants.getRequiredSense(reqLevel);
-        long price = hasEnoughInsight ? 0 : GameConstants.getMagnifyPrice(equip); // free if above required insight
-
-        chr.gainMeso(-price, false);
-        chr.forceReAddItem(equip, mit);
+        chr.updateItemsFromScrolling(item, equip, mit);
         c.getSession().write(CWvsContext.enableActions());
         c.getSession().write(CField.getScrollEffect(chr.getId(), success, false, equip.getItemId(), itemId));
     }

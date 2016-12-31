@@ -19,6 +19,7 @@ import handling.channel.handler.PlayersHandler;
 import handling.login.LoginServer;
 import handling.world.CharacterTransfer;
 import handling.world.World;
+import handling.world.guild.MapleGuild;
 import server.MapleInventoryManipulator;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestStatus;
@@ -26,6 +27,7 @@ import tools.Triple;
 import tools.data.LittleEndianAccessor;
 import tools.packet.CField;
 import tools.packet.CWvsContext;
+import tools.packet.CWvsContext.GuildPacket;
 import tools.packet.JobPacket.AvengerPacket;
 
 public class PlayerLoggedInHandler {
@@ -120,8 +122,8 @@ public class PlayerLoggedInHandler {
 
 		player.getMap().addPlayer(player);
 
-		/*try {
-			// Start of buddylist
+		try {
+			/*// Start of buddylist
 			final int buddyIds[] = player.getBuddylist().getBuddyIds();
 			World.Buddy.loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds);
 			if (player.getParty() != null) {
@@ -146,7 +148,7 @@ public class PlayerLoggedInHandler {
 			if (messenger != null) {
 				World.Messenger.silentJoinMessenger(messenger.getId(), new MapleMessengerCharacter(c.getPlayer()));
 				World.Messenger.updateMessenger(messenger.getId(), c.getPlayer().getName(), c.getChannel());
-			}
+			}*/
 
 			// Start of Guild and alliance
 			if (player.getGuildId() > 0) {
@@ -169,14 +171,10 @@ public class PlayerLoggedInHandler {
 					player.saveGuildStatus();
 				}
 			}
-			if (player.getFamilyId() > 0) {
-				World.Family.setFamilyMemberOnline(player.getMFC(), true, c.getChannel());
-			}
-			// c.getSession().write(FamilyPacket.getFamilyData());
-			// c.getSession().write(FamilyPacket.getFamilyInfo(player));
 		} catch (Exception e) {
-			FileoutputUtil.outputFileError(FileoutputUtil.Login_Error, e);
-		}*/
+			e.printStackTrace();
+		}
+		
 		player.getClient().getSession().write(CWvsContext.broadcastMsg(channelServer.getServerMessage()));
 		player.sendMacros();
 		// player.showNote();

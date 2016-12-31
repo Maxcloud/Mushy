@@ -31,23 +31,22 @@ public class MapleGuildCharacter implements java.io.Serializable { // alias for 
     private boolean online;
     private final String name;
 
-    // either read from active character...
-    // if it's online
-    public MapleGuildCharacter(final MapleCharacter c) {
-        name = c.getName();
-        level = (short) c.getLevel();
-        id = c.getId();
-        channel = (byte) c.getClient().getChannel();
-        jobid = c.getJob();
-        guildrank = c.getGuildRank();
-        guildid = c.getGuildId();
-        guildContribution = c.getGuildContribution();
-        allianceRank = c.getAllianceRank();
+    // Get the details of the character that is currently online.
+    public MapleGuildCharacter(final MapleCharacter mc) {
+        name = mc.getName();
+        level = mc.getLevel();
+        id = mc.getId();
+        channel = (byte) mc.getClient().getChannel();
+        jobid = mc.getJob();
+        guildrank = mc.getGuildRank();
+        guildid = mc.getGuildId();
+        guildContribution = mc.getGuildContribution();
+        allianceRank = mc.getAllianceRank();
         online = true;
     }
 
-    // or we could just read from the net.db
-    public MapleGuildCharacter(final int id, final short lv, final String name, final byte channel, final int job, final byte rank, final int guildContribution, final byte allianceRank, final int gid, final boolean on) {
+    // Read the character from the database.
+    MapleGuildCharacter(final int id, final short lv, final String name, final byte channel, final int job, final byte rank, final int guildContribution, final byte allianceRank, final int gid, final boolean on) {
         this.level = lv;
         this.id = id;
         this.name = name;

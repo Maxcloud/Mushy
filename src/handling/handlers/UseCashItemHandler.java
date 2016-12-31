@@ -52,26 +52,28 @@ public class UseCashItemHandler {
                 equip.setOldPotential(ArrayUtil.copy(equip.getPotential()));
             }
 
+            final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+            final int reqLevel = ii.getReqLevel(equip.getItemId()) / 10;
+            boolean hasEnoughInsight = chr.getTrait(MapleTrait.MapleTraitType.sense).getLevel() >= GameConstants.getRequiredSense(reqLevel);
+            long price = hasEnoughInsight ? 0 : GameConstants.getMagnifyPrice(equip); // free if above required insight
+
+            if(!chr.checkAndAddMeso(-price, false)){
+                chr.dropMessage(5, "You do not have enough mesos for this action.");
+                c.getSession().write(CWvsContext.enableActions());
+                return;
+            }
+
             int oldState = equip.getState();
             equip.renewPotential(GameConstants.getCashCubeByItemId(itemId));
             equip.revealHiddenPotential();
             boolean hasRankedUp = oldState != equip.getState();
 
             // Update
-            chr.getInventory(GameConstants.getInventoryType(item.getItemId())).removeItem(item.getPosition(), (short) 1, false);
 
-            if (dst < 0) {
-                chr.equipChanged();
-            }
+            chr.updateItemsFromScrolling(item, equip, mit);
 
-            final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-            final int reqLevel = ii.getReqLevel(equip.getItemId()) / 10;
-            boolean hasEnoughInsight = chr.getTrait(MapleTrait.MapleTraitType.sense).getLevel() >= GameConstants.getRequiredSense(reqLevel);
-            long price = hasEnoughInsight ? 0 : GameConstants.getMagnifyPrice(equip); // free if above required insight
-
-            chr.gainMeso(-price, false);
-            chr.forceReAddItem(equip, mit);
             c.getSession().write(CWvsContext.enableActions());
+
             GameConstants.Cubes cube = GameConstants.getCashCubeByItemId(itemId);
             if(cube == GameConstants.Cubes.BLACK){
                 c.getSession().write(CField.showBlackCubePotentialReset(chr.getId(), true, itemId));

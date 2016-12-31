@@ -28,6 +28,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
 import org.apache.mina.common.WriteFuture;
 
@@ -1970,6 +1971,12 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         return quests;
     }
 
+    public Map<MapleBuffStat, MapleBuffStatValueHolder> getBuffValues() {
+    	return effects.entrySet().stream()
+    			.filter(stat -> getBuffedValue(stat.getKey()) != null)
+    			.collect(Collectors.toMap(stat -> stat.getKey(), stat -> stat.getValue()));
+    }
+    
     public Integer getBuffedValue(MapleBuffStat effect) {
         final MapleBuffStatValueHolder mbsvh = effects.get(effect);
         return mbsvh == null ? null : Integer.valueOf(mbsvh.value);
@@ -1979,7 +1986,7 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
         final MapleBuffStatValueHolder mbsvh = effects.get(effect);
         if (mbsvh == null) {
             return null;
-        }
+        }	
         return mbsvh.effect.getX();
     }
 
@@ -9591,5 +9598,30 @@ public class MapleCharacter extends AnimatedMapleMapObject implements Serializab
 
     public Equip getLastBlackCubedItem(){
         return lastBlackCubedItem;
+    }
+
+    /**
+     * Checks whether user will have negative mesos after a gainMeso(), also adds the mesos if this is false..
+     * @param addMeso The mesos to be added (can be negative).
+     * @param show Whether the mesos gain should be displayed.
+     * @return True if user has positive mesos after gainMeso(), else false.
+     */
+    public boolean checkAndAddMeso(long addMeso, boolean show){
+        if(getMeso() + addMeso < 0){
+            return false;
+        }
+        gainMeso(addMeso, show);
+        return true;
+    }
+
+    public void updateItemsFromScrolling(Item usedItem, Equip equip, MapleInventoryType mit){
+        if(usedItem != null) {
+            getInventory(GameConstants.getInventoryType(usedItem.getItemId())).removeItem(usedItem.getPosition(), (short) 1, false);
+        }
+        if (mit == MapleInventoryType.EQUIPPED) {
+            equipChanged();
+        }
+
+        forceReAddItem(equip, mit);
     }
 }
