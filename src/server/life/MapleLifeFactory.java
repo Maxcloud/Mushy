@@ -254,13 +254,11 @@ public class MapleLifeFactory {
             if (link != 0) { // Store another copy, for faster processing.
             	monsterData = data.getData(StringUtil.getLeftPaddedStr(link + ".img", '0', 11));
             }
-            OUTER:
             for (MapleData idata : monsterData) {
                 switch (idata.getName()) {
                     case "fly":
                         stats.setFly(true);
                         stats.setMobile(true);
-                        break OUTER;
                     case "move":
                         stats.setMobile(true);
                         break;

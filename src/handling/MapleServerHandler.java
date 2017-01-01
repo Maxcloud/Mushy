@@ -68,14 +68,14 @@ import java.util.Set;
 public class MapleServerHandler extends IoHandlerAdapter {
 	
 	private final byte[] skey = new byte[] {
-    		(byte) 0xB3, 0x00, 0x00, 0x00,
-    		(byte) 0x2C, 0x00, 0x00, 0x00,
-    		(byte) 0x96, 0x00, 0x00, 0x00,
-    		(byte) 0x65, 0x00, 0x00, 0x00,
-    		(byte) 0x99, 0x00, 0x00, 0x00,
-    		(byte) 0x32, 0x00, 0x00, 0x00,
-    		(byte) 0xD0, 0x00, 0x00, 0x00,
-    		(byte) 0x41, 0x00, 0x00, 0x00
+    		(byte) 0x29, 0x00, 0x00, 0x00,
+    		(byte) 0xF6, 0x00, 0x00, 0x00,
+    		(byte) 0x18, 0x00, 0x00, 0x00,
+    		(byte) 0x5E, 0x00, 0x00, 0x00,
+    		(byte) 0xCA, 0x00, 0x00, 0x00,
+    		(byte) 0x5A, 0x00, 0x00, 0x00,
+    		(byte) 0x40, 0x00, 0x00, 0x00,
+    		(byte) 0x61, 0x00, 0x00, 0x00
     };
 	
     private static int numDC = 0;
@@ -161,17 +161,17 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void messageSent(IoSession session, Object message) throws Exception { 
-    	//final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
+    	final LittleEndianAccessor lea = new LittleEndianAccessor(new ByteArrayByteStream((byte[]) message));
     	
-    	//short code = lea.readShort();
-    	//String opcode = SendPacketOpcode.getNameByValue(code);
+    	short code = lea.readShort();
+    	String opcode = SendPacketOpcode.getNameByValue(code);
     	
-    	//String bytes = lea.toString(false);
-		//byte[] hex = HexTool.getByteArrayFromHexString(bytes);
-		//String hexString = new String(hex, "ASCII");
+    	String bytes = lea.toString(false);
+		byte[] hex = HexTool.getByteArrayFromHexString(bytes);
+		String hexString = new String(hex, "ASCII");
 		
-    	// System.out.println("[Sent] " + opcode + ": " + bytes);
-    	// System.out.println(hexString);
+    	System.out.println("[Sent] " + opcode + ": " + bytes);
+    	System.out.println(hexString);
     }
 
     @Override

@@ -1,5 +1,5 @@
 @echo off
-@title MapleStory Server - v176.1
+@title Mushy Fork Emulator - v179.2
 set CLASSPATH=.;bin\*
-java -client server.Start
+java server.Start
 pause

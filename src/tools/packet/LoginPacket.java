@@ -39,7 +39,7 @@ public class LoginPacket {
     
     public static final byte[] getStart() {
     	PacketWriter pw = new PacketWriter(2);
-    	pw.writeShort(0x24);
+    	pw.writeShort(0x25);
     	pw.write(1);
     	return pw.getPacket();
     }
@@ -64,8 +64,7 @@ public class LoginPacket {
         pw.write(0);
         pw.writeInt(2);
         pw.writeInt(0);
-        pw.write(1); // if 0, writeMapleAsciiString(CensoredNxLoginID)
-        // pw.write0(7); //gm stuff and new int
+        pw.write(1);
         pw.writeMapleAsciiString(client.getAccountName());
         pw.write(3);
         pw.write(0);
@@ -126,11 +125,6 @@ public class LoginPacket {
         pw.writeLong(Randomizer.nextLong());
         pw.writeInt(28);
         pw.writeLong(Randomizer.nextLong());
-        /*for(byte b = 0; b < 3; b++) {
-        	if(b == 1)
-        		pw.writeInt(28);
-        	pw.writeLong(Randomizer.nextLong());
-        }*/
         pw.writeMapleAsciiString("");
         getAvailableJobs(pw); 
         pw.write(0);
@@ -186,12 +180,12 @@ public class LoginPacket {
     public static byte[] secondPwError(byte mode) {
         PacketWriter pw = new PacketWriter(3);
 
-        pw.writeShort(SendPacketOpcode.SECONDPW_ERROR.getValue());
+        pw.writeShort(SendPacketOpcode.CHECK_SPW_EXIST_RESULT.getValue());
         pw.write(0);
 
         return pw.getPacket();
     }
-
+    
     public static byte[] sendAuthResponse(int response) {
         PacketWriter pw = new PacketWriter();
         pw.writeShort(SendPacketOpcode.AUTH_RESPONSE.getValue());
@@ -265,9 +259,9 @@ public class LoginPacket {
 
         pw.writeShort(SendPacketOpcode.SERVERLIST.getValue());
         pw.write(0xFF);
-        pw.write(0); // boolean disable cash shop and trade msg
-        pw.write(0); // 174.1
-        pw.write(0); // 174.1
+        pw.writeShort(0); // boolean disable cash shop and trade msg
+        pw.writeShort(0);
+        pw.writeShort(0); 
 
         return pw.getPacket();
     }

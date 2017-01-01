@@ -291,7 +291,7 @@ public class CWvsContext {
     public static byte[] bombLieDetector(boolean error, int mapid, int channel) {
         PacketWriter pw = new PacketWriter();
 
-        pw.writeShort(SendPacketOpcode.LIE_DETECTOR.getValue());
+        pw.writeShort(SendPacketOpcode.ANTI_MACRO_RESULT.getValue());
         pw.write(error ? 2 : 1);
         pw.writeInt(mapid);
         pw.writeInt(channel);
@@ -302,7 +302,7 @@ public class CWvsContext {
     public static byte[] sendLieDetector(final byte[] image) {
         PacketWriter pw = new PacketWriter();
 
-        pw.writeShort(SendPacketOpcode.LIE_DETECTOR.getValue());
+        pw.writeShort(SendPacketOpcode.ANTI_MACRO_RESULT.getValue());
         pw.write(6); // 1 = not attacking, 2 = tested, 3 = going through 
 
         pw.write(4); // 2 give invalid pointer (suppose to be admin macro) 
@@ -324,7 +324,7 @@ public class CWvsContext {
     public static byte[] LieDetectorResponse(final byte msg, final byte msg2) {
         PacketWriter pw = new PacketWriter();
 
-        pw.writeShort(SendPacketOpcode.LIE_DETECTOR.getValue());
+        pw.writeShort(SendPacketOpcode.ANTI_MACRO_RESULT.getValue());
         pw.write(msg); // 1 = not attacking, 2 = tested, 3 = going through 
         pw.write(msg2);
 
@@ -334,7 +334,7 @@ public class CWvsContext {
     public static byte[] getLieDetector(byte type, String tester) {
         PacketWriter pw = new PacketWriter();
 
-        pw.writeShort(SendPacketOpcode.LIE_DETECTOR.getValue()); // 2A 00 01 00 00 00  
+        pw.writeShort(SendPacketOpcode.ANTI_MACRO_RESULT.getValue()); // 2A 00 01 00 00 00  
         pw.write(type); // 1 = not attacking, 2 = tested, 3 = going through, 4 save screenshot 
         switch (type) {
             case 4: //save screen shot 
@@ -379,7 +379,7 @@ public class CWvsContext {
     public static byte[] lieDetector(byte mode, byte action, byte[] image, String str1, String str2, String str3) {
         PacketWriter pw = new PacketWriter();
 
-        pw.writeShort(SendPacketOpcode.LIE_DETECTOR.getValue());
+        pw.writeShort(SendPacketOpcode.ANTI_MACRO_RESULT.getValue());
         pw.write(mode);
         pw.write(action); //2 = show msg/save screenshot/maple admin picture(mode 6)
         if (mode == 6) {
@@ -454,7 +454,7 @@ public class CWvsContext {
         PacketWriter pw = new PacketWriter();
 
         pw.writeShort(SendPacketOpcode.SHOW_QUEST_COMPLETION.getValue());
-        pw.writeShort(id);
+        pw.writeInt(id);
 
         return pw.getPacket();
     }
@@ -869,6 +869,7 @@ public class CWvsContext {
         pw.writeInt(ourItem);
         pw.writeInt(itemId2);
         pw.writeInt(quantity2);
+		pw.writeInt(0);
         pw.write(0);
         pw.write(0);
 
