@@ -180,7 +180,7 @@ public class LoginPacket {
     public static byte[] secondPwError(byte mode) {
         PacketWriter pw = new PacketWriter(3);
 
-        pw.writeShort(SendPacketOpcode.SECONDPW_ERROR.getValue());
+        pw.writeShort(SendPacketOpcode.CHECK_SPW_EXIST_RESULT.getValue());
         pw.write(0);
 
         return pw.getPacket();
